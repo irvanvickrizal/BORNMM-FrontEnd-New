@@ -6,6 +6,9 @@ import { dopSlice } from "@app/store/reducers/dop";
 import { scopeSlice } from "@app/store/reducers/scope";
 import { dopReducer } from "@app/store/reducers/dopReducer";
 import { scopeReducer } from "@app/store/reducers/scopeReducer";
+import { siteConditionReducer } from "@app/store/reducers/siteConditionReducer";
+import { scopeOrderReducer } from "@app/store/reducers/scopeOrderReducer";
+import { workFlowReducer } from "@app/store/reducers/workFlowReducer";
 
 export const allReducer = combineReducers({
     auth: authSlice.reducer,ui: uiSlice.reducer,
@@ -13,5 +16,8 @@ export const allReducer = combineReducers({
     dop: dopSlice.reducer,
     scope: scopeSlice.reducer,
     dopReducer,
-    scopeReducer
+    scopeReducer,
+    siteConditionReducer,
+    scopeOrderReducer,
+    workFlowReducer
 });

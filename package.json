@@ -52,6 +52,7 @@
         "i18next": "21.4.2",
         "i18next-browser-languagedetector": "6.1.2",
         "luxon": "2.1.1",
+        "moment": "^2.29.1",
         "node-sass": "6.0.1",
         "react": "17.0.2",
         "react-bootstrap": "1.6.4",

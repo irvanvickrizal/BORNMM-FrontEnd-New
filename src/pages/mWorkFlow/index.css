@@ -1,0 +1,11 @@
+.table-row-light {
+    background-color: #e0e0e0;
+}
+.table-row-dark {
+    background-color: rgb(255, 255, 255);
+}
+thead-header {
+    background-color: yellow;
+  }
+
+.ant-table table { font-size: 16px; }

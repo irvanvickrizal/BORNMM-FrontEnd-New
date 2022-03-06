@@ -20,6 +20,8 @@ import mDOP2 from '../../pages/dop2/index';
 import Scope2 from '@app/pages/scope2/scope2';
 import POCreation from '@pages/POCreation/POCreation';
 import POScope from '@pages/POScope/POScope';
+import mSiteCondition from '@app/pages/mSiteCondition/index';
+import ScopeOrderType from '@app/pages/mScopeOrderType/index';
 // import mMaterialCategory from '@pages/mMaterialCategory/mordertype';
 // import mMaterialCategory from '@pages/mMaterialCategory/mMaterialCategory';
 
@@ -28,6 +30,7 @@ import Footer from './footer/Footer';
 import MenuSidebar from './menu-sidebar/MenuSidebar';
 import PageLoading from '../../components/page-loading/PageLoading';
 import CardHeader from '../../components/cardheader/cardheader';
+import WorkFlow from '@app/pages/mWorkFlow/index';
 
 const Main = () => {
     const dispatch = useDispatch();
@@ -186,6 +189,21 @@ const Main = () => {
                                             exact
                                             path="/po/scope"
                                             component={POScope}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/master/sitecondition"
+                                            component={mSiteCondition}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/master/scopeordertype"
+                                            component={ScopeOrderType}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/master/workflow"
+                                            component={WorkFlow}
                                         />
                                     </Switch>
                                 </div>

@@ -66,6 +66,18 @@ export const MENU = [
                 name: 'menusidebar.label.mScope2',
                 path: '/master/scope2'
             },
+            {
+                name: 'menusidebar.label.mSiteCondition',
+                path: '/master/sitecondition'
+            },
+            {
+                name: 'menusidebar.label.mScopeOrderType',
+                path: '/master/scopeordertype'
+            },
+            {
+                name: 'menusidebar.label.mWorkFlow',
+                path: '/master/workflow'
+            },
         ]
     }
 ];
