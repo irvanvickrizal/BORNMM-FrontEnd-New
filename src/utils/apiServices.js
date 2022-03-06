@@ -2,6 +2,11 @@ import axios from 'axios';
 import {variables} from '../Variables';
 import { toast } from 'react-toastify';
 
+import {useDispatch} from 'react-redux';
+
+import {setIsLoading} from '@store/reducers/ui';
+
+
 const baseURL = variables.API_URL;
 const token = localStorage.getItem('token'); 
 
@@ -13,6 +18,12 @@ const headers = {
     'Content-Type' : 'application/json',
     'Authorization': `Bearer ${token}`
 };
+
+const headersfile ={
+    'Content-Type': 'multipart/form-data',
+    'Authorization': `Bearer ${token}`
+
+}
 
 //auth api
 const Login = (path) => (data) => {
@@ -50,6 +61,23 @@ const GET = (path)  => {
     })
     return promise;
 }
+
+const GETParam = (path,id)  => {
+    const promise = new Promise((resolve, reject) => {
+        axios.get(`${baseURL}${path}/${id}`
+            ,config
+        )
+            .then((result)=> {
+                console.log('i am get :',result.data);
+                resolve(result.data);
+            },(err)=>{
+                console.log(config);
+                reject(err);
+            })
+    })
+    return promise;
+}
+
 const POST = (path,body)  => {
     const promise = new Promise((resolve, reject) => {
         axios.post(`${baseURL}${path}`
@@ -60,6 +88,43 @@ const POST = (path,body)  => {
             resolve(result.data);
         },(err)=>{
             console.log('config',headers);
+            toast.error(err);
+            reject(err);
+        })
+    })
+    return promise;
+}
+
+const POSTFile = (path,id,file)  => {
+    var formdata = new FormData();
+    formdata.append("fileupload",file);
+
+    const promise = new Promise((resolve, reject) => {
+        axios.post(`${baseURL}${path}/${id}`
+            ,formdata
+            ,{headers}
+        ).then((result)=> {
+            console.log('i am post :',result.data);
+            resolve(result.data);
+        },(err)=>{
+            console.log('config',headers);
+            toast.error(err);
+            reject(err);
+        })
+    })
+    return promise;
+}
+const PUTFile = (path,id)  => {
+    var formdata = new FormData();
+    // formdata.append("fileupload",file);
+    const promise = new Promise((resolve, reject) => {
+        axios.put(`${baseURL}${path}/${id}`
+            ,formdata
+            ,{headers}
+        ).then((result)=> {
+            console.log('i am PUTFILE :',result.data);
+            resolve(result.data);
+        },(err)=>{
             toast.error(err);
             reject(err);
         })
@@ -83,6 +148,22 @@ const PUT = (path,body)  => {
     return promise;
 }
 
+const PUTParam = (path,id)  => {
+    const promise = new Promise((resolve, reject) => {
+        axios.put(`${baseURL}${path}/${id}`
+            ,config
+        )
+            .then((result)=> {
+                console.log('i am get :',result.data);
+                resolve(result.data);
+            },(err)=>{
+                console.log(config);
+                reject(err);
+            })
+    })
+    return promise;
+}
+
 const DELETE = (path,param)  => {
     const promise = new Promise((resolve, reject) => {
         axios.delete(`${baseURL}${path}/${param}`
@@ -98,6 +179,8 @@ const DELETE = (path,param)  => {
     return promise;
 }
 
+
+const getMenu = (id) => GETParam('menu',id);
 
 const getMaterialCategory = () => GET('mastermaterialcategory');
 const postMaterialCategory = (body) => POST('mastermaterialcategory',body);
@@ -137,7 +220,11 @@ const postPOData = (body) => POST('customerpo', body);
 const putPOActivation = () => PUT('customerpo/SetActivationStatusU');
 
 const getPOScopeList = () => GET('poscope/getposcopelist');
+const getErrorList = (id) => GETParam('positelist/GetUploadedSitelistErr',id);
+const deleteFileUpload = (id) => PUTFile('positelist/UploadedSitelistDeletedTemp',id);
 const postPOScope = (body) => POST('poscope/poscopeadd',body);
+const postPOFile = (id,file) => POSTFile('positelist/uploadSiteList',id,file);
+const postRevisePOFile = (id,file) => POSTFile('positelist/UploadReviseSiteList',id,file);
 
 const API ={
     getmDOPList
@@ -171,6 +258,11 @@ const API ={
     ,putMaterial
     ,postPOScope
     ,putMaterialActivation
+    ,postPOFile
+    ,getMenu
+    ,getErrorList
+    ,deleteFileUpload
+    ,postRevisePOFile
 }
 
 export default API;

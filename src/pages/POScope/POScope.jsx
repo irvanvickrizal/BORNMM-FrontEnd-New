@@ -5,10 +5,13 @@ import HeaderChanger from '@app/components/cardheader/HeaderChanger';
 import API  from '../../utils/apiServices';
 import POScopeList from './POScopeList';
 import {useSelector} from 'react-redux';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 
 const POCreation = () => {
-
+    
+    const isLoading = useSelector((state) => state.ui.isLoading);
     useEffect(() => {
         //getDOP();
     })
@@ -17,7 +20,15 @@ const POCreation = () => {
         <div>
             <HeaderChanger title="PO Scope"/>
             {/* {isEdit || isNew ? <DOPPanel/> : null} */}
-            <POScopeList />
+            <p>is loading :{isLoading}</p>
+            {isLoading ? <Box sx={{ display: 'flex',
+                justifyContent: 'center'
+            }}>
+                <CircularProgress />
+            </Box> : <POScopeList />
+            }
+            
+            {/* <POScopeList /> */}
         </div>
     );
 };

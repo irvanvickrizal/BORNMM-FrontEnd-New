@@ -1,13 +1,20 @@
 import {createSlice} from '@reduxjs/toolkit';
 
+import jwt from 'jwt-decode';
+
 const initialState = {
     isLoggedIn: !!localStorage.getItem('token'),
     token: localStorage.getItem('token'),
     currentUser: {
         email: 'mail@example.com',
         picture: null
-    }
+    },
+    user: []
 };
+
+const User = (token) => {
+
+}
 
 export const authSlice = createSlice({
     name: 'auth',
@@ -26,7 +33,7 @@ export const authSlice = createSlice({
             state.token = null;
         },
         loadUser: (state, {payload}) => {
-            state.currentUser = payload;
+            state.user = payload;
         }
     }
 });

@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable no-else-return */
 /* eslint-disable react/jsx-fragments */
 /* eslint-disable no-shadow */
 /* eslint-disable react/jsx-no-bind */
@@ -52,21 +54,205 @@ import FileUploadIcon from '@mui/icons-material/FileUpload';
 import Tooltip from '@mui/material/Tooltip';
 import { subDays } from 'date-fns/esm';
 import DeleteIcon from '@mui/icons-material/Delete';
+import HourglassTopIcon from '@mui/icons-material/HourglassTop';
+import SimCardDownloadIcon from '@mui/icons-material/SimCardDownload';
+import SmsFailedIcon from '@mui/icons-material/SmsFailed';
 import { red } from '@mui/material/colors';
 import { styled } from '@mui/material/styles';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import SearchIcon from '@mui/icons-material/Search';
+import moment from 'moment';
+import exportFromJSON from 'export-from-json'
+import errorLog from './DataGenerator';
+import CloseIcon from '@mui/icons-material/Close';
+import FormControl from '@mui/material/FormControl';
+import InputAdornment from '@mui/material/InputAdornment';
+import TablePagination from '@mui/material/TablePagination';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import TextField from '@mui/material/TextField';
+
+const datax = [{ foo: 'foo'}, { bar: 'bar' }];
+const fileName = 'download';
+const exportType =  exportFromJSON.types.xls;
+
+const Input = styled('input')({
+    display: 'none',
+});
+
+function IconUploadStatus(props){
+    console.log(props.status)
+    if(props.status=="success"){
+        console.log(props.status);
+        return (
+            <Tooltip title="Success">
+                <IconButton
+                    aria-label="success"
+                    size="small"
+                    color="success"
+                >
+                    <CheckCircleIcon />
+                </IconButton>
+            </Tooltip> 
+        );
+    }
+    else if(props.status=="failed"){ 
+        console.log(props.status);
+        return (
+            // <h1>failed</h1>
+            <Tooltip title="Failed">
+                <IconButton
+                    aria-label="success"
+                    size="small"
+                    color="error"
+                >
+                    <SmsFailedIcon/>
+                </IconButton>
+            </Tooltip> 
+        );
+    }
+    else if(props.status=="pending"){
+        console.log(props.status);
+        return (
+            // <h1>pending</h1>
+            <Tooltip title="Pending">
+                <IconButton
+                    aria-label="success"
+                    size="small"
+                    color="primary"
+                >
+                    <HourglassTopIcon />
+                </IconButton>
+            </Tooltip>  
+        );
+    }
+    return props.status;
+}
+
 
 function Row(props) {
     const { row } = props;
     const [open, setOpen] = React.useState(false);
-    
+    const [isEdit,setIsEdit] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
-    const Input = styled('input')({
-        display: 'none',
-    });
-
+    const [selectedFileRevise, setSelectedFileRevise] = useState(null);
     
-    function onFileChange(file){
+    const [errorLogs,setErrorLogs] = useState([]);
+
+    function getErrorLog(id){
+
+        API.getErrorList(id).then(
+            result=>{
+                console.log('i am error log Scope',result)
+                
+                setErrorLogs(result);
+                
+                const data = result.map((rs)=>errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
+
+                exportFromJSON({ data, fileName, exportType });
+            }
+        )
+    }
+
+    function ReviseFileUpload(id, file){
+        API.postRevisePOFile(id,file).then(
+            result=>{
+                console.log('i am PO Revise File',result)
+            }
+        )
+        setSelectedFileRevise(file);
+    }
+    function DeleteFileUpload(id, file){
+        API.deleteFileUpload(id).then(
+            result=>{
+                console.log('i am PO Delete File',result)
+            }
+        )
+        setSelectedFileRevise(file);
+    }
+
+    function IconFileOption(props){
+        console.log("id",props.id);
+        console.log(props.status)
+        if(props.status=="success"){
+            console.log(props.status);
+            return (
+                null
+            );
+        }
+        else if(props.status=="failed"){ 
+            console.log(props.status);
+            return (
+                <><label title="upload file" htmlFor="icon-button-filerevise">
+                    <Input accept="*/*" id="icon-button-filerevise" type="file" 
+                        onChange={(e)=>ReviseFileUpload(props.id,e.target.files[0])}       
+                    />
+                    <IconButton 
+                        color="primary" 
+                        aria-label="upload file" 
+                        component="span" 
+                    >
+                        <FileUploadIcon />
+                    </IconButton>
+                </label>
+                <Tooltip title="Delete File">
+                    <IconButton
+                        aria-label="expand row"
+                        size="small"
+                        color="error"
+                        
+                        onClick={() => DeleteFileUpload(props.id)}
+                    >
+                        <DeleteIcon />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="Download Log">
+                    <IconButton
+                        aria-label="expand row"
+                        size="small"
+                        color="error"
+                        onClick={() => getErrorLog(props.id)}
+                    >
+                        <SimCardDownloadIcon />
+                    </IconButton>
+                </Tooltip>
+                </>
+            );
+        }
+        else if(props.status=="pending"){
+            console.log(props.status);
+            return (
+                <>
+                    <label title="upload file" htmlFor="icon-button-filerevise">
+                        <Input accept="*/*" id="icon-button-filerevise" type="file"                         
+                            onChange={(e)=>ReviseFileUpload(props.id,e.target.files[0])}   
+                        />
+                        <IconButton color="primary" aria-label="upload file" component="span">
+                            <FileUploadIcon />
+                        </IconButton>
+                    </label><Tooltip title="Delete File">
+                        <IconButton
+                            aria-label="expand row"
+                            size="small"
+                            color="error"
+                            onClick={() => DeleteFileUpload(props.id)}
+                        >
+                            <DeleteIcon />
+                        </IconButton>
+                    </Tooltip></>
+            );
+        }
+        return props.status;
+    }
+
+
+    function onFileChange(file,id){
         console.log(file);
+        API.postPOFile(id,file).then(
+            result=>{
+                console.log('i am PO upload',result)
+            }
+        );
         setSelectedFile(file);
     }
 
@@ -86,24 +272,26 @@ function Row(props) {
                     {row.poDetail.cpoNo}
                 </TableCell>
                 <TableCell>{row.poDetail.cpoNoOriginal}</TableCell>
-                <TableCell>{row.poDetail.cpoDateStr}</TableCell>
+                <TableCell>{moment(row.lmdt).format("yyyy/mm/DD")}</TableCell>
                 <TableCell>{row.poDetail.projectName}</TableCell>
                 <TableCell>{row.scopeDetail.scopeName}</TableCell>
                 <TableCell>{row.totalSites}</TableCell>
                 <TableCell align="center">
                     <label htmlFor="icon-button-file">
-                        <Input onChange={(e)=>onFileChange(e.target.files[0])}  accept="*/*" id="icon-button-file" type="file" />
+                        <Input 
+                            onChange={(e)=>onFileChange(e.target.files[0],row.poDetail.cpoId)}  
+                            accept="*/*" id="icon-button-file" type="file" />
                         <IconButton color="primary" aria-label="upload picture" component="span">
                             <FileUploadIcon/>
                         </IconButton>
                     </label>
-                    <IconButton
+                    {/* <IconButton
                         aria-label="expand row"
                         size="small"
                         color="primary"
                     >
                         <EditTwoTone/>
-                    </IconButton>
+                    </IconButton> */}
                     <IconButton
                         aria-label="expand row"
                         size="small"
@@ -125,6 +313,7 @@ function Row(props) {
                                     <TableRow>
                                         <TableCell>File Name</TableCell>
                                         <TableCell>Upload Date</TableCell>
+                                        <TableCell>Total Row</TableCell>
                                         <TableCell>Status</TableCell>
                                         <TableCell align="center">Option</TableCell>
                                     </TableRow>
@@ -135,22 +324,14 @@ function Row(props) {
                                             <TableCell component="th" scope="row">
                                                 {sd.filePath}
                                             </TableCell>
-                                            <TableCell></TableCell>
-                                            <TableCell>{sd.uploadStatus}</TableCell>
+                                            <TableCell>{moment(sd.lmdt).format("yyyy/mm/DD")}</TableCell>
+                                            <TableCell>{sd.rowCount}</TableCell>
+                                            <TableCell>
+                                                {/* {sd.uploadStatus} */}
+                                                <IconUploadStatus status={sd.uploadStatus} />
+                                            </TableCell>
                                             <TableCell align="center">
-                                                <label htmlFor="icon-button-file">
-                                                    <Input accept="*/*" id="icon-button-file" type="file" />
-                                                    <IconButton color="primary" aria-label="upload file" component="span">
-                                                        <FileUploadIcon/>
-                                                    </IconButton>
-                                                </label>
-                                                <IconButton
-                                                    aria-label="expand row"
-                                                    size="small"
-                                                    color="error"
-                                                >
-                                                    <DeleteIcon/>
-                                                </IconButton>
+                                                <IconFileOption status={sd.uploadStatus} id={sd.poSitelistId}/>
                                             </TableCell>
                                         </TableRow>
                                     ))}
@@ -175,7 +356,28 @@ const POScopeList = () => {
     const [isActiveRow,setIsActiveRow] = useState(false);
 
     const dispatch = useDispatch();
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  
+    const [cpoNoSearch,setCPONoSearch] = useState(false);
 
+    const handleSearchCPONO = () => {
+        console.log("ckick");
+        setCPONoSearch(true);
+    }
+
+    const handleCancelSearch =() =>{
+        setCPONoSearch(false);
+    }
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+  
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    };
     function createData(poScopeId, totalSites, cpoId, cpoNo, cpoNoOriginal, projectName, modifiedUser){
         return{
             poScopeId
@@ -200,20 +402,12 @@ const POScopeList = () => {
         dispatch(setIsNew(true));
     };
 
-    const handleShowEdit = (po) => {
-        //setShow(true);
-        po.isEditRow = true;
-        console.log("edit :",po)
-        dispatch(setIsEdit(true));
-    };
-
-    const handleCancelEdit = (po) => {
-        //setShow(true);
-        po.isEditRow = null;
-        console.log("edit cancel:",po)
-        dispatch(setIsEdit(false));
-    };
-
+    const handleKeyDownSearch = (e) => {
+        if (e.key === 'Enter') {
+            console.log(e.target.value);
+        }
+    }
+    
     function getPOScopeList(){
         console.log("getscope");
         API.getPOScopeList().then(
@@ -320,27 +514,109 @@ const POScopeList = () => {
                 </a>
             </div>
             <div className="card-body">
-                <TableContainer component={Paper}>
-                    <Table aria-label="collapsible table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell />
-                                <TableCell>CPO No</TableCell>
-                                <TableCell>CPO No Original</TableCell>
-                                <TableCell>CPO Date</TableCell>
-                                <TableCell>Project Name</TableCell>
-                                <TableCell>Scope</TableCell>
-                                <TableCell>Total Sites</TableCell>
-                                <TableCell align="center">Option</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {poScopeData.map((row) => (
-                                <Row key={row.name} row={row} />
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+                    <TableContainer component={Paper}>
+                        <Table aria-label="collapsible table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell />
+                                    <TableCell>
+                                        {cpoNoSearch ? 
+                                            <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                                                <InputLabel htmlFor="outlined-adornment-password">Search</InputLabel>
+                                                <OutlinedInput
+                                                    id="outlined-adornment-search-cancel"
+                                                    // label="Search"
+                                                    // type={values.showPassword ? 'text' : 'password'}
+                                                    // value={values.password}
+                                                    // onChange={handleChange('password')}
+                                                    size="small"
+                                                    onKeyDown={handleKeyDownSearch}
+                                                    endAdornment={
+                                                        <InputAdornment position="end">
+                                                            <IconButton
+                                                                aria-label="toggle password visibility"
+                                                                onClick={handleCancelSearch}
+                                                                // onMouseDown={handleMouseDownPassword}
+                                                                edge="end"
+                                                            >
+                                                                <CloseIcon />
+                                                            </IconButton>
+                                                        </InputAdornment>
+                                                    }
+                                                    label="Search"
+                                                />
+                                            </FormControl>
+                                            : <span>CPO No
+                                                <span class="float-right">
+                                                    <IconButton aria-label="search"
+                                                        align="right"
+                                                        onClick={handleSearchCPONO}
+                                                    >
+                                                        <SearchIcon />
+                                                    </IconButton>
+                                                </span>    
+                                            </span>}
+                                    </TableCell>
+                                    <TableCell>
+                                    CPO No Original
+                                        <span class="float-right">
+                                            <IconButton aria-label="search"
+                                                align="right"
+                                            >
+                                                <SearchIcon />
+                                            </IconButton>
+                                        </span>
+                                    </TableCell>
+                                    <TableCell>
+                                    CPO Date
+                                        <span class="float-right">
+                                            <IconButton aria-label="search"
+                                                align="right"
+                                            >
+                                                <SearchIcon />
+                                            </IconButton>
+                                        </span>
+                                    </TableCell>
+                                    <TableCell>
+                                    Project Name
+                                        <span class="float-right">
+                                            <IconButton aria-label="search"
+                                                align="right"
+                                            >
+                                                <SearchIcon />
+                                            </IconButton>
+                                        </span></TableCell>
+                                    <TableCell>
+                                    Scope
+                                        <span class="float-right">
+                                            <IconButton aria-label="search"
+                                                align="right"
+                                            >
+                                                <SearchIcon />
+                                            </IconButton>
+                                        </span></TableCell>
+                                    <TableCell>Total Sites</TableCell>
+                                    <TableCell align="center">Option</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {poScopeData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                                    <Row key={row.name} row={row} />
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 25, 100]}
+                        component="div"
+                        count={poScopeData.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                </Paper>
             </div>
         </div><Modal
             size="lg"

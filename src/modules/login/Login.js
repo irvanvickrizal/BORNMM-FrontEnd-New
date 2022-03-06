@@ -5,10 +5,11 @@ import {Link, useHistory} from 'react-router-dom';
 import {toast} from 'react-toastify';
 import {useFormik} from 'formik';
 import {useTranslation} from 'react-i18next';
-import {loginUser} from '@store/reducers/auth';
+import {loadUser, loginUser} from '@store/reducers/auth';
 import {Checkbox, Button, Input} from '@components';
 import {faEnvelope, faLock, faUser} from '@fortawesome/free-solid-svg-icons';
 
+import jwt from 'jwt-decode';
 import * as Yup from 'yup';
 
 import * as AuthService from '../../services/auth';
@@ -22,15 +23,25 @@ const Login = () => {
     const history = useHistory();
     const [t] = useTranslation();
 
+    
+    const User = (token) => {
+        const user =  jwt(token);
+        console.log("jwt user: ",user);
+    }
+
+
     const login = async (email, password) => {
         try {
             setAuthLoading(true);
             const token = await AuthService.loginAPI(email, password); //await AuthService.loginByAuth(email, password);
             //const token = await AuthService.loginByAuth(email, password);
             console.log('login : ',token);
+            const user =  jwt(token);
+            console.log("jwt user: ",user);
             toast.success('Login is succeed!');
             setAuthLoading(false);
             dispatch(loginUser(token));
+            dispatch(loadUser(user));
             history.push('/');
         } catch (error) {
             setAuthLoading(false);

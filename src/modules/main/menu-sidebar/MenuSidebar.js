@@ -1,7 +1,8 @@
-import React from 'react';
+import React,{useState, useEffect} from 'react';
 import {useSelector} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {MenuItem} from '@components';
+import API  from '../../../utils/apiServices';
 
 export const MENU = [
     {
@@ -71,7 +72,24 @@ export const MENU = [
 ];
 
 const MenuSidebar = () => {
-    const user = useSelector((state) => state.auth.currentUser);
+    const user = useSelector((state) => state.auth.user);
+
+    const [menu, setMenu] = useState([]);
+
+    const menuapi=(id)=> {
+        API.getMenu(id).then(
+            result=>{
+                console.log('i menu',result)
+                setMenu(result);
+            }
+        );
+    } 
+
+    useEffect(() => {
+        menuapi(user.roleId);
+    },[])
+
+
 
     return (
         <aside className="main-sidebar sidebar-dark-primary elevation-4">
@@ -88,7 +106,7 @@ const MenuSidebar = () => {
                 <div className="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div className="image">
                         <img
-                            src={user.picture || '/img/default-profile.png'}
+                            src='/img/default-profile.png'
                             className="img-circle elevation-2"
                             alt="User"
                         />
@@ -104,7 +122,7 @@ const MenuSidebar = () => {
                         className="nav nav-pills nav-sidebar flex-column"
                         role="menu"
                     >
-                        {MENU.map((menuItem) => (
+                        {menu.map((menuItem) => (
                             <MenuItem key={menuItem.name} menuItem={menuItem} />
                         ))}
                     </ul>

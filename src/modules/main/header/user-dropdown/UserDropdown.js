@@ -10,7 +10,7 @@ const UserDropdown = () => {
     const history = useHistory();
     const [t] = useTranslation();
     const dispatch = useDispatch();
-    const user = useSelector((state) => state.auth.currentUser);
+    const user = useSelector((state) => state.auth.user);
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const logOut = (event) => {
