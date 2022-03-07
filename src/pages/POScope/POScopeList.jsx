@@ -137,7 +137,18 @@ function Row(props) {
     const [selectedFile, setSelectedFile] = useState(null);
     const [selectedFileRevise, setSelectedFileRevise] = useState(null);
     
+    const [poScopeData,setPoScopeData] = useState([]);
     const [errorLogs,setErrorLogs] = useState([]);
+
+    function getPOScopeList(){
+        console.log("getscope");
+        API.getPOScopeList().then(
+            result=>{
+                console.log('i am PO Scope',result)
+                setPoScopeData(result);
+            }
+        )
+    } 
 
     function getErrorLog(id){
 
@@ -162,13 +173,15 @@ function Row(props) {
         )
         setSelectedFileRevise(file);
     }
+
     function DeleteFileUpload(id, file){
-        API.deleteFileUpload(id).then(
-            result=>{
-                console.log('i am PO Delete File',result)
-            }
-        )
-        setSelectedFileRevise(file);
+        if (window.confirm('Are you sure you want to process this action ?')) {
+            API.deleteFileUpload(id).then(
+                result=>{
+                    console.log('i am PO Delete File',result);
+                }
+            )
+        }
     }
 
     function IconFileOption(props){
