@@ -94,7 +94,8 @@
             "mScope": "Scope",
             "mDOP2": "DOP2",
             "mScope2": "Scope2",
-            "poScope": "PO Scope"
+            "poScope": "PO Scope",
+            "materialManagement": "Material Management"
         }
     },
     "footer": {

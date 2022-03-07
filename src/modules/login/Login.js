@@ -39,9 +39,9 @@ const Login = () => {
             const user =  jwt(token);
             console.log("jwt user: ",user);
             toast.success('Login is succeed!');
-            setAuthLoading(false);
             dispatch(loginUser(token));
             dispatch(loadUser(user));
+            setAuthLoading(false);
             history.push('/');
         } catch (error) {
             setAuthLoading(false);
