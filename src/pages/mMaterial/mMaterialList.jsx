@@ -182,18 +182,18 @@ const mMaterialList = () => {
         
         }
         console.log("saveclick",body);
-        // API.putMaterial(body).then(
-        //     result=>{
-        //         if(result.status=="success")
-        //         {
-        //             toast.success(result.message);
-        //             refreshData();
-        //         }
-        //         else{
-        //             toast.error(result.message);
-        //         }
-        //     }
-        // )
+        API.putMaterial(body).then(
+            result=>{
+                if(result.status=="success")
+                {
+                    toast.success(result.message);
+                    refreshData();
+                }
+                else{
+                    toast.error(result.message);
+                }
+            }
+        )
     }
 
     function handleIsActiveClick(materialId, status ){
@@ -293,7 +293,7 @@ const mMaterialList = () => {
                                                     onChange={(e) => setSelectedUoM(e.target.value)}
                                                     label={row.uom}
                                                 >
-                                                    {ddlUoM.map(um => <MenuItem value={um.uomId}>
+                                                    {ddlUoM.map(um => <MenuItem value={um.uomName}>
                                                         {um.uomName}
                                                     </MenuItem> )}
                                                 </Select>
@@ -345,6 +345,7 @@ const mMaterialList = () => {
                                                     id="demo-simple-select-standard"
                                                     onChange={(e) => setselectedCategory(e.target.value)}
                                                     label={row.subCategoryDetail.categoryDetail.categoryName}
+                                                    inputProps={{ readOnly: true }}
                                                 >
                                                     {ddlCategory.map(um => <MenuItem value={um.categoryId}>
                                                         {um.categoryName}
