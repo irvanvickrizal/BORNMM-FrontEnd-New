@@ -86,7 +86,10 @@ export default function TableScope() {
         },
         {
             title:'Is Active',
-            dataIndex:'cminfo.isActive',
+            dataIndex:'cminfo',
+            key:'scopeId',
+            render: item => Object.keys(item).map(k => item[k])[2]
+         
           
         },
         
