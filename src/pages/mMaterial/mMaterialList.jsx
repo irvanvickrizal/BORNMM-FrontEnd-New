@@ -182,18 +182,18 @@ const mMaterialList = () => {
         
         }
         console.log("saveclick",body);
-        // API.putMaterial(body).then(
-        //     result=>{
-        //         if(result.status=="success")
-        //         {
-        //             toast.success(result.message);
-        //             refreshData();
-        //         }
-        //         else{
-        //             toast.error(result.message);
-        //         }
-        //     }
-        // )
+        API.putMaterial(body).then(
+            result=>{
+                if(result.status=="success")
+                {
+                    toast.success(result.message);
+                    refreshData();
+                }
+                else{
+                    toast.error(result.message);
+                }
+            }
+        )
     }
 
     function handleIsActiveClick(materialId, status ){
@@ -275,12 +275,12 @@ const mMaterialList = () => {
                                 <TableRow key={row.materialId}>
                                     <TableCell>
                                         {row.isEditRow==null || row.isEditRow == false ? row.materialCode : 
-                                            <TextField id="txtMaterialCode" label={row.materialCode} onChange={(e)=>setMaterialCode(e.target.value)} variant="standard" />
+                                            <TextField defaultValue={row.materialCode} id="txtMaterialCode" label={row.materialCode} onChange={(e)=>setMaterialCode(e.target.value)} variant="standard" />
                                         }
                                     </TableCell>
                                     <TableCell>
                                         {row.isEditRow==null || row.isEditRow == false ? row.materialName : 
-                                            <TextField id="txtMaterialName" label={row.materialName} onChange={(e)=>setMaterialName(e.target.value)} variant="standard" />
+                                            <TextField defaultValue={row.materialName} id="txtMaterialName" label={row.materialName} onChange={(e)=>setMaterialName(e.target.value)} variant="standard" />
                                         }
                                     </TableCell>
                                     <TableCell>
@@ -292,8 +292,9 @@ const mMaterialList = () => {
                                                     id="demo-simple-select-standard"
                                                     onChange={(e) => setSelectedUoM(e.target.value)}
                                                     label={row.uom}
+                                                    defaultValue={row.uom}
                                                 >
-                                                    {ddlUoM.map(um => <MenuItem value={um.uomId}>
+                                                    {ddlUoM.map(um => <MenuItem value={um.uomName}>
                                                         {um.uomName}
                                                     </MenuItem> )}
                                                 </Select>
@@ -306,8 +307,9 @@ const mMaterialList = () => {
                                                 <InputLabel id="demo-simple-select-standard-label">{row.itemLevelDetail.itemLevelName}</InputLabel>
                                                 <Select
                                                     labelId="demo-simple-select-standard-label"
-                                                    id="demo-simple-select-standard"
+                                                    id="itemLevel"
                                                     onChange={(e) => setSelectedLevel(e.target.value)}
+                                                    defaultValue={row.itemLevelDetail.itemLevelId}
                                                     label={row.itemLevelName}
                                                 >
                                                     {ddlItemLevel.map(um => <MenuItem value={um.itemLevelId}>
@@ -324,8 +326,9 @@ const mMaterialList = () => {
                                                 <InputLabel id="demo-simple-select-standard-label">{row.subCategoryDetail.subCategoryName}</InputLabel>
                                                 <Select
                                                     labelId="demo-simple-select-standard-label"
-                                                    id="demo-simple-select-standard"
+                                                    id="subCat"
                                                     onChange={(e) => setSelectedSubCategory(e.target.value)}
+                                                    defaultValue={row.subCategoryDetail.subCategoryId}
                                                     label={row.subCategoryDetail.subCategoryName}
                                                 >
                                                     {ddlSubCategory.map(um => <MenuItem value={um.subCategoryId}>
@@ -342,9 +345,11 @@ const mMaterialList = () => {
                                                 <InputLabel id="demo-simple-select-standard-label">{row.subCategoryDetail.categoryDetail.categoryName}</InputLabel>
                                                 <Select
                                                     labelId="demo-simple-select-standard-label"
-                                                    id="demo-simple-select-standard"
+                                                    id="Cat"
                                                     onChange={(e) => setselectedCategory(e.target.value)}
                                                     label={row.subCategoryDetail.categoryDetail.categoryName}
+                                                    defaultValue={row.subCategoryDetail.categoryDetail.categoryId}
+                                                    inputProps={{ readOnly: true }}
                                                 >
                                                     {ddlCategory.map(um => <MenuItem value={um.categoryId}>
                                                         {um.categoryName}

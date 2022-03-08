@@ -20,7 +20,6 @@ const POCreation = () => {
         <div>
             <HeaderChanger title="PO Scope"/>
             {/* {isEdit || isNew ? <DOPPanel/> : null} */}
-            <p>is loading :{isLoading}</p>
             {isLoading ? <Box sx={{ display: 'flex',
                 justifyContent: 'center'
             }}>

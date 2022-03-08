@@ -34,14 +34,12 @@ const Login = () => {
         try {
             setAuthLoading(true);
             const token = await AuthService.loginAPI(email, password); //await AuthService.loginByAuth(email, password);
-            //const token = await AuthService.loginByAuth(email, password);
+            dispatch(loginUser(token));
             console.log('login : ',token);
             const user =  jwt(token);
-            console.log("jwt user: ",user);
+            dispatch(loadUser(user));
             toast.success('Login is succeed!');
             setAuthLoading(false);
-            dispatch(loginUser(token));
-            dispatch(loadUser(user));
             history.push('/');
         } catch (error) {
             setAuthLoading(false);

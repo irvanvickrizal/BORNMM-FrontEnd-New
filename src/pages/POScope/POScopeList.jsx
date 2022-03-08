@@ -63,7 +63,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import SearchIcon from '@mui/icons-material/Search';
 import moment from 'moment';
 import exportFromJSON from 'export-from-json'
-import errorLog from './DataGenerator';
+import CreateDataPOScope from './DataGenerator';
 import CloseIcon from '@mui/icons-material/Close';
 import FormControl from '@mui/material/FormControl';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -137,7 +137,18 @@ function Row(props) {
     const [selectedFile, setSelectedFile] = useState(null);
     const [selectedFileRevise, setSelectedFileRevise] = useState(null);
     
+    const [poScopeData,setPoScopeData] = useState([]);
     const [errorLogs,setErrorLogs] = useState([]);
+
+    function getPOScopeList(){
+        console.log("getscope");
+        API.getPOScopeList().then(
+            result=>{
+                console.log('i am PO Scope',result)
+                setPoScopeData(result);
+            }
+        )
+    } 
 
     function getErrorLog(id){
 
@@ -147,7 +158,7 @@ function Row(props) {
                 
                 setErrorLogs(result);
                 
-                const data = result.map((rs)=>errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
+                const data = result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
 
                 exportFromJSON({ data, fileName, exportType });
             }
@@ -162,13 +173,15 @@ function Row(props) {
         )
         setSelectedFileRevise(file);
     }
+
     function DeleteFileUpload(id, file){
-        API.deleteFileUpload(id).then(
-            result=>{
-                console.log('i am PO Delete File',result)
-            }
-        )
-        setSelectedFileRevise(file);
+        if (window.confirm('Are you sure you want to process this action ?')) {
+            API.deleteFileUpload(id).then(
+                result=>{
+                    console.log('i am PO Delete File',result);
+                }
+            )
+        }
     }
 
     function IconFileOption(props){
@@ -247,7 +260,7 @@ function Row(props) {
 
 
     function onFileChange(file,id){
-        console.log(file);
+        console.log(id,file);
         API.postPOFile(id,file).then(
             result=>{
                 console.log('i am PO upload',result)
@@ -279,9 +292,9 @@ function Row(props) {
                 <TableCell align="center">
                     <label htmlFor="icon-button-file">
                         <Input 
-                            onChange={(e)=>onFileChange(e.target.files[0],row.poDetail.cpoId)}  
+                            onChange={(e)=>onFileChange(e.target.files[0],row.poScopeId)}  
                             accept="*/*" id="icon-button-file" type="file" />
-                        <IconButton color="primary" aria-label="upload picture" component="span">
+                        <IconButton color="primary" aria-label="upload file" component="span">
                             <FileUploadIcon/>
                         </IconButton>
                     </label>
@@ -413,6 +426,20 @@ const POScopeList = () => {
         API.getPOScopeList().then(
             result=>{
                 console.log('i am PO Scope',result)
+                setPoScopeData(result);
+            }
+        )
+    } 
+
+
+
+    function getPOScopeListANT(){
+        console.log("getscope");
+        
+        API.getPOScopeList().then(
+            result=>{
+                //const data = result.map((rs)=>CreateDataPOScope.poScopeData(rs.poScopeId, rs.))
+
                 setPoScopeData(result);
             }
         )

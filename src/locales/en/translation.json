@@ -97,7 +97,8 @@
             "poScope": "PO Scope",
             "mSiteCondition":"Site Condition",
             "mScopeOrderType": "Scope Order Type",
-            "mWorkFlow": "Work Flow"
+            "mWorkFlow": "Work Flow",
+            "materialManagement": "Material Management"
         }
     },
     "footer": {
