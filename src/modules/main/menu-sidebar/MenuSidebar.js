@@ -92,15 +92,17 @@ const MenuSidebar = () => {
 
 
     return (
-        <aside className="main-sidebar sidebar-dark-primary elevation-4">
+        <aside className="main-sidebar sidebar-nokia-primary elevation-4">
             <Link to="/" className="brand-link">
                 <img
-                    src="/img/logo.png"
-                    alt="AdminLTE Logo"
+                    src="/img/bicon.png"
+                    alt="BORN Logo"
                     className="brand-image img-circle elevation-3"
-                    style={{opacity: '.8'}}
+                    style={{opacity: '1'}}
                 />
-                <span className="brand-text font-weight-light">BORN</span>
+                <span className="brand-text font-weight-light">
+                    <h2 className='pr-4' align="center" style={{ color:'white' }}>BORN</h2>
+                </span>
             </Link>
             <div className="sidebar">
                 <div className="user-panel mt-3 pb-3 mb-3 d-flex">

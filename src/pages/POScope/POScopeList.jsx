@@ -169,6 +169,7 @@ function Row(props) {
         API.postRevisePOFile(id,file).then(
             result=>{
                 console.log('i am PO Revise File',result)
+                window.location.reload();
             }
         )
         setSelectedFileRevise(file);
@@ -179,6 +180,8 @@ function Row(props) {
             API.deleteFileUpload(id).then(
                 result=>{
                     console.log('i am PO Delete File',result);
+                    
+                    window.location.reload();
                 }
             )
         }
@@ -438,8 +441,16 @@ const POScopeList = () => {
         
         API.getPOScopeList().then(
             result=>{
-                //const data = result.map((rs)=>CreateDataPOScope.poScopeData(rs.poScopeId, rs.))
-
+                const data = result.map((rs)=>CreateDataPOScope.poScopeData(rs.poScopeId
+                    , rs.totalSites
+                    , rs.poDetail.cpoId
+                    , rs.poDetail.cpoNo
+                    , rs.poDetail.cpoNoOriginal
+                    , rs.poDetail.projectName
+                    , rs.scopeDetail.scopeId
+                    , rs.scopeDetail.scopeName
+                    , rs.lmdt))
+                console.log("dataant", data)
                 setPoScopeData(result);
             }
         )
@@ -447,6 +458,7 @@ const POScopeList = () => {
 
     function refreshData(){
         getPOScopeList();
+        getPOScopeListANT();
         //getOrderType();
         //getSubcon();
     }

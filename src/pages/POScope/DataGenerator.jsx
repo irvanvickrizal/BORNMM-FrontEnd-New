@@ -48,9 +48,23 @@ const poScopeData = (poScopeId,totalSites,cpoId,cpoNo,cpoNoOriginal,projectName,
     return datas;
 }
 
+const fileListData = (poScopeId,poSitelistId,filePath,fullFilePath,uploadStatus,rowCount) => {
+    const datas = {
+        poScopeId
+        ,poSitelistId
+        ,filePath
+        ,fullFilePath
+        ,uploadStatus
+        ,rowCount
+    }
+    
+    return datas;
+}
+
 const CreateDataPOScope = {
     errorLog
     ,poScopeData
+    ,fileListData
 }
 
 export default CreateDataPOScope;

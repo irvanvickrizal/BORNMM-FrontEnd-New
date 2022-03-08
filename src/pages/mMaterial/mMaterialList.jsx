@@ -187,6 +187,8 @@ const mMaterialList = () => {
                 if(result.status=="success")
                 {
                     toast.success(result.message);
+                    //mtr.isEditRow = null;
+                    setIsEdit(false);
                     refreshData();
                 }
                 else{

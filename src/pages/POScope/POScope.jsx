@@ -4,6 +4,7 @@ import React,{useEffect} from 'react';
 import HeaderChanger from '@app/components/cardheader/HeaderChanger';
 import API  from '../../utils/apiServices';
 import POScopeList from './POScopeList';
+import POScopeListAnt from './POScopeListAnt';
 import {useSelector} from 'react-redux';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
@@ -24,7 +25,8 @@ const POCreation = () => {
                 justifyContent: 'center'
             }}>
                 <CircularProgress />
-            </Box> : <POScopeList />
+            </Box> : 
+                <><POScopeListAnt /><POScopeList /></>
             }
             
             {/* <POScopeList /> */}
