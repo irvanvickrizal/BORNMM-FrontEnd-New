@@ -226,6 +226,9 @@ const postPOScope = (body) => POST('poscope/poscopeadd',body);
 const postPOFile = (id,file) => POSTFile('positelist/uploadSiteList',id,file);
 const postRevisePOFile = (id,file) => POSTFile('positelist/UploadReviseSiteList',id,file);
 
+
+const getSiteInfo = (wpid) => GETParam('sitelist/siteDetail',wpid);
+
 const API ={
     getmDOPList
     ,postDOPData
@@ -263,6 +266,7 @@ const API ={
     ,getErrorList
     ,deleteFileUpload
     ,postRevisePOFile
+    ,getSiteInfo
 }
 
 export default API;

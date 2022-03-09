@@ -58,11 +58,7 @@ const POScopeListAnt = () => {
             title: 'CPO No',
             dataIndex: 'cpoNo',
             key: 'cpoNo',
-            filters: [
-                
-            ],
-            onFilter: (value, record) => record.cpoNo.startsWith(value),
-            filterSearch: true,
+            ...Search('cpoNo'),
         },
         {
             title: 'Total Sites',

@@ -16,15 +16,14 @@ export default function TableSite() {
     },[dispatch]);
 
     const dataSiteList = useSelector(state=>state.siteListDeliveryRequestReducer.data)
+    const wpid = useSelector(state=>state.siteListDeliveryRequestReducer.wpId)
 
-    
-
-    const navigateTo = () => history.push('/sitelist/siteDetail/{wpid}')
+    const navigateTo = (wpids) => history.push(`/sitelist/siteDetail?wpid=${wpids}`)
 
     const getId = (record) => {
-        dispatch(getWpId(record))
-        navigateTo()
-
+        // dispatch(getWpId(record));
+        console.log(record);
+        navigateTo(record);
     } 
     
 
@@ -32,8 +31,6 @@ export default function TableSite() {
         {
             title : "No",
             dataIndex:'siteID',
-            
-            
         },
         {
             title : "Site No",
@@ -76,14 +73,10 @@ export default function TableSite() {
             title : "CPO No",
             dataIndex:'poDetail',
             render: item => Object.keys(item).map(k => item[k])[1]
-            
-            
         },
         {
             title : "Work Pakage ID",
             dataIndex:'workpackageID',
-            
-            
         },
         {
             title : "Scope",
@@ -95,7 +88,6 @@ export default function TableSite() {
         {
             title : "Region",
             dataIndex:'region',
-            
         },
         {
             title : "Option",
@@ -128,14 +120,9 @@ export default function TableSite() {
                     
                     // eslint-disable-next-line react/jsx-boolean-value
                     pagination={{
-                       
-                       
                         pageSizeOptions: ['5','10','20','30', '40'],
                         showSizeChanger: true,
                         position: ["bottomLeft"],
-                      
-                       
-                        
                     }}
                     
                     style={{marginTop : 36}}

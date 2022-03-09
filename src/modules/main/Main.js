@@ -32,6 +32,7 @@ import PageLoading from '../../components/page-loading/PageLoading';
 import CardHeader from '../../components/cardheader/cardheader';
 import WorkFlow from '@app/pages/mWorkFlow/index';
 import SiteListDeliveryRequestType from '@app/pages/siteListDeliveryRequestType/index';
+import DismantleForm from '@app/pages/siteListDeliveryRequestType/DismantleForm';
 
 const Main = () => {
     const dispatch = useDispatch();
@@ -208,8 +209,13 @@ const Main = () => {
                                         />
                                         <Route
                                             exact
-                                            path="/sitelist/sitelistdeliveryrequiretype"
+                                            path="/mm/sitelistdr"
                                             component={SiteListDeliveryRequestType}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/sitelist/sitedetail/"
+                                            component={DismantleForm}
                                         />
                                     </Switch>
                                 </div>

@@ -4,6 +4,7 @@ export const getDataSiteList = (payload) => {
         payload,
     };
 };
+
 export const setDataSiteList = (payload) => {
     return {
         type: "SET_DATA_SITE_LIST",
@@ -17,4 +18,3 @@ export const getWpId = (payload) => {
         payload,
     };
 };
-  

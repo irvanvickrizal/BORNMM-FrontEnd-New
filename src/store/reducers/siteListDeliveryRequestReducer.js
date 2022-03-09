@@ -19,6 +19,7 @@ export const siteListDeliveryRequestReducer = (state = initialState, action) => 
             data:action.payload,
             isLoading: false,
         };
+
     case "GET_WP_ID":
         return {
             ...state,
@@ -26,7 +27,6 @@ export const siteListDeliveryRequestReducer = (state = initialState, action) => 
             isLoading: false,
         };
       
-  
     default:
         return state;
     }
