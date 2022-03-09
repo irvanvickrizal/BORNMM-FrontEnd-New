@@ -31,6 +31,7 @@ import MenuSidebar from './menu-sidebar/MenuSidebar';
 import PageLoading from '../../components/page-loading/PageLoading';
 import CardHeader from '../../components/cardheader/cardheader';
 import WorkFlow from '@app/pages/mWorkFlow/index';
+import SiteListDeliveryRequestType from '@app/pages/siteListDeliveryRequestType/index';
 
 const Main = () => {
     const dispatch = useDispatch();
@@ -204,6 +205,11 @@ const Main = () => {
                                             exact
                                             path="/master/workflow"
                                             component={WorkFlow}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/sitelist/sitelistdeliveryrequiretype"
+                                            component={SiteListDeliveryRequestType}
                                         />
                                     </Switch>
                                 </div>

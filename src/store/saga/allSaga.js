@@ -5,7 +5,8 @@ import { SagaScopeWorker } from "@app/store/saga/scopeSaga";
 import { SagaSiteConditionWorker } from "@app/store/saga/siteConditionSaga";
 import { SagaScopeOrderWorker } from "@app/store/saga/scopeOrderSaga";
 import { SagaWorFlowWorker } from "@app/store/saga/workFLowSaga";
+import { SagaSiteListDeliveryWorker } from "@app/store/saga/siteListDeliveryRequestSaga";
 
 export function* allSaga() {
-    yield all([SagaAuthWorker(),SagaDopWorker(),SagaScopeWorker(),SagaSiteConditionWorker(),SagaScopeOrderWorker(),SagaWorFlowWorker()]);
+    yield all([SagaAuthWorker(),SagaDopWorker(),SagaScopeWorker(),SagaSiteConditionWorker(),SagaScopeOrderWorker(),SagaWorFlowWorker(),SagaSiteListDeliveryWorker()]);
 }
