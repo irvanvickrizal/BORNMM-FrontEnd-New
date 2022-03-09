@@ -1,3 +1,7 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import 'antd/dist/antd.css';
+import './index.css';
 import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
@@ -29,7 +33,7 @@ const data = [
   },
 ];
 
-class App extends React.Component {
+class SearchColumn extends React.Component {
   state = {
     searchText: '',
     searchedColumn: '',
@@ -142,4 +146,4 @@ class App extends React.Component {
   }
 }
 
-ReactDOM.render(<App />, mountNode);
+ReactDOM.render(<App />, document.getElementById('container'));

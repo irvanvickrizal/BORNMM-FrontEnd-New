@@ -31,7 +31,8 @@ import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 
 import CreateDataPOScope from './DataGenerator';
-
+import Search from '@app/components/searchcolumn/SearchColumn';
+// import Seacrh from '@app/components/searchcolumn/SearchColumn';
 
 const POScopeListAnt = () => {
 
@@ -67,11 +68,37 @@ const POScopeListAnt = () => {
             title: 'Total Sites',
             dataIndex: 'totalSites',
             key: 'totalSites',
+            ...Search('totalSites'),
         },
         {
             title: 'CPO No Original',
             dataIndex: 'cpoNoOriginal',
             key: 'cpoNoOriginal',
+            filterDropdown: ({setSelectedKeys,selectedKeys,confirm}) => {
+                return <Input 
+                    autoFocus 
+                    
+                    placeHolder='search'
+                    value={selectedKeys[0]}
+                    onChange={(e)=>{
+                        setSelectedKeys(e.target.value?[e.target.value]:[])
+                    }}
+                    style={{ marginBottom: 8, display: 'block' }}
+                    onPressEnter={()=>{
+                        confirm()
+                    }}
+                    onBlur={()=>{
+                        confirm()
+                    }}
+                ></Input>
+            },
+            filterIcon: () => {
+                return <SearchOutlined/>
+            },
+            onFilter:(value,record)=>{
+                return record.cpoNoOriginal.toLowerCase().includes(value.toLowerCase())
+            }
+            // render: (cpoNoOriginal) => Seacrh.searchColumn(cpoNoOriginal),
         },
         // {
         //     title: '',

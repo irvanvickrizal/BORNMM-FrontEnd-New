@@ -6,7 +6,6 @@ import {useDispatch} from 'react-redux';
 
 import {setIsLoading} from '@store/reducers/ui';
 
-
 const baseURL = variables.API_URL;
 const token = localStorage.getItem('token'); 
 
@@ -114,6 +113,7 @@ const POSTFile = (path,id,file)  => {
     })
     return promise;
 }
+
 const PUTFile = (path,id)  => {
     var formdata = new FormData();
     // formdata.append("fileupload",file);
