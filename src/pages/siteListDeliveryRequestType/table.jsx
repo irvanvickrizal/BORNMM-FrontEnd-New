@@ -1,31 +1,74 @@
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-console */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable no-lone-blocks */
+/* eslint-disable consistent-return */
+/* eslint-disable prefer-destructuring */
 /* eslint-disable react/no-unstable-nested-components */
-import { getDataSiteList,getWpId } from '@app/store/action/siteListDeliveryRequestAction';
-import React,{useEffect} from 'react'
+import { getDataSiteList,getWpId,getOrderType,getOrderTypeId } from '@app/store/action/siteListDeliveryRequestAction';
+import React,{useEffect,useState} from 'react'
 import { useDispatch,useSelector } from 'react-redux'
-import {Table,Input} from 'antd'
+import {Table,Input,Menu, Dropdown, Button, Space} from 'antd'
 import {EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined } from '@ant-design/icons'
 import { useHistory } from 'react-router-dom';
+
+
 
 export default function TableSite() {
 
     const dispatch = useDispatch()
     const history = useHistory();
+    const [wpIds,setWpids]=useState('')
+  
+    
 
     useEffect(() => {
         dispatch(getDataSiteList())
+        
     },[dispatch]);
 
     const dataSiteList = useSelector(state=>state.siteListDeliveryRequestReducer.data)
     const wpid = useSelector(state=>state.siteListDeliveryRequestReducer.wpId)
+    const dataOrderTypeList = useSelector(state=>state.siteListDeliveryRequestReducer.orderList)
+    const ordetTypeIds = useSelector(state=>state.siteListDeliveryRequestReducer.orderTypeId)
+   
+    const navigateTo = () => {
+      
+        history.push(`/sitelist/siteDetail?wpid=${wpIds}?odi=${ordetTypeIds}`)
+       
+     
+    }
+    const odi = (e) => {
+        dispatch(getOrderTypeId(e))
+        navigateTo()
+     
+    }
 
-    const navigateTo = (wpids) => history.push(`/sitelist/siteDetail?wpid=${wpids}`)
 
-    const getId = (record) => {
+    const getId = (record,wp) => {
         // dispatch(getWpId(record));
-        console.log(record);
-        navigateTo(record);
+        // console.log(wpId,scopeName,orderTypeId,'wpId');
+  
+        dispatch(getOrderType(record.orderTypeList))
+        setWpids(wp)
+        const wpId = record.workpackageID
+        const scopeName = record.scopeDetail.scopeName
+        const scopeId = record.orderTypeList[0].orderTypeDetail.orderTypeId
+        console.log(wpId,scopeName,scopeId,'wp')
+        // navigateTo();
     } 
-    
+    const menuDropdown =  (
+        <Menu>
+            {dataOrderTypeList ? (dataOrderTypeList.map((e)=>(<Menu.Item>
+                <a target="_blank" rel="noopener noreferrer" onClick={()=>odi(e.orderTypeDetail.orderTypeId)}>
+                    {e.orderTypeDetail.orderTypeName}
+                </a>
+            </Menu.Item>))):(<p>no Data</p>)}
+            
+        </Menu>
+    );
 
     const columns = [
         {
@@ -92,14 +135,23 @@ export default function TableSite() {
         {
             title : "Option",
             dataIndex:'',
-            render : (record)=>{
-                return <MoreOutlined onClick={()=>getId(record.workpackageID)}  />
+            render : (record,wp)=>{
+                return <Space direction="vertical">
+                    <Space wrap>
+                        <Dropdown overlay={menuDropdown} placement="bottomLeft">
+                            <MoreOutlined onClick={()=>getId(record,wp.workpackageID)} /> 
+                        </Dropdown>
+                  
+                    </Space>
+                </Space>
             }
             
         },
         
     
     ]
+  
+    
 
     
 

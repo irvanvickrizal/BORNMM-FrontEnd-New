@@ -18,3 +18,15 @@ export const getWpId = (payload) => {
         payload,
     };
 };
+export const getOrderType = (payload) => {
+    return {
+        type: "GET_ORDER_TYPE",
+        payload,
+    };
+};
+export const getOrderTypeId = (payload) => {
+    return {
+        type: "GET_ORDER_TYPE_ID",
+        payload,
+    };
+};
