@@ -96,36 +96,7 @@ const POScopeListAnt = () => {
             }
             // render: (cpoNoOriginal) => Seacrh.searchColumn(cpoNoOriginal),
         },
-        // {
-        //     title: '',
-        //     key: 'tags',
-        //     dataIndex: 'tags',
-        //     render: tags => (
-        //         <>
-        //             {tags.map(tag => {
-        //                 let color = tag.length > 5 ? 'geekblue' : 'green';
-        //                 if (tag === 'loser') {
-        //                     color = 'volcano';
-        //                 }
-        //                 return (
-        //                     <Tag color={color} key={tag}>
-        //                         {tag.toUpperCase()}
-        //                     </Tag>
-        //                 );
-        //             })}
-        //         </>
-        //     ),
-        // },
-        // {
-        //     title: 'Action',
-        //     key: 'action',
-        //     render: (text, record) => (
-        //         <Space size="middle">
-        //             <a>Invite {record.name}</a>
-        //             <a>Delete</a>
-        //         </Space>
-        //     ),
-        // },
+        
     ];
 
     const handleClose = () => 
@@ -163,16 +134,16 @@ const POScopeListAnt = () => {
         
         API.getPOScopeList().then(
             result=>{
-                const data = result.map((rs)=>CreateDataPOScope.poScopeData(rs.poScopeId
-                    , rs.totalSites
-                    , rs.poDetail.cpoId
-                    , rs.poDetail.cpoNo
-                    , rs.poDetail.cpoNoOriginal
-                    , rs.poDetail.projectName
-                    , rs.scopeDetail.scopeId
-                    , rs.scopeDetail.scopeName
-                    , rs.lmdt))
-
+                console.log("result",result)
+                const data = CreateDataPOScope.poScopeData(result.poScopeId
+                    , result.totalSites
+                    , result.poDetail.cpoId
+                    , result.poDetail.cpoNo
+                    , result.poDetail.cpoNoOriginal
+                    , result.poDetail.projectName
+                    , result.scopeDetail.scopeId
+                    , result.scopeDetail.scopeName
+                    , result.lmdt)
                 console.log("dataant", data)
                 setPoScopeData(data);
                 console.log("poscopedata",poScopeData);

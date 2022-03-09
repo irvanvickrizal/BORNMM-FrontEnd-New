@@ -77,6 +77,22 @@ const GETParam = (path,id)  => {
     return promise;
 }
 
+const GETParam2 = (path,param1,param2)  => {
+    const promise = new Promise((resolve, reject) => {
+        axios.get(`${baseURL}${path}/${param1}/${param2}`
+            ,config
+        )
+            .then((result)=> {
+                console.log('i am get :',result.data);
+                resolve(result.data);
+            },(err)=>{
+                console.log(config);
+                reject(err);
+            })
+    })
+    return promise;
+}
+
 const POST = (path,body)  => {
     const promise = new Promise((resolve, reject) => {
         axios.post(`${baseURL}${path}`
@@ -228,9 +244,23 @@ const postRevisePOFile = (id,file) => POSTFile('positelist/UploadReviseSiteList'
 
 
 const getSiteInfo = (wpid) => GETParam('sitelist/siteDetail',wpid);
+const getInventoryActiveList = () => GET('minventory/inventoryCodeGetActiveList');
+const getSiteLocation = () => GET('netype/netypegetlist');
+const getRequestBase = (ordertypeid) => GETParam('deliveryreqtype/RequestTypeGetListBasedOnOrderType',ordertypeid);
+const getCTName = (invcodeid) => GETParam('materialmanagement/GetMasterCTBasedInvCodeId',invcodeid);
+const getOrigin = (wpid,ordertypeid) => GETParam2('dopordertype/doporigingetlist',wpid,ordertypeid);
+const getDestination = (wpid,ordertypeid) => GETParam2('dopordertype/dopdestinationgetlist',wpid,ordertypeid);
+const getDismantledBy = () => GET('subcon/GetFieldSubcontractor');
+
 
 const API ={
-    getmDOPList
+    getSiteLocation
+    ,getRequestBase 
+    ,getCTName 
+    ,getOrigin 
+    ,getDestination 
+    ,getDismantledBy
+    ,getmDOPList
     ,postDOPData
     ,putDOPData
     ,getmSubcon
@@ -267,6 +297,7 @@ const API ={
     ,deleteFileUpload
     ,postRevisePOFile
     ,getSiteInfo
+    ,getInventoryActiveList
 }
 
 export default API;
