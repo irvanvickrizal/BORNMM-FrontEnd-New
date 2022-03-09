@@ -52,11 +52,11 @@ export default function TableSite() {
         // console.log(wpId,scopeName,orderTypeId,'wpId');
   
         dispatch(getOrderType(record.orderTypeList))
-        setWpids(wp)
-        const wpId = record.workpackageID
-        const scopeName = record.scopeDetail.scopeName
-        const scopeId = record.orderTypeList[0].orderTypeDetail.orderTypeId
-        console.log(wpId,scopeName,scopeId,'wp')
+        setWpids(wp);
+        const wpId = record.workpackageID;
+        const scopeName = record.scopeDetail.scopeName;
+        const scopeId = record.orderTypeList[0].orderTypeDetail.orderTypeId;
+        console.log(wpId,scopeName,scopeId,'wp');
         // navigateTo();
     } 
     const menuDropdown =  (
@@ -138,10 +138,9 @@ export default function TableSite() {
             render : (record,wp)=>{
                 return <Space direction="vertical">
                     <Space wrap>
-                        <Dropdown overlay={menuDropdown} placement="bottomLeft">
+                        <Dropdown overlay={menuDropdown} trigger={['click']} placement="bottomLeft">
                             <MoreOutlined onClick={()=>getId(record,wp.workpackageID)} /> 
                         </Dropdown>
-                  
                     </Space>
                 </Space>
             }

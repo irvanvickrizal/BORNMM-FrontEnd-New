@@ -1,8 +1,10 @@
+/* eslint-disable no-restricted-globals */
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable no-shadow */
 /* eslint-disable no-plusplus */
 /* eslint-disable react/no-unstable-nested-components */
 import React, {Component,useState,useEffect} from 'react';
+import { useHistory } from 'react-router-dom';
 import { Table, Row, Col,Card, Typography, Input, Space,
     Form,
     Button,
@@ -12,7 +14,8 @@ import { Table, Row, Col,Card, Typography, Input, Space,
     DatePicker,
     InputNumber,
     TreeSelect,
-    Switch } from 'antd';
+    Switch,
+    message } from 'antd';
 import HeaderChanger from '@app/components/cardheader/HeaderChanger';
 import Divider from '@mui/material/Divider';
 import InputLabel from '@mui/material/InputLabel';
@@ -51,15 +54,22 @@ const DismantleForm = (props) => {
     const current = new Date();
     const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
     
+    const history = useHistory();
     const [selectedInvCode,setSelectedInvCode] = useState('');
     const [selectedSiteLocation,setSelectedSiteLocation] = useState('');
+    const [selectedRequestBase,setSelectedRequestBase] = useState('');
     const [selectedCTName,setSelectedCTName] = useState('');
     const [selectedOrigin,setSelectedOrigin] = useState('');
     const [selectedDestination,setSelectedDestination] = useState('');
     const [selectedSOW,setSelectedSOW] = useState('');
     const [deliveryDate,setDeliveryDate] = useState('');
 
-
+    const navigateTo = (path) => {
+      
+        history.push(`/mm/sitelistdr`)
+       
+     
+    }
     const user = useSelector((state) => state.auth.user);
 
     const getSiteInfo = () => {
@@ -198,6 +208,24 @@ const DismantleForm = (props) => {
         return current < moment().add(2,'d');
     }
 
+    function btnConfirm(){
+        if(selectedRequestBase==''||selectedInvCode==''||
+            selectedSiteLocation==''||selectedCTName==''||
+            selectedOrigin==''||selectedDestination==''||
+            selectedSOW==''||deliveryDate==''){
+                
+            message.error('Please Complete Form');
+        }
+        else{
+            message.success("confirm Form");
+        }
+    }
+
+    function btnCancel(){
+        console.log("sini");
+        navigateTo("mm/sitelistdr");
+    }
+
     useEffect(() => {
         getSiteInfo();
         getInventoryDDL();
@@ -252,7 +280,9 @@ const DismantleForm = (props) => {
                                     </Select>
                                 </Form.Item>
                                 <Form.Item label="Request Base">
-                                    <Select placeholder="Select an option">
+                                    <Select
+                                        onChange={(e) => setSelectedRequestBase(e)} 
+                                        placeholder="Select an option">
                                         {
                                             ddlRequestBase.map(rbs =>  <Select.Option value={rbs.requestTypeId}> 
                                                 {rbs.requestTypeName}</Select.Option>)
@@ -260,7 +290,9 @@ const DismantleForm = (props) => {
                                     </Select>
                                 </Form.Item>
                                 <Form.Item label="Site Location">
-                                    <Select placeholder="Select an option">
+                                    <Select
+                                        onChange={(e) => setSelectedSiteLocation(e)}  
+                                        placeholder="Select an option">
                                         {
                                             ddlSiteLocation.map(slc =>  <Select.Option value={slc.neTypeId}> 
                                                 {slc.neType}</Select.Option>)
@@ -272,7 +304,9 @@ const DismantleForm = (props) => {
                                         selectedInvCode == '' ?  <Select status="warning" disabled placeholder="Please Select Inventory Code">
                                         </Select>
                                             :
-                                            <Select placeholder="Select an option">
+                                            <Select 
+                                                onChange={(e) => setSelectedCTName(e)} 
+                                                placeholder="Select an option">
                                                 {
                                                     ddlSiteLocation.map(slc =>  <Select.Option value={slc.neTypeId}> 
                                                         {slc.neType}</Select.Option>)
@@ -281,7 +315,9 @@ const DismantleForm = (props) => {
                                     }
                                 </Form.Item>
                                 <Form.Item label="Origin">
-                                    <Select placeholder="Select an option">
+                                    <Select 
+                                        onChange={(e) => setSelectedOrigin(e)} 
+                                        placeholder="Select an option">
                                         {
                                             ddlOrigin.map(org =>  <Select.Option value={org.dopId}> 
                                                 {org.dopName}</Select.Option>)
@@ -289,7 +325,9 @@ const DismantleForm = (props) => {
                                     </Select>
                                 </Form.Item>
                                 <Form.Item label="Destination">
-                                    <Select placeholder="Select an option">
+                                    <Select 
+                                        onChange={(e) => setSelectedDestination(e)} 
+                                        placeholder="Select an option">
                                         {
                                             ddlDestination.map(dst =>  <Select.Option value={dst.dopId}> 
                                                 {dst.dopName}</Select.Option>)
@@ -301,7 +339,9 @@ const DismantleForm = (props) => {
                                         required: true,
                                     },
                                 ]}>
-                                    <Select placeholder="Select an option">
+                                    <Select 
+                                        onChange={(e) => setSelectedSOW(e)} 
+                                        placeholder="Select an option">
                                         {
                                             ddlDestination.map(dst =>  <Select.Option value={dst.dopId}> 
                                                 {dst.dopName}</Select.Option>)
@@ -312,14 +352,15 @@ const DismantleForm = (props) => {
                                     <DatePicker
                                         format="YYYY-MM-DD"
                                         disabledDate={disabledDate}
+                                        onChange={(e) => setDeliveryDate(e)} 
                                         // disabledDate={current && current < moment().endOf('day')}
                                         // showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
                                     />
                                 </Form.Item>
-                                <Form.Item>
+                                {/* <Form.Item>
                                     <Button type="primary" htmlType="submit">Confirm</Button>
                                     <Button type="danger">Cancel</Button>
-                                </Form.Item>
+                                </Form.Item> */}
                             </Form>
                             <Divider orientation="center" />
                             <Row>
@@ -342,9 +383,8 @@ const DismantleForm = (props) => {
                                 </Col>
                                 <Col span={4}> 
                                     <Space direction="horizontal">
-                                            
-                                        <Button type="primary" htmlType="submit">Confirm</Button>
-                                        <Button type="danger">Cancel</Button>
+                                        <Button type="primary" htmlType="submit" onClick={btnConfirm}>Confirm</Button>
+                                        <Button type="danger" onClick={btnCancel}>Cancel</Button>
                                     </Space>
                                 </Col>
                             </Row>
