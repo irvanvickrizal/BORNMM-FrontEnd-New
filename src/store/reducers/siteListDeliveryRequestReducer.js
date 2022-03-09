@@ -1,7 +1,9 @@
 const initialState = {
     data: [],
     isLoading: false,
-    wpId:''
+    wpId:'',
+    orderList:[],
+    orderTypeId:''
 };
   
 // eslint-disable-next-line default-param-last
@@ -27,6 +29,18 @@ export const siteListDeliveryRequestReducer = (state = initialState, action) => 
             isLoading: false,
         };
       
+    case "GET_ORDER_TYPE":
+        return {
+            ...state,
+            orderList:action.payload,
+            isLoading: false,
+        };
+    case "GET_ORDER_TYPE_ID":
+        return {
+            ...state,
+            orderTypeId:action.payload,
+            isLoading: false,
+        };
     default:
         return state;
     }
