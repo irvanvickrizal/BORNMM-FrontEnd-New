@@ -18,9 +18,10 @@ const LanguagesDropdown = () => {
 
     return (
         <div style={{marginTop:'12px',marginRight:'16px'}}>
-            {curHr <= 12 ? (<p>Good Morninh</p>)
-                :curHr <= 18 && curHr >= 12 ? (<p>Good Afternoon</p>)
-                    :(<p style={{fontWeight:"600"}}>{`Good Evening ${dataUser}`}</p>)
+            {curHr >= 4 && curHr <= 12 ? (<p style={{fontWeight:"500"}}>{`Good Morning ${dataUser}`}</p>)
+                :curHr <= 18 && curHr >= 12 ? (<p style={{fontWeight:"500"}}>{`Good Afternoon ${dataUser}`}</p>)
+                    :curHr >= 18 && curHr <= 24 ? (<p style={{fontWeight:"500"}}>{`Good Evening ${dataUser}`}</p>)
+                        :(<><p style={{fontWeight:"500"}}>{`Good Night ${dataUser}`}</p></>)
             }
         </div> 
     );
