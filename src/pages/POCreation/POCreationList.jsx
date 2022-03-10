@@ -36,7 +36,7 @@ import { setIsEdit, setIsNew } from '@app/store/reducers/scope';
 import {toast} from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faPowerOff } from '@fortawesome/free-solid-svg-icons'
-
+import DGPOCreation from '@app/pages/POCreation/DataGenerator';
 import Form from 'react-bootstrap/Form';
 
 
@@ -84,7 +84,9 @@ const POList = () => {
         console.log("getscope");
         API.getPOList().then(
             result=>{
-                console.log('i am PO',result)
+                console.log('i am PO creation',result)
+                const data = DGPOCreation.poList
+
                 setScopeData(result);
             }
         )
