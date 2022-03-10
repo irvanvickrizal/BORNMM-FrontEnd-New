@@ -7,34 +7,37 @@ const Dashboard = () => {
             <div className="row">
                 <div className="col-lg-3 col-6">
                     <SmallBox
-                        count={150}
-                        title="New Orders"
+                        count={0}
+                        title="SDR Done"
                         type="info"
-                        icon="ion-android-people"
+                        icon="fas fa-list"
                         navigateTo="/"
                     />
                 </div>
                 <div className="col-lg-3 col-6">
                     <SmallBox
-                        count={53}
-                        title="Bounce Rate"
+                        count={0}
+                        title="LTR Done"
                         type="success"
+                        icon="fas fa-list"
                         navigateTo="/"
                     />
                 </div>
                 <div className="col-lg-3 col-6">
                     <SmallBox
-                        count={44}
-                        title="User Registrations"
+                        count={0}
+                        title="PMR Done"
                         type="warning"
+                        icon="fas fa-list"
                         navigateTo="/"
                     />
                 </div>
                 <div className="col-lg-3 col-6">
                     <SmallBox
-                        count={65}
-                        title="Unique Visitors"
+                        count={0}
+                        title="Order Rejection"
                         type="danger"
+                        icon="fas fa-list"
                         navigateTo="/"
                     />
                 </div>

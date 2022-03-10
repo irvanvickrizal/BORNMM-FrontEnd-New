@@ -118,7 +118,7 @@ export default function TableSite() {
             render: item => Object.keys(item).map(k => item[k])[1]
         },
         {
-            title : "Work Pakage ID",
+            title : "Workpackage ID",
             dataIndex:'workpackageID',
         },
         {
@@ -133,8 +133,9 @@ export default function TableSite() {
             dataIndex:'region',
         },
         {
-            title : "Option",
+            title : "Options",
             dataIndex:'',
+            align:'center',
             render : (record,wp)=>{
                 return <Space direction="vertical">
                     <Space wrap>
