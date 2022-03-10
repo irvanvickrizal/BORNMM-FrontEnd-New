@@ -67,8 +67,6 @@ const DismantleForm = (props) => {
     const navigateTo = (path) => {
       
         history.push(`/mm/sitelistdr`)
-       
-     
     }
     const user = useSelector((state) => state.auth.user);
 
