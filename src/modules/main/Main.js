@@ -33,6 +33,7 @@ import CardHeader from '../../components/cardheader/cardheader';
 import WorkFlow from '@app/pages/mWorkFlow/index';
 import SiteListDeliveryRequestType from '@app/pages/siteListDeliveryRequestType/index';
 import DismantleForm from '@app/pages/siteListDeliveryRequestType/DismantleForm';
+import MaterialOrder from '@app/pages/siteListDeliveryRequestType/MaterialOrder';
 
 const Main = () => {
     const dispatch = useDispatch();
@@ -216,6 +217,11 @@ const Main = () => {
                                             exact
                                             path="/sitelist/sitedetail/"
                                             component={DismantleForm}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/sitelist/materialorder/"
+                                            component={MaterialOrder}
                                         />
                                     </Switch>
                                 </div>
