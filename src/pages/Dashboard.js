@@ -136,7 +136,7 @@ const Dashboard = () => {
                             </div>
                             <div className="card-body">
                                 <List
-                                    header={<div>My Agenda</div>}
+                                    
                                     footer={<div></div>}
                                     bordered
                                     dataSource={dataAgenda}

@@ -37,7 +37,7 @@ export default function TableSite() {
    
     const navigateTo = () => {
       
-        history.push(`/sitelist/siteDetail?wpid=${wpIds}?odi=${ordetTypeIds}`)
+        history.push(`/sitelist/siteDetail?wpid=${wpIds}?ot=${ordetTypeIds}`)
        
      
     }

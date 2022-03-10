@@ -1,82 +1,29 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable react/jsx-no-useless-fragment */
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-plusplus */
 import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Dropdown} from '@components';
+import { useSelector } from 'react-redux';
 
-const languages = [
-    {
-        key: 'en',
-        icon: 'flag-icon-us',
-        label: 'header.language.english'
-    },
-    {
-        key: 'tr',
-        icon: 'flag-icon-tr',
-        label: 'header.language.turkish'
-    },
-    {
-        key: 'de',
-        icon: 'flag-icon-de',
-        label: 'header.language.german'
-    },
-    {
-        key: 'fr',
-        icon: 'flag-icon-fr',
-        label: 'header.language.french'
-    },
-    {
-        key: 'es',
-        icon: 'flag-icon-es',
-        label: 'header.language.spanish'
-    }
-];
+
+
 
 const LanguagesDropdown = () => {
-    const [dropdownOpen, setDropdownOpen] = useState(false);
-    const {t, i18n} = useTranslation();
-
-    const changeLanguage = (lng) => {
-        i18n.changeLanguage(lng);
-    };
-
-    const getCurrentLanguage = () => {
-        const currentLanguage = i18n.language;
-        if (currentLanguage) {
-            return languages.find(
-                (language) => language.key === currentLanguage
-            );
-        }
-        return {};
-    };
-
-    const isActiveLanguage = (language) => {
-        if (language) {
-            return getCurrentLanguage().key === language.key ? 'active' : '';
-        }
-        return '';
-    };
+//    const user = useSelector(state => state)
+    var today = new Date()
+    var curHr = today.getHours()
+    const dataUser = useSelector(state=>state.auth.user.name)
 
     return (
-        <Dropdown
-            isOpen={dropdownOpen}
-            onChange={(open) => setDropdownOpen(open)}
-            buttonTemplate={
-                <i className={`flag-icon ${getCurrentLanguage().icon}`} />
+        <div style={{marginTop:'12px',marginRight:'16px'}}>
+            {curHr >= 4 && curHr <= 12 ? (<p style={{fontWeight:"500"}}>{`Good Morning ${dataUser}`}</p>)
+                :curHr <= 18 && curHr >= 12 ? (<p style={{fontWeight:"500"}}>{`Good Afternoon ${dataUser}`}</p>)
+                    :curHr >= 18 && curHr <= 24 ? (<p style={{fontWeight:"500"}}>{`Good Evening ${dataUser}`}</p>)
+                        :(<><p style={{fontWeight:"500"}}>{`Good Night ${dataUser}`}</p></>)
             }
-            menuTemplate={languages.map((language) => (
-                <button
-                    type="button"
-                    key={language.key}
-                    className={`dropdown-item ${isActiveLanguage(language)}`}
-                    onClick={() => {
-                        changeLanguage(language.key);
-                        setDropdownOpen(false);
-                    }}
-                >
-                    <i className={`flag-icon ${language.icon} mr-2`} />
-                    <span>{t(language.label)}</span>
-                </button>
-            ))}
-        />
+        </div> 
     );
 };
 
