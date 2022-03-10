@@ -1,7 +1,15 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import SmallBox from '../components/small-box/SmallBox';
+import Chart from 'chart.js/auto';
+
+
 
 const Dashboard = () => {
+
+    useEffect(() => {
+        
+    },[])
+
     return (
         <div className="container-fluid">
             <div className="row">
@@ -43,6 +51,7 @@ const Dashboard = () => {
                 </div>
             </div>
         </div>
+        
     );
 };
 
