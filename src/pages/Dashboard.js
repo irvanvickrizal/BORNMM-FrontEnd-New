@@ -3,7 +3,19 @@ import SmallBox from '../components/small-box/SmallBox';
 import Chart from 'chart.js/auto';
 import HeaderChanger from '@app/components/cardheader/HeaderChanger';
 import {Bar,Line,Pie} from "react-chartjs-2"
-
+import { Table, Row, Col,Card, Typography, Input, Space,
+    Form,
+    Button,
+    Radio,
+    Select,
+    Cascader,
+    DatePicker,
+    InputNumber,
+    TreeSelect,
+    Switch,
+    message,
+    List } from 'antd';
+import { FormOutlined } from '@ant-design/icons';
 
 
 const Dashboard = () => {
@@ -11,6 +23,14 @@ const Dashboard = () => {
     useEffect(() => {
         
     },[])
+
+    const dataAgenda = [
+        'PMR Pending',
+        'LTR Pending',
+        'SDR Pending',
+        'Order Rejection',
+        'Task Pending',
+    ];
 
     const colorHex = ['#d93a23','#1960db','#41c358',"#eba111"]
     const data = {
@@ -116,7 +136,17 @@ const Dashboard = () => {
                                 <h3 className="card-title">My Agenda</h3>
                             </div>
                             <div className="card-body">
-                                <h1>My Agenda</h1>
+                                <List
+                                    header={<div>My Agenda</div>}
+                                    footer={<div></div>}
+                                    bordered
+                                    dataSource={dataAgenda}
+                                    renderItem={item => (
+                                        <List.Item>
+                                            <Typography.Text ><FormOutlined /></Typography.Text> {item}
+                                        </List.Item>
+                                    )}
+                                />
                             </div>
                         </div>
                     </div>
