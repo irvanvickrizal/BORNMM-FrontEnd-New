@@ -34,6 +34,7 @@ import WorkFlow from '@app/pages/mWorkFlow/index';
 import SiteListDeliveryRequestType from '@app/pages/siteListDeliveryRequestType/index';
 import DismantleForm from '@app/pages/siteListDeliveryRequestType/DismantleForm';
 import MaterialOrder from '@app/pages/siteListDeliveryRequestType/MaterialOrder';
+import LogistikForm from '@app/pages/siteListDeliveryRequestType/LogistikForm';
 
 const Main = () => {
     const dispatch = useDispatch();
@@ -222,6 +223,10 @@ const Main = () => {
                                             exact
                                             path="/sitelist/materialorder/"
                                             component={MaterialOrder}
+                                        />      <Route
+                                            exact
+                                            path="/sitelist/logistikform/"
+                                            component={LogistikForm}
                                         />
                                     </Switch>
                                 </div>
