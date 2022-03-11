@@ -17,9 +17,7 @@
 /* eslint-disable react/prefer-stateless-function */
 import React, {Component,useState,useEffect} from 'react';
 import Modal from 'react-bootstrap/Modal';
-
-
-import $ from 'jquery'; 
+ 
 import API  from '../../utils/apiServices';
 import POScopePanel from './POScopePanel';
 import {useDispatch,useSelector} from 'react-redux';
@@ -116,16 +114,6 @@ const POScopeListAnt = () => {
             console.log(e.target.value);
         }
     }
-    
-    function getPOScopeList(){
-        console.log("getscope");
-        API.getPOScopeList().then(
-            result=>{
-                console.log('i am PO Scope',result)
-                setPoScopeData(result);
-            }
-        )
-    } 
 
 
 
@@ -134,16 +122,18 @@ const POScopeListAnt = () => {
         
         API.getPOScopeList().then(
             result=>{
-                console.log("result",result)
-                const data = CreateDataPOScope.poScopeData(result.poScopeId
-                    , result.totalSites
-                    , result.poDetail.cpoId
-                    , result.poDetail.cpoNo
-                    , result.poDetail.cpoNoOriginal
-                    , result.poDetail.projectName
-                    , result.scopeDetail.scopeId
-                    , result.scopeDetail.scopeName
-                    , result.lmdt)
+                console.log("result po scope",result)
+                // const data = result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
+
+                const data = result.map((rs)=>CreateDataPOScope.poScopeData(rs.poScopeId
+                    , rs.totalSites
+                    , rs.poDetail.cpoId
+                    , rs.poDetail.cpoNo
+                    , rs.poDetail.cpoNoOriginal
+                    , rs.poDetail.projectName
+                    , rs.scopeDetail.scopeId
+                    , rs.scopeDetail.scopeName
+                    , rs.lmdt)) 
                 console.log("dataant", data)
                 setPoScopeData(data);
                 console.log("poscopedata",poScopeData);

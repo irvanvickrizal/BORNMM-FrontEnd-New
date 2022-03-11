@@ -206,6 +206,31 @@ const DismantleForm = (props) => {
         return current < moment().add(2,'d');
     }
 
+    const postDismantleForm = () => {
+        const body = (
+            {
+                "workpackageid":"480759",            
+                "InvCodeId":1,
+                "orderTypeId":4,
+                "requestTypeId":6,
+                "subconId":22,
+                "originId":2,        
+                "destinationId":4,        
+                "siteConditionId":1,
+                "CTId":1,
+                "packetTypeId":2,
+                "expectedDeliveryDate":"2022-03-13",
+                "requestBy": 1
+            }
+        )
+        API.postDismantleForm(body).then(
+            result=>{
+                setDDLDestination(result);
+                console.log("Destination",result);
+            }
+        )
+    }
+
     function btnConfirm(){
         if(selectedRequestBase==''||selectedInvCode==''||
             selectedSiteLocation==''||selectedCTName==''||
@@ -215,6 +240,8 @@ const DismantleForm = (props) => {
             message.error('Please Complete Form');
         }
         else{
+
+
             message.success("confirm Form");
         }
     }
@@ -247,7 +274,7 @@ const DismantleForm = (props) => {
                 <Col span={24}>
                     <div className="card card-primary">
                         <div className="card-header align-middle">
-                            <h3 className="card-title">PO List</h3>
+                            <h3 className="card-title">Site Info</h3>
                         </div>
                         <div className="card-body">
                             <Table columns={columns} pagination={false} dataSource={siteInfo} />
@@ -306,11 +333,21 @@ const DismantleForm = (props) => {
                                                 onChange={(e) => setSelectedCTName(e)} 
                                                 placeholder="Select an option">
                                                 {
-                                                    ddlSiteLocation.map(slc =>  <Select.Option value={slc.neTypeId}> 
+                                                    ddlCTName.map(slc =>  <Select.Option value={slc.ctName}> 
                                                         {slc.neType}</Select.Option>)
                                                 }
                                             </Select>
                                     }
+                                </Form.Item>
+                                <Form.Item label="Site Condition">
+                                    <Select
+                                        onChange={(e) => setSelectedSiteLocation(e)}  
+                                        placeholder="Select an option">
+                                        {
+                                            ddlSiteLocation.map(slc =>  <Select.Option value={slc.neTypeId}> 
+                                                {slc.neType}</Select.Option>)
+                                        }
+                                    </Select>
                                 </Form.Item>
                                 <Form.Item label="Origin">
                                     <Select 
@@ -332,7 +369,7 @@ const DismantleForm = (props) => {
                                         }
                                     </Select>
                                 </Form.Item>
-                                <Form.Item label="SOW" rules={[
+                                <Form.Item label="Packet Type" rules={[
                                     {
                                         required: true,
                                     },

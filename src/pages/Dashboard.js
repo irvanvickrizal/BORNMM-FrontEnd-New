@@ -47,7 +47,6 @@ const Dashboard = () => {
     };
 
 
-
     return (
         <>
             <HeaderChanger title="Dashboard"/>
@@ -143,7 +142,7 @@ const Dashboard = () => {
                                     dataSource={dataAgenda}
                                     renderItem={item => (
                                         <List.Item>
-                                            <Typography.Text ><FormOutlined /></Typography.Text> {item}
+                                            <Button ghost type="text"><FormOutlined /> {item} </Button>
                                         </List.Item>
                                     )}
                                 />

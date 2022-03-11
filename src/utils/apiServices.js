@@ -251,7 +251,7 @@ const getCTName = (invcodeid) => GETParam('materialmanagement/GetMasterCTBasedIn
 const getOrigin = (wpid,ordertypeid) => GETParam2('dopordertype/doporigingetlist',wpid,ordertypeid);
 const getDestination = (wpid,ordertypeid) => GETParam2('dopordertype/dopdestinationgetlist',wpid,ordertypeid);
 const getDismantledBy = () => GET('subcon/GetFieldSubcontractor');
-
+const postDismantleForm = (body) => POST('materialmanagement/OrderDetailAdd',body);
 
 const API ={
     getSiteLocation
@@ -298,6 +298,7 @@ const API ={
     ,postRevisePOFile
     ,getSiteInfo
     ,getInventoryActiveList
+    ,postDismantleForm
 }
 
 export default API;

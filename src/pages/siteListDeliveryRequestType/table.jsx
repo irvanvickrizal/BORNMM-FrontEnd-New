@@ -14,6 +14,7 @@ import {Table,Input,Menu, Dropdown, Button, Space} from 'antd'
 import {EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined } from '@ant-design/icons'
 import { useHistory } from 'react-router-dom';
 
+import Search from '@app/components/searchcolumn/SearchColumn';
 
 
 export default function TableSite() {
@@ -79,6 +80,7 @@ export default function TableSite() {
             title : "Site No",
             dataIndex:'siteNo',
             
+            ...Search('siteNo'),
             
         },
         {
@@ -115,15 +117,21 @@ export default function TableSite() {
         {
             title : "CPO No",
             dataIndex:'poDetail',
+            
+            ...Search('poDetail'),
             render: item => Object.keys(item).map(k => item[k])[1]
         },
         {
             title : "Workpackage ID",
             dataIndex:'workpackageID',
+            
+            ...Search('workpackageID'),
         },
         {
             title : "Scope",
             dataIndex:'scopeDetail',
+            
+            ...Search('scopeDetail'),
             render: item => Object.keys(item).map(k => item[k])[1]
             
             
@@ -131,6 +139,8 @@ export default function TableSite() {
         {
             title : "Region",
             dataIndex:'region',
+            responsive: ['md'],
+            ...Search('region'),
         },
         {
             title : "Options",
@@ -164,12 +174,11 @@ export default function TableSite() {
                 </div>
                 <Table
                     // rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
-                    responsive
                     rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
                     dataSource={dataSiteList}
                     columns={columns}
                     key='siteConditionId'
-                    
+                    scroll={{ x: '100%' }}
                     // eslint-disable-next-line react/jsx-boolean-value
                     pagination={{
                         pageSizeOptions: ['5','10','20','30', '40'],
