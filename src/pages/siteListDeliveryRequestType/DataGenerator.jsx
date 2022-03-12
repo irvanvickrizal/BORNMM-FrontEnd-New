@@ -17,21 +17,82 @@ const siteInfo = (cpoNo , scopeName, siteNo, siteName, packageName, projectContr
     return datas;
 }
 
-const fileListData = (poScopeId,poSitelistId,filePath,fullFilePath,uploadStatus,rowCount) => {
+const boqRef = (workpackageId , materialCode, materialDesc, refQTY) => {
     const datas = {
-        poScopeId
-        ,poSitelistId
-        ,filePath
-        ,fullFilePath
-        ,uploadStatus
-        ,rowCount
+        workpackageId :  workpackageId ,
+        materialCode :  materialCode ,
+        materialDesc :  materialDesc ,
+        refQTY : refQTY
     }
-    
+    return datas;
+}
+
+const siteInfoMO = (siteNo 
+    , siteName
+    , region
+    , zone
+    , workpackageId
+    , packageName
+    , cpoNo
+    , projectName) => {
+    const datas = {
+        siteNo: siteNo,
+        siteName: siteName,
+        region: region,
+        zone: zone,
+        workpackageId: workpackageId,
+        packageName: packageName,
+        cpoNo: cpoNo,
+        projectName: projectName
+    }
+    return datas;
+}
+
+const orderDetail = (
+    orderDetailId
+    ,inventoryCode
+    ,ordertype
+    ,requestTypeName
+    ,boqCheck
+    ,stockCheck
+    ,standardWFID
+    ,boqDeltaWFID
+    ,formPath
+    ,ctName
+    ,siteCondition
+    ,deliveryType
+    ,packetType
+    ,recipientOrDismantledBy 
+    ,requesterName
+    ,requestDate
+    ,expectedDeliveryDate) =>{
+    const datas ={
+        orderDetailId  :    orderDetailId
+        ,inventoryCode  :    inventoryCode
+        ,ordertype  :    ordertype
+        ,requestTypeName  :    requestTypeName
+        ,boqCheck  :    boqCheck
+        ,stockCheck  :    stockCheck
+        ,standardWFID  :    standardWFID
+        ,boqDeltaWFID  :    boqDeltaWFID
+        ,formPath  :    formPath
+        ,ctName  :    ctName
+        ,siteCondition  :    siteCondition
+        ,deliveryType  :    deliveryType
+        ,packetType  :    packetType
+        ,recipientOrDismantledBy   :    recipientOrDismantledBy 
+        ,requesterName  :    requesterName
+        ,requestDate  :    requestDate
+        ,expectedDeliveryDate  :    expectedDeliveryDate
+    }
     return datas;
 }
 
 const CreateDataDismantleForm = {
     siteInfo
+    ,orderDetail
+    ,siteInfoMO
+    ,boqRef
 }
 
 export default CreateDataDismantleForm;

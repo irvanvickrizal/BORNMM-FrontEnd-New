@@ -2,7 +2,7 @@
 /* eslint-disable no-script-url */
 /* eslint-disable react/jsx-no-script-url */
 /* eslint-disable react/jsx-no-undef */
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
 import {Table, Row, Col,Card, Typography, Input, Space, Form,
     Button,
     Radio,
@@ -12,148 +12,330 @@ import {Table, Row, Col,Card, Typography, Input, Space, Form,
     InputNumber,
     TreeSelect,
     Switch,
-    message} from 'antd'
+    message,
+    Divider ,
+    Tabs,
+    Tooltip,
+    Modal } from 'antd'
+import { DownloadOutlined,PlusOutlined,FileExcelOutlined } from '@ant-design/icons';
     
 import HeaderChanger from '@app/components/cardheader/HeaderChanger'
-import Divider from '@mui/material/Divider';
+import API  from '../../utils/apiServices';
+import exportFromJSON from 'export-from-json'
+import moment from 'moment';
+import DataGenerator from './DataGenerator';
 
 export default function MaterialOrder() {
-    const [selectedButton,setSelectedButton] = useState(true)
+    
+    const exportType =  exportFromJSON.types.xls;
 
+    const [selectedButton,setSelectedButton] = useState(true);
+    const [orderDetailData,setOrderDetailData] = useState([]);
+    const [orderDetailMaterial,setOrderDetailMaterial] = useState([]);
+    
+    // const [orderType, setOrderType] = useState('');
+    // const [inventoryCode, setInventoryCode] = useState('');
+    // const [requestBase, setRequestBase] = useState('');
+    // const [siteLocation, setSiteLocation] = useState('');
+    // const [ctName, setCTName] = useState('');
+    // const [siteCondition, setSiteCondition] = useState('');
+    // const [origin, setOrigin] = useState('');
+    // const [destination, setDestination] = useState('');
+    // const [subcon, setSubcon] = useState('');
+    // const [packetType, setPacketType] = useState('');
+    // const [deliveryDate, setDeliveryDate] = useState('');
+
+    const { TabPane } = Tabs;
 
     const { Title } = Typography;
-    const columns =[
+  
+    const columnsMaterialOrder =[
         {
-            title:"No",
-            dataIndex:"id",
-            key:'id'
+            title:"Item Code",
+            dataIndex:"materialCode",
+            key:"orderMaterialId"
         },
         {
-            title:"CS-Code",
-            dataIndex:"csCode",
+            title:"Material Desc",
+            dataIndex:"materialDesc",
+            key:"orderMaterialId",
         },
-        {
-            title:"Item",
-            dataIndex:"Item",
-        },
-        
         {
             title:"UOM",
             dataIndex:"uom",
+            key:"orderMaterialId",
         },
         {
             title:"QTY Req",
-            dataIndex:'qyy',
+            dataIndex:'reqQTY',
+            key:"orderMaterialId",
+        },
+        {
+            title:"QTY Ref",
+            dataIndex:'refQTY',
+            key:"orderMaterialId",
         },
         {
             title:"Balance",
-            dataIndex:"Balance",
+            dataIndex:"balanceQTY",
+            key:"orderMaterialId",
 
         },
         {
             title:"Site",
-            dataIndex:"Site",
-
+            dataIndex:"site",
+            key:"orderMaterialId",
         },
         {
             title:"Order Status",
-            dataIndex:"Order Status",
+            dataIndex:"orderStatus",
+            key:"orderMaterialId",
         },
         {
-            title:"Action"
+            title:"Action",
+            key:"orderMaterialId",
         }
     ]
 
+    const columnsOrderDetail =[
+        {
+            title:"Inventory Code",
+            dataIndex:"inventoryCode",
+            key:"orderDetailId"
+        },
+        {
+            title:"Order Type",
+            dataIndex:"orderType",
+            key:"orderDetailId"
+        },
+        {
+            title:"Request Type",
+            dataIndex:"requestTypeName",
+            key:"orderDetailId"
+        },
+        {
+            title:"CT Name",
+            dataIndex:'ctName',
+            key:"orderDetailId"
+        },
+        {
+            title:"Site Condition",
+            dataIndex:"siteCondition",
+            key:"orderDetailId"
+        },
+        {
+            title:"Delivery Type",
+            dataIndex:"deliveryType",
+            key:"orderDetailId"
+        },
+        {
+            title:"Packet Type",
+            dataIndex:"packetType",
+            key:"orderDetailId"
+        },
+        {
+            title:"Subcon",
+            dataIndex:"recipientOrDismantledBy",
+            key:"orderDetailId"
+        },
+        {
+            title:"Requester",
+            dataIndex:"requesterName",
+            key:"orderDetailId"
+        },
+        {
+            title:"Request Date",
+            dataIndex:"requestDate",
+            key:"orderDetailId"
+        },
+        {
+            title:"Expected Delivery Date",
+            dataIndex:"expectedDeliveryDate",
+            key:"orderDetailId"
+        }
+    ]
+
+    const customURL = window.location.href;
+    const params = new URLSearchParams(customURL.split('?')[1])
+    const odiParam = params.get('odi');
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [siteNo, setSiteNo] = useState('');
+    const [wpid, setWPID] = useState('');
+    const [boqRef, setBOQRef] = useState('');
+
+    const showModal = () => {
+        setIsModalVisible(true);
+        console.log(isModalVisible);
+    };
     
+    const handleOk = () => {
+        setIsModalVisible(false);
+    };
+    
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
+
+    const getOrderDetail=(odi)=>{
+        API.getOrderDetailForm(odi).then(
+            result=>{
+                setOrderDetailData(result);
+                setWPID(result[0].workpackageId);
+                setSiteNo(result[0].siteNo);
+                console.log('orderdetailform',result);
+            }
+        )
+    }
+   
+    const handleDownloadBtn=()=>{
+        API.getBOQRefGetList(odiParam).then(
+            result=>{
+                const data = result.map((rs)=>DataGenerator.boqRef(
+                    rs.workpackageId 
+                    , rs.materialCode
+                    , rs.materialDesc
+                    , rs.refQTY))
+                const fileName = `boqactref_${siteNo}_${wpid}`;
+                exportFromJSON({ data, fileName, exportType });
+            }
+        )
+    }
+
+    const getOrderDetailMaterial=(odi)=>{
+        API.getOrderDetailMaterial(odi).then(
+            result=>{
+                setOrderDetailMaterial(result);
+            }
+        )
+    }
+   
+    const expandedRowRender = () => {
+        const columnsSiteInfo =[
+            {
+                title:"Site No",
+                dataIndex:"siteNo",
+            },
+            {
+                title:"Site Name",
+                dataIndex:"siteName",
+            },
+            {
+                title:"Region",
+                dataIndex:"region",
+            },
+            {
+                title:"Zone",
+                dataIndex:'zone',
+            },
+            {
+                title:"WorkpackageId",
+                dataIndex:"workpackageId",
+            },
+            {
+                title:"Package Name",
+                dataIndex:"packageName",
+            },
+            {
+                title:"CPO No",
+                dataIndex:"cpoNo",
+            },
+            {
+                title:"Project Name",
+                dataIndex:"projectName",
+            }
+        ]
+    
+        return (
+            <Card title="Site Info"  hoverable>
+                <Table 
+                    columns={columnsSiteInfo} 
+                    dataSource={orderDetailData} 
+                    pagination={false} 
+                    bordered
+                />
+            </Card>
+        );
+    };
+
+
     // eslint-disable-next-line react/no-unstable-nested-components
-    const CardTitle = (title) => (
-        <Title level={5}>
-            {title}
-        </Title>
-    )
+    useEffect(() => {
+        getOrderDetail(odiParam);
+        getOrderDetailMaterial(odiParam);
+    },[])
 
     return (
         <div>
-            <HeaderChanger title="Material Order"/>
-            <Row gutter={16}>
-                <Col span={8}>
-                    <Radio.Group  >
-                        <Radio.Button  onClick={()=>setSelectedButton(!selectedButton,console.log(selectedButton,'coba2'))}>Order Detail</Radio.Button>
-                        <Radio.Button value="large" onClick={()=>setSelectedButton(!selectedButton,console.log(selectedButton,'coba'))}>Site Info</Radio.Button>
-                   
-                    </Radio.Group>
-                    <br />
-                    <br />
-                    {selectedButton == true ? (  <Card hoverable title={CardTitle("Order Detail")}>
-                        <Space direction="vertical" style={{ width: '100%' }}>
-                            <Form
-                                labelCol={{ span: 8 }}
-                                wrapperCol={{ span: 14 }}
-                                layout="horizontal"
-                            >
-                                <Form.Item label="Order Type">
-                                    <Input disabled value="PMR" />
-                                </Form.Item>
-                                <Form.Item label="Inventory Code">
-                                    <Input disabled value="XL" />
-                                </Form.Item>
-                                <Form.Item label="Request Base">
-                                    <Input disabled value="Dismantle" />
-                                </Form.Item>
-                                <Form.Item label="Site Location">
-                                    <Input disabled value="Rooftop" />
-                                </Form.Item>
-                                <Form.Item label="CT Name">
-                                    <Input disabled value="Near End (NE)" />
-                                </Form.Item>
-                                <Form.Item label="Origin">
-                                    <Input disabled value="Site" />
-                                </Form.Item>
-                                <Form.Item label="Destination">
-                                    <Input disabled value="DOP Semarang" />
-                                </Form.Item>
-                                <Form.Item label="SOW" rules={[
-                                    {
-                                        required: true,
-                                    },
-                                ]}>
-                                    <Input disabled value="CWH Cikarang" />
-                                </Form.Item>
-                                <Form.Item label="Delivery Date" rules={[{ required: true, message: 'Missing Inventory Code' }]}>
-                                    <Input disabled value="2022-03-22" />
-                                </Form.Item>
-                                {/* <Form.Item>
-                                    <Button type="primary" htmlType="submit">Confirm</Button>
-                                    <Button type="danger">Cancel</Button>
-                                </Form.Item> */}
-                            </Form>
-                         
-                          
-                        </Space>
-                    </Card>):( <Card hoverable title={CardTitle("Site Info")}>
-                        <Space direction="vertical" style={{ width: '100%' }}>
-                            <h2>Site Info Here</h2>
-                        </Space>
-                    </Card>)}
-                  
-                </Col>
-                <Col span={16} >
-              
-                    <div className="card card-primary">
-                        <div className="card-header align-middle">
-                            <h3 className="card-title">Material Order</h3>
-                            <a href='javascript:void(0)' title="create new dop" class="btn btn-success float-right">
-                                <i class="fas fa-plus"></i>
-                            </a>
-                        </div>
-                       
-                        <div className="card-body">
-                            <Table columns={columns} pagination={false}  />
-                        </div>
-                    </div>
+            <HeaderChanger title="Material Order Form"/>
+            <Space direction="vertical" style={{ width: '100%' }}>
+                <Card hoverable>
+                    <Col md={16} sm={24} >
+                        <Title level={5}>Order Detail</Title>
+                    </Col>
+                    <Table 
+                        scroll={{ x: '100%' }} 
+                        size="small"  
+                        expandable={{ expandedRowRender }}
+                        columns={columnsOrderDetail} 
+                        dataSource={orderDetailData} 
+                        pagination={false} 
+                        bordered/>
+                </Card>
+                <Row gutter={16}>
+                    <Col md={24} sm={24} >
+                        <Card hoverable>
+                            <Row>
+                                <Col md={16} sm={24} >
+                                    <Title level={5}>Material Order List</Title>
+                                </Col>
+                                <Col md={8} sm={24} >
+                                    <div className='float-right'>
+                                        <Space>
+                                            <Tooltip title="Add Material">
+                                                <Button type="primary" icon={<PlusOutlined />} onClick={showModal}  />
+                                            </Tooltip>
+                                            <Tooltip title="Download BOQ Ref">
+                                                <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} />
+                                            </Tooltip>
+                                        </Space>
+                                    </div>
+                                </Col>
+                            </Row>
+                            <Space direction="vertical" style={{ width: '100%' }} >
+                                <Table 
+                                    className="components-table-demo-nested"
+                                    columns={columnsMaterialOrder} 
+                                    scroll={{ x: '100%' }} 
+                                    dataSource={orderDetailMaterial} 
+                                    size="small"
+                                    pagination={false} 
+                                />
+                                <Divider />
+                                <Row>
+                                    <Col span={15}>
+                                    </Col>
+                                    <Col span={8}>
+                                        <Space>
+                                            <Button type="danger" htmlType="submit">
+                                            Save as Draft
+                                            </Button>
+                                            <Button type="primary" htmlType="submit">
+                                            Book and Submit
+                                            </Button>
+                                            <Button type="primary" htmlType="submit">
+                                            Submit
+                                            </Button>
+                                        </Space>
+                                    </Col>
+                                </Row>
+                            </Space>
+                        </Card>
+                    </Col>
+                </Row>
+            </Space>
+            <Modal title="Material List" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
                 
-                </Col>
-            </Row>
+            </Modal>
         </div>
     )
 }

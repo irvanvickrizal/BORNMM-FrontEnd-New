@@ -37,9 +37,7 @@ export default function TableSite() {
    
     const navigateTo = () => {
       
-        history.push(`/sitelist/siteDetail?wpid=${wpIds}?ot=${ordetTypeIds}`)
-       
-     
+        history.push(`/sitelist/siteDetail?wpid=${wpIds}&ot=${ordetTypeIds}`)
     }
     const odi = (e) => {
         dispatch(getOrderTypeId(e))
@@ -79,9 +77,7 @@ export default function TableSite() {
         {
             title : "Site No",
             dataIndex:'siteNo',
-            
             ...Search('siteNo'),
-            
         },
         {
             title : "Site Name",

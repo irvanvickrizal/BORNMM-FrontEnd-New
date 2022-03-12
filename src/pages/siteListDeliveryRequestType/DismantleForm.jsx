@@ -27,12 +27,14 @@ import API  from '../../utils/apiServices';
 import CreateDataDismantle from './DataGenerator';
 import moment from 'moment';
 
+import { toast } from 'react-toastify';
+
 const DismantleForm = (props) => {
     const customURL = window.location.href;
     const params = new URLSearchParams(customURL.split('?')[1])
     const { Title } = Typography;
     const wpid = params.get('wpid');
-    const orderTypeId = 4;
+    const orderTypeId = params.get('ot');
     const [siteInfo, setSiteInfo] = useState([]);
     const [cpoNo,setCpoNo] = useState("");
     const [generalScope,setGeneralScope] = useState("");
@@ -50,7 +52,9 @@ const DismantleForm = (props) => {
     const [ddlCTName,setDDLCTName] = useState([]);
     const [ddlOrigin,setDDLOrigin] = useState([]);
     const [ddlDestination,setDDLDestination] = useState([]);
-    const [ddlSOW,setDDLSOW] = useState([]);
+    const [ddlPacketType,setDDLPacketType] = useState([]);
+    const [ddlSubcon,setDDLSubcon] = useState([]);
+    const [ddlSiteCondition,setDDLSiteCondition] = useState([]);
     const current = new Date();
     const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
     
@@ -61,12 +65,14 @@ const DismantleForm = (props) => {
     const [selectedCTName,setSelectedCTName] = useState('');
     const [selectedOrigin,setSelectedOrigin] = useState('');
     const [selectedDestination,setSelectedDestination] = useState('');
-    const [selectedSOW,setSelectedSOW] = useState('');
+    const [selectedPacketType,setSelectedPacketType] = useState('');
+    const [selectedSubcon,setSelectedSubcon] = useState('');
+    const [selectedSiteCondition,setSelectedSiteCondition] = useState('');
     const [deliveryDate,setDeliveryDate] = useState('');
+    const [siteAddress,setSiteAddress] = useState('');
 
     const navigateTo = (path) => {
-      
-        history.push(`/mm/sitelistdr`)
+        history.push(path)
     }
     const user = useSelector((state) => state.auth.user);
 
@@ -139,12 +145,29 @@ const DismantleForm = (props) => {
             }
         )
     }
-
-    const getSOW = () => {
-        API.getDismantledBy().then(
+    
+    const getPacketType = () => {
+        API.getPacketType(orderTypeId).then(
             result=>{
-                setDDLSOW(result);
-                console.log("SOW",result);
+                setDDLPacketType(result);
+                console.log("PacketType",result);
+            }
+        )
+    }
+    const getSubcon = () => {
+        API.getSubcon(orderTypeId).then(
+            result=>{
+                setDDLSubcon(result);
+                console.log("PacketType",result);
+            }
+        )
+    }
+    
+    const getSiteCondition = () => {
+        API.getSiteCondition(orderTypeId).then(
+            result=>{
+                setDDLSiteCondition(result);
+                console.log("PacketType",result);
             }
         )
     }
@@ -209,24 +232,33 @@ const DismantleForm = (props) => {
     const postDismantleForm = () => {
         const body = (
             {
-                "workpackageid":"480759",            
-                "InvCodeId":1,
-                "orderTypeId":4,
-                "requestTypeId":6,
-                "subconId":22,
-                "originId":2,        
-                "destinationId":4,        
-                "siteConditionId":1,
-                "CTId":1,
-                "packetTypeId":2,
-                "expectedDeliveryDate":"2022-03-13",
-                "requestBy": 1
+                "workpackageid":wpid,            
+                "InvCodeId":selectedInvCode,
+                "orderTypeId":orderTypeId,
+                "requestTypeId":selectedRequestBase,
+                "subconId":selectedSubcon,
+                "originId":selectedOrigin,        
+                "destinationId":selectedDestination,        
+                "siteConditionId":selectedSiteCondition,
+                "CTId":selectedCTName,
+                "packetTypeId":selectedPacketType,
+                "neTypeId" : selectedSiteLocation,
+                "siteAddress": siteAddress,
+                "expectedDeliveryDate":deliveryDate,
+                "requestBy": user.uid
             }
         )
+        console.log("dismantle body",body);
         API.postDismantleForm(body).then(
             result=>{
-                setDDLDestination(result);
-                console.log("Destination",result);
+                if(result.status=="success")
+                {
+                    toast.success(result.message);
+                    navigateTo(`/sitelist/materialorder?odi=${result.returnVal}`)
+                }
+                else{
+                    toast.error(result.message)
+                }
             }
         )
     }
@@ -235,30 +267,32 @@ const DismantleForm = (props) => {
         if(selectedRequestBase==''||selectedInvCode==''||
             selectedSiteLocation==''||selectedCTName==''||
             selectedOrigin==''||selectedDestination==''||
-            selectedSOW==''||deliveryDate==''){
+            selectedPacketType==''||deliveryDate==''){
                 
             message.error('Please Complete Form');
         }
         else{
-
+            postDismantleForm();
 
             message.success("confirm Form");
         }
     }
 
     function btnCancel(){
-        console.log("sini");
-        navigateTo("mm/sitelistdr");
+        navigateTo("/mm/sitelistdr");
     }
 
     useEffect(() => {
+        console.log('wpid:',wpid,"ordertype:",orderTypeId)
         getSiteInfo();
         getInventoryDDL();
         getRequestBaseDDL();
         getSiteLocationDDL();
         getOriginDDL();
         getDestination();
-        getSOW();
+        getPacketType();
+        getSubcon();
+        getSiteCondition();
     },[])
 
     const CardTitle = (title) => (
@@ -277,7 +311,7 @@ const DismantleForm = (props) => {
                             <h3 className="card-title">Site Info</h3>
                         </div>
                         <div className="card-body">
-                            <Table columns={columns} pagination={false} dataSource={siteInfo} />
+                            <Table columns={columns} scroll={{ x: '100%' }} pagination={false} dataSource={siteInfo} />
                         </div>
                     </div>
                 </Col>
@@ -285,8 +319,8 @@ const DismantleForm = (props) => {
                     <Card hoverable title={CardTitle("Order Detail")}>
                         <Space direction="vertical" style={{ width: '100%' }}>
                             <Form
-                                labelCol={{ span: 3 }}
-                                wrapperCol={{ span: 20 }}
+                                labelCol={{ span: 5 }}
+                                wrapperCol={{ span: 18 }}
                                 layout="horizontal"
                             >
                                 <Form.Item label="Order Type">
@@ -314,7 +348,7 @@ const DismantleForm = (props) => {
                                         }
                                     </Select>
                                 </Form.Item>
-                                <Form.Item label="Site Location">
+                                <Form.Item label="Site A/NE - Site B/FE">
                                     <Select
                                         onChange={(e) => setSelectedSiteLocation(e)}  
                                         placeholder="Select an option">
@@ -333,19 +367,19 @@ const DismantleForm = (props) => {
                                                 onChange={(e) => setSelectedCTName(e)} 
                                                 placeholder="Select an option">
                                                 {
-                                                    ddlCTName.map(slc =>  <Select.Option value={slc.ctName}> 
-                                                        {slc.neType}</Select.Option>)
+                                                    ddlCTName.map(slc =>  <Select.Option value={slc.ctId}> 
+                                                        {slc.ctName}</Select.Option>)
                                                 }
                                             </Select>
                                     }
                                 </Form.Item>
                                 <Form.Item label="Site Condition">
                                     <Select
-                                        onChange={(e) => setSelectedSiteLocation(e)}  
+                                        onChange={(e) => setSelectedSiteCondition(e)}  
                                         placeholder="Select an option">
                                         {
-                                            ddlSiteLocation.map(slc =>  <Select.Option value={slc.neTypeId}> 
-                                                {slc.neType}</Select.Option>)
+                                            ddlSiteCondition.map(slc =>  <Select.Option value={slc.siteConditionId}> 
+                                                {slc.condition}</Select.Option>)
                                         }
                                     </Select>
                                 </Form.Item>
@@ -369,25 +403,41 @@ const DismantleForm = (props) => {
                                         }
                                     </Select>
                                 </Form.Item>
+                                <Form.Item label="SubCon">
+                                    <Select 
+                                        onChange={(e) => setSelectedSubcon(e)} 
+                                        placeholder="Select an option">
+                                        {
+                                            ddlSubcon.map(dst =>  <Select.Option value={dst.subconId}> 
+                                                {dst.subconName}</Select.Option>)
+                                        }
+                                    </Select>
+                                </Form.Item>
+                                
                                 <Form.Item label="Packet Type" rules={[
                                     {
                                         required: true,
                                     },
                                 ]}>
                                     <Select 
-                                        onChange={(e) => setSelectedSOW(e)} 
+                                        onChange={(e) => setSelectedPacketType(e)} 
                                         placeholder="Select an option">
                                         {
-                                            ddlDestination.map(dst =>  <Select.Option value={dst.dopId}> 
-                                                {dst.dopName}</Select.Option>)
+                                            ddlPacketType.map(dst =>  <Select.Option value={dst.packetTypeId}> 
+                                                {dst.packetType}</Select.Option>)
                                         }
                                     </Select>
+                                </Form.Item>
+                                <Form.Item label="Site Address">
+                                    <Input.TextArea 
+                                        onChange={(e) => setSiteAddress(e.target.value)}  
+                                    />
                                 </Form.Item>
                                 <Form.Item label="Delivery Date" rules={[{ required: true, message: 'Missing Inventory Code' }]}>
                                     <DatePicker
                                         format="YYYY-MM-DD"
                                         disabledDate={disabledDate}
-                                        onChange={(e) => setDeliveryDate(e)} 
+                                        onChange={(e) => setDeliveryDate(moment(e).format("YYYY-MM-DD"))} 
                                         // disabledDate={current && current < moment().endOf('day')}
                                         // showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
                                     />
