@@ -250,11 +250,26 @@ const getRequestBase = (ordertypeid) => GETParam('deliveryreqtype/RequestTypeGet
 const getCTName = (invcodeid) => GETParam('materialmanagement/GetMasterCTBasedInvCodeId',invcodeid);
 const getOrigin = (wpid,ordertypeid) => GETParam2('dopordertype/doporigingetlist',wpid,ordertypeid);
 const getDestination = (wpid,ordertypeid) => GETParam2('dopordertype/dopdestinationgetlist',wpid,ordertypeid);
+const getPacketType = (ordertypeid) => GETParam('materialmanagement/GetPacketTypeBasedOnOrderType',ordertypeid);
 const getDismantledBy = () => GET('subcon/GetFieldSubcontractor');
+const getSiteCondition = () => GET('sitecondition');
+const getSubcon = () => GET('subcon/GetFieldSubcontractor');
 const postDismantleForm = (body) => POST('materialmanagement/OrderDetailAdd',body);
 
+const getOrderDetailForm = (odi) => GETParam('materialmanagement/OrderDetailRequestGetDetail',odi);
+const getOrderDetailMaterial = (odi) => GETParam('materialmanagement/orderRequestMaterialGetDetail',odi);
+const getBOQRefGetList = (odi) => GETParam('materialmanagement/boqRefGetList',odi);
+const getMaterialListExcludeOrdered = (odi) => GETParam('materialmanagement/masterMaterialGetListExcludeOrdered',odi);
+
 const API ={
-    getSiteLocation
+    getMaterialListExcludeOrdered,
+    getBOQRefGetList,
+    getOrderDetailMaterial,
+    getOrderDetailForm,
+    getSubcon
+    ,getSiteCondition
+    ,getPacketType
+    ,getSiteLocation
     ,getRequestBase 
     ,getCTName 
     ,getOrigin 
