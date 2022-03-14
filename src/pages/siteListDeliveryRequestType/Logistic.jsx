@@ -1,7 +1,7 @@
 import React,{useEffect,useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {Table} from 'antd'
-import { getIdTaskPending, getLogisticPending } from '@app/store/action/logistikFormAction'
+import { getIdTaskPending, getLogisticPending, getOdi } from '@app/store/action/logistikFormAction'
 import {EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled} from '@ant-design/icons'
 import { useHistory } from 'react-router-dom'
 
@@ -25,6 +25,7 @@ export default function Logistic() {
     }
 
     const handleEdit =(record) => {
+        dispatch(getOdi(record))
         dispatch(getIdTaskPending(record))
         navigateTo()
     }

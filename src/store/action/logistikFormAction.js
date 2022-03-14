@@ -49,6 +49,18 @@ export const setDeliveryList = (payload) => {
         payload,
     };
 };
+export const getDeliveryTransport = (payload) => {
+    return {
+        type: "GET_DELIVERY_TRANSPORT",
+        payload,
+    };
+};
+export const setDeliveryTransport = (payload) => {
+    return {
+        type: "SET_DELIVERY_TRANSPORT",
+        payload,
+    };
+};
 export const getDeliveryMode = (payload) => {
     return {
         type: "GET_DELIVERY_MODE",
@@ -73,9 +85,27 @@ export const postLogistikForm = (payload) => {
         payload,
     };
 };
+export const postAsDraft = (payload) => {
+    return {
+        type: "POST_AS_DRAFT",
+        payload,
+    };
+};
+export const postAsDraftSuccess = (payload) => {
+    return {
+        type: "POST_AS_DRAFT_SUCCESS",
+        payload,
+    };
+};
 export const getIdDelivery = (payload) => {
     return {
         type: "GET_ID_DELIVERY",
+        payload,
+    };
+};
+export const getOdi = (payload) => {
+    return {
+        type: "GET_ODI",
         payload,
     };
 };

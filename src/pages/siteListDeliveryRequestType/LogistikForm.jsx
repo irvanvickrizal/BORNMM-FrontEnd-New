@@ -7,9 +7,13 @@ import {
     getDataSiteInfo,
     getDeliveryList,
     getDeliveryMode,
+    getDeliveryTransport,
     getIdDelivery,
     getLsp,
-    getMaterialOrderDetail
+    getMaterialOrderDetail,
+    postAsDraft,
+    postLogistikForm,
+    postLogistikFormSuccess
 } from "@app/store/action/logistikFormAction"
 import {getDataSite} from "@app/store/action/siteConditionAction"
 import React, {useEffect, useState} from "react"
@@ -26,10 +30,15 @@ import {
     Select,
     Tabs,
     Button,
-    Switch
+    Switch,
+    Modal
+   
 } from "antd"
 import HeaderChanger from "@app/components/cardheader/HeaderChanger"
 import moment from "moment"
+import "./style.css"
+
+const { TextArea } = Input;
 
 export default function LogisticForm() {
     const dispatch = useDispatch()
@@ -39,10 +48,13 @@ export default function LogisticForm() {
     const [wh, setWh] = useState("")
     const [deliveryRequest, setDeliveryRequest] = useState("")
     const [deliveryTransport, setDeliveryTransport] = useState("")
-    const [transportTeam, setTransportTeam] = useState("")
+    const [delivMode, setDeliveMode] = useState("")
     const [modeTransport, setModeTransport] = useState("")
     const [page, setPage] = useState(1)
-    const [selectedDeleivery, setSelecteddelivery] = useState("")
+    const [remarks, setRemarks] = useState("")
+    const [note,setNote] = useState("")
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isModalCancelVisible, setIsModalCancelVisible] = useState(false);
 
     useEffect(() => {
         dispatch(getDataSiteInfo())
@@ -65,10 +77,11 @@ export default function LogisticForm() {
     const materialOrder = useSelector(
         (state) => state.logistikFormReducer.dataOrderDetail
     )
-
     const dataSite = useSelector(
         (state) => state.logistikFormReducer.dataSiteInfo
     )
+    const DataDeliveryTransport = useSelector(state=> state.logistikFormReducer.detaDeliveryTransport)
+    const dataOdi = useSelector(state=> state.logistikFormReducer.odi)
 
     const date = moment(dataSite[0].expectedDeliveryDate).format("YYYY-MM-DD")
     const index2 = deliveryRequest
@@ -76,7 +89,35 @@ export default function LogisticForm() {
     const handleDeliveryChange = (e) => {
         setDeliveryRequest(e)
         dispatch(getIdDelivery(e))
+        dispatch(getDeliveryTransport())
     }
+
+    const handlePost = () => {
+        dispatch(postLogistikForm({"orderDetailId":dataOdi,"whTeamId":wh,"cmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"note":note}))
+      
+    }
+
+   const saveDraft = () => {
+        dispatch(postAsDraft({orderDetailId:dataOdi,remarks:remarks}))
+    }
+
+    const showModal = () => {
+        setIsModalVisible(true);
+        console.log(isModalVisible);
+    };
+    const showModalCancel = () => {
+        setIsModalCancelVisible(true);
+        setIsModalVisible(false)
+        console.log(isModalVisible);
+    };
+    const cancelModal = () => {
+        setIsModalVisible(false);
+        console.log(isModalVisible);
+    };
+    const cancelModal2 = () => {
+        setIsModalCancelVisible(false);
+        console.log(isModalVisible);
+    };
     const columns = [
         {
             title: "No",
@@ -284,7 +325,7 @@ export default function LogisticForm() {
                                     placeholder="Select an option"
                                 >
                                     {lsp.map((inv) => (
-                                        <Select.Option value={inv.subconName}>
+                                        <Select.Option value={inv.subconId}>
                                             {inv.subconName}
                                         </Select.Option>
                                     ))}
@@ -297,7 +338,7 @@ export default function LogisticForm() {
                                 >
                                     {deliveryList.map((inv) => (
                                         <Select.Option value={inv.cdmrId}>
-                                            {inv.cdmrId}
+                                            {inv.cdmrName}
                                         </Select.Option>
                                     ))}
                                 </Select>
@@ -314,26 +355,11 @@ export default function LogisticForm() {
                                         onChange={(e) => setModeTransport(e)}
                                         placeholder="Select an option"
                                     >
-                                        {deliveryRequest == "" ? (
-                                            <Select.Option>
-                                                No Data
+                                        {DataDeliveryTransport.map((e)=>(
+                                            <Select.Option value={e.transportModeId}>
+                                                {e.transportMode}
                                             </Select.Option>
-                                        ) : deliveryList[deliveryRequest]
-                                              .transportModeList.length == 0 ? (
-                                            <Select.Option>
-                                                Delivery Transport Not Available
-                                            </Select.Option>
-                                        ) : (
-                                            deliveryList[
-                                                deliveryRequest
-                                            ].transportModeList.map((slc) => (
-                                                <Select.Option
-                                                    value={slc.transportMode}
-                                                >
-                                                    {slc.transportMode}
-                                                </Select.Option>
-                                            ))
-                                        )}
+                                        ))}
                                     </Select>
                                 )}
                             </Form.Item>
@@ -343,7 +369,7 @@ export default function LogisticForm() {
                                     placeholder="Select an option"
                                 >
                                     {lsp.map((inv) => (
-                                        <Select.Option value={inv.subconName}>
+                                        <Select.Option value={inv.subconId}>
                                             {inv.subconName}
                                         </Select.Option>
                                     ))}
@@ -351,17 +377,21 @@ export default function LogisticForm() {
                             </Form.Item>
                             <Form.Item label="Mode Of Transport">
                                 <Select
-                                    onChange={(e) => setModeTransport(e)}
+                                    onChange={(e) => setDeliveMode(e)}
                                     placeholder="Select an option"
                                 >
                                     {deliveryMode.map((inv) => (
-                                        <Select.Option value={inv.deliveryMode}>
+                                        <Select.Option value={inv.deliveryModeId}>
                                             {inv.deliveryMode}
                                         </Select.Option>
                                     ))}
                                 </Select>
                             </Form.Item>
+                            <Form.Item label="Note">
+                            <TextArea rows={4} onChange={(e) => setNote(e)}/>
+                            </Form.Item>
                         </Form>
+                        
                         <div className="float-right">
                             <Col span={4} md={8} sm={24}>
                                 <Space direction="horizontal">
@@ -377,7 +407,7 @@ export default function LogisticForm() {
                                         type="primary"
                                         htmlType="submit"
                                         onClick={() =>
-                                            console.log([deliveryRequest])
+                                            showModal()
                                         }
                                     >
                                         Confirm
@@ -388,6 +418,36 @@ export default function LogisticForm() {
                     </Card>
                 </Col>
             </Row>
+            <Modal title="Material List" visible={isModalVisible}  onCancel={cancelModal} 
+            footer={[
+                <Button key="back" type="danger" onClick={showModalCancel}>
+                Order Request Cancel
+                </Button>,
+                <Button key="submit" type="primary" onClick={handlePost} >
+                Submit
+                </Button>,
+                
+            ]} >
+                <Typography>Are you sure you want to submit ?
+</Typography>
+      
+            </Modal>
+            <Modal title="Material List" visible={isModalCancelVisible}  onCancel={cancelModal2} 
+            footer={[
+                
+                <Button key="back" type="danger" onClick={saveDraft}>
+               Reject
+                </Button>,
+                <Button key="submit"  onClick={cancelModal2} >
+                Close
+                </Button>,
+                
+            ]} >
+                <Typography>Reason Of Cancelation :
+</Typography>
+<TextArea rows={4} onChange={(e) => setRemarks(e)}/>
+      
+            </Modal>
         </div>
     )
 }
