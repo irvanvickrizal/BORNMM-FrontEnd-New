@@ -273,8 +273,6 @@ const DismantleForm = (props) => {
         }
         else{
             postDismantleForm();
-
-            message.success("confirm Form");
         }
     }
 
