@@ -19,9 +19,6 @@ import "./index.css"
 
 import 'antd/dist/antd.css';
 
-//Action
-
-
 
 export default function TableSiteCondition() {
     const dispatch = useDispatch()
@@ -238,7 +235,6 @@ export default function TableSiteCondition() {
                                 <span class="input-group-text col-md-3" id="basic-addon1">Site Name </span>
                                 <input value={siteName} onChange={(e) => setSiteName(e.target.value)} placeholder='Edit Site Name' type="text" class="form-control col-md-9" aria-label="Username" aria-describedby="basic-addon1"/>
                             </div>
-                          
                         </div>
                     </div>
                 </div>

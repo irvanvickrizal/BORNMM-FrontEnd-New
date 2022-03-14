@@ -109,6 +109,22 @@ const POST = (path,body)  => {
     })
     return promise;
 }
+const POSTParam = (path,body,param)  => {
+    const promise = new Promise((resolve, reject) => {
+        axios.post(`${baseURL}${path}/${param}`
+            ,body
+            ,{headers}
+        ).then((result)=> {
+            console.log('i am post :',result.data);
+            resolve(result.data);
+        },(err)=>{
+            console.log('config',headers);
+            toast.error(err);
+            reject(err);
+        })
+    })
+    return promise;
+}
 
 const POSTFile = (path,id,file)  => {
     var formdata = new FormData();
@@ -195,6 +211,23 @@ const DELETE = (path,param)  => {
     return promise;
 }
 
+const DELETEParam = (path,body,param)  => {
+    const promise = new Promise((resolve, reject) => {
+        axios.delete(`${baseURL}${path}/${param}`
+            ,body
+            ,{headers}
+        ).then((result)=> {
+            console.log('i am post :',result.data);
+            resolve(result.data);
+        },(err)=>{
+            console.log('config',headers);
+            toast.error(err);
+            reject(err);
+        })
+    })
+    return promise;
+}
+
 
 const getMenu = (id) => GETParam('menu',id);
 
@@ -260,8 +293,19 @@ const getOrderDetailForm = (odi) => GETParam('materialmanagement/OrderDetailRequ
 const getOrderDetailMaterial = (odi) => GETParam('materialmanagement/orderRequestMaterialGetDetail',odi);
 const getBOQRefGetList = (odi) => GETParam('materialmanagement/boqRefGetList',odi);
 const getMaterialListExcludeOrdered = (odi) => GETParam('materialmanagement/masterMaterialGetListExcludeOrdered',odi);
+const postMaterialOrderDirectSubmit = (odi) => POSTParam('materialmanagement/materialOrderDirectSubmit',"",odi);
+const postMaterialOrderBookSubmit = (odi) => POSTParam('materialmanagement/materialOrderBookSubmit',"",odi);
+const postAddMaterial = (body) => POST("materialmanagement/orderRequestMaterialAddItem",body);
+const putEditQtyMaterial = (body) => PUT('materialmanagement/OrderRequestMaterialChangeQty',body);
+const deleteMaterialOrderRequest = (param) => DELETE('materialmanagement/orderRequestMaterialDelItem',param);
+
 
 const API ={
+    deleteMaterialOrderRequest,
+    putEditQtyMaterial,
+    postAddMaterial,
+    postMaterialOrderBookSubmit,
+    postMaterialOrderDirectSubmit,
     getMaterialListExcludeOrdered,
     getBOQRefGetList,
     getOrderDetailMaterial,
