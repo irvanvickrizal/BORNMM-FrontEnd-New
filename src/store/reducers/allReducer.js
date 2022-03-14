@@ -12,6 +12,7 @@ import { scopeOrderReducer } from "@app/store/reducers/scopeOrderReducer";
 import { workFlowReducer } from "@app/store/reducers/workFlowReducer";
 import { siteListDeliveryRequestReducer } from "@app/store/reducers/siteListDeliveryRequestReducer";
 import { logistikFormReducer } from "@app/store/reducers/logistikFormReducer";
+import { aprovalTaskPendingReducer } from "@app/store/reducers/aprovalTaskPendingReducer";
 
 export const allReducer = combineReducers({
     auth: authSlice.reducer,ui: uiSlice.reducer,
@@ -25,5 +26,6 @@ export const allReducer = combineReducers({
     scopeOrderReducer,
     workFlowReducer,
     siteListDeliveryRequestReducer,
-    logistikFormReducer
+    logistikFormReducer,
+    aprovalTaskPendingReducer
 });

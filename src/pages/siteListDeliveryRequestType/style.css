@@ -1,0 +1,6 @@
+.ant-table table { font-size: 14px; }
+thead[class*="ant-table-thead"] th{
+    background-color: #004b99 !important;
+    
+    color: white
+  }

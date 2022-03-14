@@ -93,6 +93,11 @@ export default function TableSiteCondition() {
 
     const columns = [
         {
+            title:"No",
+            key:"index",
+            render:(value, item, index) => (page )  + index
+        },
+        {
             title : "Condition",
             dataIndex:'condition',
             sorter:(record1,record2)=>{
