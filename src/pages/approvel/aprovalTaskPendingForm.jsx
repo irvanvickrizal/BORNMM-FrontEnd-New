@@ -16,6 +16,7 @@ import {
     Switch
 } from "antd"
 import HeaderChanger from "@app/components/cardheader/HeaderChanger"
+import { getOrderDetail } from "@app/store/action/aprovalTaskPendingAction"
 
 export default function AprovalTaskPendingForm() {
     const dispatch = useDispatch()
@@ -23,7 +24,19 @@ export default function AprovalTaskPendingForm() {
     const {Title} = Typography
     const {TabPane} = Tabs
 
+    useEffect(() => {
+        dispatch(getOrderDetail())
+    }, [])
+
+    const dataOrderDetail = useSelector(state=>state.aprovalTaskPendingReducer.dataOrderRequestDetail)
+
+
     const columns = [
+        {
+            title: "No",
+            key: "index",
+            render: (value, item, index) => page + index
+        },
         {
             title: "PO No/RO No",
             dataIndex: "cpoNo"
@@ -117,7 +130,7 @@ export default function AprovalTaskPendingForm() {
                         <h3 className="card-title">Site Info</h3>
                     </div>
                     <div className="card-body">
-                        <Table columns={columns} pagination={false} />
+                        <Table columns={columns} pagination={false} dataSource={dataOrderDetail} />
                     </div>
                 </div>
             </Col>

@@ -10,6 +10,8 @@ const initialState = {
     idDelivery:'',
     idTaskPending:'',
     odi:'',
+    stats:[],
+    statsDraft:[],
     isLoading: false,
 
     
@@ -106,6 +108,7 @@ export const logistikFormReducer = (state = initialState, action) => {
     case "POST_LOGISTIK_FORM_SUCCESS":
         return {
             ...state,
+            stats:action.payload,
             
             isLoading: false,
         };
@@ -120,7 +123,7 @@ export const logistikFormReducer = (state = initialState, action) => {
     case "POST_AS_DRAFT_SUCCESS":
         return {
             ...state,
-            
+            statsDraft:action.payload,
             isLoading: false,
         };
         

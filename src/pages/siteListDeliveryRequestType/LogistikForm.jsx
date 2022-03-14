@@ -37,10 +37,12 @@ import {
 import HeaderChanger from "@app/components/cardheader/HeaderChanger"
 import moment from "moment"
 import "./style.css"
+import { useHistory } from "react-router-dom"
 
 const { TextArea } = Input;
 
 export default function LogisticForm() {
+    const history = useHistory()
     const dispatch = useDispatch()
     const {Title} = Typography
     const [selectedButton, setSelectedButton] = useState(true)
@@ -82,6 +84,8 @@ export default function LogisticForm() {
     )
     const DataDeliveryTransport = useSelector(state=> state.logistikFormReducer.detaDeliveryTransport)
     const dataOdi = useSelector(state=> state.logistikFormReducer.odi)
+    const dataStats = useSelector(state=>state.logistikFormReducer.stats.status)
+    const dataStatsDraft = useSelector(state=>state.logistikFormReducer.statsDraft.status)
 
     const date = moment(dataSite[0].expectedDeliveryDate).format("YYYY-MM-DD")
     const index2 = deliveryRequest
@@ -90,20 +94,32 @@ export default function LogisticForm() {
         setDeliveryRequest(e)
         dispatch(getIdDelivery(e))
         dispatch(getDeliveryTransport())
-    }
+    };
 
     const handlePost = () => {
-        dispatch(postLogistikForm({"orderDetailId":dataOdi,"whTeamId":wh,"cmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"note":note}))
-      
-    }
+         dispatch(postLogistikForm({"orderDetailId":dataOdi,"whTeamId":wh,"cmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"note":note}))
+    
+        if( dataStats == 200){
+            history.push('/sitelist/logistic')
+         
+        }
+
+    };
 
    const saveDraft = () => {
-        dispatch(postAsDraft({orderDetailId:dataOdi,remarks:remarks}))
-    }
+        dispatch(postAsDraft({"orderDetailId":dataOdi,"remarks":remarks}))
+        if( dataStats == 200){
+            history.push('/sitelist/logistic')
+           
+        }
+    };
 
     const showModal = () => {
         setIsModalVisible(true);
         console.log(isModalVisible);
+    };
+    const cancelNavigate = () => {
+        history.push('/sitelist/logistic')
     };
     const showModalCancel = () => {
         setIsModalCancelVisible(true);
@@ -398,10 +414,10 @@ export default function LogisticForm() {
                                     <Button
                                         type="danger"
                                         onClick={() =>
-                                            console.log("save as draft")
+                                           showModalCancel()
                                         }
                                     >
-                                        Cancel
+                                        Order Request Cancel
                                     </Button>
                                     <Button
                                         type="primary"
@@ -412,6 +428,15 @@ export default function LogisticForm() {
                                     >
                                         Confirm
                                     </Button>
+                                    <Button
+                                       
+                                        htmlType="submit"
+                                        onClick={() =>
+                                            cancelNavigate()
+                                        }
+                                    >
+                                        Back
+                                    </Button>
                                 </Space>
                             </Col>
                         </div>
@@ -420,8 +445,8 @@ export default function LogisticForm() {
             </Row>
             <Modal title="Material List" visible={isModalVisible}  onCancel={cancelModal} 
             footer={[
-                <Button key="back" type="danger" onClick={showModalCancel}>
-                Order Request Cancel
+                <Button key="back"  onClick={cancelModal}>
+                Cancel
                 </Button>,
                 <Button key="submit" type="primary" onClick={handlePost} >
                 Submit
@@ -436,7 +461,7 @@ export default function LogisticForm() {
             footer={[
                 
                 <Button key="back" type="danger" onClick={saveDraft}>
-               Reject
+                Reject
                 </Button>,
                 <Button key="submit"  onClick={cancelModal2} >
                 Close
@@ -445,7 +470,7 @@ export default function LogisticForm() {
             ]} >
                 <Typography>Reason Of Cancelation :
 </Typography>
-<TextArea rows={4} onChange={(e) => setRemarks(e)}/>
+<TextArea rows={4} onChange={(e) => setRemarks(e.target.value)}/>
       
             </Modal>
         </div>

@@ -1,11 +1,14 @@
 import axios from "axios";
 import { API } from "@app/Variables";
 import {Alert} from 'antd'
-import { put, takeLatest, select } from "redux-saga/effects";
+import { put, takeLatest, select,call } from "redux-saga/effects";
 import { toast } from 'react-toastify';
+import forwardTo from "@app/utils/history";
+import { push } from 'react-router-redux'; 
 
 import {postAsDraftSuccess,setDeliveryTransport,setDataSiteInfo,setMaterialOrderDetail,setLsp,setDeliveryList,setDeliveryMode,postLogistikFormSuccess,setLogistikPending} from "../action/logistikFormAction"
-//action
+
+import { browserHistory } from 'react-router-dom'
 
 
 function* sagaGetSiteInfo(action) {
@@ -88,27 +91,35 @@ function* sagaGetDeliveryMode(action) {
 }
 function* sagaPostLogistikForm(action) {
     const token = yield select(state=>state.auth.token)
+   
     try {
         const res = yield axios.post(`https://bornxldemo-api.nsnebast.com/materialmanagement/orderRequestDetailFormLogisticSubmit`,action.payload
             ,{headers: {
                 Authorization: `Bearer ${token}` 
             }});
         console.log(res,"result get site condition")
-        yield put (postLogistikFormSuccess(res.data))
-        toast.success()
+        yield put (postLogistikFormSuccess(res))
+        yield toast.success("success");
+      
+        return res
+        
     } catch (error) {
         console.log(error,'error get data site condition')
+        yield toast.error("error");
+        return "error"
+       
     }
 }
 function* sagaPostAsDraft(action) {
     const token = yield select(state=>state.auth.token)
     try {
-        const res = yield axios.post(`https://bornxldemo-api.nsnebast.com/materialmanagement/orderRequestDetailCancellation`,action.payload
+        const res = yield axios.post(`https://bornxldemo-api.nsnebast.com/materialmanagement/orderRequestDetailFormLogisticSubmit`,action.payload
             ,{headers: {
                 Authorization: `Bearer ${token}` 
             }});
         console.log(res,"result get site condition")
-        yield put (postAsDraftSuccess(res.data))
+        yield put (postAsDraftSuccess(res))
+        yield toast.success("Saved As Draft");
     } catch (error) {
         console.log(error,'error get data site condition')
     }

@@ -1,9 +1,10 @@
-import {getAprovalPending} from "@app/store/action/aprovalTaskPendingAction"
+import {getAprovalPending, getSno} from "@app/store/action/aprovalTaskPendingAction"
 import React, {useEffect, useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {Table} from "antd"
 import {EditOutlined} from "@ant-design/icons"
 import {useHistory} from "react-router-dom"
+import { getOdi } from "@app/store/action/logistikFormAction"
 
 export default function TableAproval() {
     const dispatch = useDispatch()
@@ -24,6 +25,8 @@ export default function TableAproval() {
     const handleEdit = (record, e) => {
         setOdi(record)
         setSno(e)
+        dispatch(getOdi(record))
+        dispatch(getSno(e))
         navigateTo()
     }
 
