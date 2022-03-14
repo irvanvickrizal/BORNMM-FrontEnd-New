@@ -3,14 +3,14 @@ import { API } from "@app/Variables";
 import {Alert} from 'antd'
 import { put, takeLatest, select } from "redux-saga/effects";
 
-import {setDataSiteInfo,setMaterialOrderDetail,setLsp,setDeliveryList,setDeliveryMode} from "../action/logistikFormAction"
+import {setDataSiteInfo,setMaterialOrderDetail,setLsp,setDeliveryList,setDeliveryMode,postLogistikFormSuccess,setLogistikPending} from "../action/logistikFormAction"
 //action
 
 
 function* sagaGetSiteInfo(action) {
     const token = yield select(state=>state.auth.token)
     try {
-        const res = yield axios.get(`https://bornxldemo-api.nsnebast.com/materialmanagement/OrderDetailRequestGetDetail/13`,{headers: {
+        const res = yield axios.get(`https://bornxldemo-api.nsnebast.com/materialmanagement/OrderDetailRequestGetDetail/2`,{headers: {
             Authorization: `Bearer ${token}` 
         }});
         console.log(res,"result get site condition")
@@ -67,6 +67,31 @@ function* sagaGetDeliveryMode(action) {
         console.log(error,'error get data site condition')
     }
 }
+function* sagaPostLogistikForm(action) {
+    const token = yield select(state=>state.auth.token)
+    try {
+        const res = yield axios.post(`https://bornxldemo-api.nsnebast.com/materialmanagement/orderRequestDetailFormLogisticSubmit`,action.payload
+            ,{headers: {
+                Authorization: `Bearer ${token}` 
+            }});
+        console.log(res,"result get site condition")
+        yield put (postLogistikFormSuccess(res.data))
+    } catch (error) {
+        console.log(error,'error get data site condition')
+    }
+}
+function* sagaGetLogistikPending(action) {
+    const token = yield select(state=>state.auth.token)
+    try {
+        const res = yield axios.get(`https://bornxldemo-api.nsnebast.com/materialmanagement/orderRequestLogisticAssignmentPending`,{headers: {
+            Authorization: `Bearer ${token}` 
+        }});
+        console.log(res,"result get site condition")
+        yield put (setLogistikPending(res.data))
+    } catch (error) {
+        console.log(error,'error get data site condition')
+    }
+}
 
 
 
@@ -76,6 +101,8 @@ export function* SagaLogistikFormWorker() {
     yield takeLatest("GET_LSP", sagaGetLsp);
     yield takeLatest("GET_DELIVERY_LIST", sagaGetDeliveryList);
     yield takeLatest("GET_DELIVERY_MODE", sagaGetDeliveryMode);
+    yield takeLatest("POST_LOGISTIK", sagaPostLogistikForm);
+    yield takeLatest("GET_LOGISTIK_PENDING", sagaGetLogistikPending);
     
     
     

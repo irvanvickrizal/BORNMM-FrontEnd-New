@@ -34,7 +34,9 @@ import WorkFlow from '@app/pages/mWorkFlow/index';
 import SiteListDeliveryRequestType from '@app/pages/siteListDeliveryRequestType/index';
 import DismantleForm from '@app/pages/siteListDeliveryRequestType/DismantleForm';
 import MaterialOrder from '@app/pages/siteListDeliveryRequestType/MaterialOrder';
-import LogistikForm from '@app/pages/siteListDeliveryRequestType/LogistikForm';
+import LogisticForm from '@app/pages/siteListDeliveryRequestType/LogistikForm';
+import Logistic from '@app/pages/siteListDeliveryRequestType/Logistic';
+import TableAproval from '@app/pages/approvel/tableAproval';
 
 const Main = () => {
     const dispatch = useDispatch();
@@ -223,11 +225,23 @@ const Main = () => {
                                             exact
                                             path="/sitelist/materialorder/"
                                             component={MaterialOrder}
-                                        />      <Route
+                                        />      
+                                        <Route
                                             exact
                                             path="/sitelist/logistikform/"
-                                            component={LogistikForm}
+                                            component={LogisticForm}
                                         />
+                                        <Route
+                                            exact
+                                            path="/sitelist/logistic/"
+                                            component={Logistic}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/sitelist/aprovaltaskpending/"
+                                            component={TableAproval}
+                                        />
+
                                     </Switch>
                                 </div>
                                 <div className="card-footer"></div>

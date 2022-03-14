@@ -61,3 +61,40 @@ export const setDeliveryMode = (payload) => {
         payload,
     };
 };
+export const postLogistikFormSuccess = (payload) => {
+    return {
+        type: "POST_LOGISTIK_FORM_SUCCESS",
+        payload,
+    };
+};
+export const postLogistikForm = (payload) => {
+    return {
+        type: "POST_LOGISTIK_FORM",
+        payload,
+    };
+};
+export const getIdDelivery = (payload) => {
+    return {
+        type: "GET_ID_DELIVERY",
+        payload,
+    };
+};
+export const getIdTaskPending = (payload) => {
+    return {
+        type: "GET_ID_TASK_PENDING",
+        payload,
+    };
+};
+export const getLogisticPending = (payload) => {
+    return {
+        type: "GET_LOGISTIK_PENDING",
+        payload,
+    };
+};
+export const setLogistikPending = (payload) => {
+    return {
+        type: "SET_LOGISTIK_PENDING",
+        payload,
+    };
+};
+
