@@ -39,6 +39,7 @@ import Logistic from "@app/pages/siteListDeliveryRequestType/Logistic"
 import TableAproval from "@app/pages/approvel/tableAproval"
 import AprovalTaskPendingForm from "../../pages/approvel/aprovalTaskPendingForm"
 import OrderRequestDraft from "../../pages/orderRequestDraft/orderRequestDraft"
+import OrderRejectionPendingList from "@app/pages/siteListDeliveryRequestType/OrderRejectionPending"
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -268,6 +269,11 @@ const Main = () => {
                                             exact
                                             path="/mm/orderrequestdraft/"
                                             component={OrderRequestDraft}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/mm/orderrequestrejectionpending/"
+                                            component={OrderRejectionPendingList}
                                         />
                                     </Switch>
                                 </div>

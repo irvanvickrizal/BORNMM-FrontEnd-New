@@ -87,7 +87,7 @@ export default function LogisticForm() {
     const dataStats = useSelector(state=>state.logistikFormReducer.stats.status)
     const dataStatsDraft = useSelector(state=>state.logistikFormReducer.statsDraft.status)
 
-    const date = moment(dataSite[0].expectedDeliveryDate).format("YYYY-MM-DD")
+   
     const index2 = deliveryRequest
 
     const handleDeliveryChange = (e) => {
@@ -304,7 +304,10 @@ export default function LogisticForm() {
                                                     }
                                                 ]}
                                             >
-                                                <Input disabled value={date} />
+                                                <Input disabled value={
+                                                        dataSite[0]
+                                                            .expectedDeliveryDate
+                                                    } />
                                             </Form.Item>
                                             {/* <Form.Item>
                                     <Button type="primary" htmlType="submit">Confirm</Button>
