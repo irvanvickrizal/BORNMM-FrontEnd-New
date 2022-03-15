@@ -269,6 +269,7 @@ const postPOData = (body) => POST('customerpo', body);
 const putPOActivation = () => PUT('customerpo/SetActivationStatusU');
 
 const getPOScopeList = () => GET('poscope/getposcopelist');
+const getPOScopeListFile = (id) => GETParam('positelist/GetUploadedSitelistFile',id);
 const getErrorList = (id) => GETParam('positelist/GetUploadedSitelistErr',id);
 const deleteFileUpload = (id) => PUTFile('positelist/UploadedSitelistDeletedTemp',id);
 const postPOScope = (body) => POST('poscope/poscopeadd',body);
@@ -305,6 +306,7 @@ const deleteMaterialOrderRequest = (param) => DELETE('materialmanagement/orderRe
 const getOrderDetailEdit =  (odi) => GETParam('materialmanagement/OrderDetailRequestGetDetail',odi);
 
 const API ={
+    getPOScopeListFile,
     getOrderDetailEdit,
     putMaterialOrderDraft,
     getOrderRequestDraft,

@@ -257,7 +257,7 @@ const Main = () => {
                                         />
                                         <Route
                                             exact
-                                            path="/sitelist/logistic/"
+                                            path="/mm/taskasglogistic/"
                                             component={Logistic}
                                         />
                                         <Route

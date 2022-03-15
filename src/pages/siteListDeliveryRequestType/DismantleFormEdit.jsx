@@ -38,6 +38,7 @@ const DismantleFormEdit = (props) => {
     
     const [siteInfo, setSiteInfo] = useState([]);
     
+    const [loading,setLoading] = useState(false);
     const [orderDetail,setOrderDetail] = useState([]);
     const [orderTypeId, setOrderTypeId] = useState('');
     const [wpid, setWPID] = useState('');
@@ -72,13 +73,14 @@ const DismantleFormEdit = (props) => {
     }
     const user = useSelector((state) => state.auth.user);
 
-    const getOrderDetail = (odiparam) =>{
+    const getOrderDetail = async (odiparam) =>{
+        setLoading(true);
         API.getOrderDetailEdit(odiparam).then(
             result=>{
-                
                 setWPID(result[0].workpackageId);
                 setOrderTypeId(result[0].orderTypeId);
                 setOrderDetail(result);
+                setLoading(false);
                 console.log("order detail edit:",result,result[0].workpackageId,orderTypeId )
             }
         )
@@ -100,7 +102,7 @@ const DismantleFormEdit = (props) => {
         )
     }
 
-    const getInventoryDDL = () => {
+    const getInventoryDDL = async () => {
         API.getInventoryActiveList().then(
             result=>{
                 console.log("inventory",result);
@@ -109,7 +111,7 @@ const DismantleFormEdit = (props) => {
         )
     }
     
-    const getRequestBaseDDL = () => {
+    const getRequestBaseDDL = async () => {
         console.log("requestbase",orderTypeId)
         API.getRequestBase(orderTypeId).then(
             result=>{
@@ -119,7 +121,7 @@ const DismantleFormEdit = (props) => {
         )
     }
 
-    const getSiteLocationDDL = () => {
+    const getSiteLocationDDL = async () => {
         API.getSiteLocation().then(
             result=>{
                 setDDLSiteLocation(result);
@@ -290,6 +292,7 @@ const DismantleFormEdit = (props) => {
     }
 
     useEffect(() => {
+        
         getOrderDetail(odi);
         // getSiteInfo();
         getInventoryDDL();
@@ -297,12 +300,12 @@ const DismantleFormEdit = (props) => {
         getSiteLocationDDL();
         getOriginDDL();
         getDestination();
-        // getPacketType();
-        // getSubcon();
-        // getSiteCondition();
+        getPacketType();
+        getSubcon();
+        getSiteCondition();
         console.log('wpid:',wpid,"ordertype:",orderTypeId)
         
-    },orderDetail)
+    },[wpid,orderTypeId])
 
     const CardTitle = (title) => (
         <Title level={5}>

@@ -23,17 +23,17 @@ export default function TableSite() {
     const history = useHistory();
     const [wpIds,setWpids]=useState('')
   
+    const dataSiteList = useSelector(state=>state.siteListDeliveryRequestReducer.data)
+    const wpid = useSelector(state=>state.siteListDeliveryRequestReducer.wpId)
+    const dataOrderTypeList = useSelector(state=>state.siteListDeliveryRequestReducer.orderList)
+    const ordetTypeIds = useSelector(state=>state.siteListDeliveryRequestReducer.orderTypeId)
     
 
     useEffect(() => {
         dispatch(getDataSiteList())
         
-    },[dispatch]);
+    },[dispatch,ordetTypeIds]);
 
-    const dataSiteList = useSelector(state=>state.siteListDeliveryRequestReducer.data)
-    const wpid = useSelector(state=>state.siteListDeliveryRequestReducer.wpId)
-    const dataOrderTypeList = useSelector(state=>state.siteListDeliveryRequestReducer.orderList)
-    const ordetTypeIds = useSelector(state=>state.siteListDeliveryRequestReducer.orderTypeId)
    
     const navigateTo = () => {
       
@@ -42,7 +42,6 @@ export default function TableSite() {
     const odi = (e) => {
         dispatch(getOrderTypeId(e))
         navigateTo()
-     
     }
 
 
