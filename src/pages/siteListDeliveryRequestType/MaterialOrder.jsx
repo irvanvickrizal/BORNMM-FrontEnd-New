@@ -31,6 +31,7 @@ import moment from 'moment';
 import DataGenerator from './DataGenerator';
 import {IconButton, TextField}  from '@mui/material/';
 import {useDispatch, useSelector} from 'react-redux';
+import "./style.css";
 
 export default function MaterialOrder() {
     
@@ -494,6 +495,27 @@ export default function MaterialOrder() {
         );
     };
 
+    const handleSaveDraft = () => {
+        const body =(
+            {
+                "id":odiParam,
+                "customSuccessMessage":"Order Request saved successfully",
+                "customErrMessage":"Error while attempting to save this order request, please try again!"    
+            }
+        )
+        API.putMaterialOrderDraft(body).then(
+            result=>{
+                if(result.status=="success"){
+                    toast.success(result.message)
+                    navigateTo('/mm/orderrequestdraft')
+                }
+                else{
+                    toast.error(result.message)
+                }
+            }
+        )
+
+    }
 
     const handleSubmitDirect = () => {
         API.postMaterialOrderDirectSubmit(odiParam).then(
@@ -594,7 +616,7 @@ export default function MaterialOrder() {
                                     <Col span={24}>
                                         <div className='float-right'>
                                             <Space>
-                                                <Button type="danger" htmlType="submit">
+                                                <Button type="danger" htmlType="submit" onClick={handleSaveDraft}>
                                             Save as Draft
                                                 </Button>
                                                 {stockCheck ? <Button type="primary" htmlType="submit" onClick={handleBookSubmit}>

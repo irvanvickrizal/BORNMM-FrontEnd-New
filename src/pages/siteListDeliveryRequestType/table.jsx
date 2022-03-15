@@ -162,33 +162,25 @@ export default function TableSite() {
     
 
     return (
-        <div>
-            <div className="card card-primary">
-                <div className="card-header align-middle">
-                    <h3 className="card-title">Site List Delivery Request Type</h3>
-                  
-                </div>
-                <Table
-                    // rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
-                    rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
-                    dataSource={dataSiteList}
-                    columns={columns}
-                    key='siteConditionId'
-                    scroll={{ x: '100%' }}
-                    // eslint-disable-next-line react/jsx-boolean-value
-                    pagination={{
-                        pageSizeOptions: ['5','10','20','30', '40'],
-                        showSizeChanger: true,
-                        position: ["bottomLeft"],
-                    }}
+        <Table
+            // rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
+            rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
+            dataSource={dataSiteList}
+            columns={columns}
+            key='siteConditionId'
+            scroll={{ x: '100%' }}
+            // eslint-disable-next-line react/jsx-boolean-value
+            pagination={{
+                pageSizeOptions: ['5','10','20','30', '40'],
+                showSizeChanger: true,
+                position: ["bottomLeft"],
+            }}
                     
-                    style={{marginTop : 36}}
-                    size='small'
-                    bordered
-                    // loading={loading ? (true):(false)}    
+            style={{marginTop : 36}}
+            size='small'
+            bordered
+            // loading={loading ? (true):(false)}    
                 
-                />
-            </div>
-        </div>
+        />
     )
 }
