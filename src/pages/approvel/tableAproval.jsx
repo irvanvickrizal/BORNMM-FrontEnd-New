@@ -1,10 +1,11 @@
-import {getAprovalPending, getSno} from "@app/store/action/aprovalTaskPendingAction"
+import {getAprovalPending, getSno,getOdi} from "@app/store/action/aprovalTaskPendingAction"
 import React, {useEffect, useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {Table} from "antd"
 import {EditOutlined} from "@ant-design/icons"
 import {useHistory} from "react-router-dom"
-import { getOdi } from "@app/store/action/logistikFormAction"
+import HeaderChanger from "@app/components/cardheader/HeaderChanger"
+
 
 export default function TableAproval() {
     const dispatch = useDispatch()
@@ -19,7 +20,7 @@ export default function TableAproval() {
     }, [])
 
     const navigateTo = () => {
-        history.push(`/sitelist/aprovaltaskpendingform?odi=${odi}&sno=${sno}`)
+        history.push(`/sitelist/aprovaltaskpendingform`)
     }
 
     const handleEdit = (record, e) => {
@@ -94,26 +95,22 @@ export default function TableAproval() {
 
     return (
         <div>
-            <div className="card card-primary">
-                <div className="card-header align-middle">
-                    <h3 className="card-title">
-                        Order Request Logistic Assignment Pending
-                    </h3>
-                </div>
-                <Table
-                    columns={columns}
-                    dataSource={dataAproval}
-                    scroll={{x: "100%"}}
-                    pagination={{
-                        pageSizeOptions: ["5", "10", "20", "30", "40"],
-                        showSizeChanger: true,
-                        position: ["bottomLeft"]
-                    }}
-                    style={{marginTop: 36}}
-                    size="small"
-                    bordered
-                />
-            </div>
+           
+            <HeaderChanger title="Approval Task Pending"/>
+            <Table
+                columns={columns}
+                dataSource={dataAproval}
+                scroll={{x: "100%"}}
+                pagination={{
+                    pageSizeOptions: ["5", "10", "20", "30", "40"],
+                    showSizeChanger: true,
+                    position: ["bottomLeft"]
+                }}
+                style={{marginTop: 36}}
+                size="small"
+                bordered
+            />
+            
         </div>
     )
 }

@@ -74,6 +74,7 @@ function* sagaPostAproval(action) {
         yield toast.success("success");
     } catch (error) {
         console.log(error,'error get data site condition')
+        yield toast.error("error");
     }
 }
 function* sagaPostReject(action) {
@@ -90,6 +91,7 @@ function* sagaPostReject(action) {
         yield toast.success("success");
     } catch (error) {
         console.log(error,'error get data site condition')
+        yield toast.error("error");
     }
 }
 

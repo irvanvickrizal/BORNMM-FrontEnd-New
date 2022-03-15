@@ -4,6 +4,7 @@ import {Table} from 'antd'
 import { getIdTaskPending, getLogisticPending, getOdi } from '@app/store/action/logistikFormAction'
 import {EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled} from '@ant-design/icons'
 import { useHistory } from 'react-router-dom'
+import HeaderChanger from '@app/components/cardheader/HeaderChanger'
 
 export default function Logistic() {
     const dispatch = useDispatch()
@@ -86,28 +87,24 @@ export default function Logistic() {
     ]
     return (
         <div>
-            <div className="card card-primary">
-                <div className="card-header align-middle">
-                    <h3 className="card-title">Order Request Logistic Assignment Pending
-                    </h3>
-                  
-                </div>
-                <Table
-                    columns={columns}
-                    dataSource={dataPending}
-                    scroll={{ x: '100%' }}
+
+            <HeaderChanger title="Logistic Task Pending"/>
+            <Table
+                columns={columns}
+                dataSource={dataPending}
+                scroll={{ x: '100%' }}
                
-                    pagination={{
-                        pageSizeOptions: ['5','10','20','30', '40'],
-                        showSizeChanger: true,
-                        position: ["bottomLeft"],
-                    }}
+                pagination={{
+                    pageSizeOptions: ['5','10','20','30', '40'],
+                    showSizeChanger: true,
+                    position: ["bottomLeft"],
+                }}
                     
-                    style={{marginTop : 36}}
-                    size='small'
-                    bordered
-                />
-            </div>
+                style={{marginTop : 36}}
+                size='small'
+                bordered
+            />
+        
         </div>
     )
 }

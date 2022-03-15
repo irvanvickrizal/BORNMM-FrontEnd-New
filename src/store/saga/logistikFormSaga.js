@@ -4,7 +4,7 @@ import {Alert} from 'antd'
 import { put, takeLatest, select,call } from "redux-saga/effects";
 import { toast } from 'react-toastify';
 
-import {postAsDraftSuccess,setDeliveryTransport,setDataSiteInfo,setMaterialOrderDetail,setLsp,setDeliveryList,setDeliveryMode,postLogistikFormSuccess,setLogistikPending} from "../action/logistikFormAction"
+import {getLogisticPending,postAsDraftSuccess,setDeliveryTransport,setDataSiteInfo,setMaterialOrderDetail,setLsp,setDeliveryList,setDeliveryMode,postLogistikFormSuccess,setLogistikPending} from "../action/logistikFormAction"
 
 import { browserHistory } from 'react-router-dom'
 
@@ -98,7 +98,7 @@ function* sagaPostLogistikForm(action) {
         console.log(res,"result get site condition")
         yield put (postLogistikFormSuccess(res))
         yield toast.success("success");
-      
+        yield put (getLogisticPending())
         return res
         
     } catch (error) {
@@ -117,6 +117,7 @@ function* sagaPostAsDraft(action) {
             }});
         console.log(res,"result get site condition")
         yield put (postAsDraftSuccess(res))
+        yield put (getLogisticPending())
         yield toast.success("Saved As Draft");
     } catch (error) {
         console.log(error,'error get data site condition')

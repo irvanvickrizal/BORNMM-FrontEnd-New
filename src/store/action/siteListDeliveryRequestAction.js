@@ -18,6 +18,12 @@ export const getWpId = (payload) => {
         payload,
     };
 };
+export const getOdi = (payload) => {
+    return {
+        type: "GET_ODI",
+        payload,
+    };
+};
 export const getOrderType = (payload) => {
     return {
         type: "GET_ORDER_TYPE",
@@ -30,3 +36,16 @@ export const getOrderTypeId = (payload) => {
         payload,
     };
 };
+export const getOrderRejectionPending = (payload) => {
+    return {
+        type: "GET_ORDER_REJECTION_PENDING",
+        payload,
+    };
+};
+export const setOrderRejectionPending = (payload) => {
+    return {
+        type: "SET_ORDER_REJECTION_PENDING",
+        payload,
+    };
+};
+

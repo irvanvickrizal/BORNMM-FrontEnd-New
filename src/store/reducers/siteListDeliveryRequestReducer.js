@@ -1,7 +1,9 @@
 const initialState = {
     data: [],
+    dataOrderRejection:[],
     isLoading: false,
     wpId:'',
+    odi:"",
     orderList:[],
     orderTypeId:''
 };
@@ -21,11 +23,30 @@ export const siteListDeliveryRequestReducer = (state = initialState, action) => 
             data:action.payload,
             isLoading: false,
         };
+    case "GET_ORDER_REJECTION_PENDING":
+        return {
+            ...state,
+  
+            isLoading: true,
+        };
+    case "SET_ORDER_REJECTION_PENDING":
+        return {
+            ...state,
+            dataOrderRejection:action.payload,
+            isLoading: false,
+        };
 
     case "GET_WP_ID":
         return {
             ...state,
             wpId:action.payload,
+            isLoading: false,
+        };
+      
+    case "GET_ODI":
+        return {
+            ...state,
+            odi:action.payload,
             isLoading: false,
         };
       

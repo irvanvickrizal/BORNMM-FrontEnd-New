@@ -17,8 +17,9 @@ import {
     Modal
 } from "antd"
 import { useHistory } from "react-router-dom"
+import moment from 'moment'
 import HeaderChanger from "@app/components/cardheader/HeaderChanger"
-import { getLog, getMaterial, getOrderDetail, postAprove,postReject } from "@app/store/action/aprovalTaskPendingAction"
+import { getLog, getMaterial, getOrderDetail, postAprove,postReject,getOdi,getSno } from "@app/store/action/aprovalTaskPendingAction"
 
 const { TextArea } = Input;
 
@@ -69,12 +70,17 @@ export default function AprovalTaskPendingForm() {
         if(dataStats == "success"){
             history.push('/sitelist/aprovaltaskpending')
         }
+        dispatch(getOdi(""))
+        dispatch(getSno(""))
     }
     const handleReject = () => {
         dispatch(postReject({"sno":dataSno,"LMBY":dataUserId,"reasonOfRejection":remarks}))
         if(dataStats2 == "success"){
             history.push('/sitelist/aprovaltaskpending')
         }
+        dispatch(getOdi(""))
+        dispatch(getSno(""))
+    
     }
 
     const columns = [
@@ -165,43 +171,98 @@ export default function AprovalTaskPendingForm() {
             dataIndex: "remarks"
         }
     ]
+    const columnsOrderDetail = [
+        {
+            title: "No",
+            key: "index",
+            render: (value, item, index) => page + index
+        },
+        {
+            title: "Order Type",
+            dataIndex: "orderType"
+        },
+        {
+            title: "Delivery Type",
+            dataIndex: "deliveryType"
+            
+        },
+        {
+            title: "Inventory Code",
+            dataIndex: "inventoryCode"
+        },
+       
+        {
+            title: "Site Location",
+            dataIndex: "siteCondition"
+        },
+        {
+            title: "CT Name",
+            dataIndex: "ctName"
+        },
+        {
+            title: "Site Name",
+            dataIndex: "siteName"
+        },
+        {
+            title: "Region",
+            dataIndex: "region"
+        },
+        {
+            title: "Zone",
+            dataIndex: "zone"
+        },
+        {
+            title: "Requester",
+            dataIndex: "requesterName"
+        },
+        {
+            title: "Request Date",
+            dataIndex: "requestDate",
+            render : (text) =>{return(
+                <p>{moment(text).format("YYYY-MM-DD")}</p>
+            )}
+        },
+        {
+            title: "Delivery Date",
+            dataIndex: "expectedDeliveryDate",
+            render : (text) =>{return(
+                <p>{moment(text).format("YYYY-MM-DD")}</p>
+            )}
+        },
+
+       
+      
+    ]
     
     // eslint-disable-next-line react/jsx-no-undef
     const CardTitle = (title) => <Title level={5}>{title}</Title>
     return (
         <div>
-            <HeaderChanger title="Logistic Form" />
+            <HeaderChanger title="Aproval Task Pending Form" />
             <Col span={24}>
                 <div className="card card-primary">
-                    <div className="card-header align-middle">
-                        <h3 className="card-title">Site Info</h3>
-                    </div>
+                   
                     <div className="card-body">
                         <Table columns={columns} pagination={false} dataSource={dataOrderDetail} />
                     </div>
                 </div>
             </Col>
             <Col span={24}>
-                <Card hoverable title={CardTitle("Order Request Detail")}>
+                <Card hoverable >
                     <Tabs defaultActiveKey="1" centered={false}>
                         <TabPane tab="Order Request Detail" key="1">
-                            <div className="card card-primary">
-                                <div className="card-header align-middle">
-                                    <h3 className="card-title">Order Request</h3>
-                                </div>
+                            <Card title={CardTitle("Order Request")}>
                                 <div className="card-body">
                                     <Table
-                                        columns={columns}
+                                        columns={columnsOrderDetail}
                                         pagination={false}
+                                        dataSource={dataOrderDetail}
                                     />
                                 </div>
-                            </div>
+                            </Card>
                         </TabPane>
                         <TabPane tab="Material Order" key="2">
-                            <div className="card card-primary">
-                                <div className="card-header align-middle">
-                                    <h3 className="card-title">Matrial</h3>
-                                </div>
+                            <Card title={CardTitle("Material Order")}>
                                 <div className="card-body">
                                     <Table
                                         columns={columnsMaterial}
@@ -209,13 +270,10 @@ export default function AprovalTaskPendingForm() {
                                         dataSource={dataMaterialOrder}
                                     />
                                 </div>
-                            </div>
+                            </Card>
                         </TabPane>
                         <TabPane tab="Log" key="3">
-                            <div className="card card-primary">
-                                <div className="card-header align-middle">
-                                    <h3 className="card-title">Log</h3>
-                                </div>
+                            <Card title={CardTitle("Log")}>
                                 <div className="card-body">
                                     <Table
                                         columns={columnsLog}
@@ -223,31 +281,32 @@ export default function AprovalTaskPendingForm() {
                                         dataSource={dataLogOrder}
                                     />
                                 </div>
-                            </div>
+                            </Card>
                         </TabPane>
                     </Tabs>
+                    <div className="float-right mt-4">
+                        <Col span={4} md={8} sm={24}>
+                            <Space direction="horizontal">
+                                <Button
+                                    type="primary"
+                                    htmlType="submit"
+                                    onClick={() => showModal()}
+                                >
+                            Aprove
+                                </Button>
+                                <Button
+                                    type="danger"
+                                    onClick={() => showModalReject()}
+                                >
+                            Reject
+                                </Button>
+                            </Space>
+                        </Col>
+                    </div>
                 </Card>
             </Col>
-            <div className="float-right">
-                <Col span={4} md={8} sm={24}>
-                    <Space direction="horizontal">
-                        <Button
-                            type="primary"
-                            htmlType="submit"
-                            onClick={() => showModal()}
-                        >
-                            Aprove
-                        </Button>
-                        <Button
-                            type="danger"
-                            onClick={() => showModalReject()}
-                        >
-                            Reject
-                        </Button>
-                    </Space>
-                </Col>
-            </div>
-            <Modal title="Material List" visible={isModalVisible}  onCancel={cancelModal} 
+      
+            <Modal title="Approve Task" style={{borderRadius:"4px"}} visible={isModalVisible}  onCancel={cancelModal} 
                 footer={[
                     <Button key="back"  onClick={cancelModal}>
                 Cancel
@@ -257,7 +316,7 @@ export default function AprovalTaskPendingForm() {
                     </Button>,
                 
                 ]} >
-                <Typography>Are you sure you want to submit ?
+                <Typography>Are you sure you want to Aprove?
                 </Typography>
       
             </Modal>
@@ -285,7 +344,7 @@ export default function AprovalTaskPendingForm() {
             >
                 <Typography>Reason Of Cancelation :
                 </Typography>
-                <TextArea rows={4} onChange={(e) => setRemarks(e.target.value)}/>
+                <TextArea rows={4} onChange={(e) => setRemarks(e.target.value)} placeHolder="Min 10 Characters"/>
       
             </Modal>
         </div>
