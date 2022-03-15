@@ -13,23 +13,69 @@ import {
     Select,
     Tabs,
     Button,
-    Switch
+    Switch,
+    Modal
 } from "antd"
+import { useHistory } from "react-router-dom"
 import HeaderChanger from "@app/components/cardheader/HeaderChanger"
-import { getOrderDetail } from "@app/store/action/aprovalTaskPendingAction"
+import { getLog, getMaterial, getOrderDetail, postAprove,postReject } from "@app/store/action/aprovalTaskPendingAction"
+
+const { TextArea } = Input;
 
 export default function AprovalTaskPendingForm() {
     const dispatch = useDispatch()
+    const history = useHistory()
+    
     const [page, setPage] = useState(1)
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isModalRejectVisible, setIsModalRejectVisible] = useState(false);
+    const [remarks, setRemarks] = useState("")
     const {Title} = Typography
     const {TabPane} = Tabs
 
     useEffect(() => {
         dispatch(getOrderDetail())
+        dispatch(getMaterial())
+        dispatch(getLog())
     }, [])
 
     const dataOrderDetail = useSelector(state=>state.aprovalTaskPendingReducer.dataOrderRequestDetail)
+    const dataMaterialOrder = useSelector(state=>state.aprovalTaskPendingReducer.dataMaterial)
+    const dataLogOrder = useSelector(state=>state.aprovalTaskPendingReducer.dataLog)
+    const dataSno = useSelector(state=>state.aprovalTaskPendingReducer.sno)
+    const dataUserId = useSelector(state=>state.auth.user.uid)
+    const dataStats = useSelector(state=>state.aprovalTaskPendingReducer.stats.status)
+    const dataStats2 = useSelector(state=>state.aprovalTaskPendingReducer.statsReject.status)
 
+    const showModal = () => {
+        setIsModalVisible(true);
+       
+    };
+   
+    const showModalReject = () => {
+        setIsModalRejectVisible(true);
+       
+       
+    };
+    const cancelModal = () => {
+        setIsModalVisible(false);
+    }
+    const cancelModal2 = () => {
+        setIsModalRejectVisible(false);
+    }
+
+    const handleAproval = () => {
+        dispatch(postAprove({"sno":dataSno,"LMBY":dataUserId}))
+        if(dataStats == "success"){
+            history.push('/sitelist/aprovaltaskpending')
+        }
+    }
+    const handleReject = () => {
+        dispatch(postReject({"sno":dataSno,"LMBY":dataUserId,"reasonOfRejection":remarks}))
+        if(dataStats2 == "success"){
+            history.push('/sitelist/aprovaltaskpending')
+        }
+    }
 
     const columns = [
         {
@@ -71,24 +117,24 @@ export default function AprovalTaskPendingForm() {
         },
         {
             title: "Category",
-            dataIndex: "category"
+            dataIndex: "site"
         },
         {
             title: "Item Code",
-            dataIndex: "itemCode"
+            dataIndex: "materialCode"
         },
 
         {
             title: "Item Desc",
-            dataIndex: "Item Desc"
+            dataIndex: "materialDesc"
         },
         {
             title: "BOQ Ref QTY",
-            dataIndex: "projectName"
+            dataIndex: "refQTY"
         },
         {
             title: "Delta QTY",
-            dataIndex: "region"
+            dataIndex: "reqQTY"
         }
     ]
     const columnsLog = [
@@ -103,22 +149,23 @@ export default function AprovalTaskPendingForm() {
         },
         {
             title: "Execute Date",
-            dataIndex: "itemCode"
+            dataIndex: "executeDate"
         },
 
         {
             title: "Execute By",
-            dataIndex: "Item Desc"
+            dataIndex: "executedBy"
         },
         {
             title: "Event Desc",
-            dataIndex: "projectName"
+            dataIndex: "taskName"
         },
         {
             title: "Remarks",
-            dataIndex: "region"
+            dataIndex: "remarks"
         }
     ]
+    
     // eslint-disable-next-line react/jsx-no-undef
     const CardTitle = (title) => <Title level={5}>{title}</Title>
     return (
@@ -140,7 +187,7 @@ export default function AprovalTaskPendingForm() {
                         <TabPane tab="Order Request Detail" key="1">
                             <div className="card card-primary">
                                 <div className="card-header align-middle">
-                                    <h3 className="card-title">Site Info</h3>
+                                    <h3 className="card-title">Order Request</h3>
                                 </div>
                                 <div className="card-body">
                                     <Table
@@ -153,12 +200,13 @@ export default function AprovalTaskPendingForm() {
                         <TabPane tab="Material Order" key="2">
                             <div className="card card-primary">
                                 <div className="card-header align-middle">
-                                    <h3 className="card-title">Site Info</h3>
+                                    <h3 className="card-title">Matrial</h3>
                                 </div>
                                 <div className="card-body">
                                     <Table
                                         columns={columnsMaterial}
                                         pagination={false}
+                                        dataSource={dataMaterialOrder}
                                     />
                                 </div>
                             </div>
@@ -166,12 +214,13 @@ export default function AprovalTaskPendingForm() {
                         <TabPane tab="Log" key="3">
                             <div className="card card-primary">
                                 <div className="card-header align-middle">
-                                    <h3 className="card-title">Site Info</h3>
+                                    <h3 className="card-title">Log</h3>
                                 </div>
                                 <div className="card-body">
                                     <Table
                                         columns={columnsLog}
                                         pagination={false}
+                                        dataSource={dataLogOrder}
                                     />
                                 </div>
                             </div>
@@ -185,19 +234,60 @@ export default function AprovalTaskPendingForm() {
                         <Button
                             type="primary"
                             htmlType="submit"
-                            onClick={() => console.log("tes")}
+                            onClick={() => showModal()}
                         >
                             Aprove
                         </Button>
                         <Button
                             type="danger"
-                            onClick={() => console.log("save as draft")}
+                            onClick={() => showModalReject()}
                         >
                             Reject
                         </Button>
                     </Space>
                 </Col>
             </div>
+            <Modal title="Material List" visible={isModalVisible}  onCancel={cancelModal} 
+                footer={[
+                    <Button key="back"  onClick={cancelModal}>
+                Cancel
+                    </Button>,
+                    <Button key="submit" type="primary"  onClick={handleAproval}>
+                Submit
+                    </Button>,
+                
+                ]} >
+                <Typography>Are you sure you want to submit ?
+                </Typography>
+      
+            </Modal>
+            <Modal title="Material List" visible={isModalRejectVisible}  onCancel={cancelModal2} 
+                footer={
+                    remarks.length <= 10 ? ( [
+                    
+                        <Button disabled key="back" type="danger" onClick={handleReject} >
+                    Reject
+                        </Button>,
+                        <Button key="submit"  onClick={cancelModal2} >
+                    Close
+                        </Button>,
+                    
+                    ]):( [
+                    
+                        <Button key="back" type="danger" onClick={handleReject} >
+                    Reject
+                        </Button>,
+                        <Button key="submit"  onClick={cancelModal2} >
+                    Close
+                        </Button>,
+                    
+                    ])}
+            >
+                <Typography>Reason Of Cancelation :
+                </Typography>
+                <TextArea rows={4} onChange={(e) => setRemarks(e.target.value)}/>
+      
+            </Modal>
         </div>
     )
 }

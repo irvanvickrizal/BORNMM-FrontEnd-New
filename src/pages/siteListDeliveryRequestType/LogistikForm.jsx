@@ -453,21 +453,34 @@ export default function LogisticForm() {
                 </Button>,
                 
             ]} >
-                <Typography>Are you sure you want to submit ?
+                <Typography>Are you sure you want to cancel  ?
 </Typography>
       
             </Modal>
             <Modal title="Material List" visible={isModalCancelVisible}  onCancel={cancelModal2} 
-            footer={[
+            footer={
+                remarks.length <= 10 ? ( [
                 
-                <Button key="back" type="danger" onClick={saveDraft}>
-                Reject
-                </Button>,
-                <Button key="submit"  onClick={cancelModal2} >
-                Close
-                </Button>,
                 
-            ]} >
+                    <Button disabled key="back" type="danger" onClick={saveDraft}>
+                    Reject
+                    </Button>,
+                    <Button key="submit"  onClick={cancelModal2} >
+                    Close
+                    </Button>,
+                    
+                ]):( [
+                
+                
+                    <Button key="back" type="danger" onClick={saveDraft}>
+                    Reject
+                    </Button>,
+                    <Button key="submit"  onClick={cancelModal2} >
+                    Close
+                    </Button>,
+                    
+                ])
+               } >
                 <Typography>Reason Of Cancelation :
 </Typography>
 <TextArea rows={4} onChange={(e) => setRemarks(e.target.value)}/>
