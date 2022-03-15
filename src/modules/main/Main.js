@@ -33,6 +33,7 @@ import CardHeader from "../../components/cardheader/cardheader"
 import WorkFlow from "@app/pages/mWorkFlow/index"
 import SiteListDeliveryRequestType from "@app/pages/siteListDeliveryRequestType/index"
 import DismantleForm from "@app/pages/siteListDeliveryRequestType/DismantleForm"
+import DismantleFormEdit from "@app/pages/siteListDeliveryRequestType/DismantleFormEdit"
 import MaterialOrder from "@app/pages/siteListDeliveryRequestType/MaterialOrder"
 import LogisticForm from "@app/pages/siteListDeliveryRequestType/LogistikForm"
 import Logistic from "@app/pages/siteListDeliveryRequestType/Logistic"
@@ -234,6 +235,11 @@ const Main = () => {
                                             component={
                                                 SiteListDeliveryRequestType
                                             }
+                                        />
+                                        <Route
+                                            exact
+                                            path="/sitelist/dismantleedit/"
+                                            component={DismantleFormEdit}
                                         />
                                         <Route
                                             exact

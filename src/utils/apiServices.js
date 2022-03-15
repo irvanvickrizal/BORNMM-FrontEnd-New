@@ -302,8 +302,10 @@ const putEditQtyMaterial = (body) => PUT('materialmanagement/OrderRequestMateria
 const putMaterialOrderDraft = (body) => PUT('materialmanagement/materialOrderRequestSaveDraft',body);
 const deleteMaterialOrderRequest = (param) => DELETE('materialmanagement/orderRequestMaterialDelItem',param);
 
+const getOrderDetailEdit =  (odi) => GETParam('materialmanagement/OrderDetailRequestGetDetail',odi);
 
 const API ={
+    getOrderDetailEdit,
     putMaterialOrderDraft,
     getOrderRequestDraft,
     deleteMaterialOrderRequest,

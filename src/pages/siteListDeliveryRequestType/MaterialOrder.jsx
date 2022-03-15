@@ -60,6 +60,7 @@ export default function MaterialOrder() {
     const [wpid, setWPID] = useState('');
     const [boqRef, setBOQRef] = useState('');
     const [stockCheck, setStockCheck] = useState(false);
+    const [orderTypeId, setOrderTypeId] = useState('');
     const history = useHistory();
 
     const [selectedMaterialId,setSelectedMaterialId] = useState('');
@@ -266,10 +267,16 @@ export default function MaterialOrder() {
     ]
     
     const handleAddMaterial = (data) => {
+        console.log("handleAddplus",data)
         setMaterialChoosed(data);
     }
 
     const onFinishAddMaterial = (values) => {
+        if(stockCheck==true){
+            if(values.balance < values.reqQTY){
+                toast.error("req qty exceeds balance")
+            }
+        }
         const body=(
             {
                 "orderDetailId":odiParam,
@@ -336,8 +343,12 @@ export default function MaterialOrder() {
     const columnsMaterialListExcluded =[
         {
             title:"ID",
-            dataIndex:"materialId",
-            key:"materialId"
+            render: (value, item, index) => 1 + index
+        }, 
+        {
+            title:"Material Code",
+            dataIndex:"materialCode",
+            key:"materialCode"
         },
         {
             title:"Subcategory Name",
@@ -345,13 +356,66 @@ export default function MaterialOrder() {
             key:"subCategoryName"
         }, 
         {
+            title:"Material Desc",
+            dataIndex:"materialDesc",
+            key:"materialDesc"
+        },
+        // {
+        //     title:"NE Type",
+        //     render:(record)=>{
+        //         return (
+        // <Select defaultValue="NE" style={{ width: 120 }} onChange={handleChangeNeType} disabled>
+        //     <Option value="NE">NE</Option>
+        //     <Option value="FE">FE</Option>
+        // </Select>
+        //         )
+        //     }
+        // },
+        // {
+        //     title:"QTY",
+        //     render:(record)=>{
+        //         return (
+        //             <InputNumber min={1} defaultValue={1} onChange={(e)=>handleChangeQTY(e)} disabled />
+        //         )
+        //     }
+        // },
+        {
+            title:"Action",
+            key:"orderMaterialId",
+            align:'center',
+            render:(record)=>{
+                return (
+                    <Space>
+                        <PlusOutlined  onClick={(e) => handleAddMaterial(record)} />
+                    </Space>
+                )
+            }
+        } 
+    ]
+
+    const columnsMaterialListExcludedStockCheck =[
+        {
+            title:"ID",
+            render: (value, item, index) => 1 + index
+        }, 
+        {
             title:"Material Code",
             dataIndex:"materialCode",
             key:"materialCode"
+        },
+        {
+            title:"Subcategory Name",
+            dataIndex:"subCategoryName",
+            key:"subCategoryName"
         }, 
         {
             title:"Material Desc",
             dataIndex:"materialDesc",
+            key:"materialDesc"
+        },
+        {
+            title:"Balance",
+            dataIndex:"balance",
             key:"materialDesc"
         },
         // {
@@ -428,6 +492,7 @@ export default function MaterialOrder() {
                 setWPID(result[0].workpackageId);
                 setSiteNo(result[0].siteNo);
                 setStockCheck(result[0].stockCheck);
+                setOrderTypeId(result[0].orderTypeId);
                 console.log('orderdetailform',result);
             }
         )
@@ -545,6 +610,9 @@ export default function MaterialOrder() {
             }
         )
     }
+    const handleEditOrderDetail = () => {
+        navigateTo(`/sitelist/dismantleedit?odi=${odiParam}`)
+    }
     // eslint-disable-next-line react/no-unstable-nested-components
     useEffect(() => {
         getOrderDetail(odiParam);
@@ -563,7 +631,7 @@ export default function MaterialOrder() {
                         <Col md={8} sm={12} >
                             <div className='float-right'>
                                 <Tooltip title="Edit Order Detail">
-                                    <IconButton size="small" color="primary" onClick={showModalAddMaterial}>
+                                    <IconButton size="small" color="primary" onClick={handleEditOrderDetail}>
                                         <EditOutlined />
                                     </IconButton>
                                 </Tooltip>
@@ -646,7 +714,7 @@ export default function MaterialOrder() {
                     <Table 
                         scroll={{ x: '100%' }} 
                         size="small"  
-                        columns={columnsMaterialListExcluded} 
+                        columns={stockCheck? columnsMaterialListExcludedStockCheck : columnsMaterialListExcluded} 
                         dataSource={orderDetailMaterialExcluded} 
                         pagination={false} 
                         bordered/>    :
@@ -659,6 +727,7 @@ export default function MaterialOrder() {
                             'materialDesc': materialChoosed.materialDesc,
                             'subCategoryName': materialChoosed.subCategoryName,
                             'neType': "NE",
+                            'balance': materialChoosed.balance,
                             'reqQTY' : 1
                         }}
                         onFinish={onFinishAddMaterial}
@@ -696,6 +765,14 @@ export default function MaterialOrder() {
                                 <Option value="FE">FE</Option>
                             </Select>
                         </Form.Item>
+                        
+                        {stockCheck ? <Form.Item 
+                            label="Balance"
+                            name="balance"
+                        >
+                            <InputNumber disabled />
+                        </Form.Item> :
+                            null}
 
                         <Form.Item 
                             label="Req QTY"
@@ -709,7 +786,7 @@ export default function MaterialOrder() {
                             <Space>
                                 
                                 <Button type="primary" htmlType="submit">
-                            Submit
+                                    Add Material
                                 </Button>
                             </Space>
                         </Form.Item>
