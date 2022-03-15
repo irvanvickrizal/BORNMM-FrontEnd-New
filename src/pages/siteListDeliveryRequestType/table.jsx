@@ -72,7 +72,7 @@ export default function TableSite() {
     const columns = [
         {
             title : "No",
-            dataIndex:'siteID',
+            render: (value, item, index) => 1 + index
         },
         {
             title : "Site No",
