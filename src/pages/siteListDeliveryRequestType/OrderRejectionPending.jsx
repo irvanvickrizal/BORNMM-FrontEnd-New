@@ -13,16 +13,17 @@ import { useDispatch,useSelector } from 'react-redux'
 import {Table,Input,Menu, Dropdown, Button, Space} from 'antd'
 import {EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined } from '@ant-design/icons'
 import { useHistory } from 'react-router-dom';
-
+import moment from 'moment'
 import Search from '@app/components/searchcolumn/SearchColumn';
 import { getOdi, getOrderRejectionPending } from '@app/store/action/siteListDeliveryRequestAction';
+import HeaderChanger from '@app/components/cardheader/HeaderChanger';
 
 
 export default function OrderRejectionPendingList() {
 
     const dispatch = useDispatch()
     const history = useHistory();
-
+    const [page,setPage] = useState(1)
   
     
 
@@ -40,7 +41,7 @@ export default function OrderRejectionPendingList() {
     
     const handleEdit=(e)=>{
         dispatch(getOdi(e))
-        history.push(`/mm/orderrequestdraft?odi=${dataOdi}`)
+        history.push(`/sitelist/dismantleedit?odi=${dataOdi}`)
     }
   
 
@@ -49,8 +50,9 @@ export default function OrderRejectionPendingList() {
 
     const columns = [
         {
-            title : "No",
-            dataIndex:'siteID',
+            title:'No',
+            key:"index",
+            render:(value, item, index) => (page )  + index
         },
         {
             title : "Request No",
@@ -124,7 +126,11 @@ export default function OrderRejectionPendingList() {
         {
             title : "incoming Date",
             dataIndex:'incomingDate',
-        
+            render:(text)=>{
+                return(
+                    <p>{moment(text).format("YYYY-MM-DD")}</p>
+                )
+            }
        
         },
         {
@@ -146,25 +152,29 @@ export default function OrderRejectionPendingList() {
     
 
     return (
-        <Table
+        <div>
+            <HeaderChanger title="Order Rejection Pending List"/>
+            <Table
             // rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
-            rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
-            dataSource={dataRejection}
-            columns={columns}
-            key='siteConditionId'
-            scroll={{ x: '100%' }}
-            // eslint-disable-next-line react/jsx-boolean-value
-            pagination={{
-                pageSizeOptions: ['5','10','20','30', '40'],
-                showSizeChanger: true,
-                position: ["bottomLeft"],
-            }}
+                rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
+                dataSource={dataRejection}
+                columns={columns}
+                key='siteConditionId'
+                scroll={{ x: '100%' }}
+                // eslint-disable-next-line react/jsx-boolean-value
+                pagination={{
+                    pageSizeOptions: ['5','10','20','30', '40'],
+                    showSizeChanger: true,
+                    position: ["bottomLeft"],
+                }}
                     
-            style={{marginTop : 36}}
-            size='small'
-            bordered
-            // loading={loading ? (true):(false)}    
+                style={{marginTop : 36}}
+                size='small'
+                bordered
+                // loading={loading ? (true):(false)}    
                 
-        />
+            />
+        </div>
+       
     )
 }

@@ -202,9 +202,10 @@ export default function LogisticForm() {
             <HeaderChanger title="Logistic Form" />
             <Col span={24}>
                 <div className="card card-primary">
-                    <div className="card-header align-middle">
+                <Card hoverable title={CardTitle("Site Info")}>
+                    {/* <div className="card-header align-middle">
                         <h3 className="card-title">Site Info</h3>
-                    </div>
+                    </div> */}
                     <div className="card-body">
                         <Table
                             columns={columns}
@@ -212,6 +213,7 @@ export default function LogisticForm() {
                             dataSource={dataSite}
                         />
                     </div>
+                    </Card>
                 </div>
             </Col>
             <Row>
@@ -224,7 +226,7 @@ export default function LogisticForm() {
                                 ) : (
                                     <Card
                                         hoverable
-                                        title={CardTitle("Order Detail")}
+                                        title={CardTitle("Order Request Detail")}
                                     >
                                         <Form
                                             labelCol={{span: 8}}
@@ -305,8 +307,9 @@ export default function LogisticForm() {
                                                 ]}
                                             >
                                                 <Input disabled value={
-                                                        dataSite[0]
-                                                            .expectedDeliveryDate
+                                                    moment( dataSite[0]
+                                                            .expectedDeliveryDate).format("YYYY-MM-DD")
+                                                       
                                                     } />
                                             </Form.Item>
                                             {/* <Form.Item>
@@ -318,7 +321,7 @@ export default function LogisticForm() {
                                 )}
                             </TabPane>
                             <TabPane tab="Material Order" key="2">
-                                <Card hoverable title={CardTitle("Site Info")}>
+                                <Card hoverable title={CardTitle("Matrial Order")}>
                                     <Table
                                         scroll={{x: "100%"}}
                                         bordered
@@ -446,7 +449,7 @@ export default function LogisticForm() {
                     </Card>
                 </Col>
             </Row>
-            <Modal title="Material List" visible={isModalVisible}  onCancel={cancelModal} 
+            <Modal title="Confirm Order Request" visible={isModalVisible}  onCancel={cancelModal} 
             footer={[
                 <Button key="back"  onClick={cancelModal}>
                 Cancel
@@ -456,11 +459,11 @@ export default function LogisticForm() {
                 </Button>,
                 
             ]} >
-                <Typography>Are you sure you want to cancel  ?
+                <Typography>Are you sure you want to confirm  ?
 </Typography>
       
             </Modal>
-            <Modal title="Material List" visible={isModalCancelVisible}  onCancel={cancelModal2} 
+            <Modal title="Cancel Order Request" visible={isModalCancelVisible}  onCancel={cancelModal2} 
             footer={
                 remarks.length <= 10 ? ( [
                 

@@ -241,22 +241,17 @@ export default function AprovalTaskPendingForm() {
             <HeaderChanger title="Aproval Task Pending Form" />
             <Col span={24}>
                 <div className="card card-primary">
-                    <div className="card-header align-middle">
-                        <h3 className="card-title">Site Info</h3>
-                    </div>
+                   
                     <div className="card-body">
                         <Table columns={columns} pagination={false} dataSource={dataOrderDetail} />
                     </div>
                 </div>
             </Col>
             <Col span={24}>
-                <Card hoverable title={CardTitle()}>
+                <Card hoverable >
                     <Tabs defaultActiveKey="1" centered={false}>
                         <TabPane tab="Order Request Detail" key="1">
-                            <div className="card card-primary">
-                                <div className="card-header align-middle">
-                                    <h3 className="card-title">Order Request</h3>
-                                </div>
+                            <Card title={CardTitle("Order Request")}>
                                 <div className="card-body">
                                     <Table
                                         columns={columnsOrderDetail}
@@ -264,13 +259,10 @@ export default function AprovalTaskPendingForm() {
                                         dataSource={dataOrderDetail}
                                     />
                                 </div>
-                            </div>
+                            </Card>
                         </TabPane>
                         <TabPane tab="Material Order" key="2">
-                            <div className="card card-primary">
-                                <div className="card-header align-middle">
-                                    <h3 className="card-title">Matrial</h3>
-                                </div>
+                            <Card title={CardTitle("Material Order")}>
                                 <div className="card-body">
                                     <Table
                                         columns={columnsMaterial}
@@ -278,13 +270,10 @@ export default function AprovalTaskPendingForm() {
                                         dataSource={dataMaterialOrder}
                                     />
                                 </div>
-                            </div>
+                            </Card>
                         </TabPane>
                         <TabPane tab="Log" key="3">
-                            <div className="card card-primary">
-                                <div className="card-header align-middle">
-                                    <h3 className="card-title">Log</h3>
-                                </div>
+                            <Card title={CardTitle("Log")}>
                                 <div className="card-body">
                                     <Table
                                         columns={columnsLog}
@@ -292,10 +281,10 @@ export default function AprovalTaskPendingForm() {
                                         dataSource={dataLogOrder}
                                     />
                                 </div>
-                            </div>
+                            </Card>
                         </TabPane>
                     </Tabs>
-                    <div className="float-right">
+                    <div className="float-right mt-4">
                         <Col span={4} md={8} sm={24}>
                             <Space direction="horizontal">
                                 <Button
@@ -317,7 +306,7 @@ export default function AprovalTaskPendingForm() {
                 </Card>
             </Col>
       
-            <Modal title="Material List" visible={isModalVisible}  onCancel={cancelModal} 
+            <Modal title="Approve Task" style={{borderRadius:"4px"}} visible={isModalVisible}  onCancel={cancelModal} 
                 footer={[
                     <Button key="back"  onClick={cancelModal}>
                 Cancel
@@ -327,7 +316,7 @@ export default function AprovalTaskPendingForm() {
                     </Button>,
                 
                 ]} >
-                <Typography>Are you sure you want to submit ?
+                <Typography>Are you sure you want to Aprove?
                 </Typography>
       
             </Modal>
