@@ -289,6 +289,8 @@ const getSiteCondition = () => GET('sitecondition');
 const getSubcon = () => GET('subcon/GetFieldSubcontractor');
 const postDismantleForm = (body) => POST('materialmanagement/OrderDetailAdd',body);
 
+const getOrderRequestDraft = () => GET('mmReport/OrderRequestGetListDraft');
+
 const getOrderDetailForm = (odi) => GETParam('materialmanagement/OrderDetailRequestGetDetail',odi);
 const getOrderDetailMaterial = (odi) => GETParam('materialmanagement/orderRequestMaterialGetDetail',odi);
 const getBOQRefGetList = (odi) => GETParam('materialmanagement/boqRefGetList',odi);
@@ -297,10 +299,13 @@ const postMaterialOrderDirectSubmit = (odi) => POSTParam('materialmanagement/mat
 const postMaterialOrderBookSubmit = (odi) => POSTParam('materialmanagement/materialOrderBookSubmit',"",odi);
 const postAddMaterial = (body) => POST("materialmanagement/orderRequestMaterialAddItem",body);
 const putEditQtyMaterial = (body) => PUT('materialmanagement/OrderRequestMaterialChangeQty',body);
+const putMaterialOrderDraft = (body) => PUT('materialmanagement/materialOrderRequestSaveDraft',body);
 const deleteMaterialOrderRequest = (param) => DELETE('materialmanagement/orderRequestMaterialDelItem',param);
 
 
 const API ={
+    putMaterialOrderDraft,
+    getOrderRequestDraft,
     deleteMaterialOrderRequest,
     putEditQtyMaterial,
     postAddMaterial,

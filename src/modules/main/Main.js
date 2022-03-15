@@ -38,6 +38,7 @@ import LogisticForm from "@app/pages/siteListDeliveryRequestType/LogistikForm"
 import Logistic from "@app/pages/siteListDeliveryRequestType/Logistic"
 import TableAproval from "@app/pages/approvel/tableAproval"
 import AprovalTaskPendingForm from "../../pages/approvel/aprovalTaskPendingForm"
+import OrderRequestDraft from "../../pages/orderRequestDraft/orderRequestDraft"
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -262,6 +263,11 @@ const Main = () => {
                                             exact
                                             path="/sitelist/aprovaltaskpendingform/"
                                             component={AprovalTaskPendingForm}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/mm/orderrequestdraft/"
+                                            component={OrderRequestDraft}
                                         />
                                     </Switch>
                                 </div>
