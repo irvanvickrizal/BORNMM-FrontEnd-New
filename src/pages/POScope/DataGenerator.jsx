@@ -18,6 +18,7 @@ const errorLog = (WPID , Phase, PackageName, Region, DataStatus)=>{
 
 const poScopeData = (poScopeId,totalSites,cpoId,cpoNo,cpoNoOriginal,projectName,scopeId,scopeName,lmdt) =>{
     const datas = {
+        key: poScopeId,
         poScopeId: poScopeId,
         totalSites: totalSites,
         cpoId: cpoId,

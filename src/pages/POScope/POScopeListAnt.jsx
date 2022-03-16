@@ -216,7 +216,8 @@ const POScopeListAnt = () => {
                 console.log("result po scope",result)
                 // const data = result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
 
-                const data = result.map((rs)=>CreateDataPOScope.poScopeData(rs.poScopeId
+                const data = result.map((rs)=>CreateDataPOScope.poScopeData(
+                    rs.poScopeId
                     , rs.totalSites
                     , rs.poDetail.cpoId
                     , rs.poDetail.cpoNo
@@ -295,6 +296,46 @@ const POScopeListAnt = () => {
         setShow(false);
         refreshData();
     }
+
+    const columnsss = [
+        { title: "Name", dataIndex: "name", key: "name" },
+        { title: "Age", dataIndex: "age", key: "age" },
+        { title: "Address", dataIndex: "address", key: "address" },
+        {
+            title: "Action",
+            dataIndex: "",
+            key: "x",
+            render: () => <a href="javascript:;">Delete</a>
+        }
+    ];
+
+    const data = [
+        {
+            key: 1,
+            name: "John Brown",
+            age: 32,
+            address: "New York No. 1 Lake Park",
+            description:
+      "My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park."
+        },
+        {
+            key: 2,
+            name: "Jim Green",
+            age: 42,
+            address: "London No. 1 Lake Park",
+            description:
+      "My name is Jim Green, I am 42 years old, living in London No. 1 Lake Park."
+        },
+        {
+            key: 3,
+            name: "Joe Black",
+            age: 32,
+            address: "Sidney No. 1 Lake Park",
+            description:
+      "My name is Joe Black, I am 32 years old, living in Sidney No. 1 Lake Park."
+        }
+    ];
+
 
     useEffect(() => {
         refreshData();

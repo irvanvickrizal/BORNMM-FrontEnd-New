@@ -27,7 +27,7 @@ const POCreation = () => {
                 <CircularProgress />
             </Box> : 
                 <>
-                    <POScopeListAnt />
+                    {/* <POScopeListAnt /> */}
                     <POScopeList />
                 </>
             }

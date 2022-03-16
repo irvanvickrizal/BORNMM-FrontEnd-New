@@ -291,7 +291,7 @@ const DismantleForm = (props) => {
         getPacketType();
         getSubcon();
         getSiteCondition();
-    },[])
+    },[wpid,orderTypeId])
 
     const CardTitle = (title) => (
         <Title level={5}>

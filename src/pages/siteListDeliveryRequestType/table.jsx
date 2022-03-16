@@ -22,6 +22,7 @@ export default function TableSite() {
     const dispatch = useDispatch()
     const history = useHistory();
     const [wpIds,setWpids]=useState('')
+    const [ordetTypeIdhook,setordetTypeIdhook]=useState('')
   
     const dataSiteList = useSelector(state=>state.siteListDeliveryRequestReducer.data)
     const wpid = useSelector(state=>state.siteListDeliveryRequestReducer.wpId)
@@ -32,13 +33,13 @@ export default function TableSite() {
     useEffect(() => {
         dispatch(getDataSiteList())
         
-    },[dispatch,ordetTypeIds]);
+    },[dispatch,ordetTypeIdhook]);
 
    
     const navigateTo = () => {
-      
-        history.push(`/sitelist/siteDetail?wpid=${wpIds}&ot=${ordetTypeIds}`)
+        history.push(`/sitelist/siteDetail?wpid=${wpIds}&ot=${ordetTypeIdhook}`)
     }
+
     const odi = (e) => {
         dispatch(getOrderTypeId(e))
         navigateTo()
@@ -51,10 +52,11 @@ export default function TableSite() {
   
         dispatch(getOrderType(record.orderTypeList))
         setWpids(wp);
+        setordetTypeIdhook(record.orderTypeList[0].orderTypeDetail.orderTypeId)
         const wpId = record.workpackageID;
         const scopeName = record.scopeDetail.scopeName;
         const scopeId = record.orderTypeList[0].orderTypeDetail.orderTypeId;
-        console.log(wpId,scopeName,scopeId,'wp');
+        console.log(wpId,scopeName,scopeId,record,'wp');
         // navigateTo();
     } 
     const menuDropdown =  (
