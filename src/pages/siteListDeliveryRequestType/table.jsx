@@ -17,6 +17,7 @@ import { useHistory } from 'react-router-dom';
 import Search from '@app/components/searchcolumn/SearchColumn';
 
 
+
 export default function TableSite() {
 
     const dispatch = useDispatch()
@@ -158,10 +159,6 @@ export default function TableSite() {
     
     ]
   
-    
-
-    
-
     return (
         <Table
             // rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}

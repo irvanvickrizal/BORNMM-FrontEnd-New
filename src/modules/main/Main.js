@@ -41,6 +41,7 @@ import TableAproval from "@app/pages/approvel/tableAproval"
 import AprovalTaskPendingForm from "../../pages/approvel/aprovalTaskPendingForm"
 import OrderRequestDraft from "../../pages/orderRequestDraft/orderRequestDraft"
 import OrderRejectionPendingList from "@app/pages/siteListDeliveryRequestType/OrderRejectionPending"
+import SconTaskPending from "@app/pages/SconTaskPending/SconTaskPending"
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -280,6 +281,11 @@ const Main = () => {
                                             exact
                                             path="/mm/orderrequestrejectionpending/"
                                             component={OrderRejectionPendingList}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/task/assignment/"
+                                            component={SconTaskPending}
                                         />
                                     </Switch>
                                 </div>

@@ -5,7 +5,6 @@ import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 
 const SearchColumn = (index) => {
-    console.log('searchindex',index);
     const getColumnSearchProps = dataIndex => ({
         filterDropdown: ({setSelectedKeys,selectedKeys,confirm}) => {
             

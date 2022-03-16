@@ -2,7 +2,7 @@ import axios from 'axios';
 import {variables} from '../Variables';
 import { toast } from 'react-toastify';
 
-import {useDispatch} from 'react-redux';
+import {useDispatch,useSelector} from 'react-redux';
 
 import {setIsLoading} from '@store/reducers/ui';
 
@@ -12,6 +12,7 @@ const token = localStorage.getItem('token');
 const config = {
     headers: { Authorization: `Bearer ${token}` }
 };
+
 
 const headers = { 
     'Content-Type' : 'application/json',
@@ -305,7 +306,12 @@ const deleteMaterialOrderRequest = (param) => DELETE('materialmanagement/orderRe
 
 const getOrderDetailEdit =  (odi) => GETParam('materialmanagement/OrderDetailRequestGetDetail',odi);
 
+const getSconTaskPending = () => GET('taskassignment/taskAssignmentSubconPending');
+const getSconEngineer = (sconid,wpid) => GETParam2('subcon/getFieldSubcontractorEngineer',sconid,wpid)
+
 const API ={
+    getSconEngineer,
+    getSconTaskPending,
     getPOScopeListFile,
     getOrderDetailEdit,
     putMaterialOrderDraft,
