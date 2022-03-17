@@ -308,8 +308,14 @@ const getOrderDetailEdit =  (odi) => GETParam('materialmanagement/OrderDetailReq
 
 const getSconTaskPending = () => GET('taskassignment/taskAssignmentSubconPending');
 const getSconEngineer = (sconid,wpid) => GETParam2('subcon/getFieldSubcontractorEngineer',sconid,wpid)
+const postAssignEngineer = (body) => POST("taskassignment/taskAssignmentToEngineer",body);
+const postCancelTask = (body) => POST("taskassignment/taskAssignmentCanceled",body);
+const putRequestReschedule = (body) => PUT("scheduleassignment/taskScheduleProposeNewDate",body);
 
 const API ={
+    postCancelTask,
+    putRequestReschedule,
+    postAssignEngineer,
     getSconEngineer,
     getSconTaskPending,
     getPOScopeListFile,
