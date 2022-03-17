@@ -1,9 +1,10 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable react/jsx-boolean-value */
 /* eslint-disable react/no-unstable-nested-components */
 import { getDataSiteList,getWpId,getOrderType,getOrderTypeId } from '@app/store/action/siteListDeliveryRequestAction';
 import React,{useEffect,useState} from 'react'
 import { useDispatch,useSelector } from 'react-redux'
-import {Modal,Table, Input,Menu, Dropdown, Button, Space, Spin, Row, Col,Tooltip  } from 'antd'
+import {Select,Form,Modal,Table, Input,Menu, Dropdown, Button, Space, Spin, Row, Col,Tooltip  } from 'antd'
 import { CloseSquareTwoTone ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined, EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined } from '@ant-design/icons'
 import { useHistory } from 'react-router-dom';
 import API  from '../../utils/apiServices';
@@ -11,9 +12,10 @@ import Search from '@app/components/searchcolumn/SearchColumn';
 import moment from 'moment';
 import CircularProgress from '@mui/material/CircularProgress';
 import ModalTaskAssignment from './ModalAssignTask'
+import ModalRequestReschedule from './ModalRequestReschedule'
 
-const TaskPendingTable = () => {
-
+const TaskPendingTable = ({isAssignTaskModal}) => {
+    const { Option } = Select;
     const [isLoading, setIsLoading] = useState(true);
     const [sconTaskPending,setSconTaskPending] = useState([]);
     const [isAssignTask, setIsAssignTask] = useState(false);
@@ -21,6 +23,13 @@ const TaskPendingTable = () => {
     const [isCancelTask, setIsCancelTask] = useState(false);
     const [selectedSconId, setSelectedSconId] = useState('');
     const [selectedWPID, setSelectedWPID] = useState('');
+    const [lspName, setLspName] = useState('');
+    const [selectedOrderDetailId, setSelectedOrderDetailId] = useState('');
+    const [selectedTaskScheduleId, setSelectedTaskScheduleId] = useState('');
+    const [selectedTransDelegateId, setSelectedTransDelegateId] = useState('');
+    const [pickupDate, setPickupDate] = useState('');
+    const [cancelLoading, setCancelLoading] = useState(false);
+    const user = useSelector((state) => state.auth.user);
 
     const getSconTaskPending = () => {
         setIsLoading(true);
@@ -33,20 +42,15 @@ const TaskPendingTable = () => {
         )
     }
 
-    const getSubconEngineer = (sconid, wpid) => {
-        API.getSconEngineer(sconid,wpid).then(
-            result=>{
-                console.log('sconEngineer', result)
-            }
-            
-        )
-    }
-
     const handleAssignTask = (data) =>{
         console.log("assign data:",data);
         setSelectedWPID(data.workpackageid);
         setSelectedSconId(data.subconId);
-        getSubconEngineer(data.sconid,data.workpackageid);
+        setLspName(data.subconName);
+        setPickupDate(data.pickupOrDeliveryDate);
+        setSelectedOrderDetailId(data.orderDetailId);
+        
+        // getSubconEngineer(data.subconId,data.workpackageid);
         setIsAssignTask(true);
     }
 
@@ -56,12 +60,50 @@ const TaskPendingTable = () => {
     const handleCancelAssignTask = () =>{
         setIsAssignTask(false);
     }
+    
+    const handleCancelCancelTask = () =>{
+        setIsCancelTask(false);
+    }
+    const handleOkRequestReschedule = () =>{
+        setIsReschedule(false);
+    }
+    const handleCancelRequestReschedule = () =>{
+        setIsReschedule(false);
+    }
 
     const handleRequestSchedule = (data) =>{
+        setIsReschedule(true);
+        setSelectedSconId(data.subconId);
+        setSelectedTaskScheduleId(data.taskScheduleId);
         console.log(data);
     }
     const handleCancelTask = (data) =>{
+        setIsCancelTask(true);
+        setSelectedTransDelegateId(data.transDelegateId);
+        setSelectedOrderDetailId(data.orderDetailId);
         console.log(data);
+    }
+
+    const handleOKCancelTask = () =>{
+        setCancelLoading(true);
+        const body = (
+            {
+                "transDelegateId":selectedTransDelegateId,
+                "orderdetailId":selectedOrderDetailId,
+                "transferBy": user.uid  
+            }
+        )
+        // console.log("okcancel:",body)
+        API.postCancelTask(body).then(
+            result=>{
+                setCancelLoading(false);
+                setIsCancelTask(false);
+                getSconTaskPending();
+                console.log(result)
+            }
+        )
+
+        // setIsCancelTask(false);
     }
 
     const columns = [
@@ -117,8 +159,8 @@ const TaskPendingTable = () => {
         },
         {
             title : "Scope Detail",
-            dataIndex:'scopeDetail',
-            ...Search('scopeDetail'),
+            dataIndex:'packageName',
+            ...Search('packageName'),
         },
         {
             title : "Assigned By",
@@ -155,7 +197,7 @@ const TaskPendingTable = () => {
                 return (
                     <Space>
                         <Tooltip title="Assign Task">
-                            <UserAddOutlined onClick={() => handleAssignTask(record)} />
+                            <UserAddOutlined  onClick={() => handleAssignTask(record)} />
                         </Tooltip>
                         {!record.requestReschedule?
                             null
@@ -177,7 +219,7 @@ const TaskPendingTable = () => {
     ]
 
     useEffect(() => {
-        getSconTaskPending()
+        getSconTaskPending();
     },[])
 
     return(
@@ -207,27 +249,31 @@ const TaskPendingTable = () => {
                 footer={null}
                 destroyOnClose={true}
             >
-                <ModalTaskAssignment />
-
+                <ModalTaskAssignment orderdetailid={selectedOrderDetailId} wpid={selectedWPID} sconid={selectedSconId} lspName={lspName} pickupDate={pickupDate} />
             </Modal>
             <Modal title="Request Reschedule"
                 visible={isReschedule}
-                onOk={handleOkAssignTask}
-                onCancel={handleCancelAssignTask}
+                onOk={handleOkRequestReschedule}
+                onCancel={handleCancelRequestReschedule}
                 footer={null}
                 destroyOnClose={true}
             >
-                <ModalTaskAssignment />
+                <ModalRequestReschedule subconId={selectedSconId} taskScheduleId={selectedTaskScheduleId} />
 
             </Modal>
             <Modal title="Cancel Task"
-                visible={isAssignTask}
-                onOk={handleOkAssignTask}
-                onCancel={handleCancelAssignTask}
-                footer={null}
+                visible={isCancelTask}
+                onOk={handleOKCancelTask}
+                onCancel={handleCancelCancelTask}
+                confirmLoading={cancelLoading}
                 destroyOnClose={true}
             >
-                <ModalTaskAssignment sconid={selectedSconId} wpid={selectedWPID}/>
+                <p>
+                Are you sure you want to Cancel this task? 
+                </p>
+                <p>
+                (task will be no longer available once it canceled)
+                </p>
 
             </Modal>
             </>

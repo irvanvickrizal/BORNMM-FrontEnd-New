@@ -40,6 +40,7 @@ const Login = () => {
             dispatch(loadUser(user));
             toast.success('Login is succeed!');
             setAuthLoading(false);
+ 
             history.push('/');
             
         } catch (error) {
