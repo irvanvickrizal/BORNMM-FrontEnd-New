@@ -13,18 +13,36 @@ import {
     Tabs,
     Button,
     Switch,
-    Modal
+    Modal,
+    Tooltip
 } from "antd"
 import {useDispatch, useSelector} from "react-redux"
 import { getDataDone, getDataOnProgress, getDataPending } from '@app/store/action/taskAssignmentPendingAction'
-import {CalendarOutlined,UsergroupAddOutlined,CloseSquareOutlined} from "@ant-design/icons"
+import moment from "moment"
+
+import { CloseSquareTwoTone ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined, EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined } from '@ant-design/icons'
 
 export default function TableTaskSummary() {
     const dispatch = useDispatch()
     const {TabPane} = Tabs
     const {Title} = Typography
     const [page,setPage] = useState(1)
+    const [isModalVisible,setIsModalVisible] = useState(false)
+    const [isModalCancelVisible,setIsModalCancelVisible] = useState(false)
 
+
+    const showModal = () => {
+        setIsModalVisible(true)
+    }
+    const hideModal = () => {
+        setIsModalVisible(false)
+    }
+    const showModalCancel = () => {
+        setIsModalCancelVisible(true)
+    }
+    const hideModalCancel = () => {
+        setIsModalCancelVisible(false)
+    }
     useEffect(() => {
         dispatch(getDataPending())
         dispatch(getDataOnProgress())
@@ -97,9 +115,24 @@ export default function TableTaskSummary() {
         {
             title: "Action",
             dataIndex: "",
-            render : ()=>{return(
-                <Col span={4} md={8} sm={24}> <UsergroupAddOutlined style={{fontSize:"22px"}} /><CalendarOutlined style={{fontSize:"22px"}} /><CloseSquareOutlined  style={{fontSize:"22px",color:"red"}}/></Col>
-            )}
+            render:(record)=>{
+                return (
+                    <Space>
+                        <Tooltip title="Assign Task">
+                            <UserAddOutlined style={{fontSize:"16px"}} onClick={showModal} />
+                        </Tooltip>
+                  
+                          
+                        <Tooltip title="Request Reschedule">
+                            <CalendarTwoTone  style={{fontSize:"16px"}}/>
+                        </Tooltip>
+                        
+                        <Tooltip title="Cancel Task">
+                            <CloseSquareTwoTone twoToneColor="#FF0000" style={{fontSize:"16px"}} onClick={showModalCancel}/>
+                        </Tooltip>
+                    </Space>
+                )
+            }
         },
     ]
     const columnsAssigmentOnProgress = [
@@ -147,7 +180,14 @@ export default function TableTaskSummary() {
         },
         {
             title: "Pickup Date",
-            dataIndex: "pickupOrDeliveryDate"
+            dataIndex: "pickupOrDeliveryDate",
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.pickupOrDeliveryDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            },
         },
         {
             title: "Assign To",
@@ -163,7 +203,24 @@ export default function TableTaskSummary() {
         },
         {
             title: "Action",
-            dataIndex: ""
+            render:(record)=>{
+                return (
+                    <Space>
+                        <Tooltip title="Assign Task">
+                            <UserAddOutlined style={{fontSize:"16px"}} onClick={showModal}/>
+                        </Tooltip>
+                  
+                          
+                        <Tooltip title="Request Reschedule">
+                            <CalendarTwoTone  style={{fontSize:"16px"}}/>
+                        </Tooltip>
+                        
+                        <Tooltip title="Cancel Task">
+                            <CloseSquareTwoTone twoToneColor="#FF0000" style={{fontSize:"16px"}} />
+                        </Tooltip>
+                    </Space>
+                )
+            }
         },
     ]
     const columnsAssigmentOnDone = [
@@ -271,6 +328,71 @@ export default function TableTaskSummary() {
                     </Card>
                 </TabPane>
             </Tabs>
+            <Modal visible={isModalVisible} onCancel={hideModal}
+                footer={[
+                    <Button key="back"  onClick={hideModal}>
+                Cancel
+                    </Button>,
+                    <Button key="submit" type="primary"  >
+                Assign
+                    </Button>,
+                
+                ]}
+            >
+                <div> <Card  title={CardTitle("Assign Task Form")}>
+                    <Form
+                        labelCol={{span: 9}}
+                        wrapperCol={{span: 13}}
+                        layout="horizontal"
+                    >
+                        <Form.Item label="LSP Name">
+                            <Typography>Agility</Typography>
+                        </Form.Item>
+                        <Form.Item label=" Pick Up Date">
+                            <Typography>2022-03-12</Typography>
+                        </Form.Item>
+                        <Form.Item label="WH Team">
+                            <Select
+                                
+                                placeholder="Select an option"
+                            >
+                              
+                                <Select.Option >
+                                    <p>cek</p>
+                                </Select.Option>
+                              
+                            </Select>
+                        </Form.Item>
+                    </Form>
+                </Card>
+                </div>
+            </Modal>
+            <Modal visible={isModalCancelVisible} onCancel={hideModalCancel}
+                footer={[
+                    <Button key="back"  onClick={hideModalCancel}>
+                Close
+                    </Button>,
+                    <Button key="submit"  >
+                Cancel
+                    </Button>,
+                
+                ]}
+            >
+                <div> <Card  title={CardTitle("Cancel Task")}>
+                    <Form
+                        labelCol={{span: 9}}
+                        wrapperCol={{span: 13}}
+                        layout="horizontal"
+                    >
+                        <Typography>
+                        Are you sure you want to Cancel this task? 
+(task will be no longer available once it canceled)
+
+                        </Typography>
+                    </Form>
+                </Card>
+                </div>
+            </Modal>
         </div>
     )
 }

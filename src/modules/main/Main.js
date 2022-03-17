@@ -42,6 +42,7 @@ import AprovalTaskPendingForm from "../../pages/approvel/aprovalTaskPendingForm"
 import OrderRequestDraft from "../../pages/orderRequestDraft/orderRequestDraft"
 import OrderRejectionPendingList from "@app/pages/siteListDeliveryRequestType/OrderRejectionPending"
 import SconTaskSummary from "@app/pages/SconTaskSummary/sconTaskSummary"
+import SconTaskPending from "@app/pages/SconTaskPending/SconTaskPending"
 
 const Main = () => {
     const dispatch = useDispatch()

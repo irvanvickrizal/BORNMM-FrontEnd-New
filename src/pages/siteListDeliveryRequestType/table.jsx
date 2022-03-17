@@ -17,32 +17,33 @@ import { useHistory } from 'react-router-dom';
 import Search from '@app/components/searchcolumn/SearchColumn';
 
 
+
 export default function TableSite() {
 
     const dispatch = useDispatch()
     const history = useHistory();
     const [wpIds,setWpids]=useState('')
+    const [ordetTypeIdhook,setordetTypeIdhook]=useState('')
   
+    const dataSiteList = useSelector(state=>state.siteListDeliveryRequestReducer.data)
+    const wpid = useSelector(state=>state.siteListDeliveryRequestReducer.wpId)
+    const dataOrderTypeList = useSelector(state=>state.siteListDeliveryRequestReducer.orderList)
+    const ordetTypeIds = useSelector(state=>state.siteListDeliveryRequestReducer.orderTypeId)
     
 
     useEffect(() => {
         dispatch(getDataSiteList())
         
-    },[dispatch]);
+    },[dispatch,ordetTypeIdhook]);
 
-    const dataSiteList = useSelector(state=>state.siteListDeliveryRequestReducer.data)
-    const wpid = useSelector(state=>state.siteListDeliveryRequestReducer.wpId)
-    const dataOrderTypeList = useSelector(state=>state.siteListDeliveryRequestReducer.orderList)
-    const ordetTypeIds = useSelector(state=>state.siteListDeliveryRequestReducer.orderTypeId)
    
     const navigateTo = () => {
-      
-        history.push(`/sitelist/siteDetail?wpid=${wpIds}&ot=${ordetTypeIds}`)
+        history.push(`/sitelist/siteDetail?wpid=${wpIds}&ot=${ordetTypeIdhook}`)
     }
+
     const odi = (e) => {
         dispatch(getOrderTypeId(e))
         navigateTo()
-     
     }
 
 
@@ -52,10 +53,11 @@ export default function TableSite() {
   
         dispatch(getOrderType(record.orderTypeList))
         setWpids(wp);
+        setordetTypeIdhook(record.orderTypeList[0].orderTypeDetail.orderTypeId)
         const wpId = record.workpackageID;
         const scopeName = record.scopeDetail.scopeName;
         const scopeId = record.orderTypeList[0].orderTypeDetail.orderTypeId;
-        console.log(wpId,scopeName,scopeId,'wp');
+        console.log(wpId,scopeName,scopeId,record,'wp');
         // navigateTo();
     } 
     const menuDropdown =  (
@@ -157,10 +159,6 @@ export default function TableSite() {
     
     ]
   
-    
-
-    
-
     return (
         <Table
             // rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}

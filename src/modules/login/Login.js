@@ -41,6 +41,7 @@ const Login = () => {
             toast.success('Login is succeed!');
             setAuthLoading(false);
             history.push('/');
+            
         } catch (error) {
             setAuthLoading(false);
             toast.error(error.message || 'Failed');

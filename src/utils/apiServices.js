@@ -2,7 +2,7 @@ import axios from 'axios';
 import {variables} from '../Variables';
 import { toast } from 'react-toastify';
 
-import {useDispatch} from 'react-redux';
+import {useDispatch,useSelector} from 'react-redux';
 
 import {setIsLoading} from '@store/reducers/ui';
 
@@ -12,6 +12,7 @@ const token = localStorage.getItem('token');
 const config = {
     headers: { Authorization: `Bearer ${token}` }
 };
+
 
 const headers = { 
     'Content-Type' : 'application/json',
@@ -269,6 +270,7 @@ const postPOData = (body) => POST('customerpo', body);
 const putPOActivation = () => PUT('customerpo/SetActivationStatusU');
 
 const getPOScopeList = () => GET('poscope/getposcopelist');
+const getPOScopeListFile = (id) => GETParam('positelist/GetUploadedSitelistFile',id);
 const getErrorList = (id) => GETParam('positelist/GetUploadedSitelistErr',id);
 const deleteFileUpload = (id) => PUTFile('positelist/UploadedSitelistDeletedTemp',id);
 const postPOScope = (body) => POST('poscope/poscopeadd',body);
@@ -304,7 +306,13 @@ const deleteMaterialOrderRequest = (param) => DELETE('materialmanagement/orderRe
 
 const getOrderDetailEdit =  (odi) => GETParam('materialmanagement/OrderDetailRequestGetDetail',odi);
 
+const getSconTaskPending = () => GET('taskassignment/taskAssignmentSubconPending');
+const getSconEngineer = (sconid,wpid) => GETParam2('subcon/getFieldSubcontractorEngineer',sconid,wpid)
+
 const API ={
+    getSconEngineer,
+    getSconTaskPending,
+    getPOScopeListFile,
     getOrderDetailEdit,
     putMaterialOrderDraft,
     getOrderRequestDraft,

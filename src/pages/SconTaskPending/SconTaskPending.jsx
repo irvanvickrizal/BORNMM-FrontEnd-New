@@ -3,14 +3,12 @@
 import React,{useEffect} from 'react';
 import HeaderChanger from '@app/components/cardheader/HeaderChanger';
 import API  from '../../utils/apiServices';
-import POScopeList from './POScopeList';
-import POScopeListAnt from './POScopeListAnt';
 import {useSelector} from 'react-redux';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import TaskPendingTable from './Table'
 
-
-const POCreation = () => {
+const SconTaskPending = () => {
     
     const isLoading = useSelector((state) => state.ui.isLoading);
     useEffect(() => {
@@ -19,17 +17,14 @@ const POCreation = () => {
 
     return (
         <div>
-            <HeaderChanger title="PO Scope"/>
+            <HeaderChanger title="Subcon Task Pending"/>
             {/* {isEdit || isNew ? <DOPPanel/> : null} */}
             {isLoading ? <Box sx={{ display: 'flex',
                 justifyContent: 'center'
             }}>
                 <CircularProgress />
             </Box> : 
-                <>
-                    {/* <POScopeListAnt /> */}
-                    <POScopeList />
-                </>
+                <TaskPendingTable/>
             }
             
             {/* <POScopeList /> */}
@@ -37,4 +32,4 @@ const POCreation = () => {
     );
 };
 
-export default POCreation;
+export default SconTaskPending;

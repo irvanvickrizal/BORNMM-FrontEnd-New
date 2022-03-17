@@ -18,6 +18,7 @@ const errorLog = (WPID , Phase, PackageName, Region, DataStatus)=>{
 
 const poScopeData = (poScopeId,totalSites,cpoId,cpoNo,cpoNoOriginal,projectName,scopeId,scopeName,lmdt) =>{
     const datas = {
+        key: poScopeId,
         poScopeId: poScopeId,
         totalSites: totalSites,
         cpoId: cpoId,
@@ -48,13 +49,14 @@ const poScopeData = (poScopeId,totalSites,cpoId,cpoNo,cpoNoOriginal,projectName,
     return datas;
 }
 
-const fileListData = (poScopeId,poSitelistId,filePath,fullFilePath,uploadStatus,rowCount) => {
+const fileListData = (poScopeId,poSitelistId,filePath,fullFilePath,uploadStatus,uploadDate,rowCount) => {
     const datas = {
         poScopeId
         ,poSitelistId
         ,filePath
         ,fullFilePath
         ,uploadStatus
+        ,uploadDate
         ,rowCount
     }
     

@@ -24,7 +24,7 @@ import {useDispatch,useSelector} from 'react-redux';
 import { setIsEdit, setIsNew } from '@app/store/reducers/scope';
 import {toast} from 'react-toastify';
 
-import { Table, Input, Button, Space } from 'antd';
+import { Table, Input, Button, Space,Card } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 
@@ -115,7 +115,98 @@ const POScopeListAnt = () => {
         }
     }
 
+    const [fileData,setFileData] = useState([]);
 
+    const getFileList = (poScopeId) =>{
+        API.getPOScopeListFile(poScopeId).then(
+            result=>{
+                setFileData(result);
+                console.log("fileData",result);
+            }
+        )
+    }
+    const columnsSiteInfo =[
+        {
+            title:"File Name",
+            dataIndex:"filePath",
+        },
+        {
+            title:"Upload Data",
+            dataIndex:"lmdt",
+        },
+        {
+            title:"Total Row",
+            dataIndex:"rowCount",
+        },
+        {
+            title:"Status",
+            dataIndex:"uploadStatus",
+        },
+        {
+            title:"Option",
+        },
+    ]
+    const columnss = [
+        { title: "Name", dataIndex: "name", key: "name" },
+        { title: "Age", dataIndex: "age", key: "age" },
+        { title: "Address", dataIndex: "address", key: "address" },
+        {
+            title: "Action",
+            dataIndex: "",
+            key: "x",
+            render: () => <a href="javascript:;">Delete</a>
+        }
+    ];
+
+    const data1 = [
+        {
+            key: 'poScopeId',
+            name: "I am diff",
+            age: 32,
+            address: "New York No. 1 Lake Park",
+            description:
+            "My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park."
+        },
+        {
+            key: 'poScopeId',
+            name: "yes",
+            age: 42,
+            address: "London No. 1 Lake Park",
+            description:
+            "My name is Jim Green, I am 42 years old, living in London No. 1 Lake Park."
+        },
+        {
+            key: 'poScopeId',
+            name: "no",
+            age: 32,
+            address: "Sidney No. 1 Lake Park",
+            description:
+            "My name is Joe Black, I am 32 years old, living in Sidney No. 1 Lake Park."
+        }
+    ];
+    const expandedRow = row => {
+        
+        console.log("exprow",row);
+        //getFileList(row.poScopeId);
+        // API.getPOScopeListFile(row.poScopeId).then(
+        //     result=>{
+        //         setFileData(result);
+        //         console.log("fileData",result);
+        //     }
+        // )
+
+        
+        return (
+            <Card title="File List"  hoverable>
+                <Table 
+                    columns={columnss} 
+                    dataSource={data1} 
+                    pagination={false} 
+                    bordered
+                />
+            </Card>
+        );
+    };
 
     function getPOScopeListANT(){
         console.log("getscope");
@@ -125,7 +216,8 @@ const POScopeListAnt = () => {
                 console.log("result po scope",result)
                 // const data = result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
 
-                const data = result.map((rs)=>CreateDataPOScope.poScopeData(rs.poScopeId
+                const data = result.map((rs)=>CreateDataPOScope.poScopeData(
+                    rs.poScopeId
                     , rs.totalSites
                     , rs.poDetail.cpoId
                     , rs.poDetail.cpoNo
@@ -134,6 +226,8 @@ const POScopeListAnt = () => {
                     , rs.scopeDetail.scopeId
                     , rs.scopeDetail.scopeName
                     , rs.lmdt)) 
+
+
                 console.log("dataant", data)
                 setPoScopeData(data);
                 console.log("poscopedata",poScopeData);
@@ -203,6 +297,46 @@ const POScopeListAnt = () => {
         refreshData();
     }
 
+    const columnsss = [
+        { title: "Name", dataIndex: "name", key: "name" },
+        { title: "Age", dataIndex: "age", key: "age" },
+        { title: "Address", dataIndex: "address", key: "address" },
+        {
+            title: "Action",
+            dataIndex: "",
+            key: "x",
+            render: () => <a href="javascript:;">Delete</a>
+        }
+    ];
+
+    const data = [
+        {
+            key: 1,
+            name: "John Brown",
+            age: 32,
+            address: "New York No. 1 Lake Park",
+            description:
+      "My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park."
+        },
+        {
+            key: 2,
+            name: "Jim Green",
+            age: 42,
+            address: "London No. 1 Lake Park",
+            description:
+      "My name is Jim Green, I am 42 years old, living in London No. 1 Lake Park."
+        },
+        {
+            key: 3,
+            name: "Joe Black",
+            age: 32,
+            address: "Sidney No. 1 Lake Park",
+            description:
+      "My name is Joe Black, I am 32 years old, living in Sidney No. 1 Lake Park."
+        }
+    ];
+
+
     useEffect(() => {
         refreshData();
 
@@ -217,7 +351,10 @@ const POScopeListAnt = () => {
                 </a>
             </div>
             <div className="card-body">
-                <Table columns={columns} dataSource={poScopeData} />
+                <Table 
+                    columns={columns} 
+                    dataSource={poScopeData}
+                    expandedRowRender={ expandedRow } />
             </div>
         </div><Modal
             size="lg"

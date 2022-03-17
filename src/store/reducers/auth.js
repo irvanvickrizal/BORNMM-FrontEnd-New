@@ -12,9 +12,6 @@ const initialState = {
     user: []
 };
 
-const User = (token) => {
-
-}
 
 export const authSlice = createSlice({
     name: 'auth',
