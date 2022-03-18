@@ -64,7 +64,7 @@ export default function LogisticForm() {
         dispatch(getLsp())
         dispatch(getDeliveryList())
         dispatch(getDeliveryMode())
-    }, [])
+    }, [dispatch])
 
     const lsp = useSelector((state) => state.logistikFormReducer.dataLsp)
     const deliveryList = useSelector(
@@ -402,7 +402,8 @@ export default function LogisticForm() {
                                     onChange={(e) => setDeliveMode(e)}
                                     placeholder="Select an option"
                                 >
-                                    {deliveryMode.map((inv) => (
+                                    {
+                                    deliveryMode.map((inv) => (
                                         <Select.Option value={inv.deliveryModeId}>
                                             {inv.deliveryMode}
                                         </Select.Option>

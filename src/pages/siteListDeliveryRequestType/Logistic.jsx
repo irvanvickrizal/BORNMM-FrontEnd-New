@@ -5,6 +5,7 @@ import { getIdTaskPending, getLogisticPending, getOdi } from '@app/store/action/
 import {EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled} from '@ant-design/icons'
 import { useHistory } from 'react-router-dom'
 import HeaderChanger from '@app/components/cardheader/HeaderChanger'
+import Search from '@app/components/searchcolumn/SearchColumn';
 
 export default function Logistic() {
     const dispatch = useDispatch()
@@ -41,42 +42,52 @@ export default function Logistic() {
         {
             title:'Request No',
             dataIndex:'requestNo',
+            ...Search('requestNo'),
         },
         {
             title:'Order Type',
             dataIndex:'orderType',
+            ...Search('orderType'),
         },
         {
             title:'Site No',
             dataIndex:'siteNo',
+            ...Search('siteNo'),
         },
         {
             title:'Origin',
             dataIndex:'originName',
+            ...Search('originName'),
         },
         {
             title:'Destination',
             dataIndex:'destinationName',
+            ...Search('destinationName'),
         },
         {
             title:'Site Name',
             dataIndex:'siteName',
+            ...Search('siteName'),
         },
         {
             title:'Region',
             dataIndex:'region',
+            ...Search('region'),
         },
         {
             title:'Scope Name',
             dataIndex:'scopeName',
+            ...Search('scopeName'),
         },
         {
             title:'Scope Detail',
             dataIndex:'scopeDetail',
+            ...Search('scopeDetail'),
         },
         {
             title:'Delivery Type',
             dataIndex:'deliveryType',
+            ...Search('deliveryDate'),
         },
         {
             title:'Action',

@@ -105,7 +105,7 @@ const ModalAssigntask = (props) => {
                 <Input disabled/>
             </Form.Item>
 
-            <Form.Item label="Inventory Code" name="assignTo">
+            <Form.Item label="Assign To" name="assignTo">
                 <Select 
                     onChange={(e) => handleChangeEngineer(e)}
                     placeholder="Select Engineer"

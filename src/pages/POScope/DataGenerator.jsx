@@ -51,13 +51,14 @@ const poScopeData = (poScopeId,totalSites,cpoId,cpoNo,cpoNoOriginal,projectName,
 
 const fileListData = (poScopeId,poSitelistId,filePath,fullFilePath,uploadStatus,uploadDate,rowCount) => {
     const datas = {
-        poScopeId
-        ,poSitelistId
-        ,filePath
-        ,fullFilePath
-        ,uploadStatus
-        ,uploadDate
-        ,rowCount
+        key: poSitelistId
+        ,poScopeId : poScopeId
+        ,poSitelistId : poSitelistId
+        ,filePath : filePath
+        ,fullFilePath : fullFilePath
+        ,uploadStatus : uploadStatus
+        ,uploadDate : uploadDate
+        ,rowCount : rowCount
     }
     
     return datas;

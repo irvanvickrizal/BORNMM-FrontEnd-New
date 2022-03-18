@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable import/no-cycle */
 /* eslint-disable react/jsx-boolean-value */
 /* eslint-disable react/no-unstable-nested-components */
@@ -35,8 +36,8 @@ const TaskPendingTable = ({isAssignTaskModal}) => {
         setIsLoading(true);
         API.getSconTaskPending().then(
             result=>{
-                setIsLoading(false);
                 setSconTaskPending(result);
+                setIsLoading(false);
                 console.log("scontaskpendnig",result);
             }
         )
@@ -202,9 +203,13 @@ const TaskPendingTable = ({isAssignTaskModal}) => {
                         {!record.requestReschedule?
                             null
                             :
-                            <Tooltip title="Request Reschedule">
-                                <CalendarTwoTone onClick={() => handleRequestSchedule(record)} />
-                            </Tooltip>
+                            record.dayToGo <= -2 ?
+                                <Tooltip title="Request Reschedule">
+                                    <CalendarTwoTone onClick={() => handleRequestSchedule(record)} />
+                                </Tooltip> :
+                                <Tooltip color='#f50' title="Cannot request reschedule, day to go h-1 or higher">
+                                    <CalendarTwoTone />
+                                </Tooltip>
                         }
                         <Tooltip title="Cancel Task">
                             <CloseSquareTwoTone twoToneColor="#FF0000" onClick={() => handleCancelTask(record)} />

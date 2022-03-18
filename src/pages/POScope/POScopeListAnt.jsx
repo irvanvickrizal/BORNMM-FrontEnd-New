@@ -17,34 +17,269 @@
 /* eslint-disable react/prefer-stateless-function */
 import React, {Component,useState,useEffect} from 'react';
 import Modal from 'react-bootstrap/Modal';
- 
+import moment from 'moment';
 import API  from '../../utils/apiServices';
 import POScopePanel from './POScopePanel';
 import {useDispatch,useSelector} from 'react-redux';
 import { setIsEdit, setIsNew } from '@app/store/reducers/scope';
 import {toast} from 'react-toastify';
-
-import { Table, Input, Button, Space,Card } from 'antd';
+import {IconButton, TextField}  from '@mui/material/';
+import {message,Upload, Table, Button, Space,Card,Tooltip } from 'antd';
 import Highlighter from 'react-highlight-words';
-import { SearchOutlined } from '@ant-design/icons';
-
+import { CloudUploadOutlined, UploadOutlined,DownloadOutlined,PlusOutlined,FileExcelOutlined,CloseOutlined, EditOutlined,DeleteOutlined,CheckOutlined  } from '@ant-design/icons';
+import {variables} from '../../Variables';
 import CreateDataPOScope from './DataGenerator';
 import Search from '@app/components/searchcolumn/SearchColumn';
+import InputAdornment from '@mui/material/InputAdornment';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
 // import Seacrh from '@app/components/searchcolumn/SearchColumn';
+import { styled } from '@mui/material/styles';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
+import HourglassTopIcon from '@mui/icons-material/HourglassTop';
+import SmsFailedIcon from '@mui/icons-material/SmsFailed';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import SimCardDownloadIcon from '@mui/icons-material/SimCardDownload';
+import DeleteIcon from '@mui/icons-material/Delete';
+import exportFromJSON from 'export-from-json'
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const POScopeListAnt = () => {
-
+    const Input = styled('input')({
+        display: 'none',
+    });
+    const token = localStorage.getItem('token'); 
     const [scopeName,setScopeName] = useState("");
     const [scopeDesc,setScopeDesc] = useState("");
     const [isActive,setIsActive] = useState("");
 
     const [show, setShow] = useState(false);
     const [poScopeData,setPoScopeData] = useState([]);
+    const [selectedPOScopeId,setSelectedPOScopeId] = useState(0);
+    const [selectedFileRevise, setSelectedFileRevise] = useState(null);
     const [poFileList,setPoFileList] = useState([]);
     const [isActiveRow,setIsActiveRow] = useState(false);
-
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [errorLogs,setErrorLogs] = useState([]);
     const dispatch = useDispatch();
+    const baseURL = variables.API_URL;
+    const [isLoading, setIsLoading] = useState(false);
+    const [poScopeIdUpload, setPOScopeIdUpload] = useState(0);
 
+    function getPOScopeListANT(){
+        API.getPOScopeList().then(
+            result=>{
+                console.log("result po scope",result)
+                // const data = result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
+
+                const data = result.map((rs)=>CreateDataPOScope.poScopeData(
+                    rs.poScopeId
+                    , rs.totalSites
+                    , rs.poDetail.cpoId
+                    , rs.poDetail.cpoNo
+                    , rs.poDetail.cpoNoOriginal
+                    , rs.poDetail.projectName
+                    , rs.scopeDetail.scopeId
+                    , rs.scopeDetail.scopeName
+                    , rs.lmdt)) 
+
+                setPoScopeData(data);
+            }
+        )
+    } 
+
+    function refreshPage(){
+        getPOScopeListANT()
+    }
+
+    function onFileChange(file){
+        console.log("upload file ",file, poScopeIdUpload);
+        // setIsLoading(true);
+        // API.postPOFile(id,file).then(
+        //     result=>{
+        //         setIsLoading(false);
+        //         toast.success("Uploading File Success")
+        //         setSelectedPOScopeId(0);
+        //     }
+        // );
+        // setSelectedFile(file);
+    }
+
+    function getErrorLog(id){
+
+        API.getErrorList(id).then(
+            result=>{
+                console.log('i am error log Scope',result)
+                
+                setErrorLogs(result);
+                
+                const data = result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
+                const exportType =  exportFromJSON.types.xls;
+                const fileName = `errorlog_${data.WPID}_${data.Phase}`;
+                exportFromJSON({ data, fileName, exportType });
+            }
+        )
+    }
+
+    function ReviseFileUpload(id, file){
+        API.postRevisePOFile(id,file).then(
+            result=>{
+                window.location.reload();
+            }
+        )
+        setSelectedFileRevise(file);
+    }
+
+    function DeleteFileUpload(id, file){
+        if (window.confirm('Are you sure you want to process this action ?')) {
+            API.deleteFileUpload(id).then(
+                result=>{
+                    console.log('i am PO Delete File',result);
+                    
+                    window.location.reload();
+                }
+            )
+        }
+    }
+
+    function IconUploadStatus(props){
+        console.log(props.status)
+        if(props.status=="success"){
+            console.log(props.status);
+            return (
+                <Tooltip title="Success">
+                    <IconButton
+                        aria-label="success"
+                        size="small"
+                        color="success"
+                    >
+                        <CheckCircleIcon />
+                    </IconButton>
+                </Tooltip> 
+            );
+        }
+        else if(props.status=="failed"){ 
+            console.log(props.status);
+            return (
+                // <h1>failed</h1>
+                <Tooltip title="Failed">
+                    <IconButton
+                        aria-label="success"
+                        size="small"
+                        color="error"
+                    >
+                        <SmsFailedIcon/>
+                    </IconButton>
+                </Tooltip> 
+            );
+        }
+        else if(props.status=="pending"){
+            console.log(props.status);
+            return (
+                // <h1>pending</h1>
+                <Tooltip title="Pending">
+                    <IconButton
+                        aria-label="success"
+                        size="small"
+                        color="primary"
+                    >
+                        <HourglassTopIcon />
+                    </IconButton>
+                </Tooltip>  
+            );
+        }
+        return props.status;
+    }
+
+    function IconFileOption(props){
+        console.log("id",props.id);
+        console.log(props.status)
+        if(props.status=="success"){
+            console.log(props.status);
+            return (
+                null
+            );
+        }
+        else if(props.status=="failed"){ 
+            console.log(props.status);
+            return (
+                <><label title="upload file" htmlFor="icon-button-filerevise">
+                    <Input accept="*/*" id="icon-button-filerevise" type="file" 
+                        onChange={(e)=>ReviseFileUpload(props.id,e.target.files[0])}       
+                    />
+                    <IconButton size='small'
+                        color="primary" 
+                        aria-label="upload file" 
+                        component="span" 
+                    >
+                        <FileUploadIcon />
+                    </IconButton>
+                </label>
+                <Tooltip title="Delete File">
+                    <IconButton 
+                        aria-label="expand row"
+                        size="small"
+                        color="error"
+                        
+                        onClick={() => DeleteFileUpload(props.id)}
+                    >
+                        <DeleteIcon />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="Download Log">
+                    <IconButton
+                        aria-label="expand row"
+                        size="small"
+                        color="error"
+                        onClick={() => getErrorLog(props.id)}
+                    >
+                        <SimCardDownloadIcon />
+                    </IconButton>
+                </Tooltip>
+                </>
+            );
+        }
+        else if(props.status=="pending"){
+            console.log(props.status);
+            return (
+                <>
+                    <label title="upload file" htmlFor="icon-button-filerevise">
+                        <Input accept="*/*" id="icon-button-filerevise" type="file"                         
+                            onChange={(e)=>ReviseFileUpload(props.id,e.target.files[0])}   
+                        />
+                        <IconButton color="primary" aria-label="upload file" component="span">
+                            <FileUploadIcon />
+                        </IconButton>
+                    </label><Tooltip title="Delete File">
+                        <IconButton
+                            aria-label="expand row"
+                            size="small"
+                            color="error"
+                            onClick={() => DeleteFileUpload(props.id)}
+                        >
+                            <DeleteIcon />
+                        </IconButton>
+                    </Tooltip></>
+            );
+        }
+        return props.status;
+    }
+
+    function IconUpload(poScopeId){
+        console.log(poScopeId)
+        setPOScopeIdUpload(poScopeId)
+        return (
+            <label htmlFor="icon-button-file">
+                <Input 
+                    onChange={(e)=>onFileChange(e.target.files[0])}  
+                    accept="*/*" id="icon-button-file" type="file" />
+                <IconButton size='small' color="primary" aria-label="upload file" component="span">
+                    <UploadOutlined />
+                </IconButton>
+            </label>
+        )
+    }
     const columns = [
         {
             title: 'Id',
@@ -59,43 +294,94 @@ const POScopeListAnt = () => {
             ...Search('cpoNo'),
         },
         {
+            title: 'CPO No Original',
+            dataIndex: 'cpoNoOriginal',
+            key: 'cpoNoOriginal',
+            ...Search('cpoNoOriginal'),
+        },
+        {
+            title: 'CPO Date',
+            dataIndex: 'lmdt',
+            key: 'lmdt',
+            ...Search('lmdt'),
+        },
+        {
+            title: 'Project Name',
+            dataIndex: 'projectName',
+            key: 'projectName',
+            ...Search('projectName'),
+        },
+        {
+            title: 'Scope',
+            dataIndex: 'scopeName',
+            key: 'scopeName',
+            ...Search('scopeName'),
+        },
+        {
             title: 'Total Sites',
             dataIndex: 'totalSites',
             key: 'totalSites',
             ...Search('totalSites'),
         },
         {
-            title: 'CPO No Original',
-            dataIndex: 'cpoNoOriginal',
-            key: 'cpoNoOriginal',
-            filterDropdown: ({setSelectedKeys,selectedKeys,confirm}) => {
-                return <Input 
-                    autoFocus 
-                    
-                    placeHolder='search'
-                    value={selectedKeys[0]}
-                    onChange={(e)=>{
-                        setSelectedKeys(e.target.value?[e.target.value]:[])
-                    }}
-                    style={{ marginBottom: 8, display: 'block' }}
-                    onPressEnter={()=>{
-                        confirm()
-                    }}
-                    onBlur={()=>{
-                        confirm()
-                    }}
-                ></Input>
-            },
-            filterIcon: () => {
-                return <SearchOutlined/>
-            },
-            onFilter:(value,record)=>{
-                return record.cpoNoOriginal.toLowerCase().includes(value.toLowerCase())
+            title:"Action",
+            align:'center',
+            render:(record)=>{
+                return (
+                    IconUpload(record.poScopeId)
+                )
             }
-            // render: (cpoNoOriginal) => Seacrh.searchColumn(cpoNoOriginal),
+        },
+        {
+            title:"Action",
+            align:'center',
+            render:(record)=>{
+                return (
+                    <Space>
+                        <PlusOutlined  onClick={(e) => console.log(record.poScopeId)} />
+                    </Space>
+                )
+            }
         },
         
     ];
+    const columnsFile =[
+        {
+            title:"File Name",
+            dataIndex:"filePath",
+        },
+        {
+            title:"Upload Date",
+            dataIndex:"uploadDate",
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.uploadDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            }
+        },
+        {
+            title:"Total Row",
+            dataIndex:"rowCount",
+        },
+        {
+            title:"Status",
+            render:(record)=>{
+                return (
+                    <IconUploadStatus status={record.uploadStatus} />
+                )
+            }
+        },
+        {
+            title:"Option",
+            render:(record)=>{
+                return (
+                    <IconFileOption status={record.uploadStatus} id={record.poSitelistId}/>
+                )
+            }
+        },
+    ]
 
     const handleClose = () => 
     {
@@ -115,125 +401,27 @@ const POScopeListAnt = () => {
         }
     }
 
-    const [fileData,setFileData] = useState([]);
+    const [fileDatas,setFileDatas] = useState([]);
 
-    const getFileList = (poScopeId) =>{
-        API.getPOScopeListFile(poScopeId).then(
+    const getFileList = (id) =>{
+        console.log("rowwwwww",id);
+        setSelectedPOScopeId(id);
+        API.getPOScopeListFile(id).then(
             result=>{
-                setFileData(result);
-                console.log("fileData",result);
+                const filedata = result.map((rs)=>CreateDataPOScope.fileListData(
+                    rs.poScopeDetail.poScopeId
+                    ,rs.poSitelistId
+                    ,rs.filePath
+                    ,rs.fullFilePath
+                    ,rs.uploadStatus
+                    ,rs.lmdt
+                    ,rs.rowCount
+                ))
+                setFileDatas(filedata);
+                console.log("fileData",filedata);
             }
         )
     }
-    const columnsSiteInfo =[
-        {
-            title:"File Name",
-            dataIndex:"filePath",
-        },
-        {
-            title:"Upload Data",
-            dataIndex:"lmdt",
-        },
-        {
-            title:"Total Row",
-            dataIndex:"rowCount",
-        },
-        {
-            title:"Status",
-            dataIndex:"uploadStatus",
-        },
-        {
-            title:"Option",
-        },
-    ]
-    const columnss = [
-        { title: "Name", dataIndex: "name", key: "name" },
-        { title: "Age", dataIndex: "age", key: "age" },
-        { title: "Address", dataIndex: "address", key: "address" },
-        {
-            title: "Action",
-            dataIndex: "",
-            key: "x",
-            render: () => <a href="javascript:;">Delete</a>
-        }
-    ];
-
-    const data1 = [
-        {
-            key: 'poScopeId',
-            name: "I am diff",
-            age: 32,
-            address: "New York No. 1 Lake Park",
-            description:
-            "My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park."
-        },
-        {
-            key: 'poScopeId',
-            name: "yes",
-            age: 42,
-            address: "London No. 1 Lake Park",
-            description:
-            "My name is Jim Green, I am 42 years old, living in London No. 1 Lake Park."
-        },
-        {
-            key: 'poScopeId',
-            name: "no",
-            age: 32,
-            address: "Sidney No. 1 Lake Park",
-            description:
-            "My name is Joe Black, I am 32 years old, living in Sidney No. 1 Lake Park."
-        }
-    ];
-    const expandedRow = row => {
-        
-        console.log("exprow",row);
-        //getFileList(row.poScopeId);
-        // API.getPOScopeListFile(row.poScopeId).then(
-        //     result=>{
-        //         setFileData(result);
-        //         console.log("fileData",result);
-        //     }
-        // )
-
-        
-        return (
-            <Card title="File List"  hoverable>
-                <Table 
-                    columns={columnss} 
-                    dataSource={data1} 
-                    pagination={false} 
-                    bordered
-                />
-            </Card>
-        );
-    };
-
-    function getPOScopeListANT(){
-        console.log("getscope");
-        
-        API.getPOScopeList().then(
-            result=>{
-                console.log("result po scope",result)
-                // const data = result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
-
-                const data = result.map((rs)=>CreateDataPOScope.poScopeData(
-                    rs.poScopeId
-                    , rs.totalSites
-                    , rs.poDetail.cpoId
-                    , rs.poDetail.cpoNo
-                    , rs.poDetail.cpoNoOriginal
-                    , rs.poDetail.projectName
-                    , rs.scopeDetail.scopeId
-                    , rs.scopeDetail.scopeName
-                    , rs.lmdt)) 
-
-
-                console.log("dataant", data)
-                setPoScopeData(data);
-                console.log("poscopedata",poScopeData);
-            }
-        )
-    } 
 
     function refreshData(){
         // getPOScopeList();
@@ -267,113 +455,84 @@ const POScopeListAnt = () => {
         )
     }
 
-    function handleIsActiveClick(cpoId, e ){
-        if (window.confirm('Are you sure you want to process this action ?')) {
-            const body={
-                "Id":cpoId,
-                "ActStatus":e.target.checked,
-                "LMBY":0  
-            }
-            console.log(body);
-            API.putPOActivation(body).then(
-                result=>{
-                    console.log("put scope: ", result);
-                    if(result.status=="success")
-                    {
-                        toast.success(result.message);
-                        refreshData();
-                        //window.location.reload();
-                    }
-                    else{
-                        toast.error(result.message);
-                    }
-                }
-            )
-        }
-    }
-
-    const handleSaveFromPanel = () =>{
-        setShow(false);
-        refreshData();
-    }
-
-    const columnsss = [
-        { title: "Name", dataIndex: "name", key: "name" },
-        { title: "Age", dataIndex: "age", key: "age" },
-        { title: "Address", dataIndex: "address", key: "address" },
-        {
-            title: "Action",
-            dataIndex: "",
-            key: "x",
-            render: () => <a href="javascript:;">Delete</a>
-        }
-    ];
-
-    const data = [
-        {
-            key: 1,
-            name: "John Brown",
-            age: 32,
-            address: "New York No. 1 Lake Park",
-            description:
-      "My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park."
-        },
-        {
-            key: 2,
-            name: "Jim Green",
-            age: 42,
-            address: "London No. 1 Lake Park",
-            description:
-      "My name is Jim Green, I am 42 years old, living in London No. 1 Lake Park."
-        },
-        {
-            key: 3,
-            name: "Joe Black",
-            age: 32,
-            address: "Sidney No. 1 Lake Park",
-            description:
-      "My name is Joe Black, I am 32 years old, living in Sidney No. 1 Lake Park."
-        }
-    ];
-
 
     useEffect(() => {
         refreshData();
-
-    },[])
+    },[poScopeIdUpload])
     
     return (
-        <><div className="card card-primary">
-            <div className="card-header align-middle">
-                <h3 className="card-title">PO List</h3>
-                <a href='javascript:void(0)' onClick={handleShowAdd} class="btn btn-success float-right">
-                    <i class="fas fa-plus"></i>
-                </a>
-            </div>
-            <div className="card-body">
-                <Table 
-                    columns={columns} 
-                    dataSource={poScopeData}
-                    expandedRowRender={ expandedRow } />
-            </div>
-        </div><Modal
-            size="lg"
-            show={show}
-            onHide={handleClose}
-            backdrop="static"
-            keyboard={false}
-        >
-            <Modal.Header closeButton>
-                <Modal.Title>Add New PO</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <POScopePanel/>
-            </Modal.Body>
-            {/* <Modal.Footer>
+        <div>
+            {isLoading ? <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={isLoading}
+                // onClick={handleClose}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
+                :
+                <div>
+
+                    <div className="card card-primary">
+                        <div className="card-header align-middle">
+                            <h3 className="card-title">PO List</h3>
+                            <a href='javascript:void(0)' onClick={handleShowAdd} class="btn btn-success float-right">
+                                <i class="fas fa-plus"></i>
+                            </a>
+                        </div>
+                        <div className="card-body">
+                            <Table 
+                                columns={columns} 
+                                dataSource={poScopeData}
+                                size="small" 
+                                pagination={{
+                                    pageSizeOptions: ['5', '10', '20', '30', '40'],
+                                    showSizeChanger: true,
+                                    position: ["bottomLeft"],
+                                }}
+                                scroll={{ x: '100%' }}
+                                expandable={{
+                                    expandedRowRender: (record) => (
+                                        <Table 
+                                            scroll={{ x: '100%' }}
+                                            columns={columnsFile} 
+                                            dataSource={fileDatas} 
+                                            pagination={false}
+                                            size="small" 
+                                            bordered
+                                        />
+                                    ),
+                                    rowExpandable: (record) => selectedPOScopeId == 0 ? record.poScopeId != selectedPOScopeId : record.poScopeId == selectedPOScopeId,
+                                    onExpand: (expanded, record) =>
+                                        expanded ?
+                                            getFileList(record.poScopeId)
+                                            :
+                                            setSelectedPOScopeId(0)
+                                }} 
+                            />
+                        </div>
+                    </div>
+                    <Modal
+                        size="lg"
+                        show={show}
+                        onHide={handleClose}
+                        backdrop="static"
+                        keyboard={false}
+                    >
+                        <Modal.Header closeButton>
+                            <Modal.Title>Add New PO</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <POScopePanel/>
+                        </Modal.Body>
+                        {/* <Modal.Footer>
                     <Button variant="primary" onClick={saveClick}>Save</Button>
                 </Modal.Footer> */}
-        </Modal>
-        </>
+                    </Modal>
+                </div>
+            }
+
+        </div>
+
     );
 };
 

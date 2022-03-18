@@ -13,7 +13,7 @@ const SconTaskPending = () => {
     const isLoading = useSelector((state) => state.ui.isLoading);
     useEffect(() => {
         //getDOP();
-    })
+    },[])
 
     return (
         <div>
