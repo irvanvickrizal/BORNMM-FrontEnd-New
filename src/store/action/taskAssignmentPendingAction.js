@@ -36,6 +36,37 @@ export const setDataDone = (payload) => {
         payload,
     };
 };
+export const getOdi = (payload) => {
+    return {
+        type: "GET_ODI",
+        payload,
+    };
+};
+export const getLsp = (payload) => {
+    return {
+        type: "GET_LSP",
+        payload,
+    };
+};
+export const getPud = (payload) => {
+    return {
+        type: "GET_PUD",
+        payload,
+    };
+};
+export const getSubcon = (payload) => {
+    return {
+        type: "GET_SUBCON",
+        payload,
+    };
+};
+export const setSubcon = (payload) => {
+    return {
+        type: "SET_SUBCON",
+        payload,
+    };
+};
+
 
 
 

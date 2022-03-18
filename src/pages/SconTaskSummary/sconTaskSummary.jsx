@@ -6,7 +6,7 @@ import TableTaskSummary from '@app/pages/SconTaskSummary/table'
 export default function SconTaskSummary() {
     return (
         <div>
-            <HeaderChanger title="Subcon Coordinator - Task Assigment Summary"/>
+            <HeaderChanger title="Task Assignment Summary"/>
             <TableTaskSummary/>
         </div>
     )

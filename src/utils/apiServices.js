@@ -312,6 +312,10 @@ const postAssignEngineer = (body) => POST("taskassignment/taskAssignmentToEngine
 const postCancelTask = (body) => POST("taskassignment/taskAssignmentCanceled",body);
 const putRequestReschedule = (body) => PUT("scheduleassignment/taskScheduleProposeNewDate",body);
 
+
+const getSconTaskOnProgress = () => GET('taskassignment/taskAssignmentSubconOnProgress');
+const postReAssignmentEngineer = (body) => POST("taskassignment/taskReAssignmentToEngineer",body);
+
 const API ={
     postCancelTask,
     putRequestReschedule,
@@ -379,6 +383,8 @@ const API ={
     ,getSiteInfo
     ,getInventoryActiveList
     ,postDismantleForm
+    ,getSconTaskOnProgress
+    ,postReAssignmentEngineer
 }
 
 export default API;

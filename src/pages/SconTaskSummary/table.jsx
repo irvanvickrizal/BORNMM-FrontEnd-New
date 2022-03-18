@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-no-bind */
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/no-unstable-nested-components */
 import React,{useEffect, useState} from 'react'
 import {
@@ -14,44 +16,211 @@ import {
     Button,
     Switch,
     Modal,
-    Tooltip
+    Tooltip,
+    DatePicker
 } from "antd"
 import {useDispatch, useSelector} from "react-redux"
-import { getDataDone, getDataOnProgress, getDataPending } from '@app/store/action/taskAssignmentPendingAction'
+import { getDataDone, getDataOnProgress, getDataPending,getLsp,getOdi,getPud } from '@app/store/action/taskAssignmentPendingAction'
 import moment from "moment"
-
+import Search from '@app/components/searchcolumn/SearchColumn'
+import API from "../../utils/apiServices"
 import { CloseSquareTwoTone ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined, EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined } from '@ant-design/icons'
 
-export default function TableTaskSummary() {
+export default function TableTaskSummary(props) {
     const dispatch = useDispatch()
     const {TabPane} = Tabs
     const {Title} = Typography
     const [page,setPage] = useState(1)
     const [isModalVisible,setIsModalVisible] = useState(false)
+    const [isModalOnProgressVisible,setIsModalonProgressVisible] = useState(false)
+    const [isModalRescheduleVisible,setIsModalRescheduleVisible] = useState(false)
     const [isModalCancelVisible,setIsModalCancelVisible] = useState(false)
+    const [selectedOdi,setSelectedOdi] = useState("")
+    const [selectedLsp,setSelectedLsp]= useState("")
+    const [selectedPd,setSelectedPd]= useState("")
+    const [sconTaskPending,setSconTaskPending] = useState([]);
+    const [subcon,setSubcon]= useState([])
+    const [taskOnProgress,setTaskOnProgress] = useState([])
+    const [selecteSconId,setSelectedSconId] = useState("")
+    const [selectedEngineer,setSelectedEngineer] = useState("")
+    const [selectedReAssignedEngineer,setSelectedReAssignedEngineer] = useState("")
+    const [selectedWpId,setSelectedWpId] = useState("")
+    const user = useSelector((state) => state.auth.user);
+    const [rescheduleDate,setRescheduleDate] = useState('');
+    const [selectedTaskSchedule,setSelectedTaskSchedule] = useState("")
+    const [selectedTransDelegateId,setSelectedtransDelegateId] = useState("")
+   
+    function disabledDate(current) {
+        // Can not select days before today and today
+        return current < moment().add(2,'d');
+    }
+    
+    const getSconTaskPending = () => {
+     
+        API.getSconTaskPending().then(
+            result=>{
+              
+                setSconTaskPending(result);
+                console.log("scontaskpendnig",result);
+            }
+        )
+    }
+    const getSconEngineer = (sconid, wpid) => {
+     
+        API.getSconEngineer(sconid, wpid).then(
+            result=>{
+              
+                setSubcon(result);
+                console.log("getScon",result);
+            }
+        )
+    }
+    const getSconOnProgress = () => {
+     
+        API.getSconTaskOnProgress().then(
+            result=>{
+              
+                setTaskOnProgress(result);
+                console.log("getTaskOnProgress",result);
+            }
+        )
+    }
+    
+        
+    const onFinishAssigntask = (data) => {
+        console.log("datasubmitassign", data)
+        const body = (
+            {
+                "orderdetailId": selectedOdi,
+                "transferTo": selectedEngineer,
+                "transferBy": user.uid  
+            }
+        )
+        console.log(body,"body")
+        API.postAssignEngineer(body).then(
+            result=>{
+                console.log('sconpost', result)
+                // TaskPendingTable(false);
+                // window.location.reload();
+            }
+        )
+    }
+    const onFinishReAssigntask = (data) => {
+        console.log("datasubmitRessign", data)
+        const body = (
+            {
+                "transDelegateId": selectedTransDelegateId,
+                "transferTo": selectedReAssignedEngineer,
+                "transferBy": user.uid  
+            }
+        )
+        console.log(body,"body")
+        API.postReAssignmentEngineer(body).then(
+            result=>{
+                console.log('sconpost', result)
+                // TaskPendingTable(false);
+                window.location.reload();
+            }
+        )
+    }
+    const onFinishRequestReschedule = (data) => {
+        // console.log("datasubmitreschedule", rescheduleDate)
+        const body = (
+            {
+                "taskScheduleId":selectedTaskSchedule,
+                "proposeScheduleDate": rescheduleDate,
+                "proposedBy":user.uid,
+                "subconId":selecteSconId,
+                "proposeReason":data.reason
+            }
+        )
+        API.putRequestReschedule(body).then(
+            result=>{
+                console.log('reqres', result)
+                // TaskPendingTable(false);
+                window.location.reload();
+            }
+        )
+    }
+    const onFinishCancelTask = (data) => {
+        // console.log("datasubmitreschedule", rescheduleDate)
+        const body = (
+            {
+                "transDelegateId":selectedTransDelegateId,
+                "orderdetailId":selectedOdi,
+                "transferBy":user.uid
+
+            }
+        )
+        API.postCancelTask(body).then(
+            result=>{
+                console.log('reqres cancel tasl', result)
+                // TaskPendingTable(false);
+                // window.location.reload();
+            }
+        )
+    }
 
 
-    const showModal = () => {
+
+    const showModal = (data) => {
         setIsModalVisible(true)
+        setSelectedOdi(data.orderDetailId)
+        setSelectedLsp(data.lspName)
+        setSelectedPd(data.pickupOrDeliveryDate)
+        setSelectedSconId(data.subconId)
+        setSelectedWpId(data.workpackageid)
+        getSconEngineer(data.subconId,data.workpackageid)
+        setSelectedtransDelegateId(data.transDelegateId)
+      
+        
+    }
+    const showModalOnProgress = (data) => {
+        setIsModalonProgressVisible(true)
+        setSelectedEngineer(data.assignedTo)
+        getSconEngineer(data.subconId,data.workpackageid)
+        setSelectedtransDelegateId(data.transDelegateId)
+        setSelectedOdi(data.orderDetailId)
+      
+        
+    }
+    const showModalReschedule = (data) => {
+        setIsModalRescheduleVisible(true)
+        
+        setSelectedTaskSchedule(data.taskScheduleId)
+        setSelectedSconId(data.subconId)
     }
     const hideModal = () => {
         setIsModalVisible(false)
     }
-    const showModalCancel = () => {
+    const hideModalonProgress = () => {
+        setIsModalonProgressVisible(false)
+    }
+    const hideModalReschedule = () => {
+        setIsModalRescheduleVisible(false)
+    }
+    const showModalCancel = (data) => {
         setIsModalCancelVisible(true)
+        setSelectedtransDelegateId(data.transDelegateId)
+        setSelectedOdi(data.orderdetailId)
     }
     const hideModalCancel = () => {
         setIsModalCancelVisible(false)
     }
-    useEffect(() => {
-        dispatch(getDataPending())
-        dispatch(getDataOnProgress())
-        dispatch(getDataDone())
-    }, [])
     const stateDataPending =  useSelector(state=>state.taskAssignmentSummaryReducer.dataPending) 
     const stateDataOnProgress =  useSelector(state=>state.taskAssignmentSummaryReducer.dataOnProgress) 
     const stateDataDone =  useSelector(state=>state.taskAssignmentSummaryReducer.dataDone) 
+    const stateOdi =  useSelector(state=>state.taskAssignmentSummaryReducer.odi) 
+    const stateLsp =  useSelector(state=>state.taskAssignmentSummaryReducer.lsp) 
+    const statePud =  useSelector(state=>state.taskAssignmentSummaryReducer.pud) 
    
+    useEffect(() => {
+       
+        getSconTaskPending()
+        getSconOnProgress()
+       
+    }, [])
+  
 
     const columnsAssigmentPending = [
         {
@@ -61,57 +230,85 @@ export default function TableTaskSummary() {
         },
         {
             title: "Request No",
-            dataIndex: "requestNo"
+            dataIndex: "requestNo",
+            ...Search("requestNo")
         },
         {
             title: "Order Type",
-            dataIndex: "orderType"
+            dataIndex: "orderType",
+            ...Search("orderType")
         },
         {
             title: "Site No",
-            dataIndex: "siteNo"
+            dataIndex: "siteNo",
+            ...Search("siteNo")
         },
 
         {
             title: "Origin",
-            dataIndex: "packageName"
+            dataIndex: "originName",
+            ...Search("originName")
         },
         {
             title: "Destination",
-            dataIndex: "projectName"
+            dataIndex: "destinationName",
+            ...Search("destinationName")
         },
         {
             title: "Site Name",
-            dataIndex: "siteName"
+            dataIndex: "siteName",
+            ...Search("siteName")
         },
         {
             title: "Region",
-            dataIndex: "region"
+            dataIndex: "region",
+            ...Search("region")
         },
         {
             title: "Work Pakgae ID",
-            dataIndex: "workpackageid"
+            dataIndex: "workpackageid",
+            ...Search("workpackageid")
         },
         {
             title: "Scope Name",
-            dataIndex: "scopeName"
+            dataIndex: "scopeName",
+            ...Search("scopeName")
         },
         {
             title: "Pickup Date",
-            dataIndex: "pickupOrDeliveryDate"
+            dataIndex: "pickupOrDeliveryDate",
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(stateDataPending.pickupOrDeliveryDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            },
+            ...Search("pickupOrDeliveryDate")
         },
         {
             title: "Assign To",
-            dataIndex: "assignedTo"
+            dataIndex: "assignedTo",
+            ...Search("assignedTo")
         },
         {
-            title: "Assign Date",
-            dataIndex: "region"
+            title: "Incoming Date",
+            dataIndex: "incomingDate",
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(stateDataPending.incomingDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            },
+            ...Search("incomingDate")
         },
         {
             title: "Task Status",
-            dataIndex: "taskStatus"
+            dataIndex: "taskStatus",
+            ...Search("taskStatus")
         },
+        
         {
             title: "Action",
             dataIndex: "",
@@ -119,16 +316,20 @@ export default function TableTaskSummary() {
                 return (
                     <Space>
                         <Tooltip title="Assign Task">
-                            <UserAddOutlined style={{fontSize:"16px"}} onClick={showModal} />
+                            <UserAddOutlined style={{fontSize:"16px"}} onClick={()=>showModal(record)} />
                         </Tooltip>
                   
                           
-                        <Tooltip title="Request Reschedule">
-                            <CalendarTwoTone  style={{fontSize:"16px"}}/>
-                        </Tooltip>
+                        {!record.requestReschedule?
+                            null
+                            :
+                            <Tooltip title="Request Reschedule" style={{fontSize:"16px"}} onClick={()=>showModalReschedule(record)}>
+                                <CalendarTwoTone  />
+                            </Tooltip>
+                        }
                         
                         <Tooltip title="Cancel Task">
-                            <CloseSquareTwoTone twoToneColor="#FF0000" style={{fontSize:"16px"}} onClick={showModalCancel}/>
+                            <CloseSquareTwoTone twoToneColor="#FF0000" style={{fontSize:"16px"}} onClick={()=>showModalCancel(record)}/>
                         </Tooltip>
                     </Space>
                 )
@@ -143,40 +344,49 @@ export default function TableTaskSummary() {
         },
         {
             title: "Request No",
-            dataIndex: "requestNo"
+            dataIndex: "requestNo",
+            ...Search("requestNo")
         },
         {
             title: "Order Type",
-            dataIndex: "orderType"
+            dataIndex: "orderType",
+            ...Search("orderType")
         },
         {
             title: "Site No",
-            dataIndex: "siteNo"
+            dataIndex: "siteNo",
+            ...Search("siteNo")
         },
 
         {
             title: "Origin",
-            dataIndex: "packageName"
+            dataIndex: "originName",
+            ...Search("originName")
         },
         {
             title: "Destination",
-            dataIndex: "projectName"
+            dataIndex: "destinationName",
+            ...Search("destinationName")
         },
         {
             title: "Site Name",
-            dataIndex: "siteName"
+            dataIndex: "siteName",
+            ...Search("siteName")
         },
         {
             title: "Region",
-            dataIndex: "region"
+            dataIndex: "region",
+            ...Search("region")
         },
         {
             title: "Work Pakgae ID",
-            dataIndex: "workpackageid"
+            dataIndex: "workpackageid",
+            ...Search("workpackageid")
         },
         {
             title: "Scope Name",
-            dataIndex: "scopeName"
+            dataIndex: "scopeName",
+            ...Search("scopeName")
         },
         {
             title: "Pickup Date",
@@ -184,39 +394,49 @@ export default function TableTaskSummary() {
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(record.pickupOrDeliveryDate).format("YYYY-MM-DD")}</p>
+                        <p>{moment(stateDataOnProgress.pickupOrDeliveryDate).format("YYYY-MM-DD")}</p>
                     </Space>
                 )
             },
+            ...Search("pickupOrDeliveryDate")
         },
         {
             title: "Assign To",
-            dataIndex: "assignedTo"
+            dataIndex: "assignedTo",
+            ...Search("assignedTo")
         },
         {
-            title: "Assign Date",
-            dataIndex: "region"
+            title: "Incoming Date",
+            dataIndex: "incomingDate",
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(stateDataOnProgress.incomingDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            },
+            ...Search("incomingDate")
         },
         {
             title: "Task Status",
-            dataIndex: "taskStatus"
+            dataIndex: "taskStatus",
+            ...Search("taskStatus")
         },
+        
         {
             title: "Action",
+            dataIndex: "",
             render:(record)=>{
                 return (
                     <Space>
                         <Tooltip title="Assign Task">
-                            <UserAddOutlined style={{fontSize:"16px"}} onClick={showModal}/>
+                            <UserAddOutlined style={{fontSize:"16px"}} onClick={()=> showModalOnProgress(record)}  />
                         </Tooltip>
                   
                           
-                        <Tooltip title="Request Reschedule">
-                            <CalendarTwoTone  style={{fontSize:"16px"}}/>
-                        </Tooltip>
-                        
+                      
                         <Tooltip title="Cancel Task">
-                            <CloseSquareTwoTone twoToneColor="#FF0000" style={{fontSize:"16px"}} />
+                            <CloseSquareTwoTone twoToneColor="#FF0000" style={{fontSize:"16px"}} onClick={()=>showModalCancel(record)}/>
                         </Tooltip>
                     </Space>
                 )
@@ -244,11 +464,11 @@ export default function TableTaskSummary() {
 
         {
             title: "Origin",
-            dataIndex: "packageName"
+            dataIndex: "originName"
         },
         {
             title: "Destination",
-            dataIndex: "projectName"
+            dataIndex: "destinationName"
         },
         {
             title: "Site Name",
@@ -296,9 +516,15 @@ export default function TableTaskSummary() {
                         <div >
                             <Table
                                 columns={columnsAssigmentPending}
-                                pagination={false}
-                                dataSource={stateDataPending}
+                           
+                                dataSource={sconTaskPending}
                                 scroll={{x: "100%"}}
+                                size="large"
+                                pagination={{
+                                    pageSizeOptions: ['5', '10', '20', '30', '40'],
+                                    showSizeChanger: true,
+                                    position: ["bottomLeft"],
+                                }}
                             />
                         </div>
                     </Card>
@@ -308,8 +534,12 @@ export default function TableTaskSummary() {
                         <div >
                             <Table
                                 columns={columnsAssigmentOnProgress}
-                                pagination={false}
-                                dataSource={stateDataOnProgress}
+                                pagination={{
+                                    pageSizeOptions: ['5', '10', '20', '30', '40'],
+                                    showSizeChanger: true,
+                                    position: ["bottomLeft"],
+                                }}
+                                dataSource={taskOnProgress}
                                 scroll={{x: "100%"}}
                             />
                         </div>
@@ -320,8 +550,12 @@ export default function TableTaskSummary() {
                         <div >
                             <Table
                                 columns={columnsAssigmentOnDone}
-                                pagination={false}
-                                dataSource={stateDataDone}
+                                pagination={{
+                                    pageSizeOptions: ['5', '10', '20', '30', '40'],
+                                    showSizeChanger: true,
+                                    position: ["bottomLeft"],
+                                }}
+                                dataSource={taskOnProgress}
                                 scroll={{x: "100%"}}
                             />
                         </div>
@@ -333,7 +567,7 @@ export default function TableTaskSummary() {
                     <Button key="back"  onClick={hideModal}>
                 Cancel
                     </Button>,
-                    <Button key="submit" type="primary"  >
+                    <Button key="submit" type="primary"  onClick={onFinishAssigntask}>
                 Assign
                     </Button>,
                 
@@ -346,20 +580,21 @@ export default function TableTaskSummary() {
                         layout="horizontal"
                     >
                         <Form.Item label="LSP Name">
-                            <Typography>Agility</Typography>
+                            <Typography>{selectedLsp}</Typography>
                         </Form.Item>
                         <Form.Item label=" Pick Up Date">
-                            <Typography>2022-03-12</Typography>
+                            <Typography>{moment(selectedPd).format("YYYY-MM-DD")}</Typography>
                         </Form.Item>
                         <Form.Item label="WH Team">
                             <Select
-                                
+                                onChange={(e)=>setSelectedEngineer(e)}
                                 placeholder="Select an option"
                             >
-                              
-                                <Select.Option >
-                                    <p>cek</p>
-                                </Select.Option>
+                                {subcon.length == undefined ? (<></>):(
+                                    subcon.map(e=><Select.Option value={e.userId}  >{e.fullname}</Select.Option>) 
+                            
+                                )}
+                               
                               
                             </Select>
                         </Form.Item>
@@ -367,29 +602,127 @@ export default function TableTaskSummary() {
                 </Card>
                 </div>
             </Modal>
-            <Modal visible={isModalCancelVisible} onCancel={hideModalCancel}
+            <Modal visible={isModalOnProgressVisible} onCancel={hideModalonProgress}
                 footer={[
-                    <Button key="back"  onClick={hideModalCancel}>
+                    <Button key="back"  onClick={hideModalonProgress}>
                 Close
                     </Button>,
-                    <Button key="submit"  >
-                Cancel
+                    <Button key="submit" type="primary" onClick={onFinishReAssigntask}>
+                Assign
                     </Button>,
                 
                 ]}
             >
-                <div> <Card  title={CardTitle("Cancel Task")}>
+                <div> <Card  title={CardTitle("Re-Assign Task Form")}>
                     <Form
                         labelCol={{span: 9}}
                         wrapperCol={{span: 13}}
                         layout="horizontal"
                     >
-                        <Typography>
-                        Are you sure you want to Cancel this task? 
-(task will be no longer available once it canceled)
-
-                        </Typography>
+                        <Form.Item label="Current PIC">
+                            <Typography>{selectedEngineer}</Typography>
+                        </Form.Item>
+                       
+                        <Form.Item label="Re-Assign To">
+                            <Select
+                                onChange={(e)=>setSelectedReAssignedEngineer(e)}
+                                placeholder="Select an option"
+                            >
+                                {subcon.length == undefined ? (<></>):(
+                                    subcon.map(e=><Select.Option value={e.userId}  >{e.fullname}</Select.Option>) 
+                            
+                                )}
+                               
+                              
+                            </Select>
+                        </Form.Item>
                     </Form>
+                </Card>
+                </div>
+            </Modal>
+            <Modal visible={isModalRescheduleVisible} onCancel={hideModalReschedule}
+                footer={[
+                    <Button key="back"  onClick={hideModalReschedule}>
+            Cancel
+                    </Button>,
+                    <Button key="submit" type="primary"  onClick={onFinishRequestReschedule}>
+            Submit
+                    </Button>,
+            
+                ]}>
+                <div> <Card  title={CardTitle("Assign Task Form")}>
+                    <Form
+                        name="basic"
+                        labelCol={{ span: 8 }}
+                        wrapperCol={{ span: 16 }}
+                        initialValues={{
+                            'taskScheduleId': selectedTaskSchedule,
+                            'subconId': selecteSconId,
+                        //'pickupDate': moment(props.pickupDate).format("YYYY-MM-DD"),
+                        // remember: true
+                        }}
+                   
+                   
+                        autoComplete="off"
+                    >
+                        <Form.Item
+                        // hidden
+                            label="taskScheduleId"
+                            name="taskScheduleId"
+                        >
+                            <Input disabled/>
+                        </Form.Item>
+                        <Form.Item
+                        // hidden
+                            label="subconId"
+                            name="subconId"
+                        >
+                            <Input disabled/>
+                        </Form.Item>
+            
+                        <Form.Item
+                            label="Propose Date"
+                            name="proposeDate"
+                            rules={[{ required: true, message: 'Please input Propose Date!' }]}
+                        >
+                            <DatePicker
+                                format="YYYY-MM-DD"
+                                disabledDate={disabledDate}
+                                onChange={(e) => setRescheduleDate(moment(e).format("YYYY-MM-DD"))} 
+                            // disabledDate={current && current < moment().endOf('day')}
+                            // showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+                            />
+                        </Form.Item>
+                        <Form.Item
+                            label="Reason"
+                            name="reason"
+                            rules={[{ required: true, message: 'Please Input Reason!' }]}
+                        >
+                            <Input />
+                        </Form.Item>
+
+                  
+                    </Form>
+                </Card>
+                </div>
+            </Modal>
+            <Modal visible={isModalCancelVisible} onCancel={hideModalCancel}
+                footer={[
+                    <Button key="back"  onClick={hideModalCancel}>
+            Cancel
+                    </Button>,
+                    <Button key="submit" type="primary"  onClick={onFinishCancelTask}>
+            Submit
+                    </Button>,
+            
+                ]}>
+                <div> <Card  title={CardTitle("Assign Task Form")}>
+                    <p>
+                Are you sure you want to Cancel this task? 
+                    </p>
+                    <p>
+                (task will be no longer available once it canceled)
+                    </p>
                 </Card>
                 </div>
             </Modal>

@@ -43,6 +43,7 @@ import OrderRequestDraft from "../../pages/orderRequestDraft/orderRequestDraft"
 import OrderRejectionPendingList from "@app/pages/siteListDeliveryRequestType/OrderRejectionPending"
 import SconTaskSummary from "@app/pages/SconTaskSummary/sconTaskSummary"
 import SconTaskPending from "@app/pages/SconTaskPending/SconTaskPending"
+import SdrForm from "@app/pages/siteListDeliveryRequestType/SdrForm"
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -250,6 +251,11 @@ const Main = () => {
                                         />
                                         <Route
                                             exact
+                                            path="/sitelist/sdrform/"
+                                            component={SdrForm}
+                                        />
+                                        <Route
+                                            exact
                                             path="/sitelist/materialorder/"
                                             component={MaterialOrder}
                                         />
@@ -285,8 +291,13 @@ const Main = () => {
                                         />
                                         <Route
                                             exact
-                                            path="/task/sconassignmentsummary/"
+                                            path="/task/sconassignmentsummary"
                                             component={SconTaskSummary}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/task/sconassignmentpending/"
+                                            component={SconTaskPending}
                                         />
                                     </Switch>
                                 </div>

@@ -2,6 +2,10 @@ const initialState = {
     dataPending: [],
     dataOnProgress:[],
     dataDone:[],
+    odi:'',
+    lsp:'',
+    pud:'',
+    dataSubcon:[],
  
     orderTypeId:''
 };
@@ -47,6 +51,38 @@ export const taskAssignmentSummaryReducer = (state = initialState, action) => {
             dataDone:action.payload,
             isLoading: false,
         };
+        
+    case "GET_ODI":
+        return {
+            ...state,
+            odi:action.payload,
+            isLoading: false,
+        };
+    case "GET_LSP":
+        return {
+            ...state,
+            lsp:action.payload,
+            isLoading: false,
+        };
+    case "GET_PUD":
+        return {
+            ...state,
+            pud:action.payload,
+            isLoading: false,
+        };
+    case "GET_SUBCON":
+        return {
+            ...state,
+           
+            isLoading: true,
+        };
+    case "SET_SUBCON":
+        return {
+            ...state,
+            dataSubcon:action.payload,
+            isLoading: false,
+        };
+
       
    
     default:
