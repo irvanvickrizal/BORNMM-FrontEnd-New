@@ -39,62 +39,63 @@ export default function TableSite() {
 
     const columnsOrderRequestDraft =[
         {
-            title:"Inventory Code",
-            dataIndex:"inventoryCode",
-            key:"orderDetailId"
+            title:"CPO No",
+            dataIndex:"cpoNo",
+            key:"cpoNo",
+            ...Search('cpoNo'),
+        },
+        {
+            title:"Site No",
+            dataIndex:"siteNo",
+            key:"siteNo",
+            ...Search('siteNo'),
+        },
+        {
+            title:"Site Name",
+            dataIndex:"siteName",
+            key:"siteName",
+            ...Search('siteName'),
+        },
+        {
+            title:"Region",
+            dataIndex:"region",
+            key:"region",
+            ...Search('region'),
+
+        },
+        {
+            title:"Zone",
+            dataIndex:'zone',
+            key:"zone",
+            ...Search('zone'),
         },
         {
             title:"Order Type",
             dataIndex:"orderType",
-            key:"orderDetailId"
+            key:"orderType",
+            ...Search('orderType'),
+        },
+        {
+            title:"Origin Name",
+            dataIndex:"originName",
+            key:"originName",
+            ...Search('originName'),
+        },
+        {
+            title:"Destination Name",
+            dataIndex:"destinationName",
+            key:"destinationName"
+            ,...Search('destinationName'),
         },
         {
             title:"Request Type",
             dataIndex:"requestTypeName",
-            key:"orderDetailId"
-        },
-        {
-            title:"CT Name",
-            dataIndex:'ctName',
-            key:"orderDetailId"
-        },
-        {
-            title:"Site Condition",
-            dataIndex:"siteCondition",
-            key:"orderDetailId"
-        },
-        {
-            title:"Delivery Type",
-            dataIndex:"deliveryType",
-            key:"orderDetailId"
-        },
-        {
-            title:"Packet Type",
-            dataIndex:"packetType",
-            key:"orderDetailId"
-        },
-        {
-            title:"Subcon",
-            dataIndex:"recipientOrDismantledBy",
-            key:"orderDetailId"
-        },
-        {
-            title:"Requester",
-            dataIndex:"requesterName",
-            key:"orderDetailId"
-        },
-        {
-            title:"Request Date",
-            render:(record)=>{
-                return (
-                    <Space>
-                        <p>{moment(record.requestDate).format("YYYY-MM-DD")}</p>
-                    </Space>
-                )
-            }
+            key:"requestTypeName",
+            ...Search('requestTypeName'),
         },
         {
             title:"Expected Delivery Date",
+            ...Search('expectedDeliveryDate'),
             render:(record)=>{
                 return (
                     <Space>
@@ -104,7 +105,23 @@ export default function TableSite() {
             }
         },
         {
-            title:"Expected Delivery Date",
+            title:"Requester",
+            dataIndex:"requesterName",
+            key:"requesterName",
+            ...Search('requesterName'),
+        },
+        {
+            title:"Request Date",
+            ...Search('requestDate'),
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.requestDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            }
+        },
+        {
             align:"center",
             render:(record)=>{
                 return (

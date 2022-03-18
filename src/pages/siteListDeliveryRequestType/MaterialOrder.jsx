@@ -21,7 +21,6 @@ import {Table, Row, Col,Card, Typography, Input, Space, Form,
     Tooltip,
     Modal } from 'antd'
 import { DownloadOutlined,PlusOutlined,FileExcelOutlined,CloseOutlined, EditOutlined,DeleteOutlined,CheckOutlined  } from '@ant-design/icons';
-
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import HeaderChanger from '@app/components/cardheader/HeaderChanger'
@@ -149,15 +148,21 @@ export default function MaterialOrder() {
             key:"orderMaterialId",
         },
         {
-            title:"QTY Req",
-            dataIndex:'reqQTY',
-            key:"orderMaterialId",
-        },
-        {
             title:"QTY Ref",
             dataIndex:'refQTY',
             key:"orderMaterialId",
         },
+        {
+            title:"QTY Req",
+            render:(record)=>{
+                return (
+                    <Space>
+                        <b>{record.reqQTY}</b>
+                    </Space>
+                )
+            }
+        },
+        
         {
             title:"Balance",
             dataIndex:"balanceQTY",
@@ -684,7 +689,7 @@ export default function MaterialOrder() {
                                     <Col span={24}>
                                         <div className='float-right'>
                                             <Space>
-                                                <Button type="danger" htmlType="submit" onClick={handleSaveDraft}>
+                                                <Button type="default" htmlType="submit" onClick={handleSaveDraft}>
                                             Save as Draft
                                                 </Button>
                                                 {stockCheck ? <Button type="primary" htmlType="submit" onClick={handleBookSubmit}>
