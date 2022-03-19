@@ -179,11 +179,7 @@ const Login = () => {
                             {t('login.label.forgotPass')}
                         </Link>
                     </p>
-                    <p className="mb-0">
-                        <Link to="/register" className="text-center">
-                            {t('login.label.registerNew')}
-                        </Link>
-                    </p>
+                  
                 </div>
             </div>
         </div>

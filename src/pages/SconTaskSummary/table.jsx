@@ -29,6 +29,7 @@ import { CloseSquareTwoTone ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined
 import { toast } from 'react-toastify';
 
 
+
 export default function TableTaskSummary(props) {
     const dispatch = useDispatch()
     const {TabPane} = Tabs
@@ -336,7 +337,7 @@ export default function TableTaskSummary(props) {
             render:(record)=>{
                
                 return (
-                    scheduleStatuss ? (
+                    scheduleStatuss == "Confirmed" ? (
                         <Space>
                             <Tooltip title="Assign Task">
                                 <UserAddOutlined style={{fontSize:"16px"}} onClick={()=>showModal(record)} />
@@ -352,9 +353,9 @@ export default function TableTaskSummary(props) {
                                         <CalendarTwoTone style={{fontSize:"16px"}} />
                                     </Tooltip>:
                                     <Tooltip color='#f50' title="Cannot request reschedule, day to go h-1 or higher">
-                                        <IconButton color="#0000">
-                                            <CalendarTwoTone style={{fontSize:16}} />
-                                        </IconButton>
+                                       
+                                        <CalendarTwoTone style={{fontSize:16}} />
+                              
                                         <CalendarTwoTone style={{fontSize:16}} />
                                     </Tooltip>
                             }

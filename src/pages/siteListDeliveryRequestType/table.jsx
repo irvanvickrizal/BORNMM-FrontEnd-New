@@ -40,18 +40,18 @@ export default function TableSite() {
 
    
     const navigateTo = () => {
-        selectedOt == 'SDR' ? (history.push(`/sitelist/sdrform?wpid=${wpIds}&ot=${ordetTypeIdhook}`)):( history.push(`/sitelist/siteDetail?wpid=${wpIds}&ot=${ordetTypeIdhook}`))
+        ordetTypeIds == 'SDR' ? (history.push(`/sitelist/sdrform?wpid=${wpIds}&ot=${ordetTypeIdhook}`)):( history.push(`/sitelist/siteDetail?wpid=${wpIds}&ot=${ordetTypeIdhook}`))
        
     }
 
     const odi = (e) => {
         
  
-        console.log(selectedOt,"dataOt")
+        console.log(ordetTypeIds,"dataOt")
        
         
         Promise.resolve()
-            .then(() => { setSelectedOt(e.orderTypeDetail.orderTypeName)})
+            .then(() => { dispatch(getOrderTypeId(e.orderTypeDetail.orderTypeName))})
             .then(() => navigateTo())
     }
 
