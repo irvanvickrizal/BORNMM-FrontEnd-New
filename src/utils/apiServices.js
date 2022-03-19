@@ -146,6 +146,25 @@ const POSTFile = (path,id,file)  => {
     })
     return promise;
 }
+const POSTFiled = (path,file)  => {
+    var formdata = new FormData();
+    formdata.append("fileupload",file);
+
+    const promise = new Promise((resolve, reject) => {
+        axios.post(`${baseURL}${path}`
+            ,formdata
+            ,{headers}
+        ).then((result)=> {
+            console.log('i am post :',result.data);
+            resolve(result.data);
+        },(err)=>{
+            console.log('config',headers);
+            toast.error(err);
+            reject(err);
+        })
+    })
+    return promise;
+}
 
 const PUTFile = (path,id)  => {
     var formdata = new FormData();
@@ -312,7 +331,31 @@ const postAssignEngineer = (body) => POST("taskassignment/taskAssignmentToEngine
 const postCancelTask = (body) => POST("taskassignment/taskAssignmentCanceled",body);
 const putRequestReschedule = (body) => PUT("scheduleassignment/taskScheduleProposeNewDate",body);
 
+const getInventoryReport = () => GET('inventory/getInventoryReport');
+const getInboundUploadFile = () => GET('inventory/inboundFileUploadGetList');
+const getInboundErrorList = (id) => GETParam('inventory/inboundFileUploadGetErrLogList',id);
+const postReviseInboundFile = (id,file) => POSTFile('inventory/UploadReviseSiteList',id,file);
+const postInboundFile = (file) => POSTFiled('inventory/inboundFileUpload',file);
+const deleteInboundFile = (id) => PUTParam('inventory/inboundFileDelete',id);
+
+const getOutboundUploadFile = () => GET('inventory/outboundFileUploadGetList');
+const getOutboundErrorList = (id) => GETParam('inventory/outboundFileUploadGetErrLogList',id);
+const postReviseOutboundFile = (id,file) => POSTFile('inventory/outboundFileRevisionUpload',id,file);
+const postOutboundFile = (file) => POSTFiled('inventory/outboundFileUpload',file);
+const deleteOutboundFile = (id) => PUTParam('inventory/outboundFileDelete',id);
+
 const API ={
+    getOutboundUploadFile, 
+    getOutboundErrorList,
+    postReviseOutboundFile,
+    postOutboundFile,
+    deleteOutboundFile,
+    postInboundFile,
+    deleteInboundFile,
+    postReviseInboundFile,
+    getInboundErrorList,
+    getInboundUploadFile,
+    getInventoryReport,
     postCancelTask,
     putRequestReschedule,
     postAssignEngineer,

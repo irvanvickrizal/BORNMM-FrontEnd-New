@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-boolean-value */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable no-else-return */
 /* eslint-disable react/jsx-fragments */
@@ -16,15 +17,17 @@
 /* eslint-disable react/no-unused-state */
 /* eslint-disable react/prefer-stateless-function */
 import React, {Component,useState,useEffect} from 'react';
-import Modal from 'react-bootstrap/Modal';
+import ModalBS from 'react-bootstrap/Modal';
 import moment from 'moment';
 import API  from '../../utils/apiServices';
 import POScopePanel from './POScopePanel';
+import ModalUpload from './ModalUpload';
+import ModalUploadRevise from './ModalUploadRevise';
 import {useDispatch,useSelector} from 'react-redux';
 import { setIsEdit, setIsNew } from '@app/store/reducers/scope';
 import {toast} from 'react-toastify';
 import {IconButton, TextField}  from '@mui/material/';
-import {message,Upload, Table, Button, Space,Card,Tooltip } from 'antd';
+import {Modal,message,Upload,Typography, Table, Button, Space,Card,Tooltip,Row,Col,Title } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { CloudUploadOutlined, UploadOutlined,DownloadOutlined,PlusOutlined,FileExcelOutlined,CloseOutlined, EditOutlined,DeleteOutlined,CheckOutlined  } from '@ant-design/icons';
 import {variables} from '../../Variables';
@@ -52,20 +55,24 @@ const POScopeListAnt = () => {
     const token = localStorage.getItem('token'); 
     const [scopeName,setScopeName] = useState("");
     const [scopeDesc,setScopeDesc] = useState("");
+    const [selectedCPONo,setSelectedCPONo] = useState("");
+    const [selectedProjectName,setSelectedProjectName] = useState("");
+    const [selectedFileName,setSelectedFileName] = useState("");
     const [isActive,setIsActive] = useState("");
-
+    const { Title } = Typography;
     const [show, setShow] = useState(false);
     const [poScopeData,setPoScopeData] = useState([]);
     const [selectedPOScopeId,setSelectedPOScopeId] = useState(0);
     const [selectedFileRevise, setSelectedFileRevise] = useState(null);
-    const [poFileList,setPoFileList] = useState([]);
-    const [isActiveRow,setIsActiveRow] = useState(false);
-    const [selectedFile, setSelectedFile] = useState(null);
+    const [isUploadFile, setIsUploadFile] = useState(false);
+    const [isUploadFileRevise, setIsUploadFileRevise] = useState(false);
+
     const [errorLogs,setErrorLogs] = useState([]);
     const dispatch = useDispatch();
     const baseURL = variables.API_URL;
     const [isLoading, setIsLoading] = useState(false);
     const [poScopeIdUpload, setPOScopeIdUpload] = useState(0);
+    const [poSitelistIdUpload, setPOSitelistId] = useState(0);
 
     function getPOScopeListANT(){
         API.getPOScopeList().then(
@@ -191,10 +198,29 @@ const POScopeListAnt = () => {
         }
         return props.status;
     }
+    const handleUploadFile = (poScopeId,cpoNo,projectName) =>{
+        setIsUploadFile(true);
+        setSelectedCPONo(cpoNo);
+        setSelectedProjectName(projectName);
+        setPOScopeIdUpload(poScopeId);
+        console.log("idupload:",poScopeId);
+    }
+    const handleCancelUpload = () =>{
+        setIsUploadFile(false);
+    }
+    const handleUploadFileRevise = (poSitelistId) =>{
+        setIsUploadFileRevise(true);
+        setPOSitelistId(poSitelistId);
+        console.log("idupload:",poSitelistId);
+    }
+    const handleCancelUploadRevise = () =>{
+        setIsUploadFileRevise(false);
+    }
 
     function IconFileOption(props){
         console.log("id",props.id);
-        console.log(props.status)
+        console.log("fileName",props.fileName)
+        setSelectedFileName(props.fileName);
         if(props.status=="success"){
             console.log(props.status);
             return (
@@ -204,16 +230,14 @@ const POScopeListAnt = () => {
         else if(props.status=="failed"){ 
             console.log(props.status);
             return (
-                <><label title="upload file" htmlFor="icon-button-filerevise">
-                    <Input accept="*/*" id="icon-button-filerevise" type="file" 
-                        onChange={(e)=>ReviseFileUpload(props.id,e.target.files[0])}       
-                    />
-                    <IconButton size='small'
+                <><label htmlFor="icon-button-file">
+                    <IconButton 
+                        size='small' 
                         color="primary" 
-                        aria-label="upload file" 
-                        component="span" 
-                    >
-                        <FileUploadIcon />
+                        aria-label="upload file"
+                        component="span"
+                        onClick={()=>handleUploadFileRevise(props.id)}>
+                        <UploadOutlined />
                     </IconButton>
                 </label>
                 <Tooltip title="Delete File">
@@ -244,14 +268,17 @@ const POScopeListAnt = () => {
             console.log(props.status);
             return (
                 <>
-                    <label title="upload file" htmlFor="icon-button-filerevise">
-                        <Input accept="*/*" id="icon-button-filerevise" type="file"                         
-                            onChange={(e)=>ReviseFileUpload(props.id,e.target.files[0])}   
-                        />
-                        <IconButton color="primary" aria-label="upload file" component="span">
-                            <FileUploadIcon />
+                    <label htmlFor="icon-button-file">
+                        <IconButton 
+                            size='small' 
+                            color="primary" 
+                            aria-label="upload file"
+                            component="span"
+                            onClick={()=>handleUploadFileRevise(props.id)}>
+                            <UploadOutlined />
                         </IconButton>
-                    </label><Tooltip title="Delete File">
+                    </label>
+                    <Tooltip title="Delete File">
                         <IconButton
                             aria-label="expand row"
                             size="small"
@@ -266,20 +293,6 @@ const POScopeListAnt = () => {
         return props.status;
     }
 
-    function IconUpload(poScopeId){
-        console.log(poScopeId)
-        setPOScopeIdUpload(poScopeId)
-        return (
-            <label htmlFor="icon-button-file">
-                <Input 
-                    onChange={(e)=>onFileChange(e.target.files[0])}  
-                    accept="*/*" id="icon-button-file" type="file" />
-                <IconButton size='small' color="primary" aria-label="upload file" component="span">
-                    <UploadOutlined />
-                </IconButton>
-            </label>
-        )
-    }
     const columns = [
         {
             title: 'Id',
@@ -328,21 +341,19 @@ const POScopeListAnt = () => {
             align:'center',
             render:(record)=>{
                 return (
-                    IconUpload(record.poScopeId)
+                    <label htmlFor="icon-button-file">
+                        <IconButton 
+                            size='small' 
+                            color="primary" 
+                            aria-label="upload file"
+                            component="span"
+                            onClick={()=>handleUploadFile(record.poScopeId,record.cpoNo,record.projectName)}>
+                            <UploadOutlined />
+                        </IconButton>
+                    </label>
                 )
             }
-        },
-        {
-            title:"Action",
-            align:'center',
-            render:(record)=>{
-                return (
-                    <Space>
-                        <PlusOutlined  onClick={(e) => console.log(record.poScopeId)} />
-                    </Space>
-                )
-            }
-        },
+        }
         
     ];
     const columnsFile =[
@@ -377,7 +388,7 @@ const POScopeListAnt = () => {
             title:"Option",
             render:(record)=>{
                 return (
-                    <IconFileOption status={record.uploadStatus} id={record.poSitelistId}/>
+                    <IconFileOption status={record.uploadStatus} id={record.poSitelistId} fileName={record.filePath}/>
                 )
             }
         },
@@ -403,10 +414,12 @@ const POScopeListAnt = () => {
 
     const [fileDatas,setFileDatas] = useState([]);
 
-    const getFileList = (id) =>{
-        console.log("rowwwwww",id);
-        setSelectedPOScopeId(id);
-        API.getPOScopeListFile(id).then(
+    const getFileList = (data) =>{
+        console.log("rowwwwww",data);
+        setSelectedPOScopeId(data.poScopeId);
+        setSelectedProjectName(data.projectName);
+        setSelectedCPONo(data.cpoNo);
+        API.getPOScopeListFile(data.poScopeId).then(
             result=>{
                 const filedata = result.map((rs)=>CreateDataPOScope.fileListData(
                     rs.poScopeDetail.poScopeId
@@ -470,65 +483,85 @@ const POScopeListAnt = () => {
                 <CircularProgress color="inherit" />
             </Backdrop>
                 :
-                <div>
-
-                    <div className="card card-primary">
-                        <div className="card-header align-middle">
-                            <h3 className="card-title">PO List</h3>
-                            <a href='javascript:void(0)' onClick={handleShowAdd} class="btn btn-success float-right">
-                                <i class="fas fa-plus"></i>
-                            </a>
-                        </div>
-                        <div className="card-body">
-                            <Table 
-                                columns={columns} 
-                                dataSource={poScopeData}
-                                size="small" 
-                                pagination={{
-                                    pageSizeOptions: ['5', '10', '20', '30', '40'],
-                                    showSizeChanger: true,
-                                    position: ["bottomLeft"],
-                                }}
-                                scroll={{ x: '100%' }}
-                                expandable={{
-                                    expandedRowRender: (record) => (
-                                        <Table 
-                                            scroll={{ x: '100%' }}
-                                            columns={columnsFile} 
-                                            dataSource={fileDatas} 
-                                            pagination={false}
-                                            size="small" 
-                                            bordered
-                                        />
-                                    ),
-                                    rowExpandable: (record) => selectedPOScopeId == 0 ? record.poScopeId != selectedPOScopeId : record.poScopeId == selectedPOScopeId,
-                                    onExpand: (expanded, record) =>
-                                        expanded ?
-                                            getFileList(record.poScopeId)
-                                            :
-                                            setSelectedPOScopeId(0)
-                                }} 
-                            />
-                        </div>
-                    </div>
-                    <Modal
-                        size="lg"
-                        show={show}
-                        onHide={handleClose}
-                        backdrop="static"
-                        keyboard={false}
+                <>
+                    {/* <a href='javascript:void(0)' onClick={handleShowAdd} class="btn btn-success float-right">
+                        <i class="fas fa-plus"></i>
+                    </a> */}
+                    <Row>
+                        <Col md={16} sm={24} >
+                            <Title level={5}>PO List</Title>
+                        </Col>
+                        <Col md={8} sm={24} >
+                            <div className='float-right'>
+                                <Tooltip title="Add Material">
+                                    <IconButton size="small" color="primary" onClick={handleShowAdd}>
+                                        <PlusOutlined />
+                                    </IconButton>
+                                </Tooltip>
+                            </div>
+                        </Col>
+                    </Row>
+                    <Table 
+                        columns={columns} 
+                        dataSource={poScopeData}
+                        size="small" 
+                        pagination={{
+                            pageSizeOptions: ['5', '10', '20', '30', '40'],
+                            showSizeChanger: true,
+                            position: ["bottomLeft"],
+                        }}
+                        scroll={{ x: '100%' }}
+                        expandable={{
+                            expandedRowRender: (record) => (
+                                <Table 
+                                    scroll={{ x: '100%' }}
+                                    columns={columnsFile} 
+                                    dataSource={fileDatas} 
+                                    pagination={false}
+                                    size="small" 
+                                    bordered
+                                />
+                            ),
+                            rowExpandable: (record) => selectedPOScopeId == 0 ? record.poScopeId != selectedPOScopeId : record.poScopeId == selectedPOScopeId,
+                            onExpand: (expanded, record) =>
+                                expanded ?
+                                    getFileList(record)
+                                    :
+                                    setSelectedPOScopeId(0)
+                        }} 
+                    />        
+                    <Modal title="Add New PO Scope"
+                        visible={show}
+                        //onOk={handleOKCancelTask}
+                        onCancel={handleClose}
+                        // confirmLoading={cancelLoading}
+                        destroyOnClose={true}
+                        footer={null}
                     >
-                        <Modal.Header closeButton>
-                            <Modal.Title>Add New PO</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <POScopePanel/>
-                        </Modal.Body>
-                        {/* <Modal.Footer>
-                    <Button variant="primary" onClick={saveClick}>Save</Button>
-                </Modal.Footer> */}
+                        <POScopePanel/>
                     </Modal>
-                </div>
+                    <Modal title="Upload File"
+                        visible={isUploadFile}
+                        //onOk={handleOKCancelTask}
+                        onCancel={handleCancelUpload}
+                        // confirmLoading={cancelLoading}
+                        destroyOnClose={true}
+                        footer={null}
+                    >
+                        <ModalUpload poScopeId={poScopeIdUpload} cpoNo={selectedCPONo} projectName={selectedProjectName}  />
+                    </Modal>
+                    <Modal title="Upload File Revise"
+                        visible={isUploadFileRevise}
+                        //onOk={handleOKCancelTask}
+                        onCancel={handleCancelUploadRevise}
+                        // confirmLoading={cancelLoading}
+                        destroyOnClose={true}
+                        footer={null}
+                    >
+                        {/* <p>{poScopeIdUpload}</p> */}
+                        <ModalUploadRevise poSitelistId={poSitelistIdUpload} cpoNo={selectedCPONo} projectName={selectedProjectName} fileName={selectedFileName} />
+                    </Modal>
+                </>
             }
 
         </div>

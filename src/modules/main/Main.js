@@ -42,6 +42,11 @@ import AprovalTaskPendingForm from "../../pages/approvel/aprovalTaskPendingForm"
 import OrderRequestDraft from "../../pages/orderRequestDraft/orderRequestDraft"
 import OrderRejectionPendingList from "@app/pages/siteListDeliveryRequestType/OrderRejectionPending"
 import SconTaskPending from "@app/pages/SconTaskPending/SconTaskPending"
+import InventoryReport from "@app/pages/InventoryReport/InventoryReport"
+import InboundUpload from "@app/pages/InboundUpload/InboundUpload"
+import OutboundUpload from "@app/pages/OutboundUpload/OutboundUpload"
+
+
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -286,6 +291,21 @@ const Main = () => {
                                             exact
                                             path="/task/assignment/"
                                             component={SconTaskPending}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/stock/inventory.js"
+                                            component={InventoryReport}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/stock/inboundupload"
+                                            component={InboundUpload}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/stock/outboundupload"
+                                            component={OutboundUpload}
                                         />
                                     </Switch>
                                 </div>

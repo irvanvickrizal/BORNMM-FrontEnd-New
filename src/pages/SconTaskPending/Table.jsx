@@ -194,27 +194,35 @@ const TaskPendingTable = ({isAssignTaskModal}) => {
             title:"Action",
             key:"orderMaterialId",
             align:'center',
+            fixed:'right',
             render:(record)=>{
                 return (
-                    <Space>
-                        <Tooltip title="Assign Task">
-                            <UserAddOutlined  onClick={() => handleAssignTask(record)} />
-                        </Tooltip>
-                        {!record.requestReschedule?
-                            null
+                    <div>
+                        {record.scheduleStatus=="newpropose" ? <p>waiting new propose schedule approval</p>
                             :
-                            record.dayToGo <= -2 ?
-                                <Tooltip title="Request Reschedule">
-                                    <CalendarTwoTone onClick={() => handleRequestSchedule(record)} />
-                                </Tooltip> :
-                                <Tooltip color='#f50' title="Cannot request reschedule, day to go h-1 or higher">
-                                    <CalendarTwoTone />
+                            <Space>
+                                <Tooltip title="Assign Task">
+                                    <UserAddOutlined  onClick={() => handleAssignTask(record)} />
                                 </Tooltip>
+                                {!record.requestReschedule?
+                                    null
+                                    :
+                                    record.dayToGo <= -2 ?
+                                        <Tooltip title="Request Reschedule">
+                                            <CalendarTwoTone onClick={() => handleRequestSchedule(record)} />
+                                        </Tooltip> :
+                                        <Tooltip color='#f50' title="Cannot request reschedule, day to go h-1 or higher">
+                                            <CalendarTwoTone />
+                                        </Tooltip>
+                                }
+                                <Tooltip title="Cancel Task">
+                                    <CloseSquareTwoTone twoToneColor="#FF0000" onClick={() => handleCancelTask(record)} />
+                                </Tooltip>
+                            </Space>
                         }
-                        <Tooltip title="Cancel Task">
-                            <CloseSquareTwoTone twoToneColor="#FF0000" onClick={() => handleCancelTask(record)} />
-                        </Tooltip>
-                    </Space>
+                    </div>
+                    
+                   
                 )
             }
             
