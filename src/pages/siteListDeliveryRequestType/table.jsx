@@ -29,21 +29,30 @@ export default function TableSite() {
     const wpid = useSelector(state=>state.siteListDeliveryRequestReducer.wpId)
     const dataOrderTypeList = useSelector(state=>state.siteListDeliveryRequestReducer.orderList)
     const ordetTypeIds = useSelector(state=>state.siteListDeliveryRequestReducer.orderTypeId)
+    const [selectedOt,setSelectedOt] = useState("")
+    const [count, setCount] = useState()
     
 
     useEffect(() => {
         dispatch(getDataSiteList())
         
-    },[dispatch,ordetTypeIdhook]);
+    },[dispatch,ordetTypeIdhook,ordetTypeIds]);
 
    
     const navigateTo = () => {
-        history.push(`/sitelist/siteDetail?wpid=${wpIds}&ot=${ordetTypeIdhook}`)
+        selectedOt == 'SDR' ? (history.push(`/sitelist/sdrform?wpid=${wpIds}&ot=${ordetTypeIdhook}`)):( history.push(`/sitelist/siteDetail?wpid=${wpIds}&ot=${ordetTypeIdhook}`))
+       
     }
 
     const odi = (e) => {
-        dispatch(getOrderTypeId(e))
-        navigateTo()
+        
+ 
+        console.log(selectedOt,"dataOt")
+       
+        
+        Promise.resolve()
+            .then(() => { setSelectedOt(e.orderTypeDetail.orderTypeName)})
+            .then(() => navigateTo())
     }
 
 
@@ -63,7 +72,7 @@ export default function TableSite() {
     const menuDropdown =  (
         <Menu>
             {dataOrderTypeList ? (dataOrderTypeList.map((e)=>(<Menu.Item>
-                <a target="_blank" rel="noopener noreferrer" onClick={()=>odi(e.orderTypeDetail.orderTypeId)}>
+                <a target="_blank" rel="noopener noreferrer" onClick={()=>odi(e)}>
                     {e.orderTypeDetail.orderTypeName}
                 </a>
             </Menu.Item>))):(<p>no Data</p>)}

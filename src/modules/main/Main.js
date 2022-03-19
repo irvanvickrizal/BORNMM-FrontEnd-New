@@ -41,12 +41,13 @@ import TableAproval from "@app/pages/approvel/tableAproval"
 import AprovalTaskPendingForm from "../../pages/approvel/aprovalTaskPendingForm"
 import OrderRequestDraft from "../../pages/orderRequestDraft/orderRequestDraft"
 import OrderRejectionPendingList from "@app/pages/siteListDeliveryRequestType/OrderRejectionPending"
+import SconTaskSummary from "@app/pages/SconTaskSummary/sconTaskSummary"
 import SconTaskPending from "@app/pages/SconTaskPending/SconTaskPending"
 import InventoryReport from "@app/pages/InventoryReport/InventoryReport"
 import InboundUpload from "@app/pages/InboundUpload/InboundUpload"
 import OutboundUpload from "@app/pages/OutboundUpload/OutboundUpload"
 
-
+import SdrForm from "@app/pages/siteListDeliveryRequestType/SdrForm"
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -254,6 +255,11 @@ const Main = () => {
                                         />
                                         <Route
                                             exact
+                                            path="/sitelist/sdrform/"
+                                            component={SdrForm}
+                                        />
+                                        <Route
+                                            exact
                                             path="/sitelist/materialorder/"
                                             component={MaterialOrder}
                                         />
@@ -289,7 +295,12 @@ const Main = () => {
                                         />
                                         <Route
                                             exact
-                                            path="/task/assignment/"
+                                            path="/task/sconassignmentsummary"
+                                            component={SconTaskSummary}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/task/sconassignmentpending/"
                                             component={SconTaskPending}
                                         />
                                         <Route

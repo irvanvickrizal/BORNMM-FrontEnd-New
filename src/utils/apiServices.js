@@ -309,6 +309,8 @@ const getDismantledBy = () => GET('subcon/GetFieldSubcontractor');
 const getSiteCondition = () => GET('sitecondition');
 const getSubcon = () => GET('subcon/GetFieldSubcontractor');
 const postDismantleForm = (body) => POST('materialmanagement/OrderDetailAdd',body);
+const getTeamCoordinator= (subconid,workpackageid) => GETParam2('subcon/getCoordinatorSubcontractorEngineer',subconid,workpackageid);
+const getHasExpressDelivery= (ordertypeid) => GETParam('masterordertype/orderTypeHasExpressDelivery',ordertypeid);
 
 const getOrderRequestDraft = () => GET('mmReport/OrderRequestGetListDraft');
 
@@ -343,6 +345,9 @@ const getOutboundErrorList = (id) => GETParam('inventory/outboundFileUploadGetEr
 const postReviseOutboundFile = (id,file) => POSTFile('inventory/outboundFileRevisionUpload',id,file);
 const postOutboundFile = (file) => POSTFiled('inventory/outboundFileUpload',file);
 const deleteOutboundFile = (id) => PUTParam('inventory/outboundFileDelete',id);
+
+const getSconTaskOnProgress = () => GET('taskassignment/taskAssignmentSubconOnProgress');
+const postReAssignmentEngineer = (body) => POST("taskassignment/taskReAssignmentToEngineer",body);
 
 const API ={
     getOutboundUploadFile, 
@@ -422,6 +427,10 @@ const API ={
     ,getSiteInfo
     ,getInventoryActiveList
     ,postDismantleForm
+    ,getSconTaskOnProgress
+    ,postReAssignmentEngineer
+    ,getTeamCoordinator,
+    getHasExpressDelivery
 }
 
 export default API;
