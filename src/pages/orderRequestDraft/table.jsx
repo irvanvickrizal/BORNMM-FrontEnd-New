@@ -123,6 +123,8 @@ export default function TableSite() {
         },
         {
             align:"center",
+            fixed:'right',
+            width:40,
             render:(record)=>{
                 return (
                     <Tooltip title="Edit Draft">
@@ -152,7 +154,7 @@ export default function TableSite() {
     return (
         <Table
             // rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
-            rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
+            //rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
             dataSource={orderRequestDraft}
             columns={columnsOrderRequestDraft}
             key='siteConditionId'
