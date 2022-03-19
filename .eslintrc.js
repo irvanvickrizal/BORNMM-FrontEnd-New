@@ -36,6 +36,7 @@ module.exports = {
         'import/prefer-default-export': 'off',
         'react/function-component-definition': 'off',
         'no-unused-vars': 'off',
+        'import/no-named-as-default-member': 'off',
         'react/destructuring-assignment': 'off',
         // eslint-disable-next-line no-dupe-keys
         'prettier/prettier': 'off',

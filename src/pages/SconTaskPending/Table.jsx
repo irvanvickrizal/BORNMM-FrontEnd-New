@@ -198,7 +198,7 @@ const TaskPendingTable = ({isAssignTaskModal}) => {
             render:(record)=>{
                 return (
                     <div>
-                        {record.scheduleStatus=="newpropose" ? <p>waiting new propose schedule approval</p>
+                        {record.scheduleStatus=="newpropose" ? <p style={{ color:'red' }}>waiting new propose schedule approval</p>
                             :
                             <Space>
                                 <Tooltip title="Assign Task">

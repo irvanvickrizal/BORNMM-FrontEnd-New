@@ -27,7 +27,7 @@ import Search from '@app/components/searchcolumn/SearchColumn'
 import API from "../../utils/apiServices"
 import { CloseSquareTwoTone ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined, EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined } from '@ant-design/icons'
 import { toast } from 'react-toastify';
-
+import {IconButton, TextField}  from '@mui/material/';
 
 export default function TableTaskSummary(props) {
     const dispatch = useDispatch()
@@ -334,39 +334,74 @@ export default function TableTaskSummary(props) {
             title: "Action",
             dataIndex: "",
             render:(record)=>{
-               
                 return (
-                    scheduleStatuss ? (
-                        <Space>
-                            <Tooltip title="Assign Task">
-                                <UserAddOutlined style={{fontSize:"16px"}} onClick={()=>showModal(record)} />
-                            </Tooltip>
-              
-                      
-                            {!record.requestReschedule?
-                                null
-                                :
-                                record.dayToGo <= -2 ?
+                    <div>
+                        {record.scheduleStatus=="newpropose" ? <p style={{ color:'red' }}>waiting new propose schedule approval</p>
+                            :
+                            <Space>
+                                <Tooltip title="Assign Task">
+                                    <UserAddOutlined  onClick={() => showModal(record)} />
+                                </Tooltip>
+                                {!record.requestReschedule?
+                                    null
+                                    :
+                                    record.dayToGo <= -2 ?
+                                        <Tooltip title="Request Reschedule">
+                                            <CalendarTwoTone onClick={() => showModalReschedule(record)} />
+                                        </Tooltip> :
+                                        <Tooltip color='#f50' title="Cannot request reschedule, day to go h-1 or higher">
+                                            <CalendarTwoTone />
+                                        </Tooltip>
+                                }
+                                <Tooltip title="Cancel Task">
+                                    <CloseSquareTwoTone twoToneColor="#FF0000" onClick={() => showModalCancel(record)} />
+                                </Tooltip>
+                            </Space>
+                        }
+                    </div>
                     
-                                    <Tooltip title="Request Reschedule" style={{fontSize:"16px"}} onClick={()=>showModalReschedule(record)}>
-                                        <CalendarTwoTone style={{fontSize:"16px"}} />
-                                    </Tooltip>:
-                                    <Tooltip color='#f50' title="Cannot request reschedule, day to go h-1 or higher">
-                                        <IconButton color="#0000">
-                                            <CalendarTwoTone style={{fontSize:16}} />
-                                        </IconButton>
-                                        <CalendarTwoTone style={{fontSize:16}} />
-                                    </Tooltip>
-                            }
-                    
-                            <Tooltip title="Cancel Task">
-                                <CloseSquareTwoTone twoToneColor="#FF0000" style={{fontSize:"16px"}} onClick={()=>showModalCancel(record)}/>
-                            </Tooltip>
-                        </Space>):(<><Button onClick={cobaConsole}>sa</Button></>)
-
-                  
+                   
                 )
             }
+            
+            // render:(record)=>{
+               
+            //     return (
+            //         <Space>
+            //             {
+            //                 record.scheduleStatus == "newpropose" ? <p style={{ color:'red' }}>waiting new propose schedule approval</p>
+            //                 :
+                            
+            //             }
+            //             <Tooltip title="Assign Task">
+            //                 <UserAddOutlined style={{fontSize:"16px"}} onClick={()=>showModal(record)} />
+            //             </Tooltip>
+              
+                      
+            //             {!record.requestReschedule?
+            //                 null
+            //                 :
+            //                 record.dayToGo <= -2 ?
+                    
+            //                     <Tooltip title="Request Reschedule" style={{fontSize:"16px"}} onClick={()=>showModalReschedule(record)}>
+            //                         <CalendarTwoTone style={{fontSize:"16px"}} />
+            //                     </Tooltip>:
+            //                     <Tooltip color='#f50' title="Cannot request reschedule, day to go h-1 or higher">
+            //                         <IconButton color="#0000">
+            //                             <CalendarTwoTone style={{fontSize:16}} />
+            //                         </IconButton>
+            //                         <CalendarTwoTone style={{fontSize:16}} />
+            //                     </Tooltip>
+            //             }
+                    
+            //             <Tooltip title="Cancel Task">
+            //                 <CloseSquareTwoTone twoToneColor="#FF0000" style={{fontSize:"16px"}} onClick={()=>showModalCancel(record)}/>
+            //             </Tooltip>
+            //         </Space>
+
+                  
+            //     )
+            // }
         },
     ]
     const columnsAssigmentOnProgress = [

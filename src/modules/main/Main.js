@@ -300,7 +300,7 @@ const Main = () => {
                                         />
                                         <Route
                                             exact
-                                            path="/task/sconassignmentpending/"
+                                            path="/task/assignment/"
                                             component={SconTaskPending}
                                         />
                                         <Route
