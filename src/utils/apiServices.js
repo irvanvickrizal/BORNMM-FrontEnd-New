@@ -290,6 +290,8 @@ const getDismantledBy = () => GET('subcon/GetFieldSubcontractor');
 const getSiteCondition = () => GET('sitecondition');
 const getSubcon = () => GET('subcon/GetFieldSubcontractor');
 const postDismantleForm = (body) => POST('materialmanagement/OrderDetailAdd',body);
+const getTeamCoordinator= (subconid,workpackageid) => GETParam2('subcon/getCoordinatorSubcontractorEngineer',subconid,workpackageid);
+const getHasExpressDelivery= (ordertypeid) => GETParam('masterordertype/orderTypeHasExpressDelivery',ordertypeid);
 
 const getOrderRequestDraft = () => GET('mmReport/OrderRequestGetListDraft');
 
@@ -385,6 +387,8 @@ const API ={
     ,postDismantleForm
     ,getSconTaskOnProgress
     ,postReAssignmentEngineer
+    ,getTeamCoordinator,
+    getHasExpressDelivery
 }
 
 export default API;

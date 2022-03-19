@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/no-unstable-nested-components */
@@ -25,6 +26,8 @@ import moment from "moment"
 import Search from '@app/components/searchcolumn/SearchColumn'
 import API from "../../utils/apiServices"
 import { CloseSquareTwoTone ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined, EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined } from '@ant-design/icons'
+import { toast } from 'react-toastify';
+
 
 export default function TableTaskSummary(props) {
     const dispatch = useDispatch()
@@ -99,9 +102,16 @@ export default function TableTaskSummary(props) {
         console.log(body,"body")
         API.postAssignEngineer(body).then(
             result=>{
-                console.log('sconpost', result)
+                if(result.status=="success")
+                {
+                    toast.success(result.message);
+                    window.location.reload();
+                }
+                else{
+                    toast.error(result.message)
+                }
                 // TaskPendingTable(false);
-                // window.location.reload();
+                // 
             }
         )
     }
@@ -117,9 +127,14 @@ export default function TableTaskSummary(props) {
         console.log(body,"body")
         API.postReAssignmentEngineer(body).then(
             result=>{
-                console.log('sconpost', result)
-                // TaskPendingTable(false);
-                window.location.reload();
+                if(result.status=="success")
+                {
+                    toast.success(result.message);
+                    window.location.reload();
+                }
+                else{
+                    toast.error(result.message)
+                }
             }
         )
     }
@@ -154,9 +169,14 @@ export default function TableTaskSummary(props) {
         )
         API.postCancelTask(body).then(
             result=>{
-                console.log('reqres cancel tasl', result)
-                // TaskPendingTable(false);
-                // window.location.reload();
+                if(result.status=="success")
+                {
+                    toast.success(result.message);
+                    window.location.reload();
+                }
+                else{
+                    toast.error(result.message)
+                }
             }
         )
     }
@@ -184,6 +204,7 @@ export default function TableTaskSummary(props) {
       
         
     }
+   
     const showModalReschedule = (data) => {
         setIsModalRescheduleVisible(true)
         
@@ -209,10 +230,7 @@ export default function TableTaskSummary(props) {
     }
     const stateDataPending =  useSelector(state=>state.taskAssignmentSummaryReducer.dataPending) 
     const stateDataOnProgress =  useSelector(state=>state.taskAssignmentSummaryReducer.dataOnProgress) 
-    const stateDataDone =  useSelector(state=>state.taskAssignmentSummaryReducer.dataDone) 
-    const stateOdi =  useSelector(state=>state.taskAssignmentSummaryReducer.odi) 
-    const stateLsp =  useSelector(state=>state.taskAssignmentSummaryReducer.lsp) 
-    const statePud =  useSelector(state=>state.taskAssignmentSummaryReducer.pud) 
+  
    
     useEffect(() => {
        
@@ -220,7 +238,10 @@ export default function TableTaskSummary(props) {
         getSconOnProgress()
        
     }, [])
-  
+    const scheduleStatuss = sconTaskPending.map(e=>e.scheduleStatus)
+    const cobaConsole = ()=>{
+        console.log(scheduleStatuss,'coba fata')
+    }
 
     const columnsAssigmentPending = [
         {
@@ -276,21 +297,21 @@ export default function TableTaskSummary(props) {
         },
         {
             title: "Pickup Date",
-            dataIndex: "pickupOrDeliveryDate",
+         
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(stateDataPending.pickupOrDeliveryDate).format("YYYY-MM-DD")}</p>
+                        <p>{moment(record.pickupOrDeliveryDate).format("YYYY-MM-DD")}</p>
                     </Space>
                 )
             },
             ...Search("pickupOrDeliveryDate")
         },
-        {
-            title: "Assign To",
-            dataIndex: "assignedTo",
-            ...Search("assignedTo")
-        },
+        // {
+        //     title: "Assign To",
+        //     dataIndex: "assignedTo",
+        //     ...Search("assignedTo")
+        // },
         {
             title: "Incoming Date",
             dataIndex: "incomingDate",
@@ -303,35 +324,47 @@ export default function TableTaskSummary(props) {
             },
             ...Search("incomingDate")
         },
-        {
-            title: "Task Status",
-            dataIndex: "taskStatus",
-            ...Search("taskStatus")
-        },
+        // {
+        //     title: "Task Status",
+        //     dataIndex: "taskStatus",
+        //     ...Search("taskStatus")
+        // },
         
         {
             title: "Action",
             dataIndex: "",
             render:(record)=>{
+               
                 return (
-                    <Space>
-                        <Tooltip title="Assign Task">
-                            <UserAddOutlined style={{fontSize:"16px"}} onClick={()=>showModal(record)} />
-                        </Tooltip>
-                  
-                          
-                        {!record.requestReschedule?
-                            null
-                            :
-                            <Tooltip title="Request Reschedule" style={{fontSize:"16px"}} onClick={()=>showModalReschedule(record)}>
-                                <CalendarTwoTone  />
+                    scheduleStatuss ? (
+                        <Space>
+                            <Tooltip title="Assign Task">
+                                <UserAddOutlined style={{fontSize:"16px"}} onClick={()=>showModal(record)} />
                             </Tooltip>
-                        }
-                        
-                        <Tooltip title="Cancel Task">
-                            <CloseSquareTwoTone twoToneColor="#FF0000" style={{fontSize:"16px"}} onClick={()=>showModalCancel(record)}/>
-                        </Tooltip>
-                    </Space>
+              
+                      
+                            {!record.requestReschedule?
+                                null
+                                :
+                                record.dayToGo <= -2 ?
+                    
+                                    <Tooltip title="Request Reschedule" style={{fontSize:"16px"}} onClick={()=>showModalReschedule(record)}>
+                                        <CalendarTwoTone style={{fontSize:"16px"}} />
+                                    </Tooltip>:
+                                    <Tooltip color='#f50' title="Cannot request reschedule, day to go h-1 or higher">
+                                        <IconButton color="#0000">
+                                            <CalendarTwoTone style={{fontSize:16}} />
+                                        </IconButton>
+                                        <CalendarTwoTone style={{fontSize:16}} />
+                                    </Tooltip>
+                            }
+                    
+                            <Tooltip title="Cancel Task">
+                                <CloseSquareTwoTone twoToneColor="#FF0000" style={{fontSize:"16px"}} onClick={()=>showModalCancel(record)}/>
+                            </Tooltip>
+                        </Space>):(<><Button onClick={cobaConsole}>sa</Button></>)
+
+                  
                 )
             }
         },
@@ -508,6 +541,8 @@ export default function TableTaskSummary(props) {
         },
     ]
     const CardTitle = (title) => <Title level={5}>{title}</Title>
+
+   
     return (
         <div>
             <Tabs defaultActiveKey="1" centered={false}>

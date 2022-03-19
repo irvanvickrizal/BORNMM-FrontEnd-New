@@ -1,3 +1,5 @@
+/* eslint-disable no-self-compare */
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable no-shadow */
@@ -14,7 +16,8 @@ import { Table, Row, Col,Card, Typography, Input, Space,
     DatePicker,
     InputNumber,
     TreeSelect,
-    Switch,
+    Tooltip,
+    Checkbox ,
     message } from 'antd';
 import HeaderChanger from '@app/components/cardheader/HeaderChanger';
 import Divider from '@mui/material/Divider';
@@ -27,6 +30,8 @@ import API  from '../../utils/apiServices';
 import CreateDataDismantle from './DataGenerator';
 import moment from 'moment';
 
+
+
 import { toast } from 'react-toastify';
 
 const SdrForm = (props) => {
@@ -34,6 +39,7 @@ const SdrForm = (props) => {
     const params = new URLSearchParams(customURL.split('?')[1])
     const { Title } = Typography;
     const wpid = params.get('wpid');
+    const subconid= 22
     const orderTypeId = params.get('ot');
     const [siteInfo, setSiteInfo] = useState([]);
     const [cpoNo,setCpoNo] = useState("");
@@ -46,6 +52,7 @@ const SdrForm = (props) => {
     const [wBS,setWBS] = useState("");
     const [projectContract,setProjectContract] = useState("");
     const [region,setRegion] = useState("");
+    const [express,setExpress] = useState("");
     const [ddlInventoryCode,setDDLInventoryCode] = useState([]);
     const [ddlRequestBase,setDDLRequestBase] = useState([]);
     const [ddlSiteLocation,setDDLSiteLocation] = useState([]);
@@ -54,8 +61,10 @@ const SdrForm = (props) => {
     const [ddlDestination,setDDLDestination] = useState([]);
     const [ddlPacketType,setDDLPacketType] = useState([]);
     const [ddlSubcon,setDDLSubcon] = useState([]);
+    const [ddlTeam,setDdlTeam] = useState([]);
     const [ddlSiteCondition,setDDLSiteCondition] = useState([]);
     const current = new Date();
+    const [checked,setChecked] = useState(true)
     const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
     
     const history = useHistory();
@@ -70,6 +79,7 @@ const SdrForm = (props) => {
     const [selectedSiteCondition,setSelectedSiteCondition] = useState('');
     const [deliveryDate,setDeliveryDate] = useState('');
     const [siteAddress,setSiteAddress] = useState('');
+    const [selectedTeamCoordinator,setSelectedTeamCoordinator] = useState("")
 
     const navigateTo = (path) => {
         history.push(path)
@@ -88,6 +98,14 @@ const SdrForm = (props) => {
                     ,result.packageName
                     ,result.region)]
                 setSiteInfo(data);
+            }
+        )
+    }
+    const getTeamCoordinator = () => {
+        API.getTeamCoordinator(selectedSubcon,wpid).then(
+            result=>{
+                console.log("data team:",result)
+                setDdlTeam(result);
             }
         )
     }
@@ -171,7 +189,19 @@ const SdrForm = (props) => {
             }
         )
     }
-
+    const getHasExpressDelivery = () => {
+        API.getHasExpressDelivery(orderTypeId).then(
+            result=>{
+                setExpress(result);
+                console.log("express",result);
+            }
+        )
+    }
+    
+    const togleCheckbox = (value)=> {
+        setChecked(value)
+        console.log("v",value)
+    }
     const columns = [
         {
             title: 'PO NO/ RO No',
@@ -226,7 +256,15 @@ const SdrForm = (props) => {
 
     function disabledDate(current) {
         // Can not select days before today and today
+        return current >= moment().add(2,'d') && moment().add(2,'d') <= current
+    }
+    function disabledDateExpressTrue(current) {
+        // Can not select days before today and today
         return current < moment().add(2,'d');
+    }
+
+    function consoleTeam() {
+        console.log("dataTeam:",selectedSubcon)
     }
 
     const postDismantleForm = () => {
@@ -244,6 +282,7 @@ const SdrForm = (props) => {
                 "packetTypeId":selectedPacketType,
                 "neTypeId" : selectedSiteLocation,
                 "siteAddress": siteAddress,
+                "isExpressDelivery":express,
                 "expectedDeliveryDate":deliveryDate,
                 "requestBy": user.uid
             }
@@ -291,13 +330,16 @@ const SdrForm = (props) => {
         getPacketType();
         getSubcon();
         getSiteCondition();
-    },[wpid,orderTypeId])
+        getTeamCoordinator()
+        getHasExpressDelivery()
+    },[wpid,orderTypeId,selectedSubcon])
 
     const CardTitle = (title) => (
         <Title level={5}>
             {title}
         </Title>
     )
+    const False = false
 
     return (
         <div>
@@ -320,9 +362,12 @@ const SdrForm = (props) => {
                                 labelCol={{ span: 5 }}
                                 wrapperCol={{ span: 18 }}
                                 layout="horizontal"
+                                initialValues={{
+                                    'isExpressDelivery':true
+                                }}
                             >
                                 <Form.Item label="Order Type">
-                                    <Input disabled value="PMR" />
+                                    <Input disabled value="SDR" />
                                 </Form.Item>
                                 <Form.Item label="Inventory Code">
                                     <Select 
@@ -411,6 +456,28 @@ const SdrForm = (props) => {
                                         }
                                     </Select>
                                 </Form.Item>
+                                <Form.Item label="Team Coordinator at Site
+">
+                                    {ddlTeam.length == null ? (<></>):(<Select 
+                                        onChange={(e) => setSelectedTeamCoordinator(e)} 
+                                        placeholder="Select an option">
+                                            
+                                        {
+                                            ddlTeam.map(dst =>  <Select.Option value={dst.userId}> 
+                                                {dst.fullname}</Select.Option>)
+                                        }
+                                    </Select>)}
+                                    
+                                </Form.Item>
+                                
+                                <Form.Item label="Express Delivery" valuePropName="checked" name="isExpressDelivery">  
+                                    {express ? (<Checkbox onChange={(e)=>togleCheckbox(e.target.checked)}/>):(
+                                        <Tooltip color='#f50' title="Cannot request Express Delivery"><Checkbox disabled  onChange={(e)=>togleCheckbox(e.target.checked)}/></Tooltip>
+                                    )}
+                                    
+                                    
+                                    
+                                </Form.Item>
                                 
                                 <Form.Item label="Packet Type" rules={[
                                     {
@@ -432,13 +499,20 @@ const SdrForm = (props) => {
                                     />
                                 </Form.Item>
                                 <Form.Item label="Delivery Date" rules={[{ required: true, message: 'Missing Inventory Code' }]}>
-                                    <DatePicker
+                                    {checked ? (<DatePicker 
                                         format="YYYY-MM-DD"
                                         disabledDate={disabledDate}
                                         onChange={(e) => setDeliveryDate(moment(e).format("YYYY-MM-DD"))} 
                                         // disabledDate={current && current < moment().endOf('day')}
                                         // showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
-                                    />
+                                    />):(<DatePicker 
+                                        format="YYYY-MM-DD"
+                                        disabledDate={disabledDateExpressTrue}
+                                        onChange={(e) => setDeliveryDate(moment(e).format("YYYY-MM-DD"))} 
+                                        // disabledDate={current && current < moment().endOf('day')}
+                                        // showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+                                    />)}
+                                   
                                 </Form.Item>
                                 {/* <Form.Item>
                                     <Button type="primary" htmlType="submit">Confirm</Button>
@@ -467,6 +541,7 @@ const SdrForm = (props) => {
                                 <Col span={4}> 
                                     <Space direction="horizontal">
                                         <Button type="primary" htmlType="submit" onClick={btnConfirm}>Confirm</Button>
+                                       
                                         <Button type="danger" onClick={btnCancel}>Cancel</Button>
                                     </Space>
                                 </Col>
