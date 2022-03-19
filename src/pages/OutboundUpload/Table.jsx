@@ -168,7 +168,7 @@ const TableInboundUpload = () => {
                 return (
                     <Space>
                         {!record.rowlogCount > 0 ?
-                            <p>{record.errMessage}</p>
+                            <p style={{ color:"red" }}>{record.errMessage}</p>
                             :
                             <Tooltip title="Download Log">
                                 <IconButton
@@ -205,7 +205,7 @@ const TableInboundUpload = () => {
                                     onClick={() => handleUploadFile(record.inbFileId, record.fileName)}>
                                     <UploadOutlined />
                                 </IconButton>
-                            </Tooltip><Tooltip title="Cancel Task">
+                            </Tooltip><Tooltip title="Delete File">
                                 <DeleteTwoTone twoToneColor="#FF0000" onClick={() => handleDeleteFile(record.inbFileId)} />
                             </Tooltip></>:null
                         }
@@ -293,7 +293,7 @@ const TableInboundUpload = () => {
                     </Col>
                     <Col md={8} sm={24} >
                         <div className='float-right'>
-                            <Tooltip title="Add Material">
+                            <Tooltip title="Upload File">
                                 <IconButton size="small" color="primary" onClick={handleShowAdd}>
                                     <PlusOutlined />
                                 </IconButton>

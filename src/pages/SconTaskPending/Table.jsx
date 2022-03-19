@@ -129,12 +129,12 @@ const TaskPendingTable = ({isAssignTaskModal}) => {
         },
         {
             title : "Origin",
-            dataIndex:'',
+            dataIndex:'originName',
             ...Search(''),
         },
         {
             title : "Destination",
-            dataIndex:'',
+            dataIndex:'destinationName',
             ...Search(''),
         },
         {
@@ -198,7 +198,7 @@ const TaskPendingTable = ({isAssignTaskModal}) => {
             render:(record)=>{
                 return (
                     <div>
-                        {record.scheduleStatus=="newpropose" ? <p style={{ color:'red' }}>waiting new propose schedule approval</p>
+                        {record.scheduleStatus=="newpropose" ? <p style={{ color:'red' }}>Propose New Schedule Request</p>
                             :
                             <Space>
                                 <Tooltip title="Assign Task">

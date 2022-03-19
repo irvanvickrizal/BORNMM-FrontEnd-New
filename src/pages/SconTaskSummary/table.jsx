@@ -60,10 +60,8 @@ export default function TableTaskSummary(props) {
     }
     
     const getSconTaskPending = () => {
-     
         API.getSconTaskPending().then(
             result=>{
-              
                 setSconTaskPending(result);
                 console.log("scontaskpendnig",result);
             }
@@ -234,10 +232,8 @@ export default function TableTaskSummary(props) {
   
    
     useEffect(() => {
-       
         getSconTaskPending()
         getSconOnProgress()
-       
     }, [])
     const scheduleStatuss = sconTaskPending.map(e=>e.scheduleStatus)
     const cobaConsole = ()=>{
@@ -298,7 +294,7 @@ export default function TableTaskSummary(props) {
         },
         {
             title: "Pickup Date",
-         
+            
             render:(record)=>{
                 return (
                     <Space>
@@ -333,11 +329,10 @@ export default function TableTaskSummary(props) {
         
         {
             title: "Action",
-            dataIndex: "",
             render:(record)=>{
                 return (
                     <div>
-                        {record.scheduleStatus=="newpropose" ? <p style={{ color:'red' }}>waiting new propose schedule approval</p>
+                        {record.scheduleStatus=="newpropose" ? <p style={{ color:'red' }}>Propose New Schedule Request</p>
                             :
                             <Space>
                                 <Tooltip title="Assign Task">
