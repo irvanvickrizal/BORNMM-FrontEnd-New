@@ -5,6 +5,7 @@ import jwt from 'jwt-decode';
 const initialState = {
     isLoggedIn: !!localStorage.getItem('token'),
     token: localStorage.getItem('token'),
+    tokenRedux: '',
     currentUser: {
         email: 'mail@example.com',
         picture: null
@@ -19,9 +20,9 @@ export const authSlice = createSlice({
     reducers: {
         loginUser: (state, {payload}) => {
             console.log('reducer: ',payload);
-            localStorage.setItem('token', payload);
             state.isLoggedIn = true;
             state.token = payload;
+            state.tokenRedux = payload;
         },
         logoutUser: (state) => {
             localStorage.removeItem('token');

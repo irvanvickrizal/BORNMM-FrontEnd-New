@@ -7,7 +7,7 @@ import React,{useEffect,useState} from 'react'
 import {toast} from 'react-toastify';
 import { useDispatch,useSelector } from 'react-redux'
 import {Typography,Popconfirm,Select,Upload,message,Form,Modal,Table, Input,Menu, Dropdown, Button, Space, Spin, Row, Col,Tooltip  } from 'antd'
-import {PlusOutlined, CloseSquareTwoTone ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined, EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined,DeleteTwoTone,UploadOutlined } from '@ant-design/icons'
+import {PlusOutlined,FileExcelOutlined, CloseSquareTwoTone ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined, EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined,DeleteTwoTone,UploadOutlined } from '@ant-design/icons'
 import { useHistory } from 'react-router-dom';
 import API  from '../../utils/apiServices';
 import {IconButton, TextField}  from '@mui/material/';
@@ -17,7 +17,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SimCardDownloadIcon from '@mui/icons-material/SimCardDownload';
 import exportFromJSON from 'export-from-json'
 
-const TableInboundUpload = () => {
+const TableOutboundUpload = () => {
     const { Option } = Select;
     const [isLoading, setIsLoading] = useState(true);
     const [outboundUploadFile,setOutboundUploadFile] = useState([]);
@@ -47,9 +47,10 @@ const TableInboundUpload = () => {
         setIsLoading(true);
         API.getOutboundUploadFile().then(
             result=>{
+                
+                console.log("scontaskpendnig",result);
                 setOutboundUploadFile(result)
                 setIsLoading(false);
-                console.log("scontaskpendnig",result);
             }
         )
     }
@@ -167,7 +168,7 @@ const TableInboundUpload = () => {
             render:(record)=>{
                 return (
                     <Space>
-                        {!record.rowlogCount > 0 ?
+                        {!record.rowLogCount > 0 ?
                             <p style={{ color:"red" }}>{record.errMessage}</p>
                             :
                             <Tooltip title="Download Log">
@@ -298,6 +299,14 @@ const TableInboundUpload = () => {
                                     <PlusOutlined />
                                 </IconButton>
                             </Tooltip>
+                            <Tooltip title="Download Template">
+                                <IconButton size="small" color="secondary">
+                                    <a href='/file/SampleFile.xlsx' download="Template">
+                                        <FileExcelOutlined />
+                                    </a>
+                                </IconButton>
+                                {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
+                            </Tooltip>
                         </div>
                     </Col>
                 </Row>
@@ -363,4 +372,4 @@ const TableInboundUpload = () => {
     )
 }
 
-export default TableInboundUpload;
+export default TableOutboundUpload;

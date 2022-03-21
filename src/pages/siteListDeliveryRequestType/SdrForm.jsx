@@ -457,8 +457,7 @@ const SdrForm = (props) => {
                                         }
                                     </Select>
                                 </Form.Item>
-                                <Form.Item label="Team Coordinator at Site
-">
+                                <Form.Item label="Team Coordinator at Site">
                                     {ddlTeam.length == null ? (<></>):(<Select 
                                         onChange={(e) => setSelectedTeamCoordinator(e)} 
                                         placeholder="Select an option">

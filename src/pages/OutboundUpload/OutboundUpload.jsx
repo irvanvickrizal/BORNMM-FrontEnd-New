@@ -6,7 +6,7 @@ import API  from '../../utils/apiServices';
 import {useSelector} from 'react-redux';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
-import TableInboundUpload from './Table'
+import TableOutboundUpload from './Table'
 
 const OutboundUpload = () => {
     
@@ -17,14 +17,14 @@ const OutboundUpload = () => {
 
     return (
         <div>
-            <HeaderChanger title="Inbound Upload"/>
+            <HeaderChanger title="Outbound Upload"/>
             {/* {isEdit || isNew ? <DOPPanel/> : null} */}
             {isLoading ? <Box sx={{ display: 'flex',
                 justifyContent: 'center'
             }}>
                 <CircularProgress />
             </Box> : 
-                <TableInboundUpload/>
+                <TableOutboundUpload/>
             }
             
             {/* <POScopeList /> */}
