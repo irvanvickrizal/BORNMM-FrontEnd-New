@@ -50,6 +50,7 @@ import OutboundUpload from "@app/pages/OutboundUpload/OutboundUpload"
 import SdrForm from "@app/pages/siteListDeliveryRequestType/SdrForm"
 import WaitingRFP from "@app/pages/WaitingRFP/WaitingRFP"
 import TransportAssignmentPending from "@app/pages/TrasnportAssignmentPending/index"
+import TransportPickupPending from "@app/pages/TransportPickupPending/TransportPickupPending"
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -327,8 +328,13 @@ const Main = () => {
                                         />
                                         <Route
                                             exact
-                                            path="/task/trasnportassignment"
+                                            path="/task/transportassignment"
                                             component={TransportAssignmentPending}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/task/transportpickuppending"
+                                            component={TransportPickupPending}
                                         />
                                     </Switch>
                                 </div>
