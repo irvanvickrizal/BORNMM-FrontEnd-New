@@ -84,6 +84,8 @@ export default function TableSite() {
         </Menu>
     );
 
+    const scopeDetailMap = dataSiteList.map(e=>e.scopeDetail.scopeName)
+
     const columns = [
         {
             title : "No",
@@ -142,8 +144,31 @@ export default function TableSite() {
             title : "Scope",
             dataIndex:'scopeDetail',
             
-            ...Search('scopeDetail'),
-            render: item => Object.keys(item).map(k => item[k])[1]
+          
+            render: item => Object.keys(item).map(k => item[k])[1],
+            filterDropdown: ({setSelectedKeys,selectedKeys,confirm}) => {
+                return <Input 
+                    autoFocus 
+                    placeHolder='search'
+                    value={selectedKeys[0]}
+                    onChange={(e)=>{
+                        setSelectedKeys(e.target.value?[e.target.value]:[])
+                    }}
+                    style={{ marginBottom: 8, display: 'block' }}
+                    onPressEnter={()=>{
+                        confirm()
+                    }}
+                    onBlur={()=>{
+                        confirm()
+                    }}
+                ></Input>
+            },
+            filterIcon: () => {
+                return <SearchOutlined/>
+            },
+            onFilter:(value,record)=>{
+                return record.scopeDetail.scopeName.toLowerCase().includes(value.toLowerCase())
+            },
             
             
         },

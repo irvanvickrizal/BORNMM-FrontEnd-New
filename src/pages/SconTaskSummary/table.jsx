@@ -25,7 +25,7 @@ import { getDataDone, getDataOnProgress, getDataPending,getLsp,getOdi,getPud } f
 import moment from "moment"
 import Search from '@app/components/searchcolumn/SearchColumn'
 import API from "../../utils/apiServices"
-import { CloseSquareTwoTone ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined, EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined } from '@ant-design/icons'
+import { CloseSquareTwoTone ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined, EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined ,UserSwitchOutlined } from '@ant-design/icons'
 import { toast } from 'react-toastify';
 import {IconButton, TextField}  from '@mui/material/';
 
@@ -346,7 +346,7 @@ export default function TableTaskSummary(props) {
                                             <CalendarTwoTone onClick={() => showModalReschedule(record)} />
                                         </Tooltip> :
                                         <Tooltip color='#f50' title="Cannot request reschedule, day to go h-1 or higher">
-                                            <CalendarTwoTone />
+                                            <CalendarTwoTone style={{color:"#0000"}} />
                                         </Tooltip>
                                 }
                                 <Tooltip title="Cancel Task">
@@ -493,8 +493,8 @@ export default function TableTaskSummary(props) {
             render:(record)=>{
                 return (
                     <Space>
-                        <Tooltip title="Assign Task">
-                            <UserAddOutlined style={{fontSize:"16px"}} onClick={()=> showModalOnProgress(record)}  />
+                        <Tooltip title="Re-Assign Task">
+                            <UserSwitchOutlined style={{fontSize:"16px"}} onClick={()=> showModalOnProgress(record)}  />
                         </Tooltip>
                   
                           
@@ -515,11 +515,11 @@ export default function TableTaskSummary(props) {
         },
         {
             title: "Request No",
-            dataIndex: "cpoNo"
+            dataIndex: "requestNo"
         },
         {
             title: "Order Type",
-            dataIndex: "requestTypeName"
+            dataIndex: "orderType"
         },
         {
             title: "Site No",
@@ -536,7 +536,7 @@ export default function TableTaskSummary(props) {
         },
         {
             title: "Site Name",
-            dataIndex: "region"
+            dataIndex: "siteName"
         },
         {
             title: "Region",
@@ -544,31 +544,45 @@ export default function TableTaskSummary(props) {
         },
         {
             title: "Work Pakgae ID",
-            dataIndex: "region"
+            dataIndex: "workpackageid"
         },
         {
             title: "Scope Name",
-            dataIndex: "region"
+            dataIndex: "scopeName"
         },
         {
             title: "Pickup Date",
-            dataIndex: "region"
+            dataIndex: "pickupOrDeliveryDate",
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(columnsAssigmentOnDone.pickupOrDeliveryDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            },
         },
         {
             title: "Assign To",
-            dataIndex: "region"
+            dataIndex: "assignedTo"
         },
         {
             title: "Assign Date",
-            dataIndex: "region"
+         
         },
         {
             title: "Task Status",
-            dataIndex: "region"
+            dataIndex: "taskStatus"
         },
         {
             title: "Task Complete Date",
-            dataIndex: "region"
+            dataIndex: "incomingDate",
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(columnsAssigmentOnDone.incomingDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            },
         },
     ]
     const CardTitle = (title) => <Title level={5}>{title}</Title>
@@ -616,13 +630,14 @@ export default function TableTaskSummary(props) {
                         <div >
                             <Table
                                 columns={columnsAssigmentOnDone}
+                                scroll={{x: "100%"}}
                                 pagination={{
                                     pageSizeOptions: ['5', '10', '20', '30', '40'],
                                     showSizeChanger: true,
                                     position: ["bottomLeft"],
                                 }}
                                 dataSource={taskOnProgress}
-                                scroll={{x: "100%"}}
+                                
                             />
                         </div>
                     </Card>
@@ -651,7 +666,7 @@ export default function TableTaskSummary(props) {
                         <Form.Item label=" Pick Up Date">
                             <Typography>{moment(selectedPd).format("YYYY-MM-DD")}</Typography>
                         </Form.Item>
-                        <Form.Item label="WH Team">
+                        <Form.Item label="Assign To">
                             <Select
                                 onChange={(e)=>setSelectedEngineer(e)}
                                 placeholder="Select an option"

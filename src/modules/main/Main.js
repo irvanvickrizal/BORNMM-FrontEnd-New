@@ -49,6 +49,7 @@ import OutboundUpload from "@app/pages/OutboundUpload/OutboundUpload"
 
 import SdrForm from "@app/pages/siteListDeliveryRequestType/SdrForm"
 import WaitingRFP from "@app/pages/WaitingRFP/WaitingRFP"
+import TransportAssignmentPending from "@app/pages/TrasnportAssignmentPending/index"
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -323,6 +324,11 @@ const Main = () => {
                                             exact
                                             path="/task/lspwaitingrfp"
                                             component={WaitingRFP}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/task/trasnportassignment"
+                                            component={TransportAssignmentPending}
                                         />
                                     </Switch>
                                 </div>

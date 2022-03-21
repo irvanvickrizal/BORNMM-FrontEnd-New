@@ -95,7 +95,7 @@ export const logistikFormReducer = (state = initialState, action) => {
     case "SET_DELIVERY_MODE":
         return {
             ...state,
-            detaDeliveryMode:action.payload,
+            dataDeliveryMode:action.payload,
             isLoading: false,
         };
     case "POST_LOGISTIK_FORM":
