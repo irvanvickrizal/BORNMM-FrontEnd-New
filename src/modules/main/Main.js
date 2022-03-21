@@ -48,6 +48,7 @@ import InboundUpload from "@app/pages/InboundUpload/InboundUpload"
 import OutboundUpload from "@app/pages/OutboundUpload/OutboundUpload"
 
 import SdrForm from "@app/pages/siteListDeliveryRequestType/SdrForm"
+import WaitingRFP from "@app/pages/WaitingRFP/WaitingRFP"
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -317,6 +318,11 @@ const Main = () => {
                                             exact
                                             path="/stock/outboundupload"
                                             component={OutboundUpload}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/task/lspwaitingrfp"
+                                            component={WaitingRFP}
                                         />
                                     </Switch>
                                 </div>

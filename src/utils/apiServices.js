@@ -375,7 +375,13 @@ const deleteOutboundFile = (id) => PUTParam('inventory/outboundFileDelete',id);
 const getSconTaskOnProgress = () => GET('taskassignment/taskAssignmentSubconOnProgress');
 const postReAssignmentEngineer = (body) => POST("taskassignment/taskReAssignmentToEngineer",body);
 
+const getWaitingRFP = () => GET('lspassignment/lspAssignmentRFPPending');
+const postWaitingRFP = (body) => POST('lspassignment/lspAssignmentRFPConfirm',body);
+
+
 const API ={
+    postWaitingRFP,
+    getWaitingRFP,
     getOutboundUploadFile, 
     getOutboundErrorList,
     postReviseOutboundFile,

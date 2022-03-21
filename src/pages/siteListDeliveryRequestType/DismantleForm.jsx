@@ -373,7 +373,7 @@ const DismantleForm = (props) => {
                                 wrapperCol={{ span: 18 }}
                                 layout="horizontal"
                                 initialValues={{
-                                    'isExpressDelivery':true
+                                    'isExpressDelivery':false
                                 }}
                             >
                                 <Form.Item label="Order Type">
