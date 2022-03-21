@@ -48,6 +48,7 @@ import InboundUpload from "@app/pages/InboundUpload/InboundUpload"
 import OutboundUpload from "@app/pages/OutboundUpload/OutboundUpload"
 
 import SdrForm from "@app/pages/siteListDeliveryRequestType/SdrForm"
+import TransportAssignmentPending from "@app/pages/TrasnportAssignmentPending/index"
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -317,6 +318,11 @@ const Main = () => {
                                             exact
                                             path="/stock/outboundupload"
                                             component={OutboundUpload}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/task/trasnportassignment"
+                                            component={TransportAssignmentPending}
                                         />
                                     </Switch>
                                 </div>

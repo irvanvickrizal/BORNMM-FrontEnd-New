@@ -69,7 +69,7 @@ const SdrForm = (props) => {
     const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
     
     const history = useHistory();
-    const [selectedInvCode,setSelectedInvCode] = useState('');
+    const [selectedInvCode,setSelectedInvCode] = useState(1);
     const [selectedSiteLocation,setSelectedSiteLocation] = useState('');
     const [selectedRequestBase,setSelectedRequestBase] = useState('');
     const [selectedCTName,setSelectedCTName] = useState('');
@@ -81,6 +81,7 @@ const SdrForm = (props) => {
     const [deliveryDate,setDeliveryDate] = useState('');
     const [siteAddress,setSiteAddress] = useState('');
     const [selectedTeamCoordinator,setSelectedTeamCoordinator] = useState("")
+    const [initialValue,setInitialValue]= useState("")
 
     const navigateTo = (path) => {
         history.push(path)
@@ -116,6 +117,7 @@ const SdrForm = (props) => {
             result=>{
                 console.log("inventory",result);
                 setDDLInventoryCode(result);
+                setInitialValue(result[0].invCode)
             }
         )
     }
@@ -276,6 +278,7 @@ const SdrForm = (props) => {
                 "orderTypeId":orderTypeId,
                 "requestTypeId":selectedRequestBase,
                 "subconId":selectedSubcon,
+                "picOnSiteId":selectedTeamCoordinator,
                 "originId":selectedOrigin,        
                 "destinationId":selectedDestination,        
                 "siteConditionId":selectedSiteCondition,
@@ -315,6 +318,10 @@ const SdrForm = (props) => {
             postDismantleForm();
         }
     }
+    const consoleCoba = ()=>{
+        console.log(initialValue,"initial")
+        console.log(selectedTeamCoordinator,"initial")
+    }
 
     function btnCancel(){
         navigateTo("/mm/sitelistdr");
@@ -333,6 +340,7 @@ const SdrForm = (props) => {
         getSiteCondition();
         getTeamCoordinator()
         getHasExpressDelivery()
+        getCTNameDDL(1);
     },[wpid,orderTypeId,selectedSubcon])
 
     const CardTitle = (title) => (
@@ -341,6 +349,14 @@ const SdrForm = (props) => {
         </Title>
     )
     const False = false
+    const [form] = Form.useForm();
+
+
+    const handleSubcon = (e)=>{
+        setSelectedSubcon(e)
+        setSelectedTeamCoordinator("")
+        
+    }
 
     return (
         <div>
@@ -364,20 +380,23 @@ const SdrForm = (props) => {
                                 wrapperCol={{ span: 18 }}
                                 layout="horizontal"
                                 initialValues={{
-                                    'isExpressDelivery':true
+                                    'isExpressDelivery':false,
+                                    'invName':"XL"
+                                    
                                 }}
                             >
                                 <Form.Item label="Order Type">
                                     <Input disabled value="SDR" />
                                 </Form.Item>
-                                <Form.Item label="Inventory Code">
+                                <Form.Item name="invName" label="Inventory Code">
                                     <Select 
                                         onChange={(e) => handleInvDDLChange(e)}
-                                        placeholder="Select an option"
+                                     
+                                       
+                                       
                                     >
-                                        {/* <Select.Option value={0}>-- SELECT --</Select.Option> */}
                                         {
-                                            ddlInventoryCode.map(inv =>  <Select.Option value={inv.invCodeId}> 
+                                            ddlInventoryCode.map(inv =>  <Select.Option  initialValue="XL" value={inv.invCodeId}> 
                                                 {inv.invCode}</Select.Option>)
                                         }
                                     </Select>
@@ -418,6 +437,7 @@ const SdrForm = (props) => {
                                     }
                                 </Form.Item>
                                 <Form.Item label="Site Condition">
+                                
                                     <Select
                                         onChange={(e) => setSelectedSiteCondition(e)}  
                                         placeholder="Select an option">
@@ -449,7 +469,7 @@ const SdrForm = (props) => {
                                 </Form.Item>
                                 <Form.Item label="SubCon">
                                     <Select 
-                                        onChange={(e) => setSelectedSubcon(e)} 
+                                        onChange={(e) => handleSubcon(e)} 
                                         placeholder="Select an option">
                                         {
                                             ddlSubcon.map(dst =>  <Select.Option value={dst.subconId}> 
@@ -458,12 +478,13 @@ const SdrForm = (props) => {
                                     </Select>
                                 </Form.Item>
                                 <Form.Item label="Team Coordinator at Site">
+                            
                                     {ddlTeam.length == null ? (<></>):(<Select 
                                         onChange={(e) => setSelectedTeamCoordinator(e)} 
                                         placeholder="Select an option">
                                             
                                         {
-                                            ddlTeam.map(dst =>  <Select.Option value={dst.userId}> 
+                                            ddlTeam.map(dst =>  <Select.Option allowClear value={dst.userId}> 
                                                 {dst.fullname}</Select.Option>)
                                         }
                                     </Select>)}

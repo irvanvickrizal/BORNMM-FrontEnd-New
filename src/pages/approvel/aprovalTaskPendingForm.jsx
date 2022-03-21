@@ -83,6 +83,10 @@ export default function AprovalTaskPendingForm() {
     
     }
 
+    const handleBack = () => {
+        history.push("/sitelist/aprovaltaskpending")
+    }
+
     const columns = [
         {
             title: "No",
@@ -292,6 +296,12 @@ export default function AprovalTaskPendingForm() {
                         <Col span={4} md={8} sm={24}>
                             <Space direction="horizontal">
                                 <Button
+                            
+                                    onClick={() => handleBack()}
+                                >
+                            Back
+                                </Button>
+                                <Button
                                     type="primary"
                                     htmlType="submit"
                                     onClick={() => showModal()}
@@ -304,6 +314,7 @@ export default function AprovalTaskPendingForm() {
                                 >
                             Reject
                                 </Button>
+                          
                             </Space>
                         </Col>
                     </div>
@@ -343,6 +354,7 @@ export default function AprovalTaskPendingForm() {
                         <Button key="submit"  onClick={cancelModal2} >
                     Close
                         </Button>,
+                       
                     
                     ])}
             >

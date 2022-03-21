@@ -11,6 +11,7 @@ export default function Logistic() {
     const dispatch = useDispatch()
     const history = useHistory()
     const [page,setPage] = useState(1)
+    const [odi,setOdi] = useState("")
 
     
 
@@ -27,8 +28,9 @@ export default function Logistic() {
     }
 
     const handleEdit =(record) => {
-        dispatch(getOdi(record))
-        dispatch(getIdTaskPending(record))
+        setOdi(record.orderDetailId)
+        dispatch(getOdi(record.orderDetailId))
+        dispatch(getIdTaskPending(record.orderDetailId))
         navigateTo()
     }
 
@@ -92,7 +94,7 @@ export default function Logistic() {
         {
             title:'Action',
             render:(record)=>{
-                return <EditOutlined onClick={() => handleEdit(record.orderDetailId)}/>
+                return <EditOutlined onClick={() => handleEdit(record)}/>
             }
         },
     ]

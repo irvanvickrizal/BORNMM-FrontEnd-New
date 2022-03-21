@@ -81,7 +81,7 @@ function* sagaGetDeliveryMode(action) {
         const res = yield axios.get(`https://bornxldemo-api.nsnebast.com/deliveryMode/getListBasedonOrderRequest/${dataOdi}`,{headers: {
             Authorization: `Bearer ${token}` 
         }});
-        console.log(res,"result get site condition")
+        console.log(res,"result get selivery mode")
         yield put (setDeliveryMode(res.data))
     } catch (error) {
         console.log(error,'error get data site condition')

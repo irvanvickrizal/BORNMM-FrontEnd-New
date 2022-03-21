@@ -74,7 +74,7 @@ export default function LogisticForm() {
         (state) => state.logistikFormReducer.idDelivery
     )
     const deliveryMode = useSelector(
-        (state) => state.logistikFormReducer.detaDeliveryMode
+        (state) => state.logistikFormReducer.dataDeliveryMode
     )
     const materialOrder = useSelector(
         (state) => state.logistikFormReducer.dataOrderDetail
@@ -377,11 +377,12 @@ export default function LogisticForm() {
                                         onChange={(e) => setModeTransport(e)}
                                         placeholder="Select an option"
                                     >
-                                        {DataDeliveryTransport.map((e)=>(
+                                        {DataDeliveryTransport.length == 0 ? (<></>):(DataDeliveryTransport.map((e)=>(
                                             <Select.Option value={e.transportModeId}>
                                                 {e.transportMode}
                                             </Select.Option>
-                                        ))}
+                                        )))
+                                        }
                                     </Select>
                                 )}
                             </Form.Item>
@@ -390,11 +391,12 @@ export default function LogisticForm() {
                                     onChange={(e) => setDeliveryTransport(e)}
                                     placeholder="Select an option"
                                 >
-                                    {lsp.map((inv) => (
+                                    {lsp.length == 0 ? (<></>):( lsp.map((inv) => (
                                         <Select.Option value={inv.subconId}>
                                             {inv.subconName}
                                         </Select.Option>
-                                    ))}
+                                    )))
+                                   }
                                 </Select>
                             </Form.Item>
                             <Form.Item label="Mode Of Transport">
@@ -403,11 +405,12 @@ export default function LogisticForm() {
                                     placeholder="Select an option"
                                 >
                                     {
-                                    deliveryMode.map((inv) => (
-                                        <Select.Option value={inv.deliveryModeId}>
-                                            {inv.deliveryMode}
-                                        </Select.Option>
-                                    ))}
+                                        deliveryMode.length == 0 ? (<></>):( deliveryMode.map((inv) => (
+                                            <Select.Option value={inv.deliveryModeId}>
+                                                {inv.deliveryMode}
+                                            </Select.Option>
+                                        )))
+                                   }
                                 </Select>
                             </Form.Item>
                             <Form.Item label="Note">

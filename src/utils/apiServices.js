@@ -4,9 +4,9 @@ import React,{useEffect,useState} from 'react'
 import axios from 'axios';
 import {variables} from '../Variables';
 import { toast } from 'react-toastify';
-import axiosRetry from 'axios-retry';
+
 import {useDispatch,useSelector} from 'react-redux';
-import getToken from './getToken'
+
 import {setIsLoading} from '@store/reducers/ui';
 import stores from '@store/stores';
 
