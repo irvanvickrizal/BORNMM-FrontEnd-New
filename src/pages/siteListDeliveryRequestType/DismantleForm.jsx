@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable no-shadow */
@@ -15,6 +16,8 @@ import { Table, Row, Col,Card, Typography, Input, Space,
     InputNumber,
     TreeSelect,
     Switch,
+    Tooltip,
+    Checkbox,
     message } from 'antd';
 import HeaderChanger from '@app/components/cardheader/HeaderChanger';
 import Divider from '@mui/material/Divider';
@@ -70,10 +73,15 @@ const DismantleForm = (props) => {
     const [selectedSiteCondition,setSelectedSiteCondition] = useState('');
     const [deliveryDate,setDeliveryDate] = useState('');
     const [siteAddress,setSiteAddress] = useState('');
+    const [selectedTeamCoordinator,setSelectedTeamCoordinator] = useState('');
+    const [ddlTeamCoordinator,setDDLTeamCoordinator] = useState([]);
+    const [checked,setChecked] = useState(true);
 
+    const [express,setExpress] = useState("");
     const navigateTo = (path) => {
         history.push(path)
     }
+
     const user = useSelector((state) => state.auth.user);
 
     const getSiteInfo = () => {
@@ -106,6 +114,15 @@ const DismantleForm = (props) => {
             result=>{
                 console.log("rb",result);
                 setDDLRequestBase(result);
+            }
+        )
+    }
+
+    const getHasExpressDelivery = () => {
+        API.getHasExpressDelivery(orderTypeId).then(
+            result=>{
+                setExpress(result);
+                console.log("express",result);
             }
         )
     }
@@ -162,12 +179,28 @@ const DismantleForm = (props) => {
             }
         )
     }
+
+    const handleIsExpress = (value)=> {
+        setChecked(value)
+        console.log("v",value)
+    }
     
     const getSiteCondition = () => {
         API.getSiteCondition(orderTypeId).then(
             result=>{
                 setDDLSiteCondition(result);
                 console.log("PacketType",result);
+            }
+        )
+    }
+
+
+    const getTeamCoordinator = (sconid) => {
+        console.log("sconid",sconid)
+        API.getTeamCoordinator(sconid,wpid).then(
+            result=>{
+                console.log("data team:",result)
+                setDDLTeamCoordinator(result);
             }
         )
     }
@@ -216,6 +249,12 @@ const DismantleForm = (props) => {
         getCTNameDDL(e);
     }
 
+    function handleSelectedSubcon(e){
+        console.log("handlesconchange",e); 
+        setSelectedSubcon(e);
+        getTeamCoordinator(e);
+    }
+
     function range(start, end) {
         const result = [];
         for (let i = start; i < end; i++) {
@@ -226,7 +265,18 @@ const DismantleForm = (props) => {
 
     function disabledDate(current) {
         // Can not select days before today and today
-        return current < moment().add(2,'d');
+        if(!express){
+            return current < moment().add(2,'d');
+        }
+        return (current < moment().endOf('day'))
+    }
+    function disabledDateExpress2(current) {
+        // Can not select days before today and today
+        return current > moment().add(2,'d');
+    }
+    function disabledDateExpress(current) {
+        // Can not select days before today and today
+        return (current < moment().endOf('day'))
     }
 
     const postDismantleForm = () => {
@@ -291,7 +341,9 @@ const DismantleForm = (props) => {
         getPacketType();
         getSubcon();
         getSiteCondition();
-    },[wpid,orderTypeId])
+        getHasExpressDelivery();
+        // getTeamCoordinator();
+    },[wpid,orderTypeId,express])
 
     const CardTitle = (title) => (
         <Title level={5}>
@@ -320,6 +372,9 @@ const DismantleForm = (props) => {
                                 labelCol={{ span: 5 }}
                                 wrapperCol={{ span: 18 }}
                                 layout="horizontal"
+                                initialValues={{
+                                    'isExpressDelivery':true
+                                }}
                             >
                                 <Form.Item label="Order Type">
                                     <Input disabled value="PMR" />
@@ -403,7 +458,7 @@ const DismantleForm = (props) => {
                                 </Form.Item>
                                 <Form.Item label="SubCon">
                                     <Select 
-                                        onChange={(e) => setSelectedSubcon(e)} 
+                                        onChange={(e) => handleSelectedSubcon(e)} 
                                         placeholder="Select an option">
                                         {
                                             ddlSubcon.map(dst =>  <Select.Option value={dst.subconId}> 
@@ -412,6 +467,27 @@ const DismantleForm = (props) => {
                                     </Select>
                                 </Form.Item>
                                 
+                                <Form.Item label="Team Coordinator at Site" rules={[
+                                    {
+                                        required: true,
+                                    },
+                                ]}>
+                                    {ddlTeamCoordinator.length == null ? (<></>):(<Select 
+                                        onChange={(e) => setSelectedTeamCoordinator(e)} 
+                                        placeholder="Select an option">
+                                            
+                                        {
+                                            ddlTeamCoordinator.map(dst =>  <Select.Option value={dst.userId}> 
+                                                {dst.fullname}</Select.Option>)
+                                        }
+                                    </Select>)}
+                                    
+                                </Form.Item>
+                                <Form.Item label="Express Delivery" valuePropName="checked" name="isExpressDelivery">  
+                                    {!express ? (<Checkbox onChange={(e)=>handleIsExpress(e.target.checked)}/>):(
+                                        <Tooltip color='#f50' title="Cannot request Express Delivery"><Checkbox disabled /></Tooltip>
+                                    )}
+                                </Form.Item>
                                 <Form.Item label="Packet Type" rules={[
                                     {
                                         required: true,
@@ -432,13 +508,24 @@ const DismantleForm = (props) => {
                                     />
                                 </Form.Item>
                                 <Form.Item label="Delivery Date" rules={[{ required: true, message: 'Missing Inventory Code' }]}>
-                                    <DatePicker
+                                    {checked ? <DatePicker
                                         format="YYYY-MM-DD"
-                                        disabledDate={disabledDate}
+                                        disabledDate={
+                                            disabledDateExpress
+                                        }
                                         onChange={(e) => setDeliveryDate(moment(e).format("YYYY-MM-DD"))} 
                                         // disabledDate={current && current < moment().endOf('day')}
                                         // showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
-                                    />
+                                    /> :
+                                        <DatePicker
+                                            format="YYYY-MM-DD"
+                                            disabledDate={
+                                                disabledDate
+                                            }
+                                            onChange={(e) => setDeliveryDate(moment(e).format("YYYY-MM-DD"))} 
+                                        // disabledDate={current && current < moment().endOf('day')}
+                                        // showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+                                        /> }
                                 </Form.Item>
                                 {/* <Form.Item>
                                     <Button type="primary" htmlType="submit">Confirm</Button>

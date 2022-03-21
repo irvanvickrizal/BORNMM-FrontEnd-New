@@ -29,19 +29,33 @@ const Login = () => {
         console.log("jwt user: ",user);
     }
 
-
+    const loginori = async (email, password) => {
+        try {
+            setAuthLoading(true);
+            const token = await AuthService.loginByAuth(email, password);
+            toast.success('Login is succeed!');
+            setAuthLoading(false);
+            dispatch(loginUser(token));
+            history.push('/');
+        } catch (error) {
+            setAuthLoading(false);
+            toast.error(error.message || 'Failed');
+        }
+    };
     const login = async (email, password) => {
         try {
             setAuthLoading(true);
             const token = await AuthService.loginAPI(email, password); //await AuthService.loginByAuth(email, password);
-            dispatch(loginUser(token));
+            
             console.log('login : ',token);
-            const user =  jwt(token);
-            dispatch(loadUser(user));
             toast.success('Login is succeed!');
             setAuthLoading(false);
- 
-            history.push('/');
+            
+            dispatch(loginUser(token));
+            
+            const user =  jwt(token);
+            dispatch(loadUser(user));
+            // history.push('/');
             
         } catch (error) {
             setAuthLoading(false);

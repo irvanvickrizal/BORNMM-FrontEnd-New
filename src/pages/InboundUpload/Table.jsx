@@ -7,7 +7,7 @@ import React,{useEffect,useState} from 'react'
 import {toast} from 'react-toastify';
 import { useDispatch,useSelector } from 'react-redux'
 import {Typography,Popconfirm,Select,Upload,message,Form,Modal,Table, Input,Menu, Dropdown, Button, Space, Spin, Row, Col,Tooltip  } from 'antd'
-import {PlusOutlined, CloseSquareTwoTone ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined, EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined,DeleteTwoTone,UploadOutlined } from '@ant-design/icons'
+import {PlusOutlined, FileExcelOutlined,CloseSquareTwoTone ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined, EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined,DeleteTwoTone,UploadOutlined } from '@ant-design/icons'
 import { useHistory } from 'react-router-dom';
 import API  from '../../utils/apiServices';
 import {IconButton, TextField}  from '@mui/material/';
@@ -168,7 +168,7 @@ const TableInboundUpload = () => {
                 return (
                     <Space>
                         {!record.rowlogCount > 0 ?
-                            <p>{record.errMessage}</p>
+                            <p style={{ color:'red' }}>{record.errMessage}</p>
                             :
                             <Tooltip title="Download Log">
                                 <IconButton
@@ -206,7 +206,7 @@ const TableInboundUpload = () => {
                                     onClick={() => handleUploadFile(record.inbFileId, record.fileName)}>
                                     <UploadOutlined />
                                 </IconButton>
-                            </Tooltip><Tooltip title="Cancel Task">
+                            </Tooltip><Tooltip title="Delete File">
                                 <DeleteTwoTone twoToneColor="#FF0000" onClick={() => handleDeleteFile(record.inbFileId)} />
                             </Tooltip></> :
                             null
@@ -296,10 +296,18 @@ const TableInboundUpload = () => {
                     </Col>
                     <Col md={8} sm={24} >
                         <div className='float-right'>
-                            <Tooltip title="Add Material">
+                            <Tooltip title="Upload File">
                                 <IconButton size="small" color="primary" onClick={handleShowAdd}>
                                     <PlusOutlined />
                                 </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Download Template">
+                                <IconButton size="small" color="secondary">
+                                    <a href='/file/SampleFile.xlsx' download="Template">
+                                        <FileExcelOutlined />
+                                    </a>
+                                </IconButton>
+                                {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
                             </Tooltip>
                         </div>
                     </Col>

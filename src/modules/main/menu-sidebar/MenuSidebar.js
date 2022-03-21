@@ -87,21 +87,24 @@ const MenuSidebar = () => {
     const user = useSelector((state) => state.auth.user);
 
     const [menu, setMenu] = useState([]);
-
+    const token = localStorage.getItem('token'); 
     const menuapi=(id)=> {
-        API.getMenu(id).then(
-            result=>{
-                console.log('i menu',result)
-                setMenu(result);
-            }
-        );
+        try{
+            API.getMenu(id,token).then(
+                result=>{
+                    console.log('i menu',result)
+                    setMenu(result);
+                }
+            );
+        }catch(e){
+            console.log(e,"menu error")
+        }
+       
     } 
 
     useEffect(() => {
         menuapi(user.roleId);
-    },[])
-
-
+    },[token])
 
     return (
         <aside className="main-sidebar sidebar-nokia-primary elevation-4">

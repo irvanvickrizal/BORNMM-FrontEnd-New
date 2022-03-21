@@ -35,31 +35,35 @@ export default function TableSite() {
 
     useEffect(() => {
         dispatch(getDataSiteList())
-        
     },[dispatch,ordetTypeIdhook,ordetTypeIds]);
 
    
-    const navigateTo = () => {
-        ordetTypeIds == 'SDR' ? (history.push(`/sitelist/sdrform?wpid=${wpIds}&ot=${ordetTypeIdhook}`)):( history.push(`/sitelist/siteDetail?wpid=${wpIds}&ot=${ordetTypeIdhook}`))
-       
+    const navigateTo = (path) => {
+        history.push(path);
+        //ordetTypeIds == 'SDR' ? (history.push(`/sitelist/sdrform?wpid=${wpIds}&ot=${ordetTypeIdhook}`)):( history.push(`/sitelist/siteDetail?wpid=${wpIds}&ot=${ordetTypeIdhook}`))
     }
 
     const odi = (e) => {
         
- 
-        console.log(ordetTypeIds,"dataOt")
-       
+        console.log("odiiiiii:",e);
+        console.log(selectedOt,"dataOt")
         
-        Promise.resolve()
-            .then(() => { dispatch(getOrderTypeId(e.orderTypeDetail.orderTypeName))})
-            .then(() => navigateTo())
+        if(e.orderTypeDetail.orderTypeId==1){
+            navigateTo(`/sitelist/sdrform?wpid=${wpIds}&ot=${ordetTypeIdhook}`)
+        }
+        else if(e.orderTypeDetail.orderTypeId==4){
+            navigateTo(`/sitelist/siteDetail?wpid=${wpIds}&ot=${ordetTypeIdhook}`)
+        }
+        // Promise.resolve()
+        //     .then(() => { setSelectedOt(e.orderTypeDetail.orderTypeName)})
+        //     .then(() => navigateTo())
     }
 
 
     const getId = (record,wp) => {
         // dispatch(getWpId(record));
         // console.log(wpId,scopeName,orderTypeId,'wpId');
-  
+        console.log("getid",record);
         dispatch(getOrderType(record.orderTypeList))
         setWpids(wp);
         setordetTypeIdhook(record.orderTypeList[0].orderTypeDetail.orderTypeId)

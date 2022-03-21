@@ -15,7 +15,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import ModalTaskAssignment from './ModalAssignTask'
 import ModalRequestReschedule from './ModalRequestReschedule'
 
-const TaskPendingTable = ({isAssignTaskModal}) => {
+const TaskPendingTable = () => {
     const { Option } = Select;
     const [isLoading, setIsLoading] = useState(true);
     const [sconTaskPending,setSconTaskPending] = useState([]);
@@ -32,7 +32,8 @@ const TaskPendingTable = ({isAssignTaskModal}) => {
     const [cancelLoading, setCancelLoading] = useState(false);
     const user = useSelector((state) => state.auth.user);
 
-    const getSconTaskPending = () => {
+
+    function getSconTaskPending() {
         setIsLoading(true);
         API.getSconTaskPending().then(
             result=>{
@@ -129,12 +130,12 @@ const TaskPendingTable = ({isAssignTaskModal}) => {
         },
         {
             title : "Origin",
-            dataIndex:'',
+            dataIndex:'originName',
             ...Search(''),
         },
         {
             title : "Destination",
-            dataIndex:'',
+            dataIndex:'destinationName',
             ...Search(''),
         },
         {
@@ -198,7 +199,7 @@ const TaskPendingTable = ({isAssignTaskModal}) => {
             render:(record)=>{
                 return (
                     <div>
-                        {record.scheduleStatus=="newpropose" ? <p>waiting new propose schedule approval</p>
+                        {record.scheduleStatus=="newpropose" ? <p style={{ color:'red' }}>Propose New Schedule Request</p>
                             :
                             <Space>
                                 <Tooltip title="Assign Task">

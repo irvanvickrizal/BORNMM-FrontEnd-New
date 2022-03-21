@@ -1,32 +1,38 @@
+/* eslint-disable prefer-destructuring */
+/* eslint-disable no-unused-expressions */
+import React,{useEffect,useState} from 'react'
 import axios from 'axios';
 import {variables} from '../Variables';
 import { toast } from 'react-toastify';
-
+import axiosRetry from 'axios-retry';
 import {useDispatch,useSelector} from 'react-redux';
-
+import getToken from './getToken'
 import {setIsLoading} from '@store/reducers/ui';
+import stores from '@store/stores';
 
+// const tokens = useSelector((state) => state.aurh.cardHeader);
 const baseURL = variables.API_URL;
-const token = localStorage.getItem('token'); 
-
+const tokenGlobal = localStorage.getItem('token'); 
+// const token = stores.getState().auth.token;
 const config = {
-    headers: { Authorization: `Bearer ${token}` }
+    headers: { Authorization: `Bearer ${tokenGlobal}` },
 };
 
 
 const headers = { 
     'Content-Type' : 'application/json',
-    'Authorization': `Bearer ${token}`
+    'Authorization': `Bearer ${tokenGlobal}`
 };
 
 const headersfile ={
     'Content-Type': 'multipart/form-data',
-    'Authorization': `Bearer ${token}`
+    'Authorization': `Bearer ${tokenGlobal}`
 
 }
 
 //auth api
 const Login = (path) => (data) => {
+
     const promise = new Promise((resolve, reject) => {
         axios.get(`${baseURL}${path}`, {
             auth:{
@@ -48,14 +54,15 @@ const Login = (path) => (data) => {
 //common api with token
 const GET = (path)  => {
     const promise = new Promise((resolve, reject) => {
+        const token = localStorage.getItem('token'); 
         axios.get(`${baseURL}${path}`
-            ,config
+            ,{headers: { Authorization: `Bearer ${token}` }},
         )
             .then((result)=> {
                 console.log('i am get :',result.data);
                 resolve(result.data);
             },(err)=>{
-                console.log(config);
+                console.log("err",err);
                 reject(err);
             })
     })
@@ -64,14 +71,32 @@ const GET = (path)  => {
 
 const GETParam = (path,id)  => {
     const promise = new Promise((resolve, reject) => {
+        const token = localStorage.getItem('token'); 
         axios.get(`${baseURL}${path}/${id}`
-            ,config
+            ,{headers: { Authorization: `Bearer ${token}` }},
         )
             .then((result)=> {
                 console.log('i am get :',result.data);
                 resolve(result.data);
             },(err)=>{
-                console.log(config);
+                console.log("error get",err);
+                reject(err);
+            })
+    })
+    return promise;
+}
+
+const GetMenu = (path,id,tokens)  => {
+
+    const promise = new Promise((resolve, reject) => {
+        axios.get(`${baseURL}${path}/${id}`
+            ,{headers: { Authorization: `Bearer ${tokens}` }},
+        )
+            .then((result)=> {
+                console.log('i am get :',result.data);
+                resolve(result.data);
+            },(err)=>{
+                console.log("error get",err);
                 reject(err);
             })
     })
@@ -80,14 +105,15 @@ const GETParam = (path,id)  => {
 
 const GETParam2 = (path,param1,param2)  => {
     const promise = new Promise((resolve, reject) => {
+        const token = localStorage.getItem('token'); 
         axios.get(`${baseURL}${path}/${param1}/${param2}`
-            ,config
+            ,{headers: { Authorization: `Bearer ${token}` }},
         )
             .then((result)=> {
                 console.log('i am get :',result.data);
                 resolve(result.data);
             },(err)=>{
-                console.log(config);
+                console.log(err);
                 reject(err);
             })
     })
@@ -103,7 +129,7 @@ const POST = (path,body)  => {
             console.log('i am post :',result.data);
             resolve(result.data);
         },(err)=>{
-            console.log('config',headers);
+            console.log('config',err);
             toast.error(err);
             reject(err);
         })
@@ -193,7 +219,7 @@ const PUT = (path,body)  => {
             console.log('i am put :',result.data);
             resolve(result.data);
         },(err)=>{
-            console.log(config);
+            console.log(err);
             reject(err);
         })
     })
@@ -249,7 +275,7 @@ const DELETEParam = (path,body,param)  => {
 }
 
 
-const getMenu = (id) => GETParam('menu',id);
+const getMenu = (id,tokens) => GetMenu('menu',id,tokens);
 
 const getMaterialCategory = () => GET('mastermaterialcategory');
 const postMaterialCategory = (body) => POST('mastermaterialcategory',body);

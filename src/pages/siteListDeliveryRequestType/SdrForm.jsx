@@ -39,6 +39,7 @@ const SdrForm = (props) => {
     const params = new URLSearchParams(customURL.split('?')[1])
     const { Title } = Typography;
     const wpid = params.get('wpid');
+    const ot = params.get('ot');
     const subconid= 22
     const orderTypeId = params.get('ot');
     const [siteInfo, setSiteInfo] = useState([]);
@@ -254,11 +255,11 @@ const SdrForm = (props) => {
         return result;
     }
 
-    function disabledDate(current) {
-        // Can not select days before today and today
-        return current >= moment().add(2,'d') && moment().add(2,'d') <= current
-    }
     function disabledDateExpressTrue(current) {
+        // Can not select days before today and today
+        return (current && current < moment().endOf('day') && (current < moment().add(2,'d')))
+    }
+    function disabledDate(current) {
         // Can not select days before today and today
         return current < moment().add(2,'d');
     }
@@ -456,8 +457,7 @@ const SdrForm = (props) => {
                                         }
                                     </Select>
                                 </Form.Item>
-                                <Form.Item label="Team Coordinator at Site
-">
+                                <Form.Item label="Team Coordinator at Site">
                                     {ddlTeam.length == null ? (<></>):(<Select 
                                         onChange={(e) => setSelectedTeamCoordinator(e)} 
                                         placeholder="Select an option">
@@ -474,9 +474,6 @@ const SdrForm = (props) => {
                                     {express ? (<Checkbox onChange={(e)=>togleCheckbox(e.target.checked)}/>):(
                                         <Tooltip color='#f50' title="Cannot request Express Delivery"><Checkbox disabled  onChange={(e)=>togleCheckbox(e.target.checked)}/></Tooltip>
                                     )}
-                                    
-                                    
-                                    
                                 </Form.Item>
                                 
                                 <Form.Item label="Packet Type" rules={[
@@ -501,13 +498,13 @@ const SdrForm = (props) => {
                                 <Form.Item label="Delivery Date" rules={[{ required: true, message: 'Missing Inventory Code' }]}>
                                     {checked ? (<DatePicker 
                                         format="YYYY-MM-DD"
-                                        disabledDate={disabledDate}
+                                        disabledDate={disabledDateExpressTrue}
                                         onChange={(e) => setDeliveryDate(moment(e).format("YYYY-MM-DD"))} 
                                         // disabledDate={current && current < moment().endOf('day')}
                                         // showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
                                     />):(<DatePicker 
                                         format="YYYY-MM-DD"
-                                        disabledDate={disabledDateExpressTrue}
+                                        disabledDate={disabledDate}
                                         onChange={(e) => setDeliveryDate(moment(e).format("YYYY-MM-DD"))} 
                                         // disabledDate={current && current < moment().endOf('day')}
                                         // showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
