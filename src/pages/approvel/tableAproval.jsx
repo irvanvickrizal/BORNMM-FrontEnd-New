@@ -5,6 +5,7 @@ import {Table} from "antd"
 import {EditOutlined} from "@ant-design/icons"
 import {useHistory} from "react-router-dom"
 import HeaderChanger from "@app/components/cardheader/HeaderChanger"
+import Search from "@app/components/searchcolumn/SearchColumn"
 
 
 export default function TableAproval() {
@@ -43,43 +44,57 @@ export default function TableAproval() {
         },
         {
             title: "Request No",
-            dataIndex: "requestNo"
+            dataIndex: "requestNo",
+            ...Search("requestNo")
         },
         {
             title: "Order Type",
-            dataIndex: "orderType"
+            dataIndex: "orderType",
+            ...Search("orderType")
         },
         {
             title: "Site No",
-            dataIndex: "siteNo"
+            dataIndex: "siteNo",
+            ...Search("siteNo")
         },
         {
             title: "Origin",
-            dataIndex: "originName"
+            dataIndex: "originName",
+            ...Search("originName")
+            
         },
         {
             title: "Destination",
-            dataIndex: "destinationName"
+            dataIndex: "destinationName",
+            ...Search("destinationName")
+           
+            
+            
         },
         {
             title: "Site Name",
-            dataIndex: "siteName"
+            dataIndex: "siteName",
+            ...Search("siteName")
         },
         {
             title: "Region",
-            dataIndex: "region"
+            dataIndex: "region",
+            ...Search("region")
         },
         {
             title: "Scope Name",
-            dataIndex: "scopeName"
+            dataIndex: "scopeName",
+            ...Search("scopeName")
         },
         {
             title: "Scope Detail",
-            dataIndex: "scopeDetail"
+            dataIndex: "scopeDetail",
+            ...Search("scopeDetail")
         },
         {
             title: "Delivery Type",
-            dataIndex: "deliveryType"
+            dataIndex: "deliveryType",
+            ...Search("deliveryType")
         },
         {
             title: "Action",

@@ -94,6 +94,10 @@ export default function AprovalTaskPendingForm() {
             dataIndex: "cpoNo"
         },
         {
+            title: "Work Package ID",
+            dataIndex: "workpackageId"
+        },
+        {
             title: "General Scope",
             dataIndex: "requestTypeName"
         },
