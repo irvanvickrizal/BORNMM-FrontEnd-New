@@ -12,6 +12,7 @@ import API  from '../../utils/apiServices';
 import Search from '@app/components/searchcolumn/SearchColumn';
 import moment from 'moment';
 
+import { toast } from 'react-toastify';
 
 
 const WaitingRFPTable = () => {
@@ -139,7 +140,6 @@ const WaitingRFPTable = () => {
         },
         {
             title : "Expected Delivery Date",
-            dataIndex:'outboundQty',
             ...Search('outboundQty'),
         },
         {

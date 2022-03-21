@@ -378,8 +378,26 @@ const postReAssignmentEngineer = (body) => POST("taskassignment/taskReAssignment
 const getWaitingRFP = () => GET('lspassignment/lspAssignmentRFPPending');
 const postWaitingRFP = (body) => POST('lspassignment/lspAssignmentRFPConfirm',body);
 
+const getTransportAssignment = () => GET('lspassignment/lspAssignmentTransportAssignmentPending');
+
+
+const getTransportPickupPending = () => GET('lspassignment/lspAssignmentTransportAssignmentPickupPending');
+const postTransportAssignTo = (body) => POST('taskassignment/lspAssignmentToTransport',body);
+
+const getDDLTransportAssignTo = (subconid,wpid) => GETParam2('subcon/getLSPTransportTeam',subconid,wpid)
+
+const putReAssignTransportTeam = (body) => PUT('taskassignment/taskReAssignmentToEngineer',body);
+const postCancelRFP = (body) => POST('taskassignment/lspAssignmentRFPDoneCanceled',body);
+const postAssitgnTransportTeam = (body) => POST('taskassignment/lspAssignmentToTransport ',body);
 
 const API ={
+    postAssitgnTransportTeam,
+    postCancelRFP,
+    putReAssignTransportTeam,
+    getDDLTransportAssignTo,
+    postTransportAssignTo,
+    getTransportPickupPending,
+    getTransportAssignment,
     postWaitingRFP,
     getWaitingRFP,
     getOutboundUploadFile, 
