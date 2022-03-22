@@ -399,7 +399,12 @@ const getListBoqAsPo = (boqid) => GETParam('boqref/boqGetListAsPOBOQ',boqid)
 const getDownloadPoBoqCompletion = (boqid,poscopeid) => GETParam2('boqref/boqGetListAsPOBOQCompletion',boqid,poscopeid)
 
 
+
+    
+const getBOQSiteListReference = (bid) => GETParam('boqref/boqSiteListReference',bid);
+
 const API ={
+    getBOQSiteListReference,
     getDownloadPoBoqCompletion,
     getListBoqAsPo,
     getBoqSummaryAsPoBoq,
