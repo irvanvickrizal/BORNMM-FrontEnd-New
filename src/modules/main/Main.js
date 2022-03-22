@@ -50,6 +50,8 @@ import OutboundUpload from "@app/pages/OutboundUpload/OutboundUpload"
 import SdrForm from "@app/pages/siteListDeliveryRequestType/SdrForm"
 import TransportAssignmentPending from "@app/pages/TrasnportAssignmentPending/index"
 
+import BoqRef from "@app/pages/BoqRef/index"
+
 const Main = () => {
     const dispatch = useDispatch()
     const isSidebarMenuCollapsed = useSelector(
@@ -323,6 +325,11 @@ const Main = () => {
                                             exact
                                             path="/task/trasnportassignment"
                                             component={TransportAssignmentPending}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/boq/boqreference"
+                                            component={BoqRef}
                                         />
                                     </Switch>
                                 </div>

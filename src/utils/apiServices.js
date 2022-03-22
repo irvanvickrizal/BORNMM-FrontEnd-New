@@ -375,7 +375,10 @@ const deleteOutboundFile = (id) => PUTParam('inventory/outboundFileDelete',id);
 const getSconTaskOnProgress = () => GET('taskassignment/taskAssignmentSubconOnProgress');
 const postReAssignmentEngineer = (body) => POST("taskassignment/taskReAssignmentToEngineer",body);
 
+const getBoqList = () => GET("boqref/boqPOListReference")
+
 const API ={
+    getBoqList,
     getOutboundUploadFile, 
     getOutboundErrorList,
     postReviseOutboundFile,
