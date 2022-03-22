@@ -53,6 +53,7 @@ import TransportAssignmentPending from "@app/pages/TrasnportAssignmentPending/in
 import TransportPickupPending from "@app/pages/TransportPickupPending/TransportPickupPending"
 
 import BoqRef from "@app/pages/BoqRef/index"
+import BoqAsPoUpload from "@app/pages/BoqRef/BoqAsPoUpload"
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -342,6 +343,11 @@ const Main = () => {
                                             exact
                                             path="/boq/boqreference"
                                             component={BoqRef}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/boq/boqaspoupload"
+                                            component={BoqAsPoUpload}
                                         />
                                     </Switch>
                                 </div>

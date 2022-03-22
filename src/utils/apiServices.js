@@ -394,8 +394,15 @@ const putReAssignTransportTeam = (body) => PUT('taskassignment/taskReAssignmentT
 const postCancelRFP = (body) => POST('taskassignment/lspAssignmentRFPDoneCanceled',body);
 const postAssitgnTransportTeam = (body) => POST('taskassignment/lspAssignmentToTransport ',body);
 
+const getBoqSummaryAsPoBoq = (boqid) => GETParam('boqref/boqGetSummaryAsPOBOQCompletion',boqid)
+const getListBoqAsPo = (boqid) => GETParam('boqref/boqGetListAsPOBOQ',boqid)
+const getDownloadPoBoqCompletion = (boqid,poscopeid) => GETParam2('boqref/boqGetListAsPOBOQCompletion',boqid,poscopeid)
+
+
 const API ={
-  
+    getDownloadPoBoqCompletion,
+    getListBoqAsPo,
+    getBoqSummaryAsPoBoq,
     postAssitgnTransportTeam,
     postCancelRFP,
     putReAssignTransportTeam,
