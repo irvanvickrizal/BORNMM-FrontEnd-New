@@ -377,8 +377,34 @@ const postReAssignmentEngineer = (body) => POST("taskassignment/taskReAssignment
 
 const getBoqList = () => GET("boqref/boqPOListReference")
 
+
+    
+const getWaitingRFP = () => GET('lspassignment/lspAssignmentRFPPending');
+const postWaitingRFP = (body) => POST('lspassignment/lspAssignmentRFPConfirm',body);
+
+const getTransportAssignment = () => GET('lspassignment/lspAssignmentTransportAssignmentPending');
+
+
+const getTransportPickupPending = () => GET('lspassignment/lspAssignmentTransportAssignmentPickupPending');
+const postTransportAssignTo = (body) => POST('taskassignment/lspAssignmentToTransport',body);
+
+const getDDLTransportAssignTo = (subconid,wpid) => GETParam2('subcon/getLSPTransportTeam',subconid,wpid)
+
+const putReAssignTransportTeam = (body) => PUT('taskassignment/taskReAssignmentToEngineer',body);
+const postCancelRFP = (body) => POST('taskassignment/lspAssignmentRFPDoneCanceled',body);
+const postAssitgnTransportTeam = (body) => POST('taskassignment/lspAssignmentToTransport ',body);
+
 const API ={
-    getBoqList,
+  
+    postAssitgnTransportTeam,
+    postCancelRFP,
+    putReAssignTransportTeam,
+    getDDLTransportAssignTo,
+    postTransportAssignTo,
+    getTransportPickupPending,
+    getTransportAssignment,
+    postWaitingRFP,
+    getWaitingRFP,
     getOutboundUploadFile, 
     getOutboundErrorList,
     postReviseOutboundFile,
@@ -459,7 +485,8 @@ const API ={
     ,getSconTaskOnProgress
     ,postReAssignmentEngineer
     ,getTeamCoordinator,
-    getHasExpressDelivery
+    getHasExpressDelivery,
+    getBoqList,
 }
 
 export default API;

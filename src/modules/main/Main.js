@@ -48,7 +48,9 @@ import InboundUpload from "@app/pages/InboundUpload/InboundUpload"
 import OutboundUpload from "@app/pages/OutboundUpload/OutboundUpload"
 
 import SdrForm from "@app/pages/siteListDeliveryRequestType/SdrForm"
+import WaitingRFP from "@app/pages/WaitingRFP/WaitingRFP"
 import TransportAssignmentPending from "@app/pages/TrasnportAssignmentPending/index"
+import TransportPickupPending from "@app/pages/TransportPickupPending/TransportPickupPending"
 
 import BoqRef from "@app/pages/BoqRef/index"
 
@@ -323,8 +325,18 @@ const Main = () => {
                                         />
                                         <Route
                                             exact
-                                            path="/task/trasnportassignment"
+                                            path="/task/lspwaitingrfp"
+                                            component={WaitingRFP}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/task/transportassignment"
                                             component={TransportAssignmentPending}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/task/transportpickuppending"
+                                            component={TransportPickupPending}
                                         />
                                         <Route
                                             exact
