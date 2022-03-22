@@ -51,6 +51,7 @@ import SdrForm from "@app/pages/siteListDeliveryRequestType/SdrForm"
 import WaitingRFP from "@app/pages/WaitingRFP/WaitingRFP"
 import TransportAssignmentPending from "@app/pages/TrasnportAssignmentPending/index"
 import TransportPickupPending from "@app/pages/TransportPickupPending/TransportPickupPending"
+import BOQReferenceDetail from "@app/pages/BOQReferenceDetail/Index"
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -328,13 +329,18 @@ const Main = () => {
                                         />
                                         <Route
                                             exact
-                                            path="/task/transportassignment"
+                                            path="/task/lsptransportassigment"
                                             component={TransportAssignmentPending}
                                         />
                                         <Route
                                             exact
                                             path="/task/transportpickuppending"
                                             component={TransportPickupPending}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/boq/boqrefdetail"
+                                            component={BOQReferenceDetail}
                                         />
                                     </Switch>
                                 </div>

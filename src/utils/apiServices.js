@@ -390,7 +390,10 @@ const putReAssignTransportTeam = (body) => PUT('taskassignment/taskReAssignmentT
 const postCancelRFP = (body) => POST('taskassignment/lspAssignmentRFPDoneCanceled',body);
 const postAssitgnTransportTeam = (body) => POST('taskassignment/lspAssignmentToTransport ',body);
 
+const getBOQSiteListReference = (bid) => GETParam('boqref/boqSiteListReference',bid);
+
 const API ={
+    getBOQSiteListReference,
     postAssitgnTransportTeam,
     postCancelRFP,
     putReAssignTransportTeam,
