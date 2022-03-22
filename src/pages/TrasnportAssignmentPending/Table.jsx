@@ -90,6 +90,7 @@ export default function TableTransport() {
         API.postAssitgnTransportTeam(body).then(
             result=>{
                 getSconTaskPending();
+                setIsFormAssignment(false);
                 toast.success(result.message);
                 console.log(result,"postassignment")
             }

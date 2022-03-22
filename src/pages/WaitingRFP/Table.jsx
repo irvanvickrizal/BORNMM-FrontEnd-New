@@ -53,6 +53,7 @@ const WaitingRFPTable = () => {
             result=>{
                 setIsLoading(false);
                 getWaitingRFP();
+                setIsFormRFP(false);
                 console.log("waiting post rfp",result);
             }
         )
@@ -81,6 +82,7 @@ const WaitingRFPTable = () => {
     const columns = [
         {
             title : "No",
+            width : 50,
             render: (value, item, index) => 1 + index
         },
         {
@@ -135,12 +137,19 @@ const WaitingRFPTable = () => {
         },
         {
             title : "Requested By",
-            dataIndex:'assignBy',
-            ...Search('assignBy'),
+            dataIndex:'requestedBy',
+            ...Search('requestedBy'),
         },
         {
             title : "Expected Delivery Date",
-            ...Search('outboundQty'),
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.pickupOrDeliveryDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            },
+            ...Search('pickupOrDeliveryDate'),
         },
         {
             title:"Incoming Date",
