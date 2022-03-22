@@ -375,7 +375,7 @@ const deleteOutboundFile = (id) => PUTParam('inventory/outboundFileDelete',id);
 const getSconTaskOnProgress = () => GET('taskassignment/taskAssignmentSubconOnProgress');
 const postReAssignmentEngineer = (body) => POST("taskassignment/taskReAssignmentToEngineer",body);
 
-const getBoqList = () => GET("boqref/boqPOListReference")
+
 
 
     
@@ -398,9 +398,17 @@ const getBoqSummaryAsPoBoq = (boqid) => GETParam('boqref/boqGetSummaryAsPOBOQCom
 const getListBoqAsPo = (boqid) => GETParam('boqref/boqGetListAsPOBOQ',boqid)
 const getDownloadPoBoqCompletion = (boqid,poscopeid) => GETParam2('boqref/boqGetListAsPOBOQCompletion',boqid,poscopeid)
    
+const getDownloadPoBoqList = (workpackageid) => GETParam('boqref/boqAsPOSitebasedGetList',workpackageid)
+const getDownloadPoBoqListDeleted = (workpackageid) => DELETE('boqref/boqAsPOBOQSiteBasedDeleted',workpackageid)
+
+
+
+const getBoqList = () => GET("boqref/boqPOListReference")
 const getBOQSiteListReference = (bid) => GETParam('boqref/boqSiteListReference',bid);
 
 const API ={
+    getDownloadPoBoqListDeleted,
+    getDownloadPoBoqList,
     getBOQSiteListReference,
     getDownloadPoBoqCompletion,
     getListBoqAsPo,

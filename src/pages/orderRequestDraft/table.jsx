@@ -19,7 +19,7 @@ import {Table
     Tooltip} from 'antd'
 import {EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined } from '@ant-design/icons'
 import { useHistory } from 'react-router-dom';
-import API  from '../../utils/apiServices';
+import API from '@app/utils/apiServices';
 import Search from '@app/components/searchcolumn/SearchColumn';
 import moment from 'moment';
 
