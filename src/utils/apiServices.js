@@ -375,6 +375,10 @@ const deleteOutboundFile = (id) => PUTParam('inventory/outboundFileDelete',id);
 const getSconTaskOnProgress = () => GET('taskassignment/taskAssignmentSubconOnProgress');
 const postReAssignmentEngineer = (body) => POST("taskassignment/taskReAssignmentToEngineer",body);
 
+const getBoqList = () => GET("boqref/boqPOListReference")
+
+
+    
 const getWaitingRFP = () => GET('lspassignment/lspAssignmentRFPPending');
 const postWaitingRFP = (body) => POST('lspassignment/lspAssignmentRFPConfirm',body);
 
@@ -394,6 +398,7 @@ const getBOQSiteListReference = (bid) => GETParam('boqref/boqSiteListReference',
 
 const API ={
     getBOQSiteListReference,
+  
     postAssitgnTransportTeam,
     postCancelRFP,
     putReAssignTransportTeam,
@@ -483,7 +488,8 @@ const API ={
     ,getSconTaskOnProgress
     ,postReAssignmentEngineer
     ,getTeamCoordinator,
-    getHasExpressDelivery
+    getHasExpressDelivery,
+    getBoqList,
 }
 
 export default API;

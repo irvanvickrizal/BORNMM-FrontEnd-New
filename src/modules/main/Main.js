@@ -53,6 +53,8 @@ import TransportAssignmentPending from "@app/pages/TrasnportAssignmentPending/in
 import TransportPickupPending from "@app/pages/TransportPickupPending/TransportPickupPending"
 import BOQReferenceDetail from "@app/pages/BOQReferenceDetail/Index"
 
+import BoqRef from "@app/pages/BoqRef/index"
+
 const Main = () => {
     const dispatch = useDispatch()
     const isSidebarMenuCollapsed = useSelector(
@@ -341,6 +343,11 @@ const Main = () => {
                                             exact
                                             path="/boq/boqrefdetail"
                                             component={BOQReferenceDetail}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/boq/boqreference"
+                                            component={BoqRef}
                                         />
                                     </Switch>
                                 </div>
