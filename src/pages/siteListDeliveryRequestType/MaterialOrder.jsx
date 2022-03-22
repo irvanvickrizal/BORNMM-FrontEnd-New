@@ -165,8 +165,17 @@ export default function MaterialOrder() {
         
         {
             title:"Balance",
-            dataIndex:"balanceQTY",
             key:"orderMaterialId",
+            render:(record)=>{
+                return (
+                    <Space>
+                        {record.balanceQTY < 0 ? <p style={{ color:'red' }}>{record.balanceQTY}</p>:
+                            <p>
+                                {record.balanceQTY}
+                            </p>}
+                    </Space>
+                )
+            }
 
         },
         {
@@ -176,8 +185,17 @@ export default function MaterialOrder() {
         },
         {
             title:"Order Status",
-            dataIndex:"orderStatus",
             key:"orderMaterialId",
+            render:(record)=>{
+                return (
+                    <Space>
+                        {record.balanceQTY < 0 ? <p style={{ color:'red' }}>{record.orderStatus}</p>:
+                            <p>
+                                {record.orderStatus}
+                            </p>}
+                    </Space>
+                )
+            }
         },
         {
             title:"Action",
@@ -365,25 +383,6 @@ export default function MaterialOrder() {
             dataIndex:"materialDesc",
             key:"materialDesc"
         },
-        // {
-        //     title:"NE Type",
-        //     render:(record)=>{
-        //         return (
-        // <Select defaultValue="NE" style={{ width: 120 }} onChange={handleChangeNeType} disabled>
-        //     <Option value="NE">NE</Option>
-        //     <Option value="FE">FE</Option>
-        // </Select>
-        //         )
-        //     }
-        // },
-        // {
-        //     title:"QTY",
-        //     render:(record)=>{
-        //         return (
-        //             <InputNumber min={1} defaultValue={1} onChange={(e)=>handleChangeQTY(e)} disabled />
-        //         )
-        //     }
-        // },
         {
             title:"Action",
             key:"orderMaterialId",
@@ -423,25 +422,6 @@ export default function MaterialOrder() {
             dataIndex:"balance",
             key:"materialDesc"
         },
-        // {
-        //     title:"NE Type",
-        //     render:(record)=>{
-        //         return (
-        // <Select defaultValue="NE" style={{ width: 120 }} onChange={handleChangeNeType} disabled>
-        //     <Option value="NE">NE</Option>
-        //     <Option value="FE">FE</Option>
-        // </Select>
-        //         )
-        //     }
-        // },
-        // {
-        //     title:"QTY",
-        //     render:(record)=>{
-        //         return (
-        //             <InputNumber min={1} defaultValue={1} onChange={(e)=>handleChangeQTY(e)} disabled />
-        //         )
-        //     }
-        // },
         {
             title:"Action",
             key:"orderMaterialId",
@@ -588,7 +568,7 @@ export default function MaterialOrder() {
     }
 
     const handleSubmitDirect = () => {
-        API.postMaterialOrderDirectSubmit(odiParam).then(
+        API.postMaterialOrderDirectSubmit("",odiParam).then(
             result=>{
                 console.log(result);
                 if(result.status=="success"){
@@ -603,7 +583,7 @@ export default function MaterialOrder() {
     }
 
     const handleBookSubmit = () => {
-        API.postMaterialOrderBookSubmit(odiParam).then(
+        API.postMaterialOrderBookSubmit("",odiParam).then(
             result=>{
                 console.log(result);
                 if(result.status=="success"){
@@ -870,7 +850,7 @@ export default function MaterialOrder() {
                         <Input disabled/>
                     </Form.Item>
                     <Form.Item
-                        label="Balance"
+                        label="Available QTY"
                         name="balance"
                             
                     >

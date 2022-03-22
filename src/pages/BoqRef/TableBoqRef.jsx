@@ -31,7 +31,7 @@ export default function TableBoqRef() {
     const handleAction = (record)=> {
         // setSelectedBid(record.boqId)
         // navigateTo()
-        history.push(`boq/boqrefdetail?bid=${record.boqId}`)
+        history.push(`/boq/boqrefdetail?bid=${record.boqId}`)
        
     }
     const columns = [

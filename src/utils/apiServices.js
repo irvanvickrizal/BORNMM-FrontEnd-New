@@ -344,8 +344,8 @@ const getOrderDetailForm = (odi) => GETParam('materialmanagement/OrderDetailRequ
 const getOrderDetailMaterial = (odi) => GETParam('materialmanagement/orderRequestMaterialGetDetail',odi);
 const getBOQRefGetList = (odi) => GETParam('materialmanagement/boqRefGetList',odi);
 const getMaterialListExcludeOrdered = (odi) => GETParam('materialmanagement/masterMaterialGetListExcludeOrdered',odi);
-const postMaterialOrderDirectSubmit = (odi) => POSTParam('materialmanagement/materialOrderDirectSubmit',"",odi);
-const postMaterialOrderBookSubmit = (odi) => POSTParam('materialmanagement/materialOrderBookSubmit',"",odi);
+const postMaterialOrderDirectSubmit = (body,odi) => POSTParam('materialmanagement/materialOrderDirectSubmit',body,odi);
+const postMaterialOrderBookSubmit = (body,odi) => POSTParam('materialmanagement/materialOrderBookAndSubmit',body,odi);
 const postAddMaterial = (body) => POST("materialmanagement/orderRequestMaterialAddItem",body);
 const putEditQtyMaterial = (body) => PUT('materialmanagement/OrderRequestMaterialChangeQty',body);
 const putMaterialOrderDraft = (body) => PUT('materialmanagement/materialOrderRequestSaveDraft',body);
@@ -397,10 +397,7 @@ const postAssitgnTransportTeam = (body) => POST('taskassignment/lspAssignmentToT
 const getBoqSummaryAsPoBoq = (boqid) => GETParam('boqref/boqGetSummaryAsPOBOQCompletion',boqid)
 const getListBoqAsPo = (boqid) => GETParam('boqref/boqGetListAsPOBOQ',boqid)
 const getDownloadPoBoqCompletion = (boqid,poscopeid) => GETParam2('boqref/boqGetListAsPOBOQCompletion',boqid,poscopeid)
-
-
-
-    
+   
 const getBOQSiteListReference = (bid) => GETParam('boqref/boqSiteListReference',bid);
 
 const API ={

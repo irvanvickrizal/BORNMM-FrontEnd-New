@@ -11,7 +11,7 @@ import {IconButton, TextField}  from '@mui/material/';
 import API  from '../../utils/apiServices';
 import Search from '@app/components/searchcolumn/SearchColumn';
 import moment from 'moment';
-
+import exportFromJSON from 'export-from-json'
 import { toast } from 'react-toastify';
 
 
@@ -140,6 +140,19 @@ const BOQReferenceDetail = () => {
     const handleAsPOBulkUpload = () =>{
         
     }
+    const handleDownloadSitelist = () =>{
+        API.getBOQSiteListReference(bid).then(
+            result=>{
+                console.log('i am error log Scope',result)
+                
+                const data = result;
+                //const data = result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
+                const exportType =  exportFromJSON.types.xls;
+                const fileName = `sitelist_${bid}`;
+                exportFromJSON({ data, fileName, exportType });
+            }
+        )
+    }
     const handleAsPlanBulkUpload = () =>{
 
     }
@@ -174,7 +187,7 @@ const BOQReferenceDetail = () => {
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Download Sitelist">
-                                <IconButton size="small" color="success" onClick={handleAsPOBulkUpload}>
+                                <IconButton size="small" color="success" onClick={handleDownloadSitelist}>
                                     <FileExcelTwoTone twoToneColor="#52c41a" />
                                 </IconButton>
                             </Tooltip>
