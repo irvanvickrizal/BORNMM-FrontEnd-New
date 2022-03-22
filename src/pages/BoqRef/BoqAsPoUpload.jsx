@@ -7,12 +7,21 @@ import Search from '@app/components/searchcolumn/SearchColumn'
 import {FileExcelOutlined,RedoOutlined   } from '@ant-design/icons'
 import { Button } from '@app/components/index'
 import exportFromJSON from 'export-from-json'
+import { toast } from 'react-toastify';
 
 export default function BoqAsPoUpload() {
     const [dataBoqSummary,setDataBoqSummary] = useState([])
     const [dataBoqList,setDataBoqList] = useState([])
     const [dataDownloadPoBoq,setDataDownloadPoBoq] = useState([])
+    const [dataDownloadPoBoqList,setDataDownloadPoBoqList] = useState([])
+    const [dataDownloadPoBoqListDeleted,setDataDownloadPoBoqListDeleted] = useState([])
+
     const {Title} = Typography
+
+    const customURL = window.location.href;
+    const params = new URLSearchParams(customURL.split('?')[1])
+    const bid = params.get('bid');
+
  
     
 
@@ -33,8 +42,23 @@ export default function BoqAsPoUpload() {
             }
         )
     }
+    const getDownloadPoBoqListDeleted = (record) => {
+        API.getDownloadPoBoqListDeleted(record.workpackageid).then(
+            result=>{
+                setDataDownloadPoBoqListDeleted(result);
+                console.log("data BOQ Lis fet :",result);
+                if(result.status == "success"){
+                    toast.success(dataDownloadPoBoqListDeleted.message);
+                    getListBoqAsPo()
+                }
+            }
+        )
+      
+    }
 
-    const getDownloadPoBoqCompletion = (boqid,poscopeid) => {
+    
+
+    const getDownloadPoBoqCompletion = (cpoNo,scopeName,poScopeId) => {
         API.getDownloadPoBoqCompletion(1,1).then(
             result=>{
                 setDataDownloadPoBoq(result);
@@ -43,8 +67,25 @@ export default function BoqAsPoUpload() {
                 const data = result;
                 //const data = result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
                 const exportType =  exportFromJSON.types.xls;
-                const fileNameDownload = `errorlog_`;
-                exportFromJSON({ data, fileNameDownload, exportType });
+                const fileName = `${cpoNo}_${scopeName}_${poScopeId}`;
+                exportFromJSON({ data, fileName, exportType });
+                console.log("SSDA",cpoNo,poScopeId,scopeName)
+            }
+        )
+    }
+
+    const getDownloadPoBoqList = (cpoNo,siteNo,workpackageid) => {
+        API.getDownloadPoBoqList(workpackageid).then(
+            result=>{
+                setDataDownloadPoBoqList(result);
+                console.log("data BOQ Download :",result);
+               
+                const data = result;
+                //const data = result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
+                const exportType =  exportFromJSON.types.xls;
+                const fileName = `${cpoNo}_${siteNo}_${workpackageid}`;
+                exportFromJSON({ data, fileName, exportType });
+                console.log("SSDA",cpoNo,siteNo,workpackageid)
             }
         )
     }
@@ -98,7 +139,7 @@ export default function BoqAsPoUpload() {
                 return (
                     
                     <Tooltip title="BOQ Detail">
-                        <FileExcelOutlined style={{color :"#1f6e43",fontSize:20}} onClick={()=>getDownloadPoBoqCompletion(record)}/>
+                        <FileExcelOutlined style={{color :"#1f6e43",fontSize:20}} onClick={()=>getDownloadPoBoqCompletion(record.cpoNo,record.scopeName,record.poScopeId)}/>
                     </Tooltip>
                        
                   
@@ -141,18 +182,18 @@ export default function BoqAsPoUpload() {
             title : "Action",
             render : (record)=>{
                 return (
-                    record.rollbackStatus == 45 ? (
+                    record.rollbackStatus == 0 ? (
                         <Space direction="horizontal">
                            
                             <Tooltip title="Reset BOQ">
-                                <RedoOutlined style={{fontSize:20}}/>
+                                <RedoOutlined style={{fontSize:20}} onClick={()=>getDownloadPoBoqListDeleted(record)}/>
                             </Tooltip>
                             <Tooltip title="BOQ Detail">
-                                <FileExcelOutlined style={{color :"#1f6e43",fontSize:20}}/>
+                                <FileExcelOutlined style={{color :"#1f6e43",fontSize:20}} onClick={()=>getDownloadPoBoqList(record.cpoNo,record.siteNo,record.workpackageid)}/>
                             </Tooltip>
                    
                         </Space>):( <Tooltip title="BOQ Detail">
-                        <FileExcelOutlined style={{color :"#1f6e43",fontSize:20}}/>
+                        <FileExcelOutlined style={{color :"#1f6e43",fontSize:20}} onClick={()=>getDownloadPoBoqList(record.cpoNo,record.siteNo,record.workpackageid)}/>
                     </Tooltip>)
                     
                     
@@ -164,9 +205,6 @@ export default function BoqAsPoUpload() {
     ]
 
     const CardTitle = (title) => <Title level={5}>{title}</Title>
-    const consoleTest = ()=>{
-        console.log(mapBoqList,"coba")
-    }
 
     return (
         <div>
@@ -214,11 +252,11 @@ export default function BoqAsPoUpload() {
             
                 <div>
                     <Col spam={12}>
-                        <p>{mapBoqList}</p>
+                        <p>Column 2</p>
                     </Col>
                 </div>
             </Row>
-            <Button onClick={consoleTest}>coba</Button>
+         
             
             
         </div>
