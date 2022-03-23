@@ -393,6 +393,7 @@ const postAssitgnTransportTeam = (body) => POST('taskassignment/lspAssignmentToT
 const getBoqSummaryAsPoBoq = (boqid) => GETParam('boqref/boqGetSummaryAsPOBOQCompletion',boqid)
 const getListBoqAsPo = (boqid) => GETParam('boqref/boqGetListAsPOBOQ',boqid)
 const getDownloadPoBoqCompletion = (boqid,poscopeid) => GETParam2('boqref/boqGetListAsPOBOQCompletion',boqid,poscopeid)
+
    
 const getDownloadPoBoqList = (workpackageid) => GETParam('boqref/boqAsPOSitebasedGetList',workpackageid)
 const getDownloadPoBoqListDeleted = (workpackageid) => DELETE('boqref/boqAsPOBOQSiteBasedDeleted',workpackageid)
@@ -404,7 +405,20 @@ const getLatestCheckPoint = (bid) => GETParam('boqref/boqUploadDataCheckHasClear
 const postBOQASPOFile = (id,file) => POSTFile('boqref/boqAsPOUploadBulk',id,file);
 const getInventoryDetail = () => GET("inventory/getInventoryDetail");
 
+const getBoqSummaryAsPlanBoq = (bid) => GETParam('boqref/boqGetSummaryAsPlanBOQCompletion',bid)
+const getListBoqAsPlan = (boqid) => GETParam('boqref/boqGetListAsPlanBOQ',boqid)
+const getDownloadPlanBoqCompletion = (boqid,poscopeid) => GETParam2('boqref/boqGetListAsPlanBOQCompletion',boqid,poscopeid)
+const getDownloadPlanBoqList = (workpackageid) => GETParam('boqref/boqAsPlanSitebasedGetList',workpackageid)
+const getDownloadPlanBoqListDeleted = (workpackageid) => DELETE('boqref/boqAsPlanBOQSiteBasedDeleted',workpackageid)
+const postBOQASPlanFile = (id,file) => POSTFile('boqref/boqAsPlanUploadBulk',id,file)
+
 const API ={
+    postBOQASPlanFile,
+    getDownloadPlanBoqListDeleted,
+    getDownloadPlanBoqList,
+    getDownloadPlanBoqCompletion,
+    getListBoqAsPlan,
+    getBoqSummaryAsPlanBoq,
     getInventoryDetail,
     postBOQASPOFile,
     getLatestCheckPoint,

@@ -143,6 +143,11 @@ const BOQReferenceDetail = () => {
         navigateTo(`/boq/boqpoupload?bid=${bid}`)
     }
 
+  
+    const handleAsPlanBulkUpload = () =>{
+        navigateTo(`/boq/boqasplanupload?bid=${bid}`)
+    }
+
     const handleDownloadSitelist = () =>{
         API.getBOQSiteListReference(bid).then(
             result=>{
@@ -156,9 +161,7 @@ const BOQReferenceDetail = () => {
             }
         )
     }
-    const handleAsPlanBulkUpload = () =>{
-
-    }
+  
 
     useEffect(() => {
         getBOQRefList(bid);

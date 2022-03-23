@@ -74,7 +74,7 @@ export default function LogisticForm() {
         (state) => state.logistikFormReducer.idDelivery
     )
     const deliveryMode = useSelector(
-        (state) => state.logistikFormReducer.dataDeliveryMode
+        (state) => state.logistikFormReducer.detaDeliveryMode
     )
     const materialOrder = useSelector(
         (state) => state.logistikFormReducer.dataOrderDetail
@@ -119,7 +119,7 @@ export default function LogisticForm() {
         console.log(isModalVisible);
     };
     const cancelNavigate = () => {
-        history.push('/sitelist/logistic')
+        history.push('/mm/taskasglogistic')
     };
     const showModalCancel = () => {
         setIsModalCancelVisible(true);

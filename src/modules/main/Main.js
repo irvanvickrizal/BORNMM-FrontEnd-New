@@ -55,6 +55,7 @@ import BOQReferenceDetail from "@app/pages/BOQReferenceDetail/Index"
 
 import BoqRef from "@app/pages/BoqRef/index"
 import BoqAsPoUpload from "@app/pages/BOQAsPOUpload/BoqAsPoUpload"
+import BoqAsPlanUpload from "@app/pages/BOQAsPlanUpload/BoqAsPlanUpload"
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -354,6 +355,11 @@ const Main = () => {
                                             exact
                                             path="/boq/boqpoupload"
                                             component={BoqAsPoUpload}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/boq/boqasplanupload"
+                                            component={BoqAsPlanUpload}
                                         />
                                     </Switch>
                                 </div>
