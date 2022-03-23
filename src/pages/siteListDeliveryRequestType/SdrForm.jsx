@@ -381,7 +381,8 @@ const SdrForm = (props) => {
                                 layout="horizontal"
                                 initialValues={{
                                     'isExpressDelivery':false,
-                                    'invName':"XL"
+                                    'invName':1,
+                                    'ctName':1
                                     
                                 }}
                             >
@@ -391,12 +392,9 @@ const SdrForm = (props) => {
                                 <Form.Item name="invName" label="Inventory Code">
                                     <Select 
                                         onChange={(e) => handleInvDDLChange(e)}
-                                     
-                                       
-                                       
                                     >
                                         {
-                                            ddlInventoryCode.map(inv =>  <Select.Option  initialValue="XL" value={inv.invCodeId}> 
+                                            ddlInventoryCode.map(inv =>  <Select.Option  value={inv.invCodeId}> 
                                                 {inv.invCode}</Select.Option>)
                                         }
                                     </Select>
@@ -421,7 +419,7 @@ const SdrForm = (props) => {
                                         }
                                     </Select>
                                 </Form.Item>
-                                <Form.Item label="CT Name">
+                                <Form.Item label="CT Name" name="ctName">
                                     {
                                         selectedInvCode == '' ?  <Select status="warning" disabled placeholder="Please Select Inventory Code">
                                         </Select>

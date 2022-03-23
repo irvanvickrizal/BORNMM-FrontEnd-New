@@ -164,7 +164,7 @@ export default function TableSite() {
             dataSource={orderRequestDraft}
             columns={columnsOrderRequestDraft}
             key='siteConditionId'
-            scroll={{ x: '100%' }}
+            scroll={{ x: '200%' }}
             // eslint-disable-next-line react/jsx-boolean-value
             pagination={{
                 pageSizeOptions: ['5','10','20','30', '40'],

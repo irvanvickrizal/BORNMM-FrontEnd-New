@@ -15,7 +15,9 @@ import { Table, Row, Col,Card, Typography, Input, Space,
     InputNumber,
     TreeSelect,
     Switch,
-    message } from 'antd';
+    message,
+    Tooltip,
+    Checkbox } from 'antd';
 import HeaderChanger from '@app/components/cardheader/HeaderChanger';
 import Divider from '@mui/material/Divider';
 import InputLabel from '@mui/material/InputLabel';
@@ -67,6 +69,10 @@ const DismantleFormEdit = (props) => {
     const [selectedSiteCondition,setSelectedSiteCondition] = useState('');
     const [deliveryDate,setDeliveryDate] = useState('');
     const [siteAddress,setSiteAddress] = useState('');
+    const [express,setExpress] = useState(false);
+    const [checked,setChecked] = useState(false);
+
+
 
     const navigateTo = (path) => {
         history.push(path)
@@ -183,6 +189,12 @@ const DismantleFormEdit = (props) => {
         )
     }
 
+    const handleIsExpress = (value)=> {
+        setChecked(value)
+        console.log("v",value)
+    }
+    
+
     const columns = [
         {
             title: 'PO NO/ RO No',
@@ -239,6 +251,10 @@ const DismantleFormEdit = (props) => {
         // Can not select days before today and today
         return current < moment().add(2,'d');
     }
+    function disabledDateExpress(current) {
+        // Can not select days before today and today
+        return (current < moment().endOf('day'))
+    }
 
     const postDismantleForm = () => {
         const body = (
@@ -287,6 +303,15 @@ const DismantleFormEdit = (props) => {
         }
     }
 
+    const getHasExpressDelivery = () => {
+        API.getHasExpressDelivery(orderTypeId).then(
+            result=>{
+                setExpress(result);
+                console.log("express",result);
+            }
+        )
+    }
+
     function btnCancel(){
         navigateTo("/mm/sitelistdr");
     }
@@ -303,9 +328,10 @@ const DismantleFormEdit = (props) => {
         getPacketType();
         getSubcon();
         getSiteCondition();
+        getHasExpressDelivery();
         console.log('wpid:',wpid,"ordertype:",orderTypeId)
         
-    },[wpid,orderTypeId])
+    },[wpid,orderTypeId,express])
 
     const CardTitle = (title) => (
         <Title level={5}>
@@ -334,6 +360,9 @@ const DismantleFormEdit = (props) => {
                                 labelCol={{ span: 5 }}
                                 wrapperCol={{ span: 18 }}
                                 layout="horizontal"
+                                initialValues={{
+                                    'isExpressDelivery':false
+                                }}
                             >
                                 <Form.Item label="Order Type">
                                     <Input disabled value="PMR" />
@@ -425,7 +454,11 @@ const DismantleFormEdit = (props) => {
                                         }
                                     </Select>
                                 </Form.Item>
-                                
+                                <Form.Item label="Express Delivery" valuePropName="checked" name="isExpressDelivery">  
+                                    {!express ? (<Checkbox onChange={(e)=>handleIsExpress(e.target.checked)}/>):(
+                                        <Tooltip color='#f50' title="Cannot request Express Delivery"><Checkbox disabled /></Tooltip>
+                                    )}
+                                </Form.Item>
                                 <Form.Item label="Packet Type" rules={[
                                     {
                                         required: true,
@@ -446,13 +479,24 @@ const DismantleFormEdit = (props) => {
                                     />
                                 </Form.Item>
                                 <Form.Item label="Delivery Date" rules={[{ required: true, message: 'Missing Inventory Code' }]}>
-                                    <DatePicker
+                                    {checked ? <DatePicker
                                         format="YYYY-MM-DD"
-                                        disabledDate={disabledDate}
+                                        disabledDate={
+                                            disabledDateExpress
+                                        }
                                         onChange={(e) => setDeliveryDate(moment(e).format("YYYY-MM-DD"))} 
                                         // disabledDate={current && current < moment().endOf('day')}
                                         // showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
-                                    />
+                                    /> :
+                                        <DatePicker
+                                            format="YYYY-MM-DD"
+                                            disabledDate={
+                                                disabledDate
+                                            }
+                                            onChange={(e) => setDeliveryDate(moment(e).format("YYYY-MM-DD"))} 
+                                        // disabledDate={current && current < moment().endOf('day')}
+                                        // showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+                                        /> }
                                 </Form.Item>
                                 {/* <Form.Item>
                                     <Button type="primary" htmlType="submit">Confirm</Button>
