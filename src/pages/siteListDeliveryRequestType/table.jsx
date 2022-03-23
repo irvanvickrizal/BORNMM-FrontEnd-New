@@ -47,13 +47,13 @@ export default function TableSite() {
         
         console.log("odiiiiii:",e);
         console.log(selectedOt,"dataOt")
-        
-        if(e.orderTypeDetail.orderTypeId==1){
-            navigateTo(`/sitelist/sdrform?wpid=${wpIds}&ot=${ordetTypeIdhook}`)
-        }
-        else if(e.orderTypeDetail.orderTypeId==4){
-            navigateTo(`/sitelist/siteDetail?wpid=${wpIds}&ot=${ordetTypeIdhook}`)
-        }
+        navigateTo(`/${e.formPath}`)
+        // if(e.orderTypeDetail.orderTypeId==1){
+        //     navigateTo(`/sitelist/sdrform?wpid=${wpIds}&ot=${ordetTypeIdhook}`)
+        // }
+        // else if(e.orderTypeDetail.orderTypeId==4){
+        //     navigateTo(`/sitelist/siteDetail?wpid=${wpIds}&ot=${ordetTypeIdhook}`)
+        // }
         // Promise.resolve()
         //     .then(() => { setSelectedOt(e.orderTypeDetail.orderTypeName)})
         //     .then(() => navigateTo())
@@ -65,19 +65,19 @@ export default function TableSite() {
         // console.log(wpId,scopeName,orderTypeId,'wpId');
         console.log("getid",record);
         dispatch(getOrderType(record.orderTypeList))
-        setWpids(wp);
-        setordetTypeIdhook(record.orderTypeList[0].orderTypeDetail.orderTypeId)
-        const wpId = record.workpackageID;
-        const scopeName = record.scopeDetail.scopeName;
-        const scopeId = record.orderTypeList[0].orderTypeDetail.orderTypeId;
-        console.log(wpId,scopeName,scopeId,record,'wp');
+        // setWpids(wp);
+        // setordetTypeIdhook(record.orderTypeList[0].orderTypeId)
+        // const wpId = record.workpackageID;
+        // const scopeName = record.scopeDetail.scopeName;
+        // const scopeId = record.orderTypeList[0].orderTypeId;
+        // console.log(wpId,scopeName,scopeId,record,'wp');
         // navigateTo();
     } 
     const menuDropdown =  (
         <Menu>
-            {dataOrderTypeList ? (dataOrderTypeList.map((e)=>(<Menu.Item>
+            {dataOrderTypeList.length != 0 ? (dataOrderTypeList.map((e)=>(<Menu.Item>
                 <a target="_blank" rel="noopener noreferrer" onClick={()=>odi(e)}>
-                    {e.orderTypeDetail.orderTypeName}
+                    {e.orderTypeName}
                 </a>
             </Menu.Item>))):(<p>no Data</p>)}
             
@@ -193,8 +193,6 @@ export default function TableSite() {
             }
             
         },
-        
-    
     ]
   
     return (

@@ -258,12 +258,12 @@ const Main = () => {
                                         />
                                         <Route
                                             exact
-                                            path="/sitelist/sitedetail/"
+                                            path="/MM/PMRDL"
                                             component={DismantleForm}
                                         />
                                         <Route
                                             exact
-                                            path="/sitelist/sdrform/"
+                                            path="/MM/SDR"
                                             component={SdrForm}
                                         />
                                         <Route

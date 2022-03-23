@@ -319,6 +319,12 @@ export default function MaterialOrder() {
                     setMaterialChoosed([]);
                     getOrderDetailMaterial(odiParam);
                 }
+                else if(result.status=="warning"){
+                    toast.warning(result.message)
+                    setIsModalAddMaterial(false);
+                    setMaterialChoosed([]);
+                    getOrderDetailMaterial(odiParam);
+                }
                 else{
                     toast.error(result.message)
                     setIsModalAddMaterial(false);
@@ -758,7 +764,7 @@ export default function MaterialOrder() {
                         </Form.Item>
                         
                         {stockCheck ? <Form.Item 
-                            label="Balance"
+                            label="Available QTY"
                             name="balance"
                         >
                             <InputNumber disabled />
