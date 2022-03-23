@@ -103,8 +103,8 @@ const SdrForm = (props) => {
             }
         )
     }
-    const getTeamCoordinator = () => {
-        API.getTeamCoordinator(selectedSubcon,wpid).then(
+    const getTeamCoordinator = (selectedSubcons) => {
+        API.getTeamCoordinator(selectedSubcons,wpid).then(
             result=>{
                 console.log("data team:",result)
                 setDdlTeam(result);
@@ -341,7 +341,7 @@ const SdrForm = (props) => {
         getTeamCoordinator()
         getHasExpressDelivery()
         getCTNameDDL(1);
-    },[wpid,orderTypeId,selectedSubcon])
+    },[wpid,orderTypeId])
 
     const CardTitle = (title) => (
         <Title level={5}>
@@ -354,8 +354,9 @@ const SdrForm = (props) => {
 
     const handleSubcon = (e)=>{
         setSelectedSubcon(e)
-        setSelectedTeamCoordinator("")
-        
+        getTeamCoordinator(e)
+        setSelectedTeamCoordinator('')
+        console.log(selectedTeamCoordinator);
     }
 
     return (
@@ -381,9 +382,7 @@ const SdrForm = (props) => {
                                 layout="horizontal"
                                 initialValues={{
                                     'isExpressDelivery':false,
-                                    'invName':1,
-                                    'ctName':1
-                                    
+                                    'ctName':1,
                                 }}
                             >
                                 <Form.Item label="Order Type">
@@ -475,11 +474,13 @@ const SdrForm = (props) => {
                                         }
                                     </Select>
                                 </Form.Item>
-                                <Form.Item label="Team Coordinator at Site">
+                                <Form.Item label="Team Coordinator at Site" name="teamCoordinator">
                             
                                     {ddlTeam.length == null ? (<></>):(<Select 
                                         onChange={(e) => setSelectedTeamCoordinator(e)} 
-                                        placeholder="Select an option">
+                                        placeholder="Select an option"
+                                        allowClear='true'
+                                    >
                                             
                                         {
                                             ddlTeam.map(dst =>  <Select.Option allowClear value={dst.userId}> 

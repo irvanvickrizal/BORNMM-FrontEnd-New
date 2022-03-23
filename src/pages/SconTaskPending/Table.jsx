@@ -111,6 +111,7 @@ const TaskPendingTable = () => {
     const columns = [
         {
             title : "No",
+            width : 50,
             render: (value, item, index) => 1 + index
         },
         {
@@ -245,7 +246,7 @@ const TaskPendingTable = () => {
             </Row>  
             :
             <><Table
-                scroll={{ x: '100%' }}
+                scroll={{ x: '200%' }}
                 size="small"
                 // expandable={{ expandedRowRender }}
                 columns={columns}
