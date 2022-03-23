@@ -54,7 +54,7 @@ import TransportPickupPending from "@app/pages/TransportPickupPending/TransportP
 import BOQReferenceDetail from "@app/pages/BOQReferenceDetail/Index"
 
 import BoqRef from "@app/pages/BoqRef/index"
-import BoqAsPoUpload from "@app/pages/BoqRef/BoqAsPoUpload"
+import BoqAsPoUpload from "@app/pages/BOQAsPOUpload/BoqAsPoUpload"
 
 const Main = () => {
     const dispatch = useDispatch()

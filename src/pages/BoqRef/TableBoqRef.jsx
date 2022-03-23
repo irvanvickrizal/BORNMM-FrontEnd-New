@@ -10,11 +10,7 @@ export default function TableBoqRef() {
     const [dataBoq,setDataBoq] = useState([])
     const [page,setPage] = useState(1)
     const history = useHistory()
-
-
-
-
-
+    
     const getBoqList = () => {
         API.getBoqList().then(
             result=>{

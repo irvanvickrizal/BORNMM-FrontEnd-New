@@ -165,9 +165,9 @@ const POSTFile = (path,id,file)  => {
             console.log('i am post :',result.data);
             resolve(result.data);
         },(err)=>{
-            console.log('config',headers);
-            toast.error(err);
-            reject(err);
+            console.log('config errer',err.response.status);
+            resolve(err.response.status);
+            
         })
     })
     return promise;
@@ -375,10 +375,6 @@ const deleteOutboundFile = (id) => PUTParam('inventory/outboundFileDelete',id);
 const getSconTaskOnProgress = () => GET('taskassignment/taskAssignmentSubconOnProgress');
 const postReAssignmentEngineer = (body) => POST("taskassignment/taskReAssignmentToEngineer",body);
 
-
-
-
-    
 const getWaitingRFP = () => GET('lspassignment/lspAssignmentRFPPending');
 const postWaitingRFP = (body) => POST('lspassignment/lspAssignmentRFPConfirm',body);
 
@@ -401,13 +397,17 @@ const getDownloadPoBoqCompletion = (boqid,poscopeid) => GETParam2('boqref/boqGet
 const getDownloadPoBoqList = (workpackageid) => GETParam('boqref/boqAsPOSitebasedGetList',workpackageid)
 const getDownloadPoBoqListDeleted = (workpackageid) => DELETE('boqref/boqAsPOBOQSiteBasedDeleted',workpackageid)
 
-
-
-const getBoqList = () => GET("boqref/boqPOListReference")
+const getBoqList = () => GET("boqref/boqPOListReference");
 const getBOQSiteListReference = (bid) => GETParam('boqref/boqSiteListReference',bid);
 const getLatestCheckPoint = (bid) => GETParam('boqref/boqUploadDataCheckHasCleared',bid);
 
+const postBOQASPOFile = (id,file) => POSTFile('boqref/boqAsPOUploadBulk',id,file);
+const getInventoryDetail = () => GET("inventory/getInventoryDetail");
+
 const API ={
+    getInventoryDetail,
+    postBOQASPOFile,
+    getLatestCheckPoint,
     getDownloadPoBoqListDeleted,
     getDownloadPoBoqList,
     getBOQSiteListReference,
