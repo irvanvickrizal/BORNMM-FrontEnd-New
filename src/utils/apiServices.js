@@ -373,6 +373,7 @@ const postOutboundFile = (file) => POSTFiled('inventory/outboundFileUpload',file
 const deleteOutboundFile = (id) => PUTParam('inventory/outboundFileDelete',id);
 
 const getSconTaskOnProgress = () => GET('taskassignment/taskAssignmentSubconOnProgress');
+const getSconTaskOnDone = () => GET('taskassignment/taskAssignmentSubconDone');
 const postReAssignmentEngineer = (body) => POST("taskassignment/taskReAssignmentToEngineer",body);
 
 const getWaitingRFP = () => GET('lspassignment/lspAssignmentRFPPending');
@@ -413,6 +414,7 @@ const getDownloadPlanBoqListDeleted = (workpackageid) => DELETE('boqref/boqAsPla
 const postBOQASPlanFile = (id,file) => POSTFile('boqref/boqAsPlanUploadBulk',id,file)
 
 const API ={
+    getSconTaskOnDone,
     postBOQASPlanFile,
     getDownloadPlanBoqListDeleted,
     getDownloadPlanBoqList,

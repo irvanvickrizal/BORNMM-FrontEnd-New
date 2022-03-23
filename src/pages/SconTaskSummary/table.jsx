@@ -45,6 +45,7 @@ export default function TableTaskSummary(props) {
     const [sconTaskPending,setSconTaskPending] = useState([]);
     const [subcon,setSubcon]= useState([])
     const [taskOnProgress,setTaskOnProgress] = useState([])
+    const [taskDone,setTaskDone] = useState([])
     const [selecteSconId,setSelectedSconId] = useState("")
     const [selectedEngineer,setSelectedEngineer] = useState("")
     const [selectedReAssignedEngineer,setSelectedReAssignedEngineer] = useState("")
@@ -53,6 +54,7 @@ export default function TableTaskSummary(props) {
     const [rescheduleDate,setRescheduleDate] = useState('');
     const [selectedTaskSchedule,setSelectedTaskSchedule] = useState("")
     const [selectedTransDelegateId,setSelectedtransDelegateId] = useState("")
+    const [isPickupRequest,setIsPickupRequest] = useState("")
    
     function disabledDate(current) {
         // Can not select days before today and today
@@ -84,6 +86,17 @@ export default function TableTaskSummary(props) {
               
                 setTaskOnProgress(result);
                 console.log("getTaskOnProgress",result);
+            }
+        )
+    }
+    
+    const getSconTaskOnDone = () => {
+     
+        API.getSconTaskOnDone().then(
+            result=>{
+              
+                setTaskDone(result);
+                console.log("getTaskDone :",result);
             }
         )
     }
@@ -191,6 +204,7 @@ export default function TableTaskSummary(props) {
         setSelectedWpId(data.workpackageid)
         getSconEngineer(data.subconId,data.workpackageid)
         setSelectedtransDelegateId(data.transDelegateId)
+        setIsPickupRequest(data.isPickupRequest)
       
         
     }
@@ -233,7 +247,7 @@ export default function TableTaskSummary(props) {
    
     useEffect(() => {
         getSconTaskPending()
-        getSconOnProgress()
+       
     }, [])
     const scheduleStatuss = sconTaskPending.map(e=>e.scheduleStatus)
     const cobaConsole = ()=>{
@@ -588,10 +602,22 @@ export default function TableTaskSummary(props) {
     const CardTitle = (title) => <Title level={5}>{title}</Title>
 
    
+
+    function callback(key) {
+     
+        if(key==2){
+            getSconOnProgress()
+        }
+        else if(key==3){
+            getSconTaskOnDone()
+        }
+        console.log("keytabs",key);
+    }
+   
     return (
         <div>
-            <Tabs defaultActiveKey="1" centered={false}>
-                <TabPane tab="Assignment Pending" key="1">
+            <Tabs defaultActiveKey="1" centered={false} onChange={callback}>
+                <TabPane tab="Assignment Pending" key="1" onChange={getSconTaskPending}>
                     <Card title={CardTitle("Assignment Pending")}>
                         <div >
                             <Table
@@ -636,7 +662,7 @@ export default function TableTaskSummary(props) {
                                     showSizeChanger: true,
                                     position: ["bottomLeft"],
                                 }}
-                                dataSource={taskOnProgress}
+                                dataSource={taskDone}
                                 
                             />
                         </div>
@@ -663,9 +689,12 @@ export default function TableTaskSummary(props) {
                         <Form.Item label="LSP Name">
                             <Typography>{selectedLsp}</Typography>
                         </Form.Item>
-                        <Form.Item label=" Pick Up Date">
+                        {isPickupRequest == true ? (<Form.Item label=" Pick Up Date">
                             <Typography>{moment(selectedPd).format("YYYY-MM-DD")}</Typography>
-                        </Form.Item>
+                        </Form.Item>):(<Form.Item label=" Expected Delivery Date">
+                            <Typography>{moment(selectedPd).format("YYYY-MM-DD")}</Typography>
+                        </Form.Item>)}
+                        
                         <Form.Item label="Assign To">
                             <Select
                                 onChange={(e)=>setSelectedEngineer(e)}
@@ -807,6 +836,7 @@ export default function TableTaskSummary(props) {
                 </Card>
                 </div>
             </Modal>
+    
         </div>
     )
 }
