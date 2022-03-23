@@ -212,25 +212,26 @@ const TableInventoryReport = () => {
                         <Spin />
                     </Col>
                 </Row>  :
-                    <><div className='float-right'>
-                        <Tooltip title="Download Template">
-                            <IconButton size="small" color="success" onClick={getDownloadData}>
-                                <FileExcelOutlined />
-                            </IconButton>
-                            {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
-                        </Tooltip>
-                    </div><Table
-                        scroll={{ x: '150%' }}
-                        size="small"
-                        // expandable={{ expandedRowRender }}
-                        columns={columns}
-                        dataSource={inventoryReport}
-                        pagination={{
-                            pageSizeOptions: ['5', '10', '20', '30', '40'],
-                            showSizeChanger: true,
-                            position: ["bottomLeft"],
-                        }}
-                        bordered /></>
+                    <>
+                        <div className='float-right'>
+                            <Tooltip title="Download As Excell File">
+                                <IconButton size="small" color="success" onClick={getDownloadData}>
+                                    <FileExcelOutlined />
+                                </IconButton>
+                                {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
+                            </Tooltip>
+                        </div><Table
+                            scroll={{ x: '150%' }}
+                            size="small"
+                            // expandable={{ expandedRowRender }}
+                            columns={columns}
+                            dataSource={inventoryReport}
+                            pagination={{
+                                pageSizeOptions: ['5', '10', '20', '30', '40'],
+                                showSizeChanger: true,
+                                position: ["bottomLeft"],
+                            }}
+                            bordered /></>
                 }
             </TabPane>
             <TabPane tab="Stock Detail" key="2">
@@ -240,7 +241,7 @@ const TableInventoryReport = () => {
                     </Col>
                 </Row>  :
                     <><div className='float-right'>
-                        <Tooltip title="Download Template">
+                        <Tooltip title="Download As Excell File">
                             <IconButton size="small" color="success" onClick={getDownloadDataDetail}>
                                 <FileExcelOutlined />
                             </IconButton>
