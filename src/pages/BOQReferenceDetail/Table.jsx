@@ -13,13 +13,13 @@ import Search from '@app/components/searchcolumn/SearchColumn';
 import moment from 'moment';
 import exportFromJSON from 'export-from-json'
 import { toast } from 'react-toastify';
-
+import { useHistory } from 'react-router-dom';
 
 const BOQReferenceDetail = () => {
     const customURL = window.location.href;
     const params = new URLSearchParams(customURL.split('?')[1])
     const bid = params.get('bid');
-
+    const history = useHistory();
     const [isLoading, setIsLoading] = useState(true);
     const [boqReference,setBOQReference] = useState([]);
     const [isFormRFP,setIsFormRFP] = useState(false);
@@ -31,7 +31,9 @@ const BOQReferenceDetail = () => {
     const [selectedPickuporDeliveryDate,setPickuporDeliveryDate] = useState('');
     const { TabPane } = Tabs;
     const user = useSelector((state) => state.auth.user);
-
+    const navigateTo = (path) => {
+        history.push(path)
+    }
     
     const getBOQRefList = (boqid) => {
         setIsLoading(true);
@@ -138,8 +140,9 @@ const BOQReferenceDetail = () => {
     ]
 
     const handleAsPOBulkUpload = () =>{
-        
+        navigateTo(`/boq/boqpoupload?bid=${bid}`)
     }
+
     const handleDownloadSitelist = () =>{
         API.getBOQSiteListReference(bid).then(
             result=>{

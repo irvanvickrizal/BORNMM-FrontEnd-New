@@ -352,7 +352,7 @@ const Main = () => {
                                         />
                                         <Route
                                             exact
-                                            path="/boq/boqaspoupload"
+                                            path="/boq/boqpoupload"
                                             component={BoqAsPoUpload}
                                         />
                                     </Switch>

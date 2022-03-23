@@ -209,9 +209,10 @@ export default function BoqAsPoUpload() {
     return (
         <div>
             <HeaderChanger title="BOQ As PO Bulk Upload" />
-            <Row>
-                <div>
-                    <Col span={24}>
+            <Space direction="horizontal">
+                <Row>
+                
+                    <Col span={12} style={{ width: '100%' }}>
                         <Card hoverable title={CardTitle("Summary As PO BOQ Per Site")}>
                             <Table
                                 rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
@@ -228,10 +229,7 @@ export default function BoqAsPoUpload() {
                                 size="small"
                             />
                         </Card>
-                      
-                    </Col>
-                    <Col span={24} style={{marginTop:12}}>
-                        <Card hoverable title={CardTitle("Detail SiteList")}>
+                        <Card style={{marginTop:12}} hoverable title={CardTitle("Detail SiteList")}>
                             <Table
                                 rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
                                 dataSource={dataBoqList}
@@ -246,18 +244,14 @@ export default function BoqAsPoUpload() {
                                 }}
                             />
                         </Card>
-                       
                     </Col>
-                </div>
-            
-                <div>
-                    <Col spam={12}>
-                        <p>Column 2</p>
+                    <Col span={12} style={{ width: '100%' }}>
+                        <Card hoverable title={CardTitle("Detail SiteList")}>
+                            
+                        </Card>
                     </Col>
-                </div>
-            </Row>
-         
-            
+                </Row>
+            </Space>
             
         </div>
     )

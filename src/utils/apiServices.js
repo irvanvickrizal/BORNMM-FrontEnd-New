@@ -405,6 +405,7 @@ const getDownloadPoBoqListDeleted = (workpackageid) => DELETE('boqref/boqAsPOBOQ
 
 const getBoqList = () => GET("boqref/boqPOListReference")
 const getBOQSiteListReference = (bid) => GETParam('boqref/boqSiteListReference',bid);
+const getLatestCheckPoint = (bid) => GETParam('boqref/boqUploadDataCheckHasCleared',bid);
 
 const API ={
     getDownloadPoBoqListDeleted,

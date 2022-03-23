@@ -575,6 +575,9 @@ export default function MaterialOrder() {
                     toast.success(result.message);
                     navigateTo('/mm/sitelistdr')
                 }
+                else if(result.status=="warning"){
+                    toast.warning(result.message);
+                }
                 else{
                     toast.error(result.message);
                 }
@@ -588,6 +591,9 @@ export default function MaterialOrder() {
                 console.log(result);
                 if(result.status=="success"){
                     toast.success(result.message);
+                }
+                else if(result.status=="warning"){
+                    toast.warning(result.message);
                 }
                 else{
                     toast.error(result.message);
