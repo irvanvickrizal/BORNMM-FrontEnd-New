@@ -276,7 +276,7 @@ const DismantleForm = (props) => {
     }
     function disabledDateExpress(current) {
         // Can not select days before today and today
-        return (current < moment().endOf('day'))
+        return  moment(current).add(1,'d') < moment().endOf('day')
     }
 
     const postDismantleForm = () => {

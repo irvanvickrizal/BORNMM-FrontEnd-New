@@ -4,7 +4,7 @@ import API  from '../../utils/apiServices';
 
 import {useDispatch,useSelector} from 'react-redux';
 
-const siteInfo = (cpoNo , scopeName, siteNo, siteName, packageName, projectContract, region) => {
+const siteInfo = (cpoNo , scopeName, siteNo, siteName, packageName, projectContract, region,wpid) => {
     const datas = {
         cpoNo: cpoNo,
         scopeName: scopeName,
@@ -12,7 +12,8 @@ const siteInfo = (cpoNo , scopeName, siteNo, siteName, packageName, projectContr
         siteName: siteName,
         packageName: packageName,
         projectContract: projectContract,
-        region: region
+        region: region,
+        workpackageId: wpid
     }
     return datas;
 }

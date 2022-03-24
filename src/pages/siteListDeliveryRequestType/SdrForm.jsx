@@ -91,6 +91,7 @@ const SdrForm = (props) => {
     const getSiteInfo = () => {
         API.getSiteInfo(wpid).then(
             result=>{
+                console.log(result,"data")
                 const data = [CreateDataDismantle.siteInfo(
                     result.poDetail.cpoNo
                     ,result.scopeDetail.scopeName
@@ -98,7 +99,8 @@ const SdrForm = (props) => {
                     ,result.siteName
                     ,result.packageName
                     ,result.packageName
-                    ,result.region)]
+                    ,result.region
+                    ,result.workpackageID)]
                 setSiteInfo(data);
             }
         )
@@ -144,6 +146,9 @@ const SdrForm = (props) => {
         API.getCTName(invcodeid).then(
             result=>{
                 setDDLCTName(result);
+                if(result.length>0){
+                    setSelectedCTName(1)
+                }
                 console.log("CTNAMeDDL",result);
             }
         )
@@ -212,6 +217,11 @@ const SdrForm = (props) => {
             key: 'cpoNo',
         },
         {
+            title: 'WorkpackageID',
+            dataIndex: 'workpackageId',
+            key: 'workpackageId',
+        },
+        {
             title: 'General Scope',
             dataIndex: 'scopeName',
             key: 'scopeName',
@@ -259,7 +269,7 @@ const SdrForm = (props) => {
 
     function disabledDateExpressTrue(current) {
         // Can not select days before today and today
-        return (current && current < moment().endOf('day') && (current < moment().add(2,'d')))
+        return moment(current).add(1,'d') < moment().endOf('day')
     }
     function disabledDate(current) {
         // Can not select days before today and today
@@ -308,10 +318,10 @@ const SdrForm = (props) => {
 
     function btnConfirm(){
         if(selectedRequestBase==''||selectedInvCode==''||
-            selectedSiteLocation==''||selectedCTName==''||
+            selectedSiteLocation==''||
             selectedOrigin==''||selectedDestination==''||
             selectedPacketType==''||deliveryDate==''){
-                
+
             message.error('Please Complete Form');
         }
         else{
@@ -383,6 +393,7 @@ const SdrForm = (props) => {
                                 initialValues={{
                                     'isExpressDelivery':false,
                                     'ctName':1,
+                                    'invName':1
                                 }}
                             >
                                 <Form.Item label="Order Type">
@@ -475,19 +486,16 @@ const SdrForm = (props) => {
                                     </Select>
                                 </Form.Item>
                                 <Form.Item label="Team Coordinator at Site" name="teamCoordinator">
-                            
                                     {ddlTeam.length == null ? (<></>):(<Select 
                                         onChange={(e) => setSelectedTeamCoordinator(e)} 
                                         placeholder="Select an option"
                                         allowClear='true'
                                     >
-                                            
                                         {
                                             ddlTeam.map(dst =>  <Select.Option allowClear value={dst.userId}> 
                                                 {dst.fullname}</Select.Option>)
                                         }
                                     </Select>)}
-                                    
                                 </Form.Item>
                                 
                                 <Form.Item label="Express Delivery" valuePropName="checked" name="isExpressDelivery">  
