@@ -314,17 +314,13 @@ const DismantleForm = (props) => {
     }
 
     function btnConfirm(){
-        if(selectedRequestBase==''||selectedInvCode==''||
-            selectedSiteLocation==''||selectedCTName==''||
-            selectedOrigin==''||selectedDestination==''||
-            selectedPacketType==''||deliveryDate==''){
-                
-            message.error('Please Complete Form');
-        }
-        else{
-            postDismantleForm();
-        }
+    
+        postDismantleForm();
+    
     }
+    const onFinishFailedAddMaterial = (errorInfo) => {
+        console.log('Failed:', errorInfo);
+    };
 
     function btnCancel(){
         navigateTo("/mm/sitelistdr");
@@ -375,11 +371,18 @@ const DismantleForm = (props) => {
                                 initialValues={{
                                     'isExpressDelivery':false
                                 }}
+                                onFinish={btnConfirm}
+                                onFinishFailed={onFinishFailedAddMaterial}
                             >
-                                <Form.Item label="Order Type">
+                                <Form.Item label="Order Type" 
+                                  
+                                >
                                     <Input disabled value="PMR" />
                                 </Form.Item>
-                                <Form.Item label="Inventory Code">
+                                <Form.Item label="Inventory Code"
+                                    name="inventoryCode"
+                                    rules={[{ required: true, message: 'Please Select Inventory Code!'}]}
+                                >
                                     <Select 
                                         onChange={(e) => handleInvDDLChange(e)}
                                         placeholder="Select an option"
@@ -391,7 +394,10 @@ const DismantleForm = (props) => {
                                         }
                                     </Select>
                                 </Form.Item>
-                                <Form.Item label="Request Base">
+                                <Form.Item label="Request Base"
+                                    name="requestBase"
+                                    rules={[{ required: true, message: 'Please Select Request Base!'}]}
+                                >
                                     <Select
                                         onChange={(e) => setSelectedRequestBase(e)} 
                                         placeholder="Select an option">
@@ -401,7 +407,10 @@ const DismantleForm = (props) => {
                                         }
                                     </Select>
                                 </Form.Item>
-                                <Form.Item label="Site A/NE - Site B/FE">
+                                <Form.Item label="Site A/NE - Site B/FE"
+                                    name="site"
+                                    rules={[{ required: true, message: 'Please Select Site!'}]}
+                                >
                                     <Select
                                         onChange={(e) => setSelectedSiteLocation(e)}  
                                         placeholder="Select an option">
@@ -411,7 +420,10 @@ const DismantleForm = (props) => {
                                         }
                                     </Select>
                                 </Form.Item>
-                                <Form.Item label="CT Name">
+                                <Form.Item label="CT Name"
+                                    name="ctName"
+                                    rules={[{ required: true, message: 'Please Select CT Name'}]}
+                                >
                                     {
                                         selectedInvCode == '' ?  <Select status="warning" disabled placeholder="Please Select Inventory Code">
                                         </Select>
@@ -426,7 +438,10 @@ const DismantleForm = (props) => {
                                             </Select>
                                     }
                                 </Form.Item>
-                                <Form.Item label="Site Condition">
+                                <Form.Item label="Site Condition"
+                                    name="siteCondition"
+                                    rules={[{ required: true, message: 'Please Select Site Condition!'}]}
+                                >
                                     <Select
                                         onChange={(e) => setSelectedSiteCondition(e)}  
                                         placeholder="Select an option">
@@ -436,7 +451,10 @@ const DismantleForm = (props) => {
                                         }
                                     </Select>
                                 </Form.Item>
-                                <Form.Item label="Origin">
+                                <Form.Item label="Origin"
+                                    name="origin"
+                                    rules={[{ required: true, message: 'Please Origin!'}]}
+                                >
                                     <Select 
                                         onChange={(e) => setSelectedOrigin(e)} 
                                         placeholder="Select an option">
@@ -446,7 +464,10 @@ const DismantleForm = (props) => {
                                         }
                                     </Select>
                                 </Form.Item>
-                                <Form.Item label="Destination">
+                                <Form.Item label="Destination"
+                                    name="destination"
+                                    rules={[{ required: true, message: 'Please Select Destination!'}]}
+                                >
                                     <Select 
                                         onChange={(e) => setSelectedDestination(e)} 
                                         placeholder="Select an option">
@@ -456,7 +477,10 @@ const DismantleForm = (props) => {
                                         }
                                     </Select>
                                 </Form.Item>
-                                <Form.Item label="SubCon">
+                                <Form.Item label="SubCon"
+                                    name="subCon"
+                                    rules={[{ required: true, message: 'Please Select subCon Name!'}]}
+                                >
                                     <Select 
                                         onChange={(e) => handleSelectedSubcon(e)} 
                                         placeholder="Select an option">
@@ -467,11 +491,10 @@ const DismantleForm = (props) => {
                                     </Select>
                                 </Form.Item>
                                 
-                                <Form.Item label="Team Coordinator at Site" rules={[
-                                    {
-                                        required: true,
-                                    },
-                                ]}>
+                                <Form.Item label="Team Coordinator at Site" 
+                                    name="teamCoordinator"
+                                    rules={[{ required: true, message: 'Please Select Team Coordinator!'}]}
+                                >
                                     {ddlTeamCoordinator.length == null ? (<></>):(<Select 
                                         onChange={(e) => setSelectedTeamCoordinator(e)} 
                                         placeholder="Select an option">
@@ -488,11 +511,10 @@ const DismantleForm = (props) => {
                                         <Tooltip color='#f50' title="Cannot request Express Delivery"><Checkbox disabled /></Tooltip>
                                     )}
                                 </Form.Item>
-                                <Form.Item label="Packet Type" rules={[
-                                    {
-                                        required: true,
-                                    },
-                                ]}>
+                                <Form.Item label="Packet Type"
+                                    name="packetType"
+                                    rules={[{ required: true, message: 'Please Select Packet Type!'}]}
+                                >
                                     <Select 
                                         onChange={(e) => setSelectedPacketType(e)} 
                                         placeholder="Select an option">
@@ -502,12 +524,13 @@ const DismantleForm = (props) => {
                                         }
                                     </Select>
                                 </Form.Item>
-                                <Form.Item label="Site Address">
+                                <Form.Item label="Site Address"   name="siteAdress"
+                                    rules={[{ required: true, message: 'Please Input Site Adress Field!'}]}>
                                     <Input.TextArea 
                                         onChange={(e) => setSiteAddress(e.target.value)}  
                                     />
                                 </Form.Item>
-                                <Form.Item label="Delivery Date" rules={[{ required: true, message: 'Missing Inventory Code' }]}>
+                                <Form.Item label="Delivery Date" name="deliveryDate" rules={[{ required: true, message: 'Please Select Delivery Date' }]}>
                                     {checked ? <DatePicker
                                         format="YYYY-MM-DD"
                                         disabledDate={
@@ -531,33 +554,37 @@ const DismantleForm = (props) => {
                                     <Button type="primary" htmlType="submit">Confirm</Button>
                                     <Button type="danger">Cancel</Button>
                                 </Form.Item> */}
+                                <Divider orientation="center" />
+                                <Row>
+                                    <Col span={20}>
+                                        <Row>
+                                            <Col span={3}>Requester</Col>
+                                            <Col span={1}>:</Col>
+                                            <Col span={15}>{user.name}</Col>
+                                        </Row>
+                                        <Row>
+                                            <Col span={3}>Request Date</Col>
+                                            <Col span={1}>:</Col>
+                                            <Col span={15}>{date}</Col>
+                                        </Row>
+                                        <Row>
+                                            <Col span={3}>Phone No</Col>
+                                            <Col span={1}>:</Col>
+                                            <Col span={15}>{user.name}</Col>
+                                        </Row>
+                                    </Col>
+                                    <Form.Item wrapperCol={{ offset: 8, span: 16 }} style={{marginTop:6}}>
+                                        <Col span={4}> 
+                                            <Space direction="horizontal">
+                                                <Button type="primary" htmlType="submit" onClick={btnConfirm}>Confirm</Button>
+                                                <Button type="danger" onClick={btnCancel}>Cancel</Button>
+                                            </Space>
+                                        </Col>
+                                    </Form.Item>
+                                   
+                                </Row>
                             </Form>
-                            <Divider orientation="center" />
-                            <Row>
-                                <Col span={20}>
-                                    <Row>
-                                        <Col span={3}>Requester</Col>
-                                        <Col span={1}>:</Col>
-                                        <Col span={15}>{user.name}</Col>
-                                    </Row>
-                                    <Row>
-                                        <Col span={3}>Request Date</Col>
-                                        <Col span={1}>:</Col>
-                                        <Col span={15}>{date}</Col>
-                                    </Row>
-                                    <Row>
-                                        <Col span={3}>Phone No</Col>
-                                        <Col span={1}>:</Col>
-                                        <Col span={15}>{user.name}</Col>
-                                    </Row>
-                                </Col>
-                                <Col span={4}> 
-                                    <Space direction="horizontal">
-                                        <Button type="primary" htmlType="submit" onClick={btnConfirm}>Confirm</Button>
-                                        <Button type="danger" onClick={btnCancel}>Cancel</Button>
-                                    </Space>
-                                </Col>
-                            </Row>
+                            
                         </Space>
                     </Card>
                 </Col>
