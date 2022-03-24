@@ -343,6 +343,7 @@ export default function TableTaskSummary(props) {
         
         {
             title: "Action",
+            fixed: 'right',
             render:(record)=>{
                 return (
                     <div>
@@ -504,6 +505,7 @@ export default function TableTaskSummary(props) {
         {
             title: "Action",
             dataIndex: "",
+            fixed: 'right',
             render:(record)=>{
                 return (
                     <Space>
@@ -624,8 +626,8 @@ export default function TableTaskSummary(props) {
                                 columns={columnsAssigmentPending}
                            
                                 dataSource={sconTaskPending}
-                                scroll={{x: "100%"}}
-                                size="large"
+                                scroll={{x: "150%"}}
+                                size="small"
                                 pagination={{
                                     pageSizeOptions: ['5', '10', '20', '30', '40'],
                                     showSizeChanger: true,
@@ -636,7 +638,7 @@ export default function TableTaskSummary(props) {
                     </Card>
                 </TabPane>
                 <TabPane tab="Assignment On Progress" key="2">
-                    <Card title={CardTitle("Assignment On Progress")}>
+                    <Card>
                         <div >
                             <Table
                                 columns={columnsAssigmentOnProgress}
@@ -646,17 +648,17 @@ export default function TableTaskSummary(props) {
                                     position: ["bottomLeft"],
                                 }}
                                 dataSource={taskOnProgress}
-                                scroll={{x: "100%"}}
+                                scroll={{x: "150%"}}
                             />
                         </div>
                     </Card>
                 </TabPane>
                 <TabPane tab="Assignment Done" key="3">
-                    <Card title={CardTitle("Assignment Done")}>
+                    <Card>
                         <div >
                             <Table
                                 columns={columnsAssigmentOnDone}
-                                scroll={{x: "100%"}}
+                                scroll={{x: "150%"}}
                                 pagination={{
                                     pageSizeOptions: ['5', '10', '20', '30', '40'],
                                     showSizeChanger: true,

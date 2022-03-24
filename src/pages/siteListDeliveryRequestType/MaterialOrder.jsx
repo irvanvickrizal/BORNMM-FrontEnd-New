@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-no-useless-fragment */
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-boolean-value */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable jsx-a11y/anchor-is-valid */
@@ -71,14 +73,24 @@ export default function MaterialOrder() {
     const [selectedBalance,setSelectedBalance] = useState('');
     const [selectedSite,setSelectedSite] = useState('');
     const [selectedOrderStatus,setSelectedOrderStatus] = useState('');
+    const [isOutOfStock,setIsOutOfStock] = useState(null)
 
     const navigateTo = (path) => {
         history.push(path)
     }
+
+    function checkoutofstock(balanceQTY){
+        if(balanceQTY<0){
+            setIsOutOfStock(1);
+        }
+    }
+
     const getOrderDetailMaterial=(odi)=>{
         API.getOrderDetailMaterial(odi).then(
             result=>{
+                result.map((rst)=>checkoutofstock(rst.balanceQTY)) 
                 setOrderDetailMaterial(result);
+
             }
         )
     }
@@ -162,14 +174,15 @@ export default function MaterialOrder() {
                 )
             }
         },
-        
         {
             title:"Balance",
             key:"orderMaterialId",
             render:(record)=>{
                 return (
                     <Space>
-                        {record.balanceQTY < 0 ? <p style={{ color:'red' }}>{record.balanceQTY}</p>:
+                        {record.balanceQTY < 0 
+                            ?
+                            <p style={{ color:'red' }}>{record.balanceQTY}</p>:
                             <p>
                                 {record.balanceQTY}
                             </p>}
@@ -300,38 +313,41 @@ export default function MaterialOrder() {
                 toast.error("req qty exceeds balance")
             }
         }
-        const body=(
-            {
-                "orderDetailId":odiParam,
-                "materialCode":values.materialCode,
-                "reqQty":values.reqQTY,
-                "LMBY":user.uid,
-                "stockCheck":false,
-                "neType":values.neType
-            }
-        )
-        console.log("submit material",body)
-        API.postAddMaterial(body).then(
-            result=>{
-                if(result.status=="success"){
-                    toast.success(result.message)
-                    setIsModalAddMaterial(false);
-                    setMaterialChoosed([]);
-                    getOrderDetailMaterial(odiParam);
+        else{
+            const body=(
+                {
+                    "orderDetailId":odiParam,
+                    "materialCode":values.materialCode,
+                    "reqQty":values.reqQTY,
+                    "LMBY":user.uid,
+                    "stockCheck":false,
+                    "neType":values.neType
                 }
-                else if(result.status=="warning"){
-                    toast.warning(result.message)
-                    setIsModalAddMaterial(false);
-                    setMaterialChoosed([]);
-                    getOrderDetailMaterial(odiParam);
+            )
+            console.log("submit material",body)
+            API.postAddMaterial(body).then(
+                result=>{
+                    if(result.status=="success"){
+                        toast.success(result.message)
+                        setIsModalAddMaterial(false);
+                        setMaterialChoosed([]);
+                        getOrderDetailMaterial(odiParam);
+                    }
+                    else if(result.status=="warning"){
+                        toast.warning(result.message)
+                        setIsModalAddMaterial(false);
+                        setMaterialChoosed([]);
+                        getOrderDetailMaterial(odiParam);
+                    }
+                    else{
+                        toast.error(result.message)
+                        setIsModalAddMaterial(false);
+                        setMaterialChoosed([]);
+                    }
                 }
-                else{
-                    toast.error(result.message)
-                    setIsModalAddMaterial(false);
-                    setMaterialChoosed([]);
-                }
-            }
-        )
+            )
+        }
+        
     };
     
     const onFinishFailedAddMaterial = (errorInfo) => {
@@ -424,9 +440,9 @@ export default function MaterialOrder() {
             key:"materialDesc"
         },
         {
-            title:"Balance",
-            dataIndex:"balance",
-            key:"materialDesc"
+            title:"Available QTY",
+            dataIndex:"availableQTY",
+            key:"availableQTY"
         },
         {
             title:"Action",
@@ -682,11 +698,20 @@ export default function MaterialOrder() {
                                         <div className='float-right'>
                                             <Space>
                                                 <Button type="default" htmlType="submit" onClick={handleSaveDraft}>
-                                            Save as Draft
+                                                    Save as Draft
                                                 </Button>
-                                                {stockCheck ? <Button type="primary" htmlType="submit" onClick={handleBookSubmit}>
-                                            Book and Submit
-                                                </Button> :
+                                                {stockCheck ?
+                                                    isOutOfStock>0 ? 
+                                                        <Tooltip color='red' title="Certain item has out of stock status">
+                                                            <Button type="primary" danger disabled htmlType="submit" onClick={handleBookSubmit}>
+                                                        Book and Submit
+                                                            </Button> 
+                                                        </Tooltip>
+                                                        :
+                                                        <Button type="primary" htmlType="submit" onClick={handleBookSubmit}>
+                                                        Book and Submit
+                                                        </Button> 
+                                                    :
                                                     <Button type="primary" htmlType="submit" onClick={handleSubmitDirect}>
                                                 Submit
                                                     </Button>
@@ -724,7 +749,7 @@ export default function MaterialOrder() {
                             'materialDesc': materialChoosed.materialDesc,
                             'subCategoryName': materialChoosed.subCategoryName,
                             'neType': "NE",
-                            'balance': materialChoosed.balance,
+                            'balance': materialChoosed.availableQTY,
                             'reqQTY' : 1
                         }}
                         onFinish={onFinishAddMaterial}

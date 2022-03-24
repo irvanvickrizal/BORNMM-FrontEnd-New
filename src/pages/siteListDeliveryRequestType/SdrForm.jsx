@@ -92,6 +92,7 @@ const SdrForm = (props) => {
     const getSiteInfo = () => {
         API.getSiteInfo(wpid).then(
             result=>{
+                console.log(result,"data")
                 const data = [CreateDataDismantle.siteInfo(
                     result.poDetail.cpoNo
                     ,result.scopeDetail.scopeName
@@ -99,13 +100,14 @@ const SdrForm = (props) => {
                     ,result.siteName
                     ,result.packageName
                     ,result.packageName
-                    ,result.region)]
+                    ,result.region
+                    ,result.workpackageID)]
                 setSiteInfo(data);
             }
         )
     }
-    const getTeamCoordinator = () => {
-        API.getTeamCoordinator(selectedSubcon,wpid).then(
+    const getTeamCoordinator = (selectedSubcons) => {
+        API.getTeamCoordinator(selectedSubcons,wpid).then(
             result=>{
                 console.log("data team:",result)
                 setDdlTeam(result);
@@ -145,6 +147,9 @@ const SdrForm = (props) => {
         API.getCTName(invcodeid).then(
             result=>{
                 setDDLCTName(result);
+                if(result.length>0){
+                    setSelectedCTName(1)
+                }
                 console.log("CTNAMeDDL",result);
             }
         )
@@ -214,6 +219,11 @@ const SdrForm = (props) => {
             key: 'cpoNo',
         },
         {
+            title: 'WorkpackageID',
+            dataIndex: 'workpackageId',
+            key: 'workpackageId',
+        },
+        {
             title: 'General Scope',
             dataIndex: 'scopeName',
             key: 'scopeName',
@@ -261,7 +271,7 @@ const SdrForm = (props) => {
 
     function disabledDateExpressTrue(current) {
         // Can not select days before today and today
-        return (current && current < moment().endOf('day') && (current < moment().add(2,'d')))
+        return moment(current).add(1,'d') < moment().endOf('day')
     }
     function disabledDate(current) {
         // Can not select days before today and today
@@ -341,7 +351,7 @@ const SdrForm = (props) => {
         getTeamCoordinator()
         getHasExpressDelivery()
         getCTNameDDL(1);
-    },[wpid,orderTypeId,selectedSubcon])
+    },[wpid,orderTypeId])
 
     const CardTitle = (title) => (
         <Title level={5}>
@@ -354,8 +364,9 @@ const SdrForm = (props) => {
 
     const handleSubcon = (e)=>{
         setSelectedSubcon(e)
-        setSelectedTeamCoordinator("")
-        
+        getTeamCoordinator(e)
+        setSelectedTeamCoordinator('')
+        console.log(selectedTeamCoordinator);
     }
 
     return (
@@ -381,9 +392,8 @@ const SdrForm = (props) => {
                                 layout="horizontal"
                                 initialValues={{
                                     'isExpressDelivery':false,
-                                    'invName':1,
-                                    'ctName':1
-                                    
+                                    'ctName':1,
+                                    'invName':1
                                 }}
                                 onFinish={btnConfirm}
                                 onFinishFailed={onFinishFailedAddMaterial}
@@ -501,14 +511,14 @@ const SdrForm = (props) => {
                             
                                     {ddlTeam.length == null ? (<></>):(<Select 
                                         onChange={(e) => setSelectedTeamCoordinator(e)} 
-                                        placeholder="Select an option">
-                                            
+                                        placeholder="Select an option"
+                                        allowClear='true'
+                                    >
                                         {
                                             ddlTeam.map(dst =>  <Select.Option allowClear value={dst.userId}> 
                                                 {dst.fullname}</Select.Option>)
                                         }
                                     </Select>)}
-                                    
                                 </Form.Item>
                                 
                                 <Form.Item label="Express Delivery" valuePropName="checked" name="isExpressDelivery">  

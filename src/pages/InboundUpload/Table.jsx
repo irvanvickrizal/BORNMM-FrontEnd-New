@@ -303,7 +303,7 @@ const TableInboundUpload = () => {
                             </Tooltip>
                             <Tooltip title="Download Template">
                                 <IconButton size="small" color="secondary">
-                                    <a href='/file/SampleFile.xlsx' download="Template">
+                                    <a href='/file/Inbound.xlsx' download="[ProjectCode]_RECV_[YYYYMMDD]_[HHMMSS]_[runningNo]">
                                         <FileExcelOutlined />
                                     </a>
                                 </IconButton>
@@ -347,7 +347,7 @@ const TableInboundUpload = () => {
                         </Button>
                     </div>
                 </Modal>
-                <Modal title="Upload File"
+                <Modal title="Upload Inbound File"
                     visible={isUploadFile}
                     onOk={handleOkFile}
                     onCancel={handleCancelFile}

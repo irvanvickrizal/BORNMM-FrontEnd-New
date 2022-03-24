@@ -93,6 +93,8 @@ export default function Logistic() {
         },
         {
             title:'Action',
+            fixed:'right',
+            width: 50,
             render:(record)=>{
                 return <EditOutlined onClick={() => handleEdit(record)}/>
             }
@@ -105,7 +107,7 @@ export default function Logistic() {
             <Table
                 columns={columns}
                 dataSource={dataPending}
-                scroll={{ x: '100%' }}
+                scroll={{ x: '120%' }}
                
                 pagination={{
                     pageSizeOptions: ['5','10','20','30', '40'],
