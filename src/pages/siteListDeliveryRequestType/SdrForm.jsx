@@ -320,8 +320,8 @@ const SdrForm = (props) => {
         if(selectedRequestBase==''||selectedInvCode==''||
             selectedSiteLocation==''||
             selectedOrigin==''||selectedDestination==''||
-            selectedPacketType==''||deliveryDate==''){
-
+            selectedPacketType==''||deliveryDate=='')
+        {
             message.error('Please Complete Form');
         }
         else{
