@@ -81,7 +81,7 @@ const TableInboundUpload = () => {
     {
         if (window.confirm('Are you sure you want to delete this file ?')) {
             console.log(id)
-            API.deleteInboundFile(id).then(
+            API.deleteInboundFile("",id).then(
                 result=>{
                     console.log("handledelete",result)
                     if(result.status=="success"){
