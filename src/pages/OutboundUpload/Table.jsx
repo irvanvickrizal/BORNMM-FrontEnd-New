@@ -6,7 +6,7 @@ import { getDataSiteList,getWpId,getOrderType,getOrderTypeId } from '@app/store/
 import React,{useEffect,useState} from 'react'
 import {toast} from 'react-toastify';
 import { useDispatch,useSelector } from 'react-redux'
-import {Typography,Popconfirm,Select,Upload,message,Form,Modal,Table, Input,Menu, Dropdown, Button, Space, Spin, Row, Col,Tooltip  } from 'antd'
+import {Tag,Typography,Popconfirm,Select,Upload,message,Form,Modal,Table, Input,Menu, Dropdown, Button, Space, Spin, Row, Col,Tooltip  } from 'antd'
 import {PlusOutlined,FileExcelOutlined, CloseSquareTwoTone ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined, EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined,DeleteTwoTone,UploadOutlined } from '@ant-design/icons'
 import { useHistory } from 'react-router-dom';
 import API  from '../../utils/apiServices';
@@ -82,7 +82,7 @@ const TableOutboundUpload = () => {
     {
         if (window.confirm('Are you sure you want to delete this file ?')) {
             console.log(id)
-            API.deleteOutboundFile(id).then(
+            API.deleteOutboundFile("",id).then(
                 result=>{
                     console.log("handledelete",result)
                     if(result.status=="success"){
@@ -120,8 +120,20 @@ const TableOutboundUpload = () => {
     }
     const handleCancelFile = () =>
     {
-        
         setIsUploadFile(false);
+    }
+
+    const colorTag = (status) => {
+        if(status=="Success"){
+            return "green"
+        }
+        if(status=="Failed"){
+            return "red"
+        }
+        if(status=="Pending"){
+            return "blue"
+        }
+        return "";
     }
 
     const columns = [
@@ -156,7 +168,13 @@ const TableOutboundUpload = () => {
         },
         {
             title : "Status",
-            dataIndex:'executeStatus',
+            render:(record)=>{
+                return (
+                    <Space>
+                        <Tag color={colorTag(record.executeStatus)}>{record.executeStatus}</Tag>
+                    </Space>
+                )
+            },
             width: 100,
             ...Search('executeStatus'),
         },
@@ -222,7 +240,7 @@ const TableOutboundUpload = () => {
     const handleUpload = () => {
         setUploading(true)
         
-        API.postReviseInboundFile(inbFileId,fileUpload).then(
+        API.postReviseOutboundFile(inbFileId,fileUpload).then(
             result=>{
                 if(result.value.status=="success"){
                     setFileUpload(null);

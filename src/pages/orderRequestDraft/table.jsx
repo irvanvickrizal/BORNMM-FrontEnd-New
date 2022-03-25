@@ -51,6 +51,12 @@ export default function TableSite() {
             ...Search('siteNo'),
         },
         {
+            title:"Order Detail Id",
+            dataIndex:"orderDetailId",
+            key:"orderDetailId",
+            ...Search('siteNo'),
+        },
+        {
             title:"Workpackage ID",
             dataIndex:"workpackageId",
             key:"workpackageId",

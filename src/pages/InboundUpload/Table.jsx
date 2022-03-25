@@ -6,7 +6,7 @@ import { getDataSiteList,getWpId,getOrderType,getOrderTypeId } from '@app/store/
 import React,{useEffect,useState} from 'react'
 import {toast} from 'react-toastify';
 import { useDispatch,useSelector } from 'react-redux'
-import {Typography,Popconfirm,Select,Upload,message,Form,Modal,Table, Input,Menu, Dropdown, Button, Space, Spin, Row, Col,Tooltip  } from 'antd'
+import {Tag,Typography,Popconfirm,Select,Upload,message,Form,Modal,Table, Input,Menu, Dropdown, Button, Space, Spin, Row, Col,Tooltip  } from 'antd'
 import {PlusOutlined, FileExcelOutlined,CloseSquareTwoTone ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined, EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined,DeleteTwoTone,UploadOutlined } from '@ant-design/icons'
 import { useHistory } from 'react-router-dom';
 import API  from '../../utils/apiServices';
@@ -81,7 +81,7 @@ const TableInboundUpload = () => {
     {
         if (window.confirm('Are you sure you want to delete this file ?')) {
             console.log(id)
-            API.deleteInboundFile(id).then(
+            API.deleteInboundFile("",id).then(
                 result=>{
                     console.log("handledelete",result)
                     if(result.status=="success"){
@@ -123,6 +123,19 @@ const TableInboundUpload = () => {
         setIsUploadFile(false);
     }
 
+    const colorTag = (status) => {
+        if(status=="success"){
+            return "green"
+        }
+        if(status=="Failed"){
+            return "red"
+        }
+        if(status=="Pending"){
+            return "blue"
+        }
+        return "";
+    }
+
     const columns = [
         {
             title : "No",
@@ -155,7 +168,13 @@ const TableInboundUpload = () => {
         },
         {
             title : "Status",
-            dataIndex:'executeStatus',
+            render:(record)=>{
+                return (
+                    <Space>
+                        <Tag color={colorTag(record.executeStatus)}>{record.executeStatus}</Tag>
+                    </Space>
+                )
+            },
             width: 100,
             ...Search('executeStatus'),
         },
