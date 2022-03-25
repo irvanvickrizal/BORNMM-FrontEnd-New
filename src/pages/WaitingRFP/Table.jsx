@@ -46,6 +46,7 @@ const WaitingRFPTable = () => {
         const body = ({
             "orderdetailId":record.orderDetailId,
             "totalCollies":record.totalCollies,
+            "totalVolume":record.totalVolume,
             "LMBY": user.uid    
         })
         console.log(body,"body")
@@ -288,6 +289,21 @@ const WaitingRFPTable = () => {
                             label="Total Collies"
                             name="totalCollies"
                             rules={[{ required: true, message: 'Please input Total Collies!' }]}
+                        >
+                            <InputNumber
+                                style={{ width: 200 }}
+                                defaultValue="0"
+                                min="0"
+                                step="0.01"
+                                // onChange={onChange}
+                                stringMode
+                            />
+                        </Form.Item>
+                        <Form.Item
+                        // hidden
+                            label="Total Volume"
+                            name="totalVolume"
+                            rules={[{ required: true, message: 'Please input Total Volume!' }]}
                         >
                             <InputNumber
                                 style={{ width: 200 }}

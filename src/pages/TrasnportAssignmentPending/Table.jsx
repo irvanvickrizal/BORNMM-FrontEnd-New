@@ -47,12 +47,13 @@ export default function TableTransport() {
             "LMBY": user.uid   
         })
         console.log(body,"bodycancel")
-        API.postCancelRFP(body).then(
+        API.putCancelRFP(body).then(
             result=>{
                 console.log(result,"cancelrfp");
                 toast.success(result.message)
                 getSconTaskPending();
                 setCancelLoading(false)
+                setIsCancelTask(false)
             }
         )
     }

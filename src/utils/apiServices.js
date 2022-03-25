@@ -389,7 +389,7 @@ const postTransportAssignTo = (body) => POST('taskassignment/lspAssignmentToTran
 const getDDLTransportAssignTo = (subconid,wpid) => GETParam2('subcon/getLSPTransportTeam',subconid,wpid)
 
 const putReAssignTransportTeam = (body) => PUT('taskassignment/taskReAssignmentToEngineer',body);
-const postCancelRFP = (body) => POST('taskassignment/lspAssignmentRFPDoneCanceled',body);
+const putCancelRFP = (body) => PUT('lspassignment/lspAssignmentRFPDoneCanceled',body);
 const postAssitgnTransportTeam = (body) => POST('taskassignment/lspAssignmentToTransport ',body);
 
 const getBoqSummaryAsPoBoq = (boqid) => GETParam('boqref/boqGetSummaryAsPOBOQCompletion',boqid)
@@ -432,7 +432,7 @@ const API ={
     getListBoqAsPo,
     getBoqSummaryAsPoBoq,
     postAssitgnTransportTeam,
-    postCancelRFP,
+    putCancelRFP,
     putReAssignTransportTeam,
     getDDLTransportAssignTo,
     postTransportAssignTo,
