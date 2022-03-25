@@ -52,6 +52,11 @@ export default function Logistic() {
             ...Search('orderType'),
         },
         {
+            title:'Work Package Id',
+            dataIndex:'workpackageid',
+            ...Search('orderType'),
+        },
+        {
             title:'Site No',
             dataIndex:'siteNo',
             ...Search('siteNo'),
