@@ -74,7 +74,7 @@ export default function LogisticForm() {
         (state) => state.logistikFormReducer.idDelivery
     )
     const deliveryMode = useSelector(
-        (state) => state.logistikFormReducer.detaDeliveryMode
+        (state) => state.logistikFormReducer.dataDeliveryMode
     )
     const materialOrder = useSelector(
         (state) => state.logistikFormReducer.dataOrderDetail
@@ -100,7 +100,7 @@ export default function LogisticForm() {
          dispatch(postLogistikForm({"orderDetailId":dataOdi,"whTeamId":wh,"cmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"note":note}))
     
         if( dataStats == 200){
-            history.push('/sitelist/logistic')
+            history.push('/mm/taskasglogistic')
          
         }
 
@@ -135,11 +135,7 @@ export default function LogisticForm() {
         console.log(isModalVisible);
     };
     const columns = [
-        {
-            title: "No",
-            key: "index",
-            render: (value, item, index) => page + index
-        },
+    
 
         {
             title: "PO No/RO No",
@@ -157,6 +153,10 @@ export default function LogisticForm() {
         {
             title: "Package Name",
             dataIndex: "packageName"
+        },
+        {
+            title: "Work Package Id",
+            dataIndex: "workpackageId"
         },
         {
             title: "Project Contract",
@@ -241,7 +241,7 @@ export default function LogisticForm() {
                                                     }
                                                 />
                                             </Form.Item>
-                                            <Form.Item label="Inventory Code">
+                                            <Form.Item label="Request No">
                                                 <Input
                                                     disabled
                                                     value={
@@ -335,7 +335,7 @@ export default function LogisticForm() {
                     </Card>
                 </Col>
                 <Col span={12}>
-                    <Card hoverable title={CardTitle("Logistik Form")}>
+                    <Card hoverable title={CardTitle("Logistic Form")}>
                         <Form
                             labelCol={{span: 9}}
                             wrapperCol={{span: 13}}
@@ -346,7 +346,7 @@ export default function LogisticForm() {
                                     onChange={(e) => setWh(e)}
                                     placeholder="Select an option"
                                 >
-                                    {lsp.map((inv) => (
+                                    {lsp?.map((inv) => (
                                         <Select.Option value={inv.subconId}>
                                             {inv.subconName}
                                         </Select.Option>
@@ -358,7 +358,7 @@ export default function LogisticForm() {
                                     onChange={(e) => handleDeliveryChange(e)}
                                     placeholder="Select an option"
                                 >
-                                    {deliveryList.map((inv) => (
+                                    {deliveryList?.length == 0 ? null : deliveryList?.map((inv) => (
                                         <Select.Option value={inv.cdmrId}>
                                             {inv.cdmrName}
                                         </Select.Option>
@@ -377,7 +377,7 @@ export default function LogisticForm() {
                                         onChange={(e) => setModeTransport(e)}
                                         placeholder="Select an option"
                                     >
-                                        {DataDeliveryTransport.length == 0 ? (<></>):(DataDeliveryTransport.map((e)=>(
+                                        {DataDeliveryTransport?.length == 0 ? (<></>):(DataDeliveryTransport?.map((e)=>(
                                             <Select.Option value={e.transportModeId}>
                                                 {e.transportMode}
                                             </Select.Option>
@@ -391,7 +391,7 @@ export default function LogisticForm() {
                                     onChange={(e) => setDeliveryTransport(e)}
                                     placeholder="Select an option"
                                 >
-                                    {lsp.length == 0 ? (<></>):( lsp.map((inv) => (
+                                    {lsp?.length == 0 ? (<></>):( lsp?.map((inv) => (
                                         <Select.Option value={inv.subconId}>
                                             {inv.subconName}
                                         </Select.Option>
@@ -405,7 +405,7 @@ export default function LogisticForm() {
                                     placeholder="Select an option"
                                 >
                                     {
-                                        deliveryMode.length == 0 ? (<></>):( deliveryMode.map((inv) => (
+                                        deliveryMode?.length == 0 ? (null):( deliveryMode?.map((inv) => (
                                             <Select.Option value={inv.deliveryModeId}>
                                                 {inv.deliveryMode}
                                             </Select.Option>

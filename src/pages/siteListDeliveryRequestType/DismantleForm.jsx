@@ -369,7 +369,9 @@ const DismantleForm = (props) => {
                                 wrapperCol={{ span: 18 }}
                                 layout="horizontal"
                                 initialValues={{
-                                    'isExpressDelivery':false
+                                    'isExpressDelivery':false,
+                                    'ctName':1,
+                                    'inventoryCode':1
                                 }}
                                 onFinish={btnConfirm}
                                 onFinishFailed={onFinishFailedAddMaterial}
@@ -424,6 +426,19 @@ const DismantleForm = (props) => {
                                     name="ctName"
                                     rules={[{ required: true, message: 'Please Select CT Name'}]}
                                 >
+                                    {/* {
+                                        selectedInvCode == '' ?  <Select status="warning" >
+                                        </Select>
+                                            :
+                                            <Select 
+                                                onChange={(e) => setSelectedCTName(e)} 
+                                                placeholder="Select an option">
+                                                {
+                                                    ddlCTName.map(slc =>  <Select.Option value={slc.ctId}> 
+                                                        {slc.ctName}</Select.Option>)
+                                                }
+                                            </Select>
+                                    } */}
                                     {
                                         selectedInvCode == '' ?  <Select status="warning" disabled placeholder="Please Select Inventory Code">
                                         </Select>

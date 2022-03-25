@@ -22,16 +22,16 @@ export default function Logistic() {
     const dataPending = useSelector(state => state.logistikFormReducer.dataLogisticPending)
     const dataIdTaskPending = useSelector(state => state.logistikFormReducer.idTaskPending)
 
-    const navigateTo = () => {
+    const navigateTo = (record) => {
       
-        history.push(`/sitelist/logistikform?odi=${dataIdTaskPending}`)
+        history.push(`/sitelist/logistikform?odi=${record.orderDetailId}`)
     }
 
     const handleEdit =(record) => {
         setOdi(record.orderDetailId)
         dispatch(getOdi(record.orderDetailId))
         dispatch(getIdTaskPending(record.orderDetailId))
-        navigateTo()
+        navigateTo(record)
     }
 
 
@@ -49,6 +49,11 @@ export default function Logistic() {
         {
             title:'Order Type',
             dataIndex:'orderType',
+            ...Search('orderType'),
+        },
+        {
+            title:'Work Package Id',
+            dataIndex:'workpackageid',
             ...Search('orderType'),
         },
         {
