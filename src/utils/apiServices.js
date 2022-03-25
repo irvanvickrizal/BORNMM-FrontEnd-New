@@ -226,10 +226,11 @@ const PUT = (path,body)  => {
     return promise;
 }
 
-const PUTParam = (path,id)  => {
+const PUTParam = (path,body,id)  => {
     const promise = new Promise((resolve, reject) => {
         axios.put(`${baseURL}${path}/${id}`
-            ,config
+            ,body
+            ,{headers}
         )
             .then((result)=> {
                 console.log('i am get :',result.data);
@@ -362,15 +363,15 @@ const putRequestReschedule = (body) => PUT("scheduleassignment/taskSchedulePropo
 const getInventoryReport = () => GET('inventory/getInventoryReport');
 const getInboundUploadFile = () => GET('inventory/inboundFileUploadGetList');
 const getInboundErrorList = (id) => GETParam('inventory/inboundFileUploadGetErrLogList',id);
-const postReviseInboundFile = (id,file) => POSTFile('inventory/UploadReviseSiteList',id,file);
+const postReviseInboundFile = (id,file) => POSTFile('inventory/inboundFileRevisionUpload',id,file);
 const postInboundFile = (file) => POSTFiled('inventory/inboundFileUpload',file);
-const deleteInboundFile = (id) => PUTParam('inventory/inboundFileDelete',id);
+const deleteInboundFile = (body,id) => PUTParam('inventory/inboundFileDelete',body,id);
 
 const getOutboundUploadFile = () => GET('inventory/outboundFileUploadGetList');
 const getOutboundErrorList = (id) => GETParam('inventory/outboundFileUploadGetErrLogList',id);
 const postReviseOutboundFile = (id,file) => POSTFile('inventory/outboundFileRevisionUpload',id,file);
 const postOutboundFile = (file) => POSTFiled('inventory/outboundFileUpload',file);
-const deleteOutboundFile = (id) => PUTParam('inventory/outboundFileDelete',id);
+const deleteOutboundFile = (body,id) => PUTParam('inventory/outboundFileDelete',body,id);
 
 const getSconTaskOnProgress = () => GET('taskassignment/taskAssignmentSubconOnProgress');
 const getSconTaskOnDone = () => GET('taskassignment/taskAssignmentSubconDone');

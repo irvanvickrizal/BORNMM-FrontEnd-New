@@ -86,6 +86,7 @@ export default function MaterialOrder() {
     }
 
     const getOrderDetailMaterial=(odi)=>{
+        setIsOutOfStock(0);
         API.getOrderDetailMaterial(odi).then(
             result=>{
                 result.map((rst)=>checkoutofstock(rst.balanceQTY)) 
