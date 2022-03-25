@@ -358,7 +358,7 @@ export default function LogisticForm() {
                                     onChange={(e) => handleDeliveryChange(e)}
                                     placeholder="Select an option"
                                 >
-                                    {deliveryList?.map((inv) => (
+                                    {deliveryList?.length == 0 ? null : deliveryList?.map((inv) => (
                                         <Select.Option value={inv.cdmrId}>
                                             {inv.cdmrName}
                                         </Select.Option>
@@ -377,7 +377,7 @@ export default function LogisticForm() {
                                         onChange={(e) => setModeTransport(e)}
                                         placeholder="Select an option"
                                     >
-                                        {DataDeliveryTransport?.length == 0 ? (<></>):(DataDeliveryTransport.map((e)=>(
+                                        {DataDeliveryTransport?.length == 0 ? (<></>):(DataDeliveryTransport?.map((e)=>(
                                             <Select.Option value={e.transportModeId}>
                                                 {e.transportMode}
                                             </Select.Option>
