@@ -313,7 +313,7 @@ const Main = () => {
                                         />
                                         <Route
                                             exact
-                                            path="/stock/inventory.js"
+                                            path="/stock/inventory"
                                             component={InventoryReport}
                                         />
                                         <Route
