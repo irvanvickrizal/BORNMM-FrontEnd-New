@@ -346,7 +346,7 @@ export default function LogisticForm() {
                                     onChange={(e) => setWh(e)}
                                     placeholder="Select an option"
                                 >
-                                    {lsp.map((inv) => (
+                                    {lsp?.map((inv) => (
                                         <Select.Option value={inv.subconId}>
                                             {inv.subconName}
                                         </Select.Option>
@@ -358,7 +358,7 @@ export default function LogisticForm() {
                                     onChange={(e) => handleDeliveryChange(e)}
                                     placeholder="Select an option"
                                 >
-                                    {deliveryList.map((inv) => (
+                                    {deliveryList?.map((inv) => (
                                         <Select.Option value={inv.cdmrId}>
                                             {inv.cdmrName}
                                         </Select.Option>
@@ -405,7 +405,7 @@ export default function LogisticForm() {
                                     placeholder="Select an option"
                                 >
                                     {
-                                        deliveryMode.length == 0 ? (<></>):( deliveryMode.map((inv) => (
+                                        deliveryMode ? (null):( deliveryMode?.map((inv) => (
                                             <Select.Option value={inv.deliveryModeId}>
                                                 {inv.deliveryMode}
                                             </Select.Option>
