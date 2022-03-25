@@ -87,7 +87,10 @@ export default function LogisticForm() {
     const dataStats = useSelector(state=>state.logistikFormReducer.stats.status)
     const dataStatsDraft = useSelector(state=>state.logistikFormReducer.statsDraft.status)
 
-   
+    const cancelModal = () => {
+        setIsModalVisible(false);
+        console.log(isModalVisible);
+    };
     const index2 = deliveryRequest
 
     const handleDeliveryChange = (e) => {
@@ -98,10 +101,10 @@ export default function LogisticForm() {
 
     const handlePost = () => {
          dispatch(postLogistikForm({"orderDetailId":dataOdi,"whTeamId":wh,"cmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"note":note}))
-    
+
         if( dataStats == 200){
             history.push('/mm/taskasglogistic')
-         
+            cancelModal()
         }
 
     };
@@ -109,7 +112,8 @@ export default function LogisticForm() {
    const saveDraft = () => {
         dispatch(postAsDraft({"orderDetailId":dataOdi,"remarks":remarks}))
         if( dataStats == 200){
-            history.push('/sitelist/logistic')
+            history.push('/mm/taskasglogistic')
+         
            
         }
     };
@@ -126,10 +130,7 @@ export default function LogisticForm() {
         setIsModalVisible(false)
         console.log(isModalVisible);
     };
-    const cancelModal = () => {
-        setIsModalVisible(false);
-        console.log(isModalVisible);
-    };
+ 
     const cancelModal2 = () => {
         setIsModalCancelVisible(false);
         console.log(isModalVisible);
