@@ -9,6 +9,7 @@ import { Button } from '@app/components/index'
 import exportFromJSON from 'export-from-json'
 import { toast } from 'react-toastify';
 import PanelUpload from './PanelUpload'
+import TableSummary from '@app/pages/BOQAsPOUpload/TableSummary'
 
 export default function BoqAsPoUpload() {
     const [dataBoqSummary,setDataBoqSummary] = useState([])
@@ -16,6 +17,7 @@ export default function BoqAsPoUpload() {
     const [dataDownloadPoBoq,setDataDownloadPoBoq] = useState([])
     const [dataDownloadPoBoqList,setDataDownloadPoBoqList] = useState([])
     const [dataDownloadPoBoqListDeleted,setDataDownloadPoBoqListDeleted] = useState([])
+    const [flag,setFlag] = useState("")
 
     const {Title,Link} = Typography
 
@@ -27,13 +29,14 @@ export default function BoqAsPoUpload() {
         API.getLatestCheckPoint(id).then(
             result=>{
                 console.log("latest",result);
-                return result
+                setFlag(result)
+                console.log("latest22==>",flag);
             }
         )
     }
 
     const getBoqSummaryAsPoBoq = (boqid) => {
-        API.getBoqSummaryAsPoBoq(1).then(
+        API.getBoqSummaryAsPoBoq(bid).then(
             result=>{
                 setDataBoqSummary(result);
                 console.log("data BOQ Summary :",result);
@@ -41,7 +44,7 @@ export default function BoqAsPoUpload() {
         )
     }
     const getListBoqAsPo = (boqid) => {
-        API.getListBoqAsPo(1).then(
+        API.getListBoqAsPo(bid).then(
             result=>{
                 setDataBoqList(result);
                 console.log("data BOQ List :",result);
@@ -106,6 +109,9 @@ export default function BoqAsPoUpload() {
         checkLatestCheckpoint(bid)
     }, [])
     
+    const buttonConsole = () => {
+        console.log(flag,"flag==")
+    }
     const mapBoqList = dataBoqList.map((e)=>e.rollbackStatus)
     const tai = mapBoqList.values()
 
@@ -249,6 +255,7 @@ export default function BoqAsPoUpload() {
                             }}
                             size="small"
                         />
+                        <Button onClick={buttonConsole}>test</Button>
                     </Card>
                     <Card style={{marginTop:12}} hoverable title={CardTitle("Detail SiteList")}>
                         <Table
@@ -268,10 +275,10 @@ export default function BoqAsPoUpload() {
                 </Col>
                 <Col span={12} style={{ width: '100%' }}>
                     <Card hoverable title={CardTitleUploadPanel(`BOQ as PO Upload`)}>
-                        {checkLatestCheckpoint ? 
+                        {flag ? 
                             <PanelUpload boqId={bid}/>
                             :
-                            <p>false</p>
+                            <TableSummary/>
                         }
                     </Card>
                 </Col>

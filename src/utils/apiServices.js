@@ -413,8 +413,10 @@ const getDownloadPlanBoqCompletion = (boqid,poscopeid) => GETParam2('boqref/boqG
 const getDownloadPlanBoqList = (workpackageid) => GETParam('boqref/boqAsPlanSitebasedGetList',workpackageid)
 const getDownloadPlanBoqListDeleted = (workpackageid) => DELETE('boqref/boqAsPlanBOQSiteBasedDeleted',workpackageid)
 const postBOQASPlanFile = (id,file) => POSTFile('boqref/boqAsPlanUploadBulk',id,file)
+const getDownloadUploadedBoq = (bid) => GETParam('boqref/boqAsPODataCheckGetList',bid)
 
 const API ={
+    getDownloadUploadedBoq,
     getSconTaskOnDone,
     postBOQASPlanFile,
     getDownloadPlanBoqListDeleted,

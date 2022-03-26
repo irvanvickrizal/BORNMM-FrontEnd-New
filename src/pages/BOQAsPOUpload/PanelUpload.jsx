@@ -43,7 +43,7 @@ const PanelUpload = ({boqId}) => {
             API.postBOQASPOFile(boqId,fileUpload).then(
                 result=>{
                     try{
-                        if(result.value.status=="success"){
+                        if(result.status=="success"){
                             setFileUpload(null);
                             setUploading(false);
                             props.onRemove();
@@ -54,7 +54,7 @@ const PanelUpload = ({boqId}) => {
                             setFileUpload(null);
                             setUploading(false);
                             props.onRemove();
-                            toast.error(result.value.message);
+                            toast.error(result.message);
                         }
                     }
                     catch(e){
@@ -98,6 +98,9 @@ const PanelUpload = ({boqId}) => {
                         </Button>
                     </div>
                 </Col>
+            </Row>
+            <Row>
+                
             </Row>
         </div>
     );
