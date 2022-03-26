@@ -6,8 +6,8 @@
 import React,{useEffect,useState} from 'react'
 import API from '@app/utils/apiServices'
 import {Table,Typography,Row,Col,Button,Space,Modal,Card} from "antd"
-import Search from '@app/components/searchcolumn/SearchColumn'
-import {CheckCircleFilled } from "@ant-design/icons"
+
+
 import { toast } from 'react-toastify';
 import exportFromJSON from 'export-from-json'
 
@@ -26,7 +26,7 @@ export default function TableSummary() {
     const CardTitle = (title) => <Title level={5}>{title}</Title>
 
     const getDownloadUploadedBoq = (boqid) => {
-        API.getDownloadUploadedBoq(bid).then(
+        API.getDownloadUploadedBoqSummaryAsPlan(bid).then(
             result=>{
                 setDataDownloaded(result);
                 console.log("data Downloaded List =>",result);
@@ -45,32 +45,7 @@ export default function TableSummary() {
                 bid
             }
         )
-        API.postBoqUploadProceed().then(
-            result=>{
-                try{
-                    if(result.status=="success"){
-                        toast.error(result.message)
-
-                        window.location.reload()
-                    }
-              
-                }
-                catch(e){
-                    toast.error(result.message)
-                   
-                    console.log(e,"error catch")
-                }
-            }
-        )
-    }
-
-    const postResetUploadedBoq = () => {
-        const body = (
-            {
-                bid
-            }
-        )
-        API.postResetUploadedBoq().then(
+        API.postBoqAsPlanUploadProceed().then(
             result=>{
                 try{
                     if(result.status=="success"){
@@ -89,8 +64,33 @@ export default function TableSummary() {
         )
     }
 
+    const postResetUploadedBoq = () => {
+        const body = (
+            {
+                bid
+            }
+        )
+        API.boqAsPlanUploadedReset().then(
+            result=>{
+                try{
+                    if(result.status=="success"){
+                        toast.error("Reset Success BOQ has been Reset successfully")
+                        window.location.reload()
+                     
+                    }
+              
+                }
+                catch(e){
+                    toast.error(result.message)
+                   
+                    console.log(e,"error catch")
+                }
+            }
+        )
+    }
+
     const getDownloadPoBoqCheckList = (cpoNo,siteNo,workpackageid) => {
-        API.getDownloadedUloaded(bid).then(
+        API.getDownloadUploadedAsPlanBoq(bid).then(
             result=>{
                 setDataDownloadPoBoqList(result);
                 console.log("data BOQ Download :",result);
@@ -98,7 +98,7 @@ export default function TableSummary() {
                 const data = result;
                 //const data = result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
                 const exportType =  exportFromJSON.types.xls;
-                const fileName = `Resume as PO BOQ`;
+                const fileName = `Resume as Plan BOQ`;
                 exportFromJSON({ data, fileName, exportType });
                 console.log("SSDA",cpoNo,siteNo,workpackageid)
             }
@@ -255,7 +255,7 @@ export default function TableSummary() {
             
             
             {/*  Modal Proceed Confirm */}
-            <Modal title="Proceed BOQ as PO Upload" visible={isModalVisible}  onCancel={hideModalProced} 
+            <Modal title="Proceed BOQ as Plan Upload" visible={isModalVisible}  onCancel={hideModalProced} 
                 footer={[
                     <Button key="back" onClick={hideModalProced} >
                 Cancel
@@ -270,7 +270,7 @@ export default function TableSummary() {
       
             </Modal>
             {/* Modal Reset Confirm */}
-            <Modal title="Reset BOQ as PO Upload" visible={isModalResetVisible}  onCancel={hideModalReset} 
+            <Modal title="Reset BOQ as Plan Upload" visible={isModalResetVisible}  onCancel={hideModalReset} 
                 footer={[
                     <Button key="back" onClick={hideModalReset} >
                 Cancel

@@ -9,6 +9,7 @@ import { Button } from '@app/components/index'
 import exportFromJSON from 'export-from-json'
 import { toast } from 'react-toastify';
 import PanelUpload from '@app/pages/BOQAsPlanUpload/PanelUpload'
+import TableSummary from '@app/pages/BOQAsPlanUpload/TableSummary'
 
 export default function BoqAsPlanUpload() {
     const [dataBoqSummary,setDataBoqSummary] = useState([])
@@ -16,6 +17,7 @@ export default function BoqAsPlanUpload() {
     const [dataDownloadPoBoq,setDataDownloadPoBoq] = useState([])
     const [dataDownloadPoBoqList,setDataDownloadPoBoqList] = useState([])
     const [dataDownloadPoBoqListDeleted,setDataDownloadPoBoqListDeleted] = useState([])
+    const [flag,setFlag] = useState("")
 
     const {Title,Link} = Typography
 
@@ -24,10 +26,10 @@ export default function BoqAsPlanUpload() {
     const bid = params.get('bid');
 
     const checkLatestCheckpoint = (id) => {
-        API.getLatestCheckPoint(id).then(
+        API.getLatestAsPlanCheckPoint(id).then(
             result=>{
                 console.log("latest",result);
-                return result
+                setFlag(result)
             }
         )
     }
@@ -266,10 +268,10 @@ export default function BoqAsPlanUpload() {
                 </Col>
                 <Col span={12} style={{ width: '100%' }}>
                     <Card hoverable title={CardTitleUploadPanel(`BOQ as Plan Upload`)}>
-                        {checkLatestCheckpoint ? 
+                        {flag ? 
                             <PanelUpload boqId={bid}/>
                             :
-                            <p>false</p>
+                            <TableSummary/>
                         }
                     </Card>
                 </Col>

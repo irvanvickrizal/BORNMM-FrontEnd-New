@@ -404,8 +404,10 @@ const getBoqList = () => GET("boqref/boqPOListReference");
 const getBOQSiteListReference = (bid) => GETParam('boqref/boqSiteListReference',bid);
 const getLatestCheckPoint = (bid) => GETParam('boqref/boqUploadDataCheckHasCleared',bid);
 
+
 const postBOQASPOFile = (id,file) => POSTFile('boqref/boqAsPOUploadBulk',id,file);
 const getInventoryDetail = () => GET("inventory/getInventoryDetail");
+
 
 const getBoqSummaryAsPlanBoq = (bid) => GETParam('boqref/boqGetSummaryAsPlanBOQCompletion',bid)
 const getListBoqAsPlan = (boqid) => GETParam('boqref/boqGetListAsPlanBOQ',boqid)
@@ -413,9 +415,30 @@ const getDownloadPlanBoqCompletion = (boqid,poscopeid) => GETParam2('boqref/boqG
 const getDownloadPlanBoqList = (workpackageid) => GETParam('boqref/boqAsPlanSitebasedGetList',workpackageid)
 const getDownloadPlanBoqListDeleted = (workpackageid) => DELETE('boqref/boqAsPlanBOQSiteBasedDeleted',workpackageid)
 const postBOQASPlanFile = (id,file) => POSTFile('boqref/boqAsPlanUploadBulk',id,file)
-const getDownloadUploadedBoq = (bid) => GETParam('boqref/boqAsPODataCheckGetList',bid)
+
+// as PO
+
+const postBoqUploadProceed = (bid) => POST('boqref/boqUploadedProceed',bid)
+const postResetUploadedBoq = (bid) => POST('boqref/boqUploadedReset',bid)
+const getDownloadedUloaded = (bid) => GETParam('boqref/boqAsPODataCheckGetList',bid)
+const getDownloadUploadedBoq = (bid) => GETParam('boqref/boqAsPODataCheckSummary',bid)
+
+// As Plan
+const getLatestAsPlanCheckPoint = (bid) => GETParam('boqref/boqAsPlanUploadDataCheckHasCleared',bid);
+const getDownloadUploadedAsPlanBoq = (bid) => GETParam('boqref/boqAsPlanDataCheckGetList',bid)
+const getDownloadUploadedBoqSummaryAsPlan = (bid) => GETParam('boqref/boqAsPlanDataCheckSummary',bid)
+const postBoqAsPlanUploadProceed = (bid) => POST('boqref/boqAsPlanUploadedProceed',bid)
+const postResetUploadedBoqAsPlan = (bid) => POST('boqref/boqAsPlanUploadedReset',bid)
 
 const API ={
+    postResetUploadedBoqAsPlan,
+    postBoqAsPlanUploadProceed,
+    getDownloadUploadedBoqSummaryAsPlan,
+    getDownloadUploadedAsPlanBoq,
+    getLatestAsPlanCheckPoint,
+    getDownloadedUloaded,
+    postResetUploadedBoq,
+    postBoqUploadProceed,
     getDownloadUploadedBoq,
     getSconTaskOnDone,
     postBOQASPlanFile,
