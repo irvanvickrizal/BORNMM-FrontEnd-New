@@ -57,6 +57,8 @@ import BoqRef from "@app/pages/BoqRef/index"
 import BoqAsPoUpload from "@app/pages/BOQAsPOUpload/BoqAsPoUpload"
 import BoqAsPlanUpload from "@app/pages/BOQAsPlanUpload/BoqAsPlanUpload"
 
+import OrderListRejectionPending from "@app/pages/OrderListRejectionPending/OrderListRejectionPending"
+
 const Main = () => {
     const dispatch = useDispatch()
     const isSidebarMenuCollapsed = useSelector(
@@ -268,7 +270,7 @@ const Main = () => {
                                         />
                                         <Route
                                             exact
-                                            path="/sitelist/materialorder/"
+                                            path="/mm/materialorder/"
                                             component={MaterialOrder}
                                         />
                                         <Route
@@ -360,6 +362,11 @@ const Main = () => {
                                             exact
                                             path="/boq/boqasplanupload"
                                             component={BoqAsPlanUpload}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/mm/orderrequestreject"
+                                            component={OrderListRejectionPending}
                                         />
                                     </Switch>
                                 </div>

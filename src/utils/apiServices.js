@@ -414,6 +414,7 @@ const getListBoqAsPlan = (boqid) => GETParam('boqref/boqGetListAsPlanBOQ',boqid)
 const getDownloadPlanBoqCompletion = (boqid,poscopeid) => GETParam2('boqref/boqGetListAsPlanBOQCompletion',boqid,poscopeid)
 const getDownloadPlanBoqList = (workpackageid) => GETParam('boqref/boqAsPlanSitebasedGetList',workpackageid)
 const getDownloadPlanBoqListDeleted = (workpackageid) => DELETE('boqref/boqAsPlanBOQSiteBasedDeleted',workpackageid)
+
 const postBOQASPlanFile = (id,file) => POSTFile('boqref/boqAsPlanUploadBulk',id,file)
 
 // as PO
@@ -430,7 +431,13 @@ const getDownloadUploadedBoqSummaryAsPlan = (bid) => GETParam('boqref/boqAsPlanD
 const postBoqAsPlanUploadProceed = (body,bid) => POSTParam('boqref/boqAsPlanUploadedProceed',body,bid)
 const postResetUploadedBoqAsPlan = (body,bid) => POSTParam('boqref/boqAsPlanUploadedReset',body,bid)
 
+// Order Rejection Pending List
+const getOrderRejectionPendigList = () => GET('wftransaction/orderRequestGetRejectionPendingList')
+const deleteOrderDetail = (odi) => POST('materialmanagement/OrderDetailDeleteTemp',odi)
+
 const API ={
+    deleteOrderDetail,
+    getOrderRejectionPendigList,
     postResetUploadedBoqAsPlan,
     postBoqAsPlanUploadProceed,
     getDownloadUploadedBoqSummaryAsPlan,
