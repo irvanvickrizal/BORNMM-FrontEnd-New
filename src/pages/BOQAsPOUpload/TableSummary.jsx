@@ -40,16 +40,12 @@ export default function TableSummary() {
     }, [])
 
     const postProceedUploadedBoq = () => {
-        const body = (
-            {
-                bid
-            }
-        )
-        API.postBoqUploadProceed().then(
+   
+        API.postBoqUploadProceed("",bid).then(
             result=>{
                 try{
                     if(result.status=="success"){
-                        toast.error(result.message)
+                        toast.success(result.message)
 
                         window.location.reload()
                     }
@@ -65,16 +61,12 @@ export default function TableSummary() {
     }
 
     const postResetUploadedBoq = () => {
-        const body = (
-            {
-                bid
-            }
-        )
-        API.postResetUploadedBoq().then(
+ 
+        API.postResetUploadedBoq("",bid).then(
             result=>{
                 try{
                     if(result.status=="success"){
-                        toast.error(result.message)
+                        toast.success(result.message)
                         window.location.reload()
                      
                     }

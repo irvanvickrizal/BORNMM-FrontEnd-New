@@ -416,12 +416,13 @@ const getListBoqAsPlan = (boqid) => GETParam('boqref/boqGetListAsPlanBOQ',boqid)
 const getDownloadPlanBoqCompletion = (boqid,poscopeid) => GETParam2('boqref/boqGetListAsPlanBOQCompletion',boqid,poscopeid)
 const getDownloadPlanBoqList = (workpackageid) => GETParam('boqref/boqAsPlanSitebasedGetList',workpackageid)
 const getDownloadPlanBoqListDeleted = (workpackageid) => DELETE('boqref/boqAsPlanBOQSiteBasedDeleted',workpackageid)
+
 const postBOQASPlanFile = (id,file) => POSTFile('boqref/boqAsPlanUploadBulk',id,file)
 
 // as PO
 
-const postBoqUploadProceed = (bid) => POST('boqref/boqUploadedProceed',bid)
-const postResetUploadedBoq = (bid) => POST('boqref/boqUploadedReset',bid)
+const postBoqUploadProceed = (body,bid) => POSTParam('boqref/boqUploadedProceed',body,bid)
+const postResetUploadedBoq = (body,bid) => POSTParam('boqref/boqUploadedReset',body,bid)
 const getDownloadedUloaded = (bid) => GETParam('boqref/boqAsPODataCheckGetList',bid)
 const getDownloadUploadedBoq = (bid) => GETParam('boqref/boqAsPODataCheckSummary',bid)
 
@@ -429,8 +430,20 @@ const getDownloadUploadedBoq = (bid) => GETParam('boqref/boqAsPODataCheckSummary
 const getLatestAsPlanCheckPoint = (bid) => GETParam('boqref/boqAsPlanUploadDataCheckHasCleared',bid);
 const getDownloadUploadedAsPlanBoq = (bid) => GETParam('boqref/boqAsPlanDataCheckGetList',bid)
 const getDownloadUploadedBoqSummaryAsPlan = (bid) => GETParam('boqref/boqAsPlanDataCheckSummary',bid)
-const postBoqAsPlanUploadProceed = (bid) => POST('boqref/boqAsPlanUploadedProceed',bid)
-const postResetUploadedBoqAsPlan = (bid) => POST('boqref/boqAsPlanUploadedReset',bid)
+const postBoqAsPlanUploadProceed = (body,bid) => POSTParam('boqref/boqAsPlanUploadedProceed',body,bid)
+const postResetUploadedBoqAsPlan = (body,bid) => POSTParam('boqref/boqAsPlanUploadedReset',body,bid)
+
+
+// Order Rejection Pending List
+const getOrderRejectionPendigList = () => GET('wftransaction/orderRequestGetRejectionPendingList')
+// const deleteOrderDetail = (odi) => POST('materialmanagement/OrderDetailDeleteTemp',odi)
+
+// material management orderList
+const getOrderList = (wpid,ordertypeid) => GETParam2('materialmanagement/orderRequestGetOrderedList',wpid,ordertypeid);
+const postDeleteOrderList = (body,odi) => PUTParam('materialmanagement/OrderDetailDeleteTemp',body,odi)
+const getOrderRequest = (odi) => GETParam('materialmanagement/OrderDetailRequestGetDetail',odi)
+const getMaterial = (odi) => GETParam('materialmanagement/orderRequestMaterialGetDetail',odi)
+const getLog = (odi) => GETParam('audittrail/auditTrailOrderRequestGetList',odi)
 
 const deleteOrderDetail = (body,odi) => PUTParam('materialmanagement/OrderDetailDeleteTemp',body,odi);
 
@@ -439,6 +452,12 @@ const API ={
     deleteOrderDetail,
     getOutboundSuccessLog,
     getInboundSuccessLog,
+    getLog,
+    getMaterial,
+    getOrderRequest,
+    postDeleteOrderList,
+    getOrderList,
+    getOrderRejectionPendigList,
     postResetUploadedBoqAsPlan,
     postBoqAsPlanUploadProceed,
     getDownloadUploadedBoqSummaryAsPlan,
