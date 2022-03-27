@@ -319,9 +319,7 @@ const SdrForm = (props) => {
     }
 
     function btnConfirm(values){
- 
         postDismantleForm(values);
-        message.success("post sukses")
         console.log("values:",values)
     }
     const onFinishFailedAddMaterial = (errorInfo) => {

@@ -361,6 +361,7 @@ const postCancelTask = (body) => POST("taskassignment/taskAssignmentCanceled",bo
 const putRequestReschedule = (body) => PUT("scheduleassignment/taskScheduleProposeNewDate",body);
 
 const getInventoryReport = () => GET('inventory/getInventoryReport');
+const getInboundSuccessLog = () => GET('inventory/inboundSuccessLogList');
 const getInboundUploadFile = () => GET('inventory/inboundFileUploadGetList');
 const getInboundErrorList = (id) => GETParam('inventory/inboundFileUploadGetErrLogList',id);
 const postReviseInboundFile = (id,file) => POSTFile('inventory/inboundFileRevisionUpload',id,file);
@@ -368,6 +369,7 @@ const postInboundFile = (file) => POSTFiled('inventory/inboundFileUpload',file);
 const deleteInboundFile = (body,id) => PUTParam('inventory/inboundFileDelete',body,id);
 
 const getOutboundUploadFile = () => GET('inventory/outboundFileUploadGetList');
+const getOutboundSuccessLog = () => GET('inventory/outboundSuccessLogList');
 const getOutboundErrorList = (id) => GETParam('inventory/outboundFileUploadGetErrLogList',id);
 const postReviseOutboundFile = (id,file) => POSTFile('inventory/outboundFileRevisionUpload',id,file);
 const postOutboundFile = (file) => POSTFiled('inventory/outboundFileUpload',file);
@@ -430,7 +432,13 @@ const getDownloadUploadedBoqSummaryAsPlan = (bid) => GETParam('boqref/boqAsPlanD
 const postBoqAsPlanUploadProceed = (bid) => POST('boqref/boqAsPlanUploadedProceed',bid)
 const postResetUploadedBoqAsPlan = (bid) => POST('boqref/boqAsPlanUploadedReset',bid)
 
+const deleteOrderDetail = (body,odi) => PUTParam('materialmanagement/OrderDetailDeleteTemp',body,odi);
+
+
 const API ={
+    deleteOrderDetail,
+    getOutboundSuccessLog,
+    getInboundSuccessLog,
     postResetUploadedBoqAsPlan,
     postBoqAsPlanUploadProceed,
     getDownloadUploadedBoqSummaryAsPlan,

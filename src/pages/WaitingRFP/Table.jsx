@@ -55,6 +55,7 @@ const WaitingRFPTable = () => {
                 setIsLoading(false);
                 getWaitingRFP();
                 setIsFormRFP(false);
+                toast.success(result.message)
                 console.log("waiting post rfp",result);
             }
         )
@@ -169,12 +170,15 @@ const WaitingRFPTable = () => {
                         {record.scheduleStatus=="newpropose" ? <p style={{ color:'red' }}>Propose New Schedule Request</p>
                             :
                             <Space>
-                                <IconButton
-                                    size="small"
-                                    onClick={() => handleRFPForm(record)}
-                                >
-                                    <CheckCircleTwoTone twoToneColor="#52c41a" />
-                                </IconButton>
+                                <Tooltip title="RFP Done">
+                                    <IconButton
+                                        size="small"
+                                        onClick={() => handleRFPForm(record)}
+                                    >
+                                        <CheckCircleTwoTone twoToneColor="#52c41a" />
+                                    </IconButton>
+                                </Tooltip>
+                                
                             </Space>
                         }
                     </div>

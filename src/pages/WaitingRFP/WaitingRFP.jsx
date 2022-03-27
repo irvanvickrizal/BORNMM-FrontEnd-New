@@ -17,7 +17,7 @@ const WaitingRFP = () => {
 
     return (
         <div>
-            <HeaderChanger title="Waiting RFP"/>
+            <HeaderChanger title="Waiting Ready for Pickup Confirmation"/>
             {/* {isEdit || isNew ? <DOPPanel/> : null} */}
             {isLoading ? <Box sx={{ display: 'flex',
                 justifyContent: 'center'

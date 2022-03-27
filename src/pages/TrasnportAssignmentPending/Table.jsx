@@ -77,7 +77,7 @@ export default function TableTransport() {
         setSelectedOrderDetailId(data.orderDetailId)
         setSelectedRFPDate(data.rfpDate)
         setSelectedRequestNo(data.requestNo)
-        getAssignTo(data.subconId,data.workpackageid);
+        getAssignTo(data.transportTeamId,data.workpackageid);
         setIsFormAssignment(true);
     }
 

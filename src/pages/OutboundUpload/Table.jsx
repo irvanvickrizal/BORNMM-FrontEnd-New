@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-bind */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable import/no-cycle */
 /* eslint-disable react/jsx-boolean-value */
@@ -6,7 +7,7 @@ import { getDataSiteList,getWpId,getOrderType,getOrderTypeId } from '@app/store/
 import React,{useEffect,useState} from 'react'
 import {toast} from 'react-toastify';
 import { useDispatch,useSelector } from 'react-redux'
-import {Tag,Typography,Popconfirm,Select,Upload,message,Form,Modal,Table, Input,Menu, Dropdown, Button, Space, Spin, Row, Col,Tooltip  } from 'antd'
+import {Tabs,Tag,Typography,Popconfirm,Select,Upload,message,Form,Modal,Table, Input,Menu, Dropdown, Button, Space, Spin, Row, Col,Tooltip  } from 'antd'
 import {PlusOutlined,FileExcelOutlined, CloseSquareTwoTone ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined, EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined,DeleteTwoTone,UploadOutlined } from '@ant-design/icons'
 import { useHistory } from 'react-router-dom';
 import API  from '../../utils/apiServices';
@@ -28,7 +29,9 @@ const TableOutboundUpload = () => {
     const [uploading, setUploading] = useState(false);
     const [inbFileId, setInbFileId] = useState(0);
     const [fileName, setFileName] = useState('');
+    const [outboundSuccessLog, setOutboundSuccessLog] = useState('');
     const { Title } = Typography;
+    const { TabPane } = Tabs;
 
     const props = {
         onRemove: () => {
@@ -42,6 +45,93 @@ const TableOutboundUpload = () => {
         fileUpload,
     };
 
+    const columsOutboundSuccessLog = [
+        {
+            title : "No",
+            width : 50,
+            render: (value, item, index) => 1 + index
+        },
+        {
+            title : "Warehouse",
+            dataIndex:'warehouse',
+            ...Search('warehouse'),
+        },
+        {
+            title : "Warehouse Description",
+            dataIndex:'warehouseDescr',
+            ...Search('warehouseDescr'),
+        },
+        {
+            title : "DN",
+            dataIndex:'dnDoc',
+            ...Search('dnDoc'),
+        },
+        {
+            title : "SDR LTR No",
+            dataIndex:'sdrLtr',
+            ...Search('sdrLtr'),
+        },
+        {
+            title : "Customer PO",
+            dataIndex:'customerPo',
+            ...Search('customerPo'),
+        },
+        {
+            title : "Material Code",
+            dataIndex:'materialCode',
+            ...Search('materialCode'),
+        },
+        {
+            title : "Packing List",
+            dataIndex:'packingList',
+            ...Search('packingList'),
+        },
+        {
+            title : "Out QTY",
+            dataIndex:'qtyOut',
+            ...Search('qtyOut'),
+        },
+        {
+            title : "UOM",
+            dataIndex:'uom',
+            ...Search('uom'),
+        },
+        {
+            title : "Delivery Type",
+            dataIndex:'deliveryType',
+            ...Search('deliveryType'),
+        },
+        {
+            title : "Request Date",
+            width: 120,
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.requestDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            },
+            ...Search('uploadedDate'),
+        },        
+        {
+            title : "Area",
+            dataIndex:'area',
+            ...Search('area'),
+        },
+        {
+            title : "Record Date",
+            width: 120,
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.recordDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            },
+            ...Search('uploadedDate'),
+        },        
+    ]
+
 
     const getOutboundUploadFileList = () => {
         setIsLoading(true);
@@ -50,6 +140,17 @@ const TableOutboundUpload = () => {
                 
                 console.log("scontaskpendnig",result);
                 setOutboundUploadFile(result)
+                setIsLoading(false);
+            }
+        )
+    }
+    const getOutboundSuccessLog = () => {
+        setIsLoading(true);
+        API.getOutboundSuccessLog().then(
+            result=>{
+                
+                console.log("scontaskpendnig",result);
+                setOutboundSuccessLog(result)
                 setIsLoading(false);
             }
         )
@@ -154,7 +255,7 @@ const TableOutboundUpload = () => {
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(record.uploadedDate).format("YYYY-MM-DD")}</p>
+                        <p>{moment(record.uploadedDate).format("YYYY-MM-DD HH:mm:ss")}</p>
                     </Space>
                 )
             },
@@ -177,6 +278,12 @@ const TableOutboundUpload = () => {
             },
             width: 100,
             ...Search('executeStatus'),
+        },
+        {
+            title : "System Execeute Date",
+            dataIndex:'systemExecuteDate',
+            width: 150,
+            ...Search('systemExecuteDate'),
         },
         {
             title:"Err Message",
@@ -289,6 +396,16 @@ const TableOutboundUpload = () => {
         );
     }
 
+    function callback(key) {
+        if(key==1){
+            getOutboundUploadFileList();
+        }
+        else if(key==2){
+            getOutboundSuccessLog();
+        }
+        console.log("keytabs",key);
+    }
+
     const handleShowAdd = () =>{
         setIsUploadFile(true);
     }
@@ -298,94 +415,121 @@ const TableOutboundUpload = () => {
     },[])
 
     return(
-        isLoading ?   
-            <Row justify="center">
-                <Col span={1}>    
-                    <Spin />
-                </Col>
-            </Row>  
-            :
-            <>
-                <Row>
-                    <Col md={16} sm={24} >
-                        <Title level={5}>Outbound File List</Title>
-                    </Col>
-                    <Col md={8} sm={24} >
-                        <div className='float-right'>
-                            <Tooltip title="Upload File">
-                                <IconButton size="small" color="primary" onClick={handleShowAdd}>
-                                    <PlusOutlined />
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Download Template">
-                                <IconButton size="small" color="secondary">
-                                    <a href='/file/Outbound.xlsx' download="[ProjectCode]_SHPCON_[YYYMMDD]_[HHMMSS]_[RunningNo]">
-                                        <FileExcelOutlined />
-                                    </a>
-                                </IconButton>
-                                {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
-                            </Tooltip>
-                        </div>
-                    </Col>
-                </Row>
-                <Table
-                    scroll={{ x: '100%' }}
-                    size="small"
-                    // expandable={{ expandedRowRender }}
-                    columns={columns}
-                    dataSource={outboundUploadFile}
-                    pagination={{
-                        pageSizeOptions: ['5', '10', '20', '30', '40'],
-                        showSizeChanger: true,
-                        position: ["bottomLeft"],
-                    }}
-                    bordered />
-                <Modal title="Upload Revise File"
-                    visible={isReviseFile}
-                    onOk={handleOkReviseFile}
-                    onCancel={handleCancelReviseFile}
-                    footer={null}
-                    destroyOnClose={true}
-                >
-                    <div>
-                        <p>Existing File Name : {fileName}</p>
-                        <Upload {...props}>
-                            <Button icon={<UploadOutlined />}>Select File</Button>
-                        </Upload>
-                        <Button
-                            type="primary"
-                            onClick={handleUpload}
-                            disabled={fileUpload == null}
-                            loading={uploading}
-                            style={{ marginTop: 16 }}
-                        >
-                            {uploading ? 'Uploading' : 'Start Upload'}
-                        </Button>
-                    </div>
-                </Modal>
-                <Modal title="Upload Outbound File"
-                    visible={isUploadFile}
-                    onOk={handleOkFile}
-                    onCancel={handleCancelFile}
-                    footer={null}
-                    destroyOnClose={true}
-                >
-                    <div>
-                        <Upload {...props}>
-                            <Button icon={<UploadOutlined />}>Select File</Button>
-                        </Upload>
-                        <Button
-                            type="primary"
-                            onClick={handleUploadFileNew}
-                            disabled={fileUpload == null}
-                            loading={uploading}
-                            style={{ marginTop: 16 }}
-                        >
-                            {uploading ? 'Uploading' : 'Start Upload'}
-                        </Button>
-                    </div>
-                </Modal>
-            </>
+        <>
+            <Tabs defaultActiveKey="1" onChange={callback}>
+                <TabPane tab="Outbound File List" key="1">
+                    {isLoading ?   
+                        <Row justify="center">
+                            <Col span={1}>    
+                                <Spin />
+                            </Col>
+                        </Row>  
+                        :
+                        <>
+                            <Row>
+                                <Col md={24} sm={24} >
+                                    <div className='float-right'>
+                                        <Tooltip title="Upload File">
+                                            <IconButton size="small" color="primary" onClick={handleShowAdd}>
+                                                <PlusOutlined />
+                                            </IconButton>
+                                        </Tooltip>
+                                        <Tooltip title="Download Template">
+                                            <IconButton size="small" color="secondary">
+                                                <a href='/file/Outbound.xlsx' download="[ProjectCode]_SHPCON_[YYYMMDD]_[HHMMSS]_[RunningNo]">
+                                                    <FileExcelOutlined />
+                                                </a>
+                                            </IconButton>
+                                            {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
+                                        </Tooltip>
+                                    </div>
+                                </Col>
+                            </Row>
+                            <Table
+                                scroll={{ x: '100%' }}
+                                size="small"
+                                // expandable={{ expandedRowRender }}
+                                columns={columns}
+                                dataSource={outboundUploadFile}
+                                pagination={{
+                                    pageSizeOptions: ['5', '10', '20', '30', '40'],
+                                    showSizeChanger: true,
+                                    position: ["bottomLeft"],
+                                }}
+                                bordered />
+                        </>
+                    }
+                </TabPane>
+                <TabPane tab="Outbound Success Log" key="2">
+                    {isLoading ?   
+                        <Row justify="center">
+                            <Col span={1}>    
+                                <Spin />
+                            </Col>
+                        </Row>  
+                        :
+                
+                        <Table
+                            scroll={{ x: '150%' }}
+                            size="small"
+                            // expandable={{ expandedRowRender }}
+                            columns={columsOutboundSuccessLog}
+                            dataSource={outboundSuccessLog}
+                            pagination={{
+                                pageSizeOptions: ['5', '10', '20', '30', '40'],
+                                showSizeChanger: true,
+                                position: ["bottomLeft"],
+                            }}
+                            bordered />
+                    }
+                </TabPane>
+            </Tabs>
+            <Modal title="Upload Revise File"
+                visible={isReviseFile}
+                onOk={handleOkReviseFile}
+                onCancel={handleCancelReviseFile}
+                footer={null}
+                destroyOnClose={true}
+            >
+                <div>
+                    <p>Existing File Name : {fileName}</p>
+                    <Upload {...props}>
+                        <Button icon={<UploadOutlined />}>Select File</Button>
+                    </Upload>
+                    <Button
+                        type="primary"
+                        onClick={handleUpload}
+                        disabled={fileUpload == null}
+                        loading={uploading}
+                        style={{ marginTop: 16 }}
+                    >
+                        {uploading ? 'Uploading' : 'Start Upload'}
+                    </Button>
+                </div>
+            </Modal>
+            <Modal title="Upload Outbound File"
+                visible={isUploadFile}
+                onOk={handleOkFile}
+                onCancel={handleCancelFile}
+                footer={null}
+                destroyOnClose={true}
+            >
+                <div>
+                    <Upload {...props}>
+                        <Button icon={<UploadOutlined />}>Select File</Button>
+                    </Upload>
+                    <Button
+                        type="primary"
+                        onClick={handleUploadFileNew}
+                        disabled={fileUpload == null}
+                        loading={uploading}
+                        style={{ marginTop: 16 }}
+                    >
+                        {uploading ? 'Uploading' : 'Start Upload'}
+                    </Button>
+                </div>
+            </Modal>
+        </>
             
     )
 }
