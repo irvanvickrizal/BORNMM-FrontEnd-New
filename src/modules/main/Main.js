@@ -58,6 +58,7 @@ import BoqAsPoUpload from "@app/pages/BOQAsPOUpload/BoqAsPoUpload"
 import BoqAsPlanUpload from "@app/pages/BOQAsPlanUpload/BoqAsPlanUpload"
 
 import OrderListRejectionPending from "@app/pages/OrderListRejectionPending/OrderListRejectionPending"
+import OrderList from "@app/pages/OrderList/OrderList"
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -367,6 +368,11 @@ const Main = () => {
                                             exact
                                             path="/mm/orderrequestreject"
                                             component={OrderListRejectionPending}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/mm/orderlist"
+                                            component={OrderList}
                                         />
                                     </Switch>
                                 </div>

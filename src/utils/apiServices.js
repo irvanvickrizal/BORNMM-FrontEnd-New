@@ -431,11 +431,24 @@ const getDownloadUploadedBoqSummaryAsPlan = (bid) => GETParam('boqref/boqAsPlanD
 const postBoqAsPlanUploadProceed = (body,bid) => POSTParam('boqref/boqAsPlanUploadedProceed',body,bid)
 const postResetUploadedBoqAsPlan = (body,bid) => POSTParam('boqref/boqAsPlanUploadedReset',body,bid)
 
+
 // Order Rejection Pending List
 const getOrderRejectionPendigList = () => GET('wftransaction/orderRequestGetRejectionPendingList')
 const deleteOrderDetail = (odi) => POST('materialmanagement/OrderDetailDeleteTemp',odi)
 
+// material management orderList
+const getOrderList = (wpid,ordertypeid) => GETParam2('materialmanagement/orderRequestGetOrderedList',wpid,ordertypeid);
+const postDeleteOrderList = (body,odi) => PUTParam('materialmanagement/OrderDetailDeleteTemp',body,odi)
+const getOrderRequest = (odi) => GETParam('materialmanagement/OrderDetailRequestGetDetail',odi)
+const getMaterial = (odi) => GETParam('materialmanagement/orderRequestMaterialGetDetail',odi)
+const getLog = (odi) => GETParam('audittrail/auditTrailOrderRequestGetList',odi)
+
 const API ={
+    getLog,
+    getMaterial,
+    getOrderRequest,
+    postDeleteOrderList,
+    getOrderList,
     deleteOrderDetail,
     getOrderRejectionPendigList,
     postResetUploadedBoqAsPlan,
