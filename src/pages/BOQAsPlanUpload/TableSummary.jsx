@@ -259,9 +259,7 @@ export default function TableSummary() {
                     <Button key="submit" type="primary" onClick={()=>handleProceedBoq()} >
                 Proceed
                     </Button>,
-                    <Button key="submit" type="primary" onClick={()=>consoleTest()} >
-                Tes
-                    </Button>,
+             
                 
                 ]} >
                 <Typography>Are You Sure You Want to Proceed  ?

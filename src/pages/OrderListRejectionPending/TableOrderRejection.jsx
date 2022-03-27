@@ -12,6 +12,7 @@ export default function TableOrderRejection() {
     const [dataOrderRejectionPending,setDataOrderRejectionList] = useState([])
     const [isLoading, setIsLoading] = useState(true);
     const [modalDeleteVisible,setModalDeleteVisible] = useState(false)
+    const [odi,setOdi] = useState("")
 
     function getOrderRejectionPendingList() {
         setIsLoading(true);
@@ -34,17 +35,19 @@ export default function TableOrderRejection() {
     const hideModalDelete = () => {
         setModalDeleteVisible(false)
     }
-    const showModalDelete = (odi) => {
+    const showModalDelete = (data) => {
         setModalDeleteVisible(true)
+        setOdi(data)
     }
-    const handleDelete =(odi)=> {
+    const handleDelete =()=> {
         setIsLoading(true);
-        API.deleteOrderDetail(odi).then(
+        API.postDeleteOrderList("",odi).then(
             result=>{
                 try{
                     if(result.status=="success"){
                         setIsLoading(false)
                         toast.success(result.message)
+                        getOrderRejectionPendingList()
                   
                      
                     }

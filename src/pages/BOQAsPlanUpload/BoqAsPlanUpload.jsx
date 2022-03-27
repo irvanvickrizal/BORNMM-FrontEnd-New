@@ -175,7 +175,7 @@ export default function BoqAsPlanUpload() {
         },
         {
             title : "Total Items",
-            dataIndex:'rollbackStatus',
+            dataIndex:'totalItems',
          
         },
   

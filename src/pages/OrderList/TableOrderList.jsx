@@ -13,8 +13,6 @@ import { useHistory } from 'react-router-dom';
 
 
 export default function TableOrderList() {
-    const wpid = 480757
-    const  ot= 4
     const {TabPane} = Tabs
     const [dataOrderList,setDataOrderList] = useState([])
     const [dataOrderDetail,setDataOrderDetail] = useState([])
@@ -28,6 +26,12 @@ export default function TableOrderList() {
     const {Title} = Typography
     const [page,setPage] = useState(1)
     const CardTitle = (title) => <Title level={5}>{title}</Title>
+
+    const customURL = window.location.href;
+    const params = new URLSearchParams(customURL.split('?')[1])
+    const wpid = params.get('wpid');
+    const ot = params.get('ot');
+
     
     const getWindowDimensions = () => {
         const { innerWidth: width, innerHeight: height } = window
@@ -84,6 +88,16 @@ export default function TableOrderList() {
             }
         )
     }
+    function getLog(data) {
+        setIsLoading(true);
+        API.getLog(odi).then(
+            result=>{
+                setDataLog(result);
+                setIsLoading(false);
+                console.log("data order Material =>",result);
+            }
+        )
+    }
 
     useEffect(() => {
         getOrderList();
@@ -124,7 +138,7 @@ export default function TableOrderList() {
                     if(result.status=="success"){
                         setIsLoading(false)
                         toast.success(result.message)
-                  
+                        getOrderList()
                      
                     }
               
@@ -431,13 +445,56 @@ export default function TableOrderList() {
         }
     ]
 
+    const columnsLog = [
+        {
+            title: "No",
+            key: "index",
+            render: (value, item, index) => page + index
+        },
+        {
+            title: "Incoming Date",
+            dataIndex: "incomingDate",
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.incomingDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            },
+        },
+        {
+            title: "Execute Date",
+            dataIndex: "executeDate",
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.executeDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            },
+        },
+
+        {
+            title: "Execute By",
+            dataIndex: "executedBy",
+        },
+        {
+            title: "Event Desc",
+            dataIndex: "taskName"
+        },
+        {
+            title: "Remarks",
+            dataIndex: "remarks"
+        }
+    ]
+
     function callback(key) {
      
         if(key==2){
             getMaterial()
         }
         else if(key==3){
-            getMaterial()
+            getLog()
         }
         console.log("keytabs",key);
     }
@@ -515,34 +572,50 @@ export default function TableOrderList() {
                     <TabPane tab="Material Order" key="2">
                         <Card>
                             <div >
-                                <Table
-                                    columns={columnsMaterial}
-                                    pagination={{
-                                        pageSizeOptions: ['5', '10', '20', '30', '40'],
-                                        showSizeChanger: true,
-                                        position: ["bottomLeft"],
-                                    }}
-                                    dataSource={dataMaterial}
-                                    scroll={{x: "100%"}}
-                                    size="medium"
-                                />
+                                { isLoading ?   
+                                    <Row justify="center">
+                                        <Col span={1}>    
+                                            <Spin />
+                                        </Col>
+                                    </Row>  
+                                    :
+                                    <Table
+                                        columns={columnsMaterial}
+                                        pagination={{
+                                            pageSizeOptions: ['5', '10', '20', '30', '40'],
+                                            showSizeChanger: true,
+                                            position: ["bottomLeft"],
+                                        }}
+                                        dataSource={dataMaterial}
+                                        scroll={{x: "100%"}}
+                                        size="medium"
+                                    />
+                                }
                             </div>
                         </Card>
                     </TabPane>
                     <TabPane tab="Log" key="3">
                         <Card>
                             <div >
-                                <Table
-                                    columns={columns}
-                                    scroll={{x: "150%"}}
-                                    pagination={{
-                                        pageSizeOptions: ['5', '10', '20', '30', '40'],
-                                        showSizeChanger: true,
-                                        position: ["bottomLeft"],
-                                    }}
-                                    dataSource={dataOrderList}
+                                { isLoading ?   
+                                    <Row justify="center">
+                                        <Col span={1}>    
+                                            <Spin />
+                                        </Col>
+                                    </Row>  
+                                    :
+                                    <Table
+                                        columns={columnsLog}
+                                        scroll={{x: "100%"}}
+                                        pagination={{
+                                            pageSizeOptions: ['5', '10', '20', '30', '40'],
+                                            showSizeChanger: true,
+                                            position: ["bottomLeft"],
+                                        }}
+                                        dataSource={dataLog}
                                 
-                                />
+                                    />
+                                }
                             </div>
                         </Card>
                     </TabPane>

@@ -181,7 +181,7 @@ export default function BoqAsPoUpload() {
         },
         {
             title : "Total Items",
-            dataIndex:'rollbackStatus',
+            dataIndex:'totalItems',
          
         },
   
@@ -255,7 +255,7 @@ export default function BoqAsPoUpload() {
                             }}
                             size="small"
                         />
-                        <Button onClick={buttonConsole}>test</Button>
+                  
                     </Card>
                     <Card style={{marginTop:12}} hoverable title={CardTitle("Detail SiteList")}>
                         <Table
