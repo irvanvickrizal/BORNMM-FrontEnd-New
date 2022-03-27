@@ -22,6 +22,8 @@ import { useHistory } from 'react-router-dom';
 import API from '@app/utils/apiServices';
 import Search from '@app/components/searchcolumn/SearchColumn';
 import moment from 'moment';
+import {IconButton, TextField}  from '@mui/material/';
+import {toast} from 'react-toastify';
 
 export default function TableSite() {
 
@@ -33,8 +35,36 @@ export default function TableSite() {
     }
     const [orderRequestDraft,setOrderRequestDraft] = useState('');
 
+    const getOrderRequestDraft=()=>{
+        API.getOrderRequestDraft().then(
+            result=>{
+                console.log("order request draft", result);
+                setOrderRequestDraft(result);
+            }
+        )
+    }
+
+
     const handleEditRequest=(data)=>{
         navigateTo(`/sitelist/materialorder?odi=${data.orderDetailId}`)
+    }
+    const handleDelete=(id)=>{
+        if (window.confirm('Are you sure you want to delete this data ?')) {
+            console.log(id)
+            API.deleteOrderDetail("",id).then(
+                result=>{
+                    console.log("handledelete",result)
+                    if(result.status=="success"){
+                        getOrderRequestDraft();
+                        toast.success(result.message)
+                    }
+                    else{
+                        getOrderRequestDraft();
+                        toast.error(result.message)
+                    }
+                }
+            )
+        }
     }
 
     const columnsOrderRequestDraft =[
@@ -136,26 +166,38 @@ export default function TableSite() {
         {
             align:"center",
             fixed:'right',
-            width:40,
+            width:80,
             render:(record)=>{
                 return (
-                    <Tooltip title="Edit Draft">
-                        <EditOutlined onClick={() => handleEditRequest(record)} />
-                    </Tooltip>
+                    <>
+                        <Tooltip title="Edit Draft">
+                            <IconButton
+                                aria-label="expand row"
+                                size="small"
+                                color="primary"
+                                onClick={() => handleEditRequest(record)}
+                                //onClick={() => handleDelete(record.inbFileId,record.fileName)}
+                            >
+                                <EditOutlined  />
+                            
+                            </IconButton>
+                        </Tooltip>
+                        <IconButton
+                            aria-label="expand row"
+                            size="small"
+                            color="error"
+                            onClick={() => handleDelete(record.orderDetailId)}
+                        >
+                            <DeleteOutlined />
+                        </IconButton>
+                    </>
                 )
             }
         },
         
     ]
 
-    const getOrderRequestDraft=()=>{
-        API.getOrderRequestDraft().then(
-            result=>{
-                console.log("order request draft", result);
-                setOrderRequestDraft(result);
-            }
-        )
-    }
+    
 
     useEffect(() => {
         getOrderRequestDraft();

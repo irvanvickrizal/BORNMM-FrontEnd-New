@@ -361,6 +361,7 @@ const postCancelTask = (body) => POST("taskassignment/taskAssignmentCanceled",bo
 const putRequestReschedule = (body) => PUT("scheduleassignment/taskScheduleProposeNewDate",body);
 
 const getInventoryReport = () => GET('inventory/getInventoryReport');
+const getInboundSuccessLog = () => GET('inventory/inboundSuccessLogList');
 const getInboundUploadFile = () => GET('inventory/inboundFileUploadGetList');
 const getInboundErrorList = (id) => GETParam('inventory/inboundFileUploadGetErrLogList',id);
 const postReviseInboundFile = (id,file) => POSTFile('inventory/inboundFileRevisionUpload',id,file);
@@ -368,6 +369,7 @@ const postInboundFile = (file) => POSTFiled('inventory/inboundFileUpload',file);
 const deleteInboundFile = (body,id) => PUTParam('inventory/inboundFileDelete',body,id);
 
 const getOutboundUploadFile = () => GET('inventory/outboundFileUploadGetList');
+const getOutboundSuccessLog = () => GET('inventory/outboundSuccessLogList');
 const getOutboundErrorList = (id) => GETParam('inventory/outboundFileUploadGetErrLogList',id);
 const postReviseOutboundFile = (id,file) => POSTFile('inventory/outboundFileRevisionUpload',id,file);
 const postOutboundFile = (file) => POSTFiled('inventory/outboundFileUpload',file);
@@ -434,7 +436,7 @@ const postResetUploadedBoqAsPlan = (body,bid) => POSTParam('boqref/boqAsPlanUplo
 
 // Order Rejection Pending List
 const getOrderRejectionPendigList = () => GET('wftransaction/orderRequestGetRejectionPendingList')
-const deleteOrderDetail = (odi) => POST('materialmanagement/OrderDetailDeleteTemp',odi)
+// const deleteOrderDetail = (odi) => POST('materialmanagement/OrderDetailDeleteTemp',odi)
 
 // material management orderList
 const getOrderList = (wpid,ordertypeid) => GETParam2('materialmanagement/orderRequestGetOrderedList',wpid,ordertypeid);
@@ -443,13 +445,18 @@ const getOrderRequest = (odi) => GETParam('materialmanagement/OrderDetailRequest
 const getMaterial = (odi) => GETParam('materialmanagement/orderRequestMaterialGetDetail',odi)
 const getLog = (odi) => GETParam('audittrail/auditTrailOrderRequestGetList',odi)
 
+const deleteOrderDetail = (body,odi) => PUTParam('materialmanagement/OrderDetailDeleteTemp',body,odi);
+
+
 const API ={
+    deleteOrderDetail,
+    getOutboundSuccessLog,
+    getInboundSuccessLog,
     getLog,
     getMaterial,
     getOrderRequest,
     postDeleteOrderList,
     getOrderList,
-    deleteOrderDetail,
     getOrderRejectionPendigList,
     postResetUploadedBoqAsPlan,
     postBoqAsPlanUploadProceed,

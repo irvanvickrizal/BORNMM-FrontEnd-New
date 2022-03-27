@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-bind */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable import/no-cycle */
 /* eslint-disable react/jsx-boolean-value */
@@ -6,7 +7,7 @@ import { getDataSiteList,getWpId,getOrderType,getOrderTypeId } from '@app/store/
 import React,{useEffect,useState} from 'react'
 import {toast} from 'react-toastify';
 import { useDispatch,useSelector } from 'react-redux'
-import {Tag,Typography,Popconfirm,Select,Upload,message,Form,Modal,Table, Input,Menu, Dropdown, Button, Space, Spin, Row, Col,Tooltip  } from 'antd'
+import {Tabs,Tag,Typography,Popconfirm,Select,Upload,message,Form,Modal,Table, Input,Menu, Dropdown, Button, Space, Spin, Row, Col,Tooltip  } from 'antd'
 import {PlusOutlined, FileExcelOutlined,CloseSquareTwoTone ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined, EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined,DeleteTwoTone,UploadOutlined } from '@ant-design/icons'
 import { useHistory } from 'react-router-dom';
 import API  from '../../utils/apiServices';
@@ -28,7 +29,10 @@ const TableInboundUpload = () => {
     const [uploading, setUploading] = useState(false);
     const [inbFileId, setInbFileId] = useState(0);
     const [fileName, setFileName] = useState('');
+    const [inboundSuccessLog, setInboundSuccessLog] = useState([]);
     const { Title } = Typography;
+    const { TabPane } = Tabs;
+
 
     const props = {
         onRemove: () => {
@@ -50,6 +54,16 @@ const TableInboundUpload = () => {
                 setInboundUploadFile(result);
                 setIsLoading(false);
                 console.log("scontaskpendnig",result);
+            }
+        )
+    }
+    const getInboundSuccessLog = () => {
+        setIsLoading(true);
+        API.getInboundSuccessLog().then(
+            result=>{
+                setInboundSuccessLog(result);
+                setIsLoading(false);
+                console.log("inbound success log",result);
             }
         )
     }
@@ -136,6 +150,88 @@ const TableInboundUpload = () => {
         return "";
     }
 
+    const columsInboundSuccessLog = [
+        {
+            title : "No",
+            width : 50,
+            render: (value, item, index) => 1 + index
+        },
+        {
+            title : "Project",
+            dataIndex:'project',
+            ...Search('project'),
+        },
+        {
+            title : "Warehouse",
+            dataIndex:'warehouse',
+            ...Search('warehouse'),
+        },
+        {
+            title : "receipt Date",
+            width: 120,
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.receiptDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            },
+            ...Search('uploadedDate'),
+        },
+        {
+            title : "Reference No",
+            dataIndex:'referenceNo',
+            ...Search('referenceNo'),
+        },
+        {
+            title : "SDR LTR No",
+            dataIndex:'sdrltrNo',
+            ...Search('sdrltrNo'),
+        },
+        {
+            title : "Customer PO",
+            dataIndex:'customerPo',
+            ...Search('customerPo'),
+        },
+        {
+            title : "CPO Line No",
+            dataIndex:'cpoLineNo',
+            ...Search('cpoLineNo'),
+        },
+        {
+            title : "Material Code",
+            dataIndex:'materialCode',
+            ...Search('materialCode'),
+        },
+        {
+            title : "Packing List",
+            dataIndex:'packingList',
+            ...Search('packingList'),
+        },
+        {
+            title : "Received QTY",
+            dataIndex:'receivedQTY',
+            ...Search('receivedQTY'),
+        },
+        {
+            title : "UOM",
+            dataIndex:'uom',
+            ...Search('uom'),
+        },
+        {
+            title : "Record Date",
+            width: 120,
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.recordDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            },
+            ...Search('uploadedDate'),
+        },        
+    ]
+
     const columns = [
         {
             title : "No",
@@ -144,17 +240,17 @@ const TableInboundUpload = () => {
         },
         {
             title : "File Name",
+            width: 250,
             dataIndex:'fileName',
             ...Search('fileName'),
         },
         {
             title : "Upload Date",
-            dataIndex:'uploadedDate',
             width: 120,
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(record.uploadedDate).format("YYYY-MM-DD")}</p>
+                        <p>{moment(record.uploadedDate).format("YYYY-MM-DD HH:mm:ss")}</p>
                     </Space>
                 )
             },
@@ -182,6 +278,7 @@ const TableInboundUpload = () => {
             title:"Err Message",
             key:"orderMaterialId",
             align:'center',
+            width: 100,
             ellipsis: true,
             render:(record)=>{
                 return (
@@ -204,6 +301,18 @@ const TableInboundUpload = () => {
                 )
             }
             
+        },
+        {
+            title : "System Execute Date",
+            width: 200,
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.systemExecuteDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            },
+            ...Search('uploadedDate'),
         },
         {
             title:"Action",
@@ -238,6 +347,7 @@ const TableInboundUpload = () => {
         
     
     ]
+
 
     const handleUpload = () => {
         setUploading(true)
@@ -296,99 +406,134 @@ const TableInboundUpload = () => {
         setIsUploadFile(true);
     }
 
+    function callback(key) {
+        if(key==1){
+            getInboundUploadFileList();
+        }
+        else if(key==2){
+            getInboundSuccessLog();
+        }
+        console.log("keytabs",key);
+    }
+
     useEffect(() => {
         getInboundUploadFileList();
     },[])
 
     return(
-        isLoading ?   
-            <Row justify="center">
-                <Col span={1}>    
-                    <Spin />
-                </Col>
-            </Row>  
-            :
-            <>
-                <Row>
-                    <Col md={16} sm={24} >
-                        <Title level={5}>Inbound File List</Title>
-                    </Col>
-                    <Col md={8} sm={24} >
-                        <div className='float-right'>
-                            <Tooltip title="Upload File">
-                                <IconButton size="small" color="primary" onClick={handleShowAdd}>
-                                    <PlusOutlined />
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Download Template">
-                                <IconButton size="small" color="secondary">
-                                    <a href='/file/Inbound.xlsx' download="[ProjectCode]_RECV_[YYYYMMDD]_[HHMMSS]_[runningNo]">
-                                        <FileExcelOutlined />
-                                    </a>
-                                </IconButton>
-                                {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
-                            </Tooltip>
-                        </div>
-                    </Col>
-                </Row>
-                <Table
-                    scroll={{ x: '100%' }}
-                    size="small"
-                    // expandable={{ expandedRowRender }}
-                    columns={columns}
-                    dataSource={inboundUploadFile}
-                    pagination={{
-                        pageSizeOptions: ['5', '10', '20', '30', '40'],
-                        showSizeChanger: true,
-                        position: ["bottomLeft"],
-                    }}
-                    bordered />
-                <Modal title="Upload Revise File"
-                    visible={isReviseFile}
-                    onOk={handleOkReviseFile}
-                    onCancel={handleCancelReviseFile}
-                    footer={null}
-                    destroyOnClose={true}
-                >
-                    <div>
-                        <p>Existing File Name : {fileName}</p>
-                        <Upload {...props}>
-                            <Button icon={<UploadOutlined />}>Select File</Button>
-                        </Upload>
-                        <Button
-                            type="primary"
-                            onClick={handleUpload}
-                            disabled={fileUpload == null}
-                            loading={uploading}
-                            style={{ marginTop: 16 }}
-                        >
-                            {uploading ? 'Uploading' : 'Start Upload'}
-                        </Button>
-                    </div>
-                </Modal>
-                <Modal title="Upload Inbound File"
-                    visible={isUploadFile}
-                    onOk={handleOkFile}
-                    onCancel={handleCancelFile}
-                    footer={null}
-                    destroyOnClose={true}
-                >
-                    <div>
-                        <Upload {...props}>
-                            <Button icon={<UploadOutlined />}>Select File</Button>
-                        </Upload>
-                        <Button
-                            type="primary"
-                            onClick={handleUploadFileNew}
-                            disabled={fileUpload == null}
-                            loading={uploading}
-                            style={{ marginTop: 16 }}
-                        >
-                            {uploading ? 'Uploading' : 'Start Upload'}
-                        </Button>
-                    </div>
-                </Modal>
-            </>
+        <>
+            <Tabs defaultActiveKey="1" onChange={callback}>
+                <TabPane tab="Inbound File List" key="1">
+                    {isLoading ?   
+                        <Row justify="center">
+                            <Col span={1}>    
+                                <Spin />
+                            </Col>
+                        </Row>  
+                        :
+                        <><Row>
+                            <Col md={24} sm={24}>
+                                <div className='float-right'>
+                                    <Tooltip title="Upload File">
+                                        <IconButton size="small" color="primary" onClick={handleShowAdd}>
+                                            <PlusOutlined />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Download Template">
+                                        <IconButton size="small" color="secondary">
+                                            <a href='/file/Inbound.xlsx' download="[ProjectCode]_RECV_[YYYYMMDD]_[HHMMSS]_[runningNo]">
+                                                <FileExcelOutlined />
+                                            </a>
+                                        </IconButton>
+                                        {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
+                                    </Tooltip>
+                                </div>
+                            </Col>
+                        </Row><Table
+                            scroll={{ x: '150%' }}
+                            size="small"
+                            // expandable={{ expandedRowRender }}
+                            columns={columns}
+                            dataSource={inboundUploadFile}
+                            pagination={{
+                                pageSizeOptions: ['5', '10', '20', '30', '40'],
+                                showSizeChanger: true,
+                                position: ["bottomLeft"],
+                            }}
+                            bordered /></>
+                    }
+                </TabPane>
+                <TabPane tab="Inbound Success Log" key="2">
+                    {isLoading ?   
+                        <Row justify="center">
+                            <Col span={1}>    
+                                <Spin />
+                            </Col>
+                        </Row>  
+                        :
+                
+                        <Table
+                            scroll={{ x: '150%' }}
+                            size="small"
+                            // expandable={{ expandedRowRender }}
+                            columns={columsInboundSuccessLog}
+                            dataSource={inboundSuccessLog}
+                            pagination={{
+                                pageSizeOptions: ['5', '10', '20', '30', '40'],
+                                showSizeChanger: true,
+                                position: ["bottomLeft"],
+                            }}
+                            bordered />
+                    }
+                </TabPane>
+            </Tabs>
+                
+            <Modal title="Upload Revise File"
+                visible={isReviseFile}
+                onOk={handleOkReviseFile}
+                onCancel={handleCancelReviseFile}
+                footer={null}
+                destroyOnClose={true}
+            >
+                <div>
+                    <p>Existing File Name : {fileName}</p>
+                    <Upload {...props}>
+                        <Button icon={<UploadOutlined />}>Select File</Button>
+                    </Upload>
+                    <Button
+                        type="primary"
+                        onClick={handleUpload}
+                        disabled={fileUpload == null}
+                        loading={uploading}
+                        style={{ marginTop: 16 }}
+                    >
+                        {uploading ? 'Uploading' : 'Start Upload'}
+                    </Button>
+                </div>
+            </Modal>
+            <Modal title="Upload Inbound File"
+                visible={isUploadFile}
+                onOk={handleOkFile}
+                onCancel={handleCancelFile}
+                footer={null}
+                destroyOnClose={true}
+            >
+                <div>
+                    <Upload {...props}>
+                        <Button icon={<UploadOutlined />}>Select File</Button>
+                    </Upload>
+                    <Button
+                        type="primary"
+                        onClick={handleUploadFileNew}
+                        disabled={fileUpload == null}
+                        loading={uploading}
+                        style={{ marginTop: 16 }}
+                    >
+                        {uploading ? 'Uploading' : 'Start Upload'}
+                    </Button>
+                </div>
+            </Modal>
+        </>
             
     )
 }
