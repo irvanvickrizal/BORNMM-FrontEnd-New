@@ -156,6 +156,11 @@ export default function TableSummary() {
          
         },
         {
+            title : "Wrong BOQ Ref Code",
+            dataIndex:'wrongBOQRefCode',
+        
+        },
+        {
             title : "CS Code NA",
             dataIndex:'materialCodeNA',
             render : (text) => String(text),
@@ -229,9 +234,10 @@ export default function TableSummary() {
                         </div>
                    
                         <ul>
-                            <li><span style={{color:"#f00",fontWeight:"600"}}>CS Code NA</span> means the CS Code Inside the BOM is Not Registred yet In EMORE</li>
-                            <li><span style={{color:"#f00",fontWeight:"600"}}>BOM is Exist</span> means the BOM already Registered in Emore</li>
+                            <li><span style={{color:"#f00",fontWeight:"600"}}>CS Code NA</span> means the CS Code Inside the BOM is Not Registred yet In BORN</li>
+                            <li><span style={{color:"#f00",fontWeight:"600"}}>BOM is Exist</span> means the BOM already Registered in BORN</li>
                             <li><span style={{color:"#f00",fontWeight:"600"}}>Wrong Category</span> means the Category is not "NE" or "FE"</li>
+                            <li><span style={{color:"#f00",fontWeight:"600"}}>Wrong BOQ Reference Code</span> means the Category is not "ND" or "D"</li>
                             <li><span style={{color:"#f00",fontWeight:"600"}}>CS Code Duplicate</span> means there are more than 1 CS Code is Listed inside BOM Upload Template</li>
                             <li>While Clicking "Proceed" Button then all of <span style={{color:"#187b21",fontWeight:"600"}}>"Success"</span> Status of BOM will be mapped to <span style={{fontWeight:"600"}}>Active</span> BOM Reference and <span style={{fontWeight:"600",color:"#f00"}}>Error</span> status will be Removed  </li>
                         </ul>
