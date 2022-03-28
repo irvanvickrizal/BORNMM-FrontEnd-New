@@ -456,8 +456,12 @@ const getPickUpCompletion = (uid) => GETParam('lspassignment/lspAssignmentTransp
 const getDdlTransportTeam = (tid,wpid) => GETParam2('subcon/getLSPTransportTeam',tid,wpid);
 
 const getDdlDeliveryDate = (ot) => GETParam('deliverymode/getListBasedOnOrderType',ot);
+const getLogLogistic = (odi) => GETParam('audittrail/auditTrailOrderRequestGetList',odi);
+
+
 
 const API ={
+    getLogLogistic,
     getDdlDeliveryDate,
     getDdlTransportTeam,
     getPickUpCompletion,

@@ -176,6 +176,11 @@ export default function BoqAsPoUpload() {
             ...Search('siteNo'),
         },
         {
+            title : "Order Type",
+            dataIndex:'orderType',
+            ...Search('orderType'),
+        },
+        {
             title : "Work Package ID",
             dataIndex:'workpackageid',
             ...Search('workpackageid'),

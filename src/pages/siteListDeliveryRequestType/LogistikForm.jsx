@@ -38,6 +38,7 @@ import HeaderChanger from "@app/components/cardheader/HeaderChanger"
 import moment from "moment"
 import "./style.css"
 import { useHistory } from "react-router-dom"
+import API from "@app/utils/apiServices"
 
 const { TextArea } = Input;
 
@@ -56,7 +57,25 @@ export default function LogisticForm() {
     const [remarks, setRemarks] = useState("")
     const [note,setNote] = useState("")
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [log, setDataLog] = useState([]);
     const [isModalCancelVisible, setIsModalCancelVisible] = useState(false);
+
+    const customURL = window.location.href;
+    const params = new URLSearchParams(customURL.split('?')[1])
+    const odi = params.get('odi');
+
+
+  
+
+
+    const getLogLogistic = () => {
+        API.getLogLogistic(odi).then(
+            result=>{
+                setDataLog(result);
+                console.log("data Log List =>",result);
+            }
+        )
+    }
 
     useEffect(() => {
         dispatch(getDataSiteInfo())
@@ -64,6 +83,7 @@ export default function LogisticForm() {
         dispatch(getLsp())
         dispatch(getDeliveryList())
         dispatch(getDeliveryMode())
+        getLogLogistic()
     }, [dispatch])
 
     const lsp = useSelector((state) => state.logistikFormReducer.dataLsp)
@@ -196,6 +216,52 @@ export default function LogisticForm() {
             dataIndex: "site"
         }
     ]
+
+
+    const columnsLog = [
+        {
+            title: "No",
+            key: "index",
+            render: (value, item, index) => page + index
+        },
+        {
+            title: "Incoming Date",
+            dataIndex: "incomingDate",
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.incomingDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            },
+        },
+        {
+            title: "Execute Date",
+            dataIndex: "executeDate",
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.executeDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            },
+        },
+
+        {
+            title: "Execute By",
+            dataIndex: "executedBy",
+        },
+        {
+            title: "Event Desc",
+            dataIndex: "taskName"
+        },
+        {
+            title: "Remarks",
+            dataIndex: "remarks"
+        }
+    ]
+
+    
     const CardTitle = (title) => <Title level={5}>{title}</Title>
 
     return (
@@ -247,7 +313,7 @@ export default function LogisticForm() {
                                                     disabled
                                                     value={
                                                         dataSite[0]
-                                                            .inventoryCode
+                                                            .requestNo
                                                     }
                                                 />
                                             </Form.Item>
@@ -272,7 +338,10 @@ export default function LogisticForm() {
                                             <Form.Item label="CT Name">
                                                 <Input
                                                     disabled
-                                                    value="Near End (NE)"
+                                                    value={
+                                                        dataSite[0].ctName
+                                                    }
+                                                  
                                                 />
                                             </Form.Item>
                                             <Form.Item label="Origin">
@@ -294,7 +363,24 @@ export default function LogisticForm() {
                                             >
                                                 <Input
                                                     disabled
-                                                    value="CWH Cikarang"
+                                                    value={
+                                                        dataSite[0].packageName
+                                                    }
+                                                />
+                                            </Form.Item>
+                                            <Form.Item
+                                                label="Proposed Delivery Mode"
+                                                rules={[
+                                                    {
+                                                        required: true
+                                                    }
+                                                ]}
+                                            >
+                                                <Input
+                                                    disabled
+                                                    value={
+                                                        dataSite[0].proposeDeliveryMode
+                                                    }
                                                 />
                                             </Form.Item>
                                             <Form.Item
@@ -322,7 +408,7 @@ export default function LogisticForm() {
                                 )}
                             </TabPane>
                             <TabPane tab="Material Order" key="2">
-                                <Card hoverable title={CardTitle("Matrial Order")}>
+                          
                                     <Table
                                         scroll={{x: "100%"}}
                                         bordered
@@ -330,7 +416,22 @@ export default function LogisticForm() {
                                         pagination={false}
                                         dataSource={materialOrder}
                                     />
-                                </Card>
+                       
+                            </TabPane>
+                            <TabPane tab="Log" key="3">
+                        
+                                    <Table
+                                        scroll={{x: "100%"}}
+                                        bordered
+                                        columns={columnsLog}
+                                        pagination={{
+                                            pageSizeOptions: ['5', '10', '20', '30', '40'],
+                                            showSizeChanger: true,
+                                            position: ["bottomLeft"],
+                                        }}
+                                        dataSource={log}
+                                    />
+                             
                             </TabPane>
                         </Tabs>
                     </Card>
@@ -391,6 +492,7 @@ export default function LogisticForm() {
                                 <Select
                                     onChange={(e) => setDeliveryTransport(e)}
                                     placeholder="Select an option"
+                                    value={wh}
                                 >
                                     {lsp?.length == 0 ? (<></>):( lsp?.map((inv) => (
                                         <Select.Option value={inv.subconId}>
