@@ -68,7 +68,7 @@ export default function BoqAsPoUpload() {
     
 
     const getDownloadPoBoqCompletion = (cpoNo,scopeName,poScopeId) => {
-        API.getDownloadPoBoqCompletion(1,1).then(
+        API.getDownloadPoBoqCompletion(bid,poScopeId).then(
             result=>{
                 setDataDownloadPoBoq(result);
                 console.log("data BOQ Download :",result);
@@ -79,6 +79,7 @@ export default function BoqAsPoUpload() {
                 const fileName = `${cpoNo}_${scopeName}_${poScopeId}`;
                 exportFromJSON({ data, fileName, exportType });
                 console.log("SSDA",cpoNo,poScopeId,scopeName)
+                
             }
         )
     }
