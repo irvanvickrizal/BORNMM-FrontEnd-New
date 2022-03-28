@@ -447,8 +447,17 @@ const getLog = (odi) => GETParam('audittrail/auditTrailOrderRequestGetList',odi)
 
 const deleteOrderDetail = (body,odi) => PUTParam('materialmanagement/OrderDetailDeleteTemp',body,odi);
 
+// Pickup Complletion
+
+const getPickUpCompletion = (uid) => GETParam('lspassignment/lspAssignmentTransportAssignmentPickupPending',uid);
+const getDdlTransportTeam = (tid,wpid) => GETParam2('subcon/getLSPTransportTeam',tid,wpid);
+
+const getDdlDeliveryDate = (ot) => GETParam('deliverymode/getListBasedOnOrderType',ot);
 
 const API ={
+    getDdlDeliveryDate,
+    getDdlTransportTeam,
+    getPickUpCompletion,
     deleteOrderDetail,
     getOutboundSuccessLog,
     getInboundSuccessLog,

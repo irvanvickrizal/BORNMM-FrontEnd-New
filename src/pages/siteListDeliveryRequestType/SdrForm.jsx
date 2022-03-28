@@ -56,6 +56,7 @@ const SdrForm = (props) => {
     const [region,setRegion] = useState("");
     const [express,setExpress] = useState("");
     const [ddlInventoryCode,setDDLInventoryCode] = useState([]);
+    const [ddlIDeliveryDate,setDDLDeliveryDate] = useState([]);
     const [ddlRequestBase,setDDLRequestBase] = useState([]);
     const [ddlSiteLocation,setDDLSiteLocation] = useState([]);
     const [ddlCTName,setDDLCTName] = useState([]);
@@ -78,6 +79,7 @@ const SdrForm = (props) => {
     const [selectedDestination,setSelectedDestination] = useState('');
     const [selectedPacketType,setSelectedPacketType] = useState('');
     const [selectedSubcon,setSelectedSubcon] = useState('');
+    const [selectedDeliveryMode,setSelectedDeliveryMode] = useState('');
     const [selectedSiteCondition,setSelectedSiteCondition] = useState('');
     const [deliveryDate,setDeliveryDate] = useState('');
     const [siteAddress,setSiteAddress] = useState('');
@@ -120,6 +122,15 @@ const SdrForm = (props) => {
             result=>{
                 console.log("inventory",result);
                 setDDLInventoryCode(result);
+                setInitialValue(result[0].invCode)
+            }
+        )
+    }
+    const getDeliveryDateDDL = () => {
+        API.getDdlDeliveryDate(ot).then(
+            result=>{
+                console.log("propose",result);
+                setDDLDeliveryDate(result);
                 setInitialValue(result[0].invCode)
             }
         )
@@ -296,6 +307,7 @@ const SdrForm = (props) => {
                 "siteConditionId":selectedSiteCondition,
                 "CTId":values.ctName,
                 "packetTypeId":selectedPacketType,
+                "proposeDeliveryModeId":values.deliveryModeId,
                 "neTypeId" : selectedSiteLocation,
                 "siteAddress": siteAddress,
                 "isExpressDelivery":express,
@@ -349,6 +361,7 @@ const SdrForm = (props) => {
         getTeamCoordinator()
         getHasExpressDelivery()
         getCTNameDDL(1);
+        getDeliveryDateDDL()
     },[wpid,orderTypeId])
 
     const CardTitle = (title) => (
@@ -546,6 +559,20 @@ const SdrForm = (props) => {
                                     <Input.TextArea 
                                         onChange={(e) => setSiteAddress(e.target.value)}  
                                     />
+                                </Form.Item>
+                                <Form.Item label="Propose Delivery Mode" name="propseDelivery"
+                                    rules={[{ required: true, message: 'Please Select Packet Type!' }]}
+                                >
+                                    <Select 
+                                        onChange={(e) => setSelectedDeliveryMode(e)} 
+                                        placeholder="Select an option"
+                                        name="propseDelivery"
+                                    >
+                                        {
+                                            ddlIDeliveryDate.map(dst =>  <Select.Option value={dst.deliveryModeId}> 
+                                                {dst.deliveryMode}</Select.Option>)
+                                        }
+                                    </Select>
                                 </Form.Item>
                                 <Form.Item label="Delivery Date" 
                                     name="deliveryDates"
