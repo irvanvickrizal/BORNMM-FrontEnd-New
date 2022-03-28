@@ -281,7 +281,13 @@ const TableOutboundUpload = () => {
         },
         {
             title : "System Execeute Date",
-            dataIndex:'systemExecuteDate',
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.systemExecuteDate).format("YYYY-MM-DD HH:mm:ss")}</p>
+                    </Space>
+                )
+            },
             width: 150,
             ...Search('systemExecuteDate'),
         },

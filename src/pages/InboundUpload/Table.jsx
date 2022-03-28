@@ -308,7 +308,7 @@ const TableInboundUpload = () => {
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(record.systemExecuteDate).format("YYYY-MM-DD")}</p>
+                        <p>{moment(record.systemExecuteDate).format("YYYY-MM-DD HH:mm:ss")}</p>
                     </Space>
                 )
             },

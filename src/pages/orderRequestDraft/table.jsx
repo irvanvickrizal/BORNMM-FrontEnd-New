@@ -46,7 +46,7 @@ export default function TableSite() {
 
 
     const handleEditRequest=(data)=>{
-        navigateTo(`/sitelist/materialorder?odi=${data.orderDetailId}`)
+        navigateTo(`/mm/materialorder?odi=${data.orderDetailId}`)
     }
     const handleDelete=(id)=>{
         if (window.confirm('Are you sure you want to delete this data ?')) {

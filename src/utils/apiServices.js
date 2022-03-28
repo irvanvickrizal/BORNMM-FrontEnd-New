@@ -342,11 +342,14 @@ const getHasExpressDelivery= (ordertypeid) => GETParam('masterordertype/orderTyp
 const getOrderRequestDraft = () => GET('mmReport/OrderRequestGetListDraft');
 
 const getOrderDetailForm = (odi) => GETParam('materialmanagement/OrderDetailRequestGetDetail',odi);
+const getMaterialOrderLog = (odi) => GETParam('audittrail/auditTrailOrderRequestGetList',odi);
 const getOrderDetailMaterial = (odi) => GETParam('materialmanagement/orderRequestMaterialGetDetail',odi);
 const getBOQRefGetList = (odi) => GETParam('materialmanagement/boqRefGetList',odi);
 const getMaterialListExcludeOrdered = (odi) => GETParam('materialmanagement/masterMaterialGetListExcludeOrdered',odi);
 const postMaterialOrderDirectSubmit = (body,odi) => POSTParam('materialmanagement/materialOrderDirectSubmit',body,odi);
 const postMaterialOrderBookSubmit = (body,odi) => POSTParam('materialmanagement/materialOrderBookAndSubmit',body,odi);
+const postMaterialOrderDirectSubmit2 = (body) => POST('materialmanagement/materialOrderDirectSubmit',body);
+const postMaterialOrderBookSubmit2 = (body) => POST('materialmanagement/materialOrderBookAndSubmit',body);
 const postAddMaterial = (body) => POST("materialmanagement/orderRequestMaterialAddItem",body);
 const putEditQtyMaterial = (body) => PUT('materialmanagement/OrderRequestMaterialChangeQty',body);
 const putMaterialOrderDraft = (body) => PUT('materialmanagement/materialOrderRequestSaveDraft',body);
@@ -379,10 +382,10 @@ const getSconTaskOnProgress = () => GET('taskassignment/taskAssignmentSubconOnPr
 const getSconTaskOnDone = () => GET('taskassignment/taskAssignmentSubconDone');
 const postReAssignmentEngineer = (body) => POST("taskassignment/taskReAssignmentToEngineer",body);
 
-const getWaitingRFP = () => GET('lspassignment/lspAssignmentRFPPending');
+const getWaitingRFP = (userid) => GETParam('lspassignment/lspAssignmentRFPPending',userid);
 const postWaitingRFP = (body) => POST('lspassignment/lspAssignmentRFPConfirm',body);
 
-const getTransportAssignment = () => GET('lspassignment/lspAssignmentTransportAssignmentPending');
+const getTransportAssignment = (userid) => GETParam('lspassignment/lspAssignmentTransportAssignmentPending',userid);
 
 
 const getTransportPickupPending = () => GET('lspassignment/lspAssignmentTransportAssignmentPickupPending');
@@ -458,6 +461,7 @@ const API ={
     getDdlDeliveryDate,
     getDdlTransportTeam,
     getPickUpCompletion,
+    getMaterialOrderLog,
     deleteOrderDetail,
     getOutboundSuccessLog,
     getInboundSuccessLog,
@@ -526,6 +530,8 @@ const API ={
     postAddMaterial,
     postMaterialOrderBookSubmit,
     postMaterialOrderDirectSubmit,
+    postMaterialOrderBookSubmit2,
+    postMaterialOrderDirectSubmit2,
     getMaterialListExcludeOrdered,
     getBOQRefGetList,
     getOrderDetailMaterial,
