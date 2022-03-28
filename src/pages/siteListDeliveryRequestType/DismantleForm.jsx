@@ -75,7 +75,7 @@ const DismantleForm = (props) => {
     const [siteAddress,setSiteAddress] = useState('');
     const [selectedTeamCoordinator,setSelectedTeamCoordinator] = useState('');
     const [ddlTeamCoordinator,setDDLTeamCoordinator] = useState([]);
-    const [checked,setChecked] = useState(true);
+    const [checked,setChecked] = useState(false);
 
     const [express,setExpress] = useState(false);
     const navigateTo = (path) => {

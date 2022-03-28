@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-bind */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-boolean-value */
@@ -74,6 +75,7 @@ export default function MaterialOrder() {
     const [selectedSite,setSelectedSite] = useState('');
     const [selectedOrderStatus,setSelectedOrderStatus] = useState('');
     const [isOutOfStock,setIsOutOfStock] = useState(null)
+    const [materialOrderLog,setMaterialOrderLog] = useState([])
 
     const navigateTo = (path) => {
         history.push(path)
@@ -91,6 +93,14 @@ export default function MaterialOrder() {
             result=>{
                 result.map((rst)=>checkoutofstock(rst.balanceQTY)) 
                 setOrderDetailMaterial(result);
+
+            }
+        )
+    }
+    const getMaterialOrderLog=(odi)=>{
+        API.getMaterialOrderLog(odi).then(
+            result=>{
+                setMaterialOrderLog(result);
 
             }
         )
@@ -303,6 +313,46 @@ export default function MaterialOrder() {
         
     ]
     
+    const columsMaterialOrderLog =[
+        {
+            title:"No",
+            render: (value, item, index) => 1 + index
+        }, 
+        {
+            title:"Incoming Date",
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.incomimgDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            }
+        },
+        {
+            title:"Execute Date",
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.executeDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            }
+        },
+        {
+            title:"Execute By",
+            dataIndex:"executeBy",
+        },
+        {
+            title:"Event Desc",
+            dataIndex:'eventDesc',
+        },
+        {
+            title:"Remarks",
+            dataIndex:"remarks",
+        }
+        
+    ]
+    
     const handleAddMaterial = (data) => {
         console.log("handleAddplus",data)
         setMaterialChoosed(data);
@@ -388,7 +438,7 @@ export default function MaterialOrder() {
 
     const columnsMaterialListExcluded =[
         {
-            title:"ID",
+            title:"No",
             render: (value, item, index) => 1 + index
         }, 
         {
@@ -422,7 +472,7 @@ export default function MaterialOrder() {
 
     const columnsMaterialListExcludedStockCheck =[
         {
-            title:"ID",
+            title:"No",
             render: (value, item, index) => 1 + index
         }, 
         {
@@ -568,6 +618,7 @@ export default function MaterialOrder() {
         );
     };
 
+    
     const handleSaveDraft = () => {
         const body =(
             {
@@ -591,7 +642,13 @@ export default function MaterialOrder() {
     }
 
     const handleSubmitDirect = () => {
-        API.postMaterialOrderDirectSubmit("",odiParam).then(
+        const body=(
+            {
+                "orderDetailId":odiParam,
+                "LMBY":user.uid
+            }
+        )
+        API.postMaterialOrderDirectSubmit2(body).then(
             result=>{
                 console.log(result);
                 if(result.status=="success"){
@@ -609,7 +666,14 @@ export default function MaterialOrder() {
     }
 
     const handleBookSubmit = () => {
-        API.postMaterialOrderBookSubmit("",odiParam).then(
+        const body=(
+            {
+                "orderDetailId":odiParam,
+                "LMBY":user.uid
+            }
+        )
+
+        API.postMaterialOrderBookSubmit2(body).then(
             result=>{
                 console.log(result);
                 if(result.status=="success"){
@@ -627,6 +691,19 @@ export default function MaterialOrder() {
     }
     const handleEditOrderDetail = () => {
         navigateTo(`/sitelist/dismantleedit?odi=${odiParam}`)
+    }
+
+    function callback(key) {
+        if(key==1){
+            getOrderDetailMaterial(odiParam);
+        }
+        else if(key==2){
+            // getOutboundSuccessLog();
+        }
+        else if(key==3){
+            getMaterialOrderLog(odiParam);
+        }
+        console.log("keytabs",key);
     }
     // eslint-disable-next-line react/no-unstable-nested-components
     useEffect(() => {
@@ -662,72 +739,89 @@ export default function MaterialOrder() {
                         pagination={false} 
                         bordered/>
                 </Card>
-                <Row gutter={16}>
-                    <Col md={24} sm={24} >
-                        <Card hoverable>
-                            <Row>
-                                <Col md={16} sm={24} >
-                                    <Title level={5}>Material Order List</Title>
-                                </Col>
-                                <Col md={8} sm={24} >
-                                    <div className='float-right'>
-                                        <Tooltip title="Add Material">
-                                            <IconButton size="small" color="primary" onClick={showModalAddMaterial}>
-                                                <PlusOutlined />
-                                            </IconButton>
-                                        </Tooltip>
-                                        <Tooltip title="Download BOQ Ref">
-                                            <IconButton size="small" color="success" onClick={handleDownloadBtn} >
-                                                <FileExcelOutlined />
-                                            </IconButton>
-                                            {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
-                                        </Tooltip>
-                                    </div>
-                                </Col>
-                            </Row>
-                            <Space direction="vertical" style={{ width: '100%' }} >
-                                <Table 
-                                    className="components-table-demo-nested"
-                                    columns={columnsMaterialOrder} 
-                                    scroll={{ x: '100%' }} 
-                                    dataSource={orderDetailMaterial} 
-                                    size="small"
-                                    pagination={false} 
-                                />
-                                <Divider />
-                                <Row>
-                                    <Col span={24}>
-                                        <div className='float-right'>
-                                            <Space>
-                                                <Button type="default" htmlType="submit" onClick={handleSaveDraft}>
+                <Tabs defaultActiveKey="1" onChange={callback}>
+                    <TabPane tab="Material Order List" key="1">
+                        <Row gutter={16}>
+                            <Col md={24} sm={24} >
+                                <Card hoverable>
+                                    <Row>
+                                        <Col md={24} sm={24} >
+                                            <div className='float-right'>
+                                                <Tooltip title="Add Material">
+                                                    <IconButton size="small" color="primary" onClick={showModalAddMaterial}>
+                                                        <PlusOutlined />
+                                                    </IconButton>
+                                                </Tooltip>
+                                                <Tooltip title="Download BOQ Ref">
+                                                    <IconButton size="small" color="success" onClick={handleDownloadBtn} >
+                                                        <FileExcelOutlined />
+                                                    </IconButton>
+                                                    {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
+                                                </Tooltip>
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                    <Space direction="vertical" style={{ width: '100%' }} >
+                                        <Table 
+                                            // className="components-table-demo-nested"
+                                            columns={columnsMaterialOrder} 
+                                            scroll={{ x: '100%' }} 
+                                            dataSource={orderDetailMaterial} 
+                                            size="small"
+                                            pagination={false} 
+                                        />
+                                        <Divider />
+                                        <Row>
+                                            <Col span={24}>
+                                                <div className='float-right'>
+                                                    <Space>
+                                                        <Button type="default" htmlType="submit" onClick={handleSaveDraft}>
                                                     Save as Draft
-                                                </Button>
-                                                {stockCheck ?
-                                                    isOutOfStock>0 ? 
-                                                        <Tooltip color='red' title="Certain item has out of stock status">
-                                                            <Button type="primary" danger disabled htmlType="submit" onClick={handleBookSubmit}>
+                                                        </Button>
+                                                        {stockCheck ?
+                                                            isOutOfStock>0 ? 
+                                                                <Tooltip color='red' title="Certain item has out of stock status">
+                                                                    <Button type="primary" danger disabled htmlType="submit" onClick={handleBookSubmit}>
                                                         Book and Submit
-                                                            </Button> 
-                                                        </Tooltip>
-                                                        :
-                                                        <Button type="primary" htmlType="submit" onClick={handleBookSubmit}>
+                                                                    </Button> 
+                                                                </Tooltip>
+                                                                :
+                                                                <Button type="primary" htmlType="submit" onClick={handleBookSubmit}>
                                                         Book and Submit
-                                                        </Button> 
-                                                    :
-                                                    <Button type="primary" htmlType="submit" onClick={handleSubmitDirect}>
+                                                                </Button> 
+                                                            :
+                                                            <Button type="primary" htmlType="submit" onClick={handleSubmitDirect}>
                                                 Submit
-                                                    </Button>
-                                                }
-                                            </Space>
-                                        </div>
+                                                            </Button>
+                                                        }
+                                                    </Space>
+                                                </div>
                                     
-                                    </Col>
-                                </Row>
-                            </Space>
-                        </Card>
-                    </Col>
-                </Row>
+                                            </Col>
+                                        </Row>
+                                    </Space>
+                                </Card>
+                            </Col>
+                        </Row>
+                    </TabPane>
+                    <TabPane tab="Attachment" key="2">
+                        Attachment
+                    </TabPane>
+                    <TabPane tab="Log" key="3">
+                        <Table 
+                            // className="components-table-demo-nested"
+                            columns={columsMaterialOrderLog} 
+                            scroll={{ x: '100%' }} 
+                            dataSource={materialOrderLog} 
+                            size="small"
+                            pagination={false} 
+                        />                      
+                    </TabPane>
+                </Tabs>
+
+                
             </Space>
+
             <Modal title="Add Material" 
                 visible={isModalAddMaterial} 
                 onOk={handleOk} 

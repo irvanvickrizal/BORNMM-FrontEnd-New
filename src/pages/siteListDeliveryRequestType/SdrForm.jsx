@@ -66,7 +66,7 @@ const SdrForm = (props) => {
     const [ddlTeam,setDdlTeam] = useState([]);
     const [ddlSiteCondition,setDDLSiteCondition] = useState([]);
     const current = new Date();
-    const [checked,setChecked] = useState(true)
+    const [checked,setChecked] = useState(false)
     const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
     
     const history = useHistory();
