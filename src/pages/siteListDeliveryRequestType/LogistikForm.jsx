@@ -345,12 +345,17 @@ export default function LogisticForm() {
                                                 />
                                             </Form.Item>
                                             <Form.Item label="Origin">
-                                                <Input disabled value="Site" />
+                                                <Input disabled 
+                                                 value={
+                                                        dataSite[0].originName
+                                                    } />
                                             </Form.Item>
                                             <Form.Item label="Destination">
                                                 <Input
                                                     disabled
-                                                    value="DOP Semarang"
+                                                    value={
+                                                        dataSite[0].destinationName 
+                                                    }
                                                 />
                                             </Form.Item>
                                             <Form.Item
