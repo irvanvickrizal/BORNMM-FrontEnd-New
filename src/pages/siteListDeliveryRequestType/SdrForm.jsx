@@ -27,7 +27,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import DropdownButton from 'react-bootstrap/DropdownButton'
 import {useDispatch, useSelector} from 'react-redux';
-import API  from '../../utils/apiServices';
+import API from '@app/utils/apiServices';
 import CreateDataDismantle from './DataGenerator';
 import moment from 'moment';
 

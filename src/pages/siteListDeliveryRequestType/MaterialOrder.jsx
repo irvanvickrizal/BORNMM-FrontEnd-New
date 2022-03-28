@@ -27,7 +27,7 @@ import { DownloadOutlined,PlusOutlined,FileExcelOutlined,CloseOutlined, EditOutl
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import HeaderChanger from '@app/components/cardheader/HeaderChanger'
-import API  from '../../utils/apiServices';
+import API from '@app/utils/apiServices';
 import exportFromJSON from 'export-from-json'
 import moment from 'moment';
 import DataGenerator from './DataGenerator';
