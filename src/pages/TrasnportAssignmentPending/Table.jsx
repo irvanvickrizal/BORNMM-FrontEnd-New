@@ -31,7 +31,7 @@ export default function TableTransport() {
     const [selectedRFPID,setSelectedRFPID] = useState('');
     
     const getSconTaskPending = () => {
-        API.getTransportAssignment().then(
+        API.getTransportAssignment(user.uid).then(
             result=>{
                 setAssignmentTaskPending(result);
                 console.log("scontaskpendnig",result);

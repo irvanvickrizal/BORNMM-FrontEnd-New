@@ -31,7 +31,7 @@ const WaitingRFPTable = () => {
     
     const getWaitingRFP = () => {
         setIsLoading(true);
-        API.getWaitingRFP().then(
+        API.getWaitingRFP(user.uid).then(
             result=>{
                 setWaitingRFP(result);
                 setIsLoading(false);
@@ -155,7 +155,13 @@ const WaitingRFPTable = () => {
         },
         {
             title:"Incoming Date",
-            dataIndex:'incomingDate',
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.incomingDate).format("YYYY-MM-DD HH:mm:ss")}</p>
+                    </Space>
+                )
+            },
             ...Search('incomingDate'),
             
         },

@@ -382,10 +382,10 @@ const getSconTaskOnProgress = () => GET('taskassignment/taskAssignmentSubconOnPr
 const getSconTaskOnDone = () => GET('taskassignment/taskAssignmentSubconDone');
 const postReAssignmentEngineer = (body) => POST("taskassignment/taskReAssignmentToEngineer",body);
 
-const getWaitingRFP = () => GET('lspassignment/lspAssignmentRFPPending');
+const getWaitingRFP = (userid) => GETParam('lspassignment/lspAssignmentRFPPending',userid);
 const postWaitingRFP = (body) => POST('lspassignment/lspAssignmentRFPConfirm',body);
 
-const getTransportAssignment = () => GET('lspassignment/lspAssignmentTransportAssignmentPending');
+const getTransportAssignment = (userid) => GETParam('lspassignment/lspAssignmentTransportAssignmentPending',userid);
 
 
 const getTransportPickupPending = () => GET('lspassignment/lspAssignmentTransportAssignmentPickupPending');
