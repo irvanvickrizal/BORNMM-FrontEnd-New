@@ -61,6 +61,7 @@ import OrderListRejectionPending from "@app/pages/OrderListRejectionPending/Orde
 import OrderList from "@app/pages/OrderList/OrderList"
 
 import PickUpCompletion from "@app/pages/PickUpCompletion/PickUpCompletion"
+import OrderRequestTracking from "@app/OrderRequestTracking/OrderRequestTracking"
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -380,6 +381,11 @@ const Main = () => {
                                             exact
                                             path="/task/lsppickupconf"
                                             component={PickUpCompletion}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/mm/orderrequesttracking"
+                                            component={OrderRequestTracking}
                                         />
                                     </Switch>
                                 </div>

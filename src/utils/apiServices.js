@@ -454,13 +454,18 @@ const deleteOrderDetail = (body,odi) => PUTParam('materialmanagement/OrderDetail
 
 const getPickUpCompletion = (uid) => GETParam('lspassignment/lspAssignmentTransportAssignmentPickupPending',uid);
 const getDdlTransportTeam = (tid,wpid) => GETParam2('subcon/getLSPTransportTeam',tid,wpid);
+const postPickUpCompletion = (body) => POST('lspassignment/lspAssignmentToChangePIC ',body);
 
 const getDdlDeliveryDate = (ot) => GETParam('deliverymode/getListBasedOnOrderType',ot);
 const getLogLogistic = (odi) => GETParam('audittrail/auditTrailOrderRequestGetList',odi);
 
-
+const getOrderRequestTracking =(odi) => GETParam('audittrail/auditTrailOrderRequestGetList',odi);
+const deleteWaitingRfp = (body) => PUT('materialmanagement/orderRequestLogisticTransportReject',body);
 
 const API ={
+    deleteWaitingRfp,
+    getOrderRequestTracking,
+    postPickUpCompletion,
     getLogLogistic,
     getDdlDeliveryDate,
     getDdlTransportTeam,

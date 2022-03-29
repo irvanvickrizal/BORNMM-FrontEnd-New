@@ -5,12 +5,13 @@
 import { getDataSiteList,getWpId,getOrderType,getOrderTypeId } from '@app/store/action/siteListDeliveryRequestAction';
 import React,{useEffect,useState} from 'react'
 import { useDispatch,useSelector } from 'react-redux'
-import {Tabs,InputNumber, Select,Form,Modal,Table, Input,Menu, Dropdown, Button, Space, Spin, Row, Col,Tooltip  } from 'antd'
+import {Tabs,InputNumber,Typography, Select,Form,Modal,Table, Input,Menu, Dropdown, Button, Space, Spin, Row, Col,Tooltip  } from 'antd'
 import { CheckCircleTwoTone,CloseSquareTwoTone ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined, EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined } from '@ant-design/icons'
 import {IconButton, TextField}  from '@mui/material/';
 import API from '@app/utils/apiServices';
 import Search from '@app/components/searchcolumn/SearchColumn';
 import moment from 'moment';
+import BackspaceIcon from '@mui/icons-material/Backspace';
 
 import { toast } from 'react-toastify';
 
@@ -25,8 +26,12 @@ const WaitingRFPTable = () => {
     const [selectedOrderRequestNo,setOrderRequestNo] = useState('');
     const [selectedOrderType,setOrderType] = useState('');
     const [selectedPickuporDeliveryDate,setPickuporDeliveryDate] = useState('');
+    const [isModalResetVisible,setIsModalResetVisible] = useState(false)
+    const [remarks,setRemarks] = useState("")
     const { TabPane } = Tabs;
     const user = useSelector((state) => state.auth.user);
+    const [logisticOrderDetailId,setLogisticOrderDetailId] = useState("")
+    const { TextArea } = Input;
 
     
     const getWaitingRFP = () => {
@@ -80,6 +85,45 @@ const WaitingRFPTable = () => {
         console.log("rfp form",record);
     }
 
+    const showModalReset = (record) => {
+        setIsModalResetVisible(true)
+        setLogisticOrderDetailId(record.logisticOrderDetailId)
+    }
+    const hideModalReset = () => {
+        setIsModalResetVisible(false)
+    }
+
+    const handleDelete = (record) =>{
+        console.log(record,"ok form delete")
+        setIsLoading(true);
+        const body = ({
+            "logisticOrderDetailId":logisticOrderDetailId,
+            "rejectedBy":user.uid ,
+            "reasonOfRejection":remarks,
+             
+        })
+        console.log(body,"body")
+        API.deleteWaitingRfp(body).then(
+            result=>{
+                // setIsLoading(false);
+                // getWaitingRFP();
+                // setIsFormRFP(false);
+                // toast.success(result.message)
+                // console.log("waiting post rfp",result);
+                if(result.status=="success")
+                {
+                    setIsLoading(false);
+                    toast.success(result.message);
+                    getWaitingRFP();
+                    setIsModalResetVisible(false)
+                }
+                else{
+                    toast.error(result.message)
+                }
+            }
+        )
+    }
+    
 
     const columns = [
         {
@@ -173,9 +217,10 @@ const WaitingRFPTable = () => {
             render:(record)=>{
                 return (
                     <div>
-                        {record.scheduleStatus=="newpropose" ? <p style={{ color:'red' }}>Propose New Schedule Request</p>
-                            :
-                            <Space>
+                        <Space>
+                            {record.scheduleStatus=="newpropose" ? <p style={{ color:'red' }}>Propose New Schedule Request</p>
+                                :
+                
                                 <Tooltip title="RFP Done">
                                     <IconButton
                                         size="small"
@@ -185,8 +230,19 @@ const WaitingRFPTable = () => {
                                     </IconButton>
                                 </Tooltip>
                                 
-                            </Space>
-                        }
+                    
+                            }
+                            <Tooltip title="Order Request Rejection">
+                                <IconButton
+                                    size="small"
+                                    onClick={() => showModalReset(record)}
+                                >
+                                    <BackspaceIcon style={{color:'#e84141'}} />
+                                </IconButton>
+                            </Tooltip>
+                            
+                        </Space>
+                        
                     </div>
                     
                    
@@ -332,7 +388,36 @@ const WaitingRFPTable = () => {
                             </Space>
                         </Form.Item>
                     </Form>
-                </Modal></>
+                </Modal>
+                <Modal title="Material List" visible={isModalResetVisible}  onCancel={hideModalReset} 
+                    footer={
+                        remarks.length <= 10 ? ( [
+                    
+                            <Button disabled key="back" type="danger" onClick={handleDelete} >
+                    Reject
+                            </Button>,
+                            <Button key="submit"  onClick={hideModalReset} >
+                    Close
+                            </Button>,
+                    
+                        ]):( [
+                    
+                            <Button key="back" type="danger" onClick={handleDelete} >
+                    Reject
+                            </Button>,
+                            <Button key="submit"  onClick={hideModalReset} >
+                    Close
+                            </Button>,
+                       
+                    
+                        ])}
+                >
+                    <Typography>Remarks Of Rejection :
+                    </Typography>
+                    <TextArea rows={4} onChange={(e) => setRemarks(e.target.value)} placeHolder="Min 10 Characters"/>
+      
+                </Modal>
+            </>
 
             
     )

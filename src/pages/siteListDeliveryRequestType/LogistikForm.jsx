@@ -150,6 +150,10 @@ export default function LogisticForm() {
         setIsModalVisible(false)
         console.log(isModalVisible);
     };
+    const onFinishFailedAddMaterial = (errorInfo) => {
+        console.log('Failed:', errorInfo);
+    };
+
  
     const cancelModal2 = () => {
         setIsModalCancelVisible(false);
@@ -299,6 +303,7 @@ export default function LogisticForm() {
                                             labelCol={{span: 8}}
                                             wrapperCol={{span: 14}}
                                             layout="horizontal"
+                                            
                                         >
                                             <Form.Item label="Order Type">
                                                 <Input
@@ -447,8 +452,12 @@ export default function LogisticForm() {
                             labelCol={{span: 9}}
                             wrapperCol={{span: 13}}
                             layout="horizontal"
+                            onFinish={showModal}
+                                onFinishFailed={onFinishFailedAddMaterial}
                         >
-                            <Form.Item label="WH Team">
+                            <Form.Item label="WH Team" name="whTeam" 
+                              rules={[{ required: true, message: 'Please Select WH Team!' }]}
+                            >
                                 <Select
                                     onChange={(e) => setWh(e)}
                                     placeholder="Select an option"
@@ -460,7 +469,9 @@ export default function LogisticForm() {
                                     ))}
                                 </Select>
                             </Form.Item>
-                            <Form.Item label="Delivery Request">
+                            <Form.Item label="Delivery Request" name="deliveryRequest"
+                              rules={[{ required: true, message: 'Please Select Delivery Request!' }]}
+                            >
                                 <Select
                                     onChange={(e) => handleDeliveryChange(e)}
                                     placeholder="Select an option"
@@ -472,7 +483,9 @@ export default function LogisticForm() {
                                     ))}
                                 </Select>
                             </Form.Item>
-                            <Form.Item label="Delivery Request Transport">
+                            <Form.Item label="Delivery Request Transport" name="deliveryRequestTransport"
+                              rules={[{ required: true, message: 'Please Select Delivery Request Transport!' }]}
+                            >
                                 {deliveryRequest == "" ? (
                                     <Select
                                         status="warning"
@@ -493,11 +506,13 @@ export default function LogisticForm() {
                                     </Select>
                                 )}
                             </Form.Item>
-                            <Form.Item label="Transport Team">
+                            <Form.Item label="Transport Team" name="transportTeam"
+                              rules={[{ required: true, message: 'Please Select Transport Team!' }]}
+                            >
                                 <Select
                                     onChange={(e) => setDeliveryTransport(e)}
                                     placeholder="Select an option"
-                                    value={wh}
+                                
                                 >
                                     {lsp?.length == 0 ? (<></>):( lsp?.map((inv) => (
                                         <Select.Option value={inv.subconId}>
@@ -507,7 +522,9 @@ export default function LogisticForm() {
                                    }
                                 </Select>
                             </Form.Item>
-                            <Form.Item label="Mode Of Transport">
+                            <Form.Item label="Mode Of Transport" name="modeTransport"
+                              rules={[{ required: true, message: 'Please Select Mode of Transport!' }]}
+                            >
                                 <Select
                                     onChange={(e) => setDeliveMode(e)}
                                     placeholder="Select an option"
@@ -521,12 +538,12 @@ export default function LogisticForm() {
                                    }
                                 </Select>
                             </Form.Item>
-                            <Form.Item label="Note">
+                            <Form.Item label="Note" name="note" 
+                              rules={[{ required: true, message: 'Please Fill The Note Form!' }]}
+                            >
                             <TextArea rows={4} onChange={(e) => setNote(e)}/>
                             </Form.Item>
-                        </Form>
-                        
-                        <div className="float-right">
+                            <Form.Item wrapperCol={{ offset: 8, span: 16 }} style={{marginTop:6,marginLeft:128}}>
                             <Col span={4} md={8} sm={24}>
                                 <Space direction="horizontal">
                                     <Button
@@ -540,9 +557,7 @@ export default function LogisticForm() {
                                     <Button
                                         type="primary"
                                         htmlType="submit"
-                                        onClick={() =>
-                                            showModal()
-                                        }
+                                       
                                     >
                                         Confirm
                                     </Button>
@@ -557,7 +572,10 @@ export default function LogisticForm() {
                                     </Button>
                                 </Space>
                             </Col>
-                        </div>
+                  </Form.Item>
+                        </Form>
+                      
+                        
                     </Card>
                 </Col>
             </Row>

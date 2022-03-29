@@ -72,6 +72,27 @@ export default function TablePickup() {
     const hideModal = () => {
         setIsModalVisible(false)
     }
+    const handlePost = () => {
+        setIsLoading(true);
+        const body = {
+            "transDelegateId":transDelegateId,
+            "transferTo":selectedAssignTo,
+            "transferBy":userId
+        }
+        API.postPickUpCompletion(body).then(
+            result=>{
+              
+                if(result.status=="success")
+                {
+                    toast.success(result.message);
+                    getPickUpCompletion()
+                    setIsModalVisible(false)
+                }
+                else{
+                    toast.error(result.message)
+                }
+            })
+    }
 
 
 
@@ -280,7 +301,7 @@ export default function TablePickup() {
                         <Form.Item wrapperCol={{ offset: 10, span: 14 }}>
                       
                             <div className='float-right'>
-                                <Button type="primary" htmlType="submit">
+                                <Button type="primary" htmlType="submit" onClick={handlePost}>
                             Confirm
                                 </Button>
                             </div>
