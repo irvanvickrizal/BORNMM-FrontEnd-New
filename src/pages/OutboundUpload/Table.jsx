@@ -131,8 +131,6 @@ const TableOutboundUpload = () => {
             ...Search('uploadedDate'),
         },        
     ]
-
-
     const getOutboundUploadFileList = () => {
         setIsLoading(true);
         API.getOutboundUploadFile().then(
