@@ -148,7 +148,7 @@ export default function TableTransport() {
             "transferBy": user.uid,
             "transferTo": selectedAssignTo  
         })
-        API.postAssitgnTransportTeam(body).then(
+        API.postAssitgnTransportTeam2(body).then(
             result=>{
                 getSconTaskPending();
                 setIsFormAssignment(false);
@@ -191,7 +191,6 @@ export default function TableTransport() {
 
     useEffect(() => {
         getSconTaskPending()
-       
     }, [])
 
     const columns = [

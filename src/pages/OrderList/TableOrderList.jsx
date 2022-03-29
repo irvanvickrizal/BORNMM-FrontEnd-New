@@ -11,7 +11,6 @@ import { toast } from 'react-toastify'
 import { useHistory } from 'react-router-dom';
 
 
-
 export default function TableOrderList() {
     const {TabPane} = Tabs
     const [dataOrderList,setDataOrderList] = useState([])
@@ -161,13 +160,13 @@ export default function TableOrderList() {
         {
             title : "Sys Request No",
             dataIndex:'requestSysNo',
-            ...Search('requestNo'),
+            ...Search('requestSysNo'),
         },
   
         {
             title : "Order Type",
             dataIndex:'orderType',
-            ...Search('requestNo'),
+            ...Search('orderType'),
         },
         {
             title : "Request No",

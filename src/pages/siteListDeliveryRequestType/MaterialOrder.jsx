@@ -323,7 +323,7 @@ export default function MaterialOrder() {
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(record.incomimgDate).format("YYYY-MM-DD")}</p>
+                        <p>{moment(record.incomimgDate).format("YYYY-MM-DD HH:mm:ss")}</p>
                     </Space>
                 )
             }
@@ -333,18 +333,18 @@ export default function MaterialOrder() {
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(record.executeDate).format("YYYY-MM-DD")}</p>
+                        <p>{moment(record.executeDate).format("YYYY-MM-DD HH:mm:ss" )}</p>
                     </Space>
                 )
             }
         },
         {
             title:"Execute By",
-            dataIndex:"executeBy",
+            dataIndex:"executedBy",
         },
         {
             title:"Event Desc",
-            dataIndex:'eventDesc',
+            dataIndex:'taskEventDesc',
         },
         {
             title:"Remarks",

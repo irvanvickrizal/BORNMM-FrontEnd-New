@@ -113,6 +113,16 @@ const WaitingRFPTable = () => {
             ...Search('destinationName'),
         },
         {
+            title : "CDMR Type",
+            dataIndex:'cdmrType',
+            ...Search('cdmrType'),
+        },
+        {
+            title : "Delivery Mode",
+            dataIndex:'deliveryMode',
+            ...Search('deliveryMode'),
+        },
+        {
             title : "Site ID",
             dataIndex:'siteNo',
             ...Search('siteNo'),
@@ -215,7 +225,7 @@ const WaitingRFPTable = () => {
                     <TabPane tab="Delivery Request" key="1">
                         <Table
                             // scroll={{ x: '100%' }}
-                            scroll={{ x: 1500, y: 300 }}
+                            scroll={{ x: 2500, y: 300 }}
                             // size="small"
                             // expandable={{ expandedRowRender }}
                             columns={columns}

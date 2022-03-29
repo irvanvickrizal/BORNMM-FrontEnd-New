@@ -61,6 +61,7 @@ import OrderListRejectionPending from "@app/pages/OrderListRejectionPending/Orde
 import OrderList from "@app/pages/OrderList/OrderList"
 
 import PickUpCompletion from "@app/pages/PickUpCompletion/PickUpCompletion"
+import MultiDelivery from "@app/pages/MultiDelivery/MultiDelivery"
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -380,6 +381,11 @@ const Main = () => {
                                             exact
                                             path="/task/lsppickupconf"
                                             component={PickUpCompletion}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/task/mdarrangement"
+                                            component={MultiDelivery}
                                         />
                                     </Switch>
                                 </div>

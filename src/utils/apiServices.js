@@ -412,7 +412,8 @@ const getDDLTransportAssignTo = (subconid,wpid) => GETParam2('subcon/getLSPTrans
 
 const putReAssignTransportTeam = (body) => PUT('taskassignment/taskReAssignmentToEngineer',body);
 const putCancelRFP = (body) => PUT('lspassignment/lspAssignmentRFPDoneCanceled',body);
-const postAssitgnTransportTeam = (body) => POST('taskassignment/lspAssignmentToTransport ',body);
+const postAssitgnTransportTeam = (body) => POST('taskassignment/lspAssignmentToTransport',body);
+const postAssitgnTransportTeam2 = (body) => POST('lspassignment/lspAssignmentToTransport',body);
 
 const getBoqSummaryAsPoBoq = (boqid) => GETParam('boqref/boqGetSummaryAsPOBOQCompletion',boqid)
 const getListBoqAsPo = (boqid) => GETParam('boqref/boqGetListAsPOBOQ',boqid)
@@ -480,9 +481,16 @@ const getDdlTransportTeam = (tid,wpid) => GETParam2('subcon/getLSPTransportTeam'
 const getDdlDeliveryDate = (ot) => GETParam('deliverymode/getListBasedOnOrderType',ot);
 const getLogLogistic = (odi) => GETParam('audittrail/auditTrailOrderRequestGetList',odi);
 
+const getMultiDeliveryConfirmation = (userid) => GETParam('multidelivery/multiDeliveryGetPendingList',userid);
+const getMultiDeliveryRequest = (userid) => GETParam('multidelivery/multiDeliveryGetPendingOrderRequestList',userid);
+const postMultiDelivery = (body) => POST('multidelivery/multiDeliveryAddGroup',body)
 
 
 const API ={
+    getMultiDeliveryRequest,
+    postMultiDelivery,
+    postAssitgnTransportTeam2,
+    getMultiDeliveryConfirmation,
     postLSPDirectToComplete,
     deleteEvidene,
     getEvidence,

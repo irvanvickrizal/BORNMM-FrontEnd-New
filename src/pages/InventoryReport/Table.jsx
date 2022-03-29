@@ -165,10 +165,10 @@ const TableInventoryReport = () => {
     ]
     function callback(key) {
         if(key==1){
-            //getInventoryReport();
+            getInventoryReport();
         }
         else if(key==2){
-            //getInventoryReportDetail()
+            getInventoryReportDetail()
         }
         console.log("keytabs",key);
     }
