@@ -158,7 +158,7 @@ export default function TableSite() {
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(record.requestDate).format("YYYY-MM-DD")}</p>
+                        <p>{moment(record.requestDate).format("YYYY-MM-DD   hh.mm.ss")}</p>
                     </Space>
                 )
             }

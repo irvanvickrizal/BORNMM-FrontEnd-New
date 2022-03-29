@@ -477,6 +477,7 @@ const deleteOrderDetail = (body,odi) => PUTParam('materialmanagement/OrderDetail
 
 const getPickUpCompletion = (uid) => GETParam('lspassignment/lspAssignmentTransportAssignmentPickupPending',uid);
 const getDdlTransportTeam = (tid,wpid) => GETParam2('subcon/getLSPTransportTeam',tid,wpid);
+const postPickUpCompletion = (body) => POST('lspassignment/lspAssignmentToChangePIC ',body);
 
 const getDdlDeliveryDate = (ot) => GETParam('deliverymode/getListBasedOnOrderType',ot);
 const getLogLogistic = (odi) => GETParam('audittrail/auditTrailOrderRequestGetList',odi);
@@ -485,12 +486,17 @@ const getMultiDeliveryConfirmation = (userid) => GETParam('multidelivery/multiDe
 const getMultiDeliveryRequest = (userid) => GETParam('multidelivery/multiDeliveryGetPendingOrderRequestList',userid);
 const postMultiDelivery = (body) => POST('multidelivery/multiDeliveryAddGroup',body)
 
+const getOrderRequestTracking =(odi) => GETParam('audittrail/auditTrailOrderRequestGetList',odi);
+const deleteWaitingRfp = (body) => PUT('materialmanagement/orderRequestLogisticTransportReject',body);
 
 const API ={
     getMultiDeliveryRequest,
     postMultiDelivery,
     postAssitgnTransportTeam2,
     getMultiDeliveryConfirmation,
+    deleteWaitingRfp,
+    getOrderRequestTracking,
+    postPickUpCompletion,
     postLSPDirectToComplete,
     deleteEvidene,
     getEvidence,

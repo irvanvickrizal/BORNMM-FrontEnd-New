@@ -172,7 +172,7 @@ export default function AprovalTaskPendingForm() {
         },
         {
             title: "Event Desc",
-            dataIndex: "taskName"
+            dataIndex: "taskEventDesc "
         },
         {
             title: "Remarks",

@@ -1,0 +1,309 @@
+import React,{useState,useEffect} from 'react'
+import Search from '@app/components/searchcolumn/SearchColumn'
+import moment from "moment"
+import API from '@app/utils/apiServices'
+import {Tabs,Tag,Typography,Popconfirm,Select,Upload,message,Form,Modal,Table, Input,Menu, Dropdown, Button, Space, Spin, Row, Col,Tooltip  } from 'antd'
+import {PlusOutlined, FileExcelOutlined,CloseSquareTwoTone ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined, EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined,DeleteTwoTone,UploadOutlined } from '@ant-design/icons'
+import {IconButton, TextField}  from '@mui/material/';
+import { useSelector } from 'react-redux'
+import exportFromJSON from 'export-from-json'
+
+export default function TableOrderRequestTracking() {
+    const[dataOrder,setDataOrder] = useState([])
+    const[sownloadData,setDownloadData] = useState([])
+    const [isLoading, setIsLoading] = useState(true);
+    const userId = useSelector(state=>state.auth.user.uid)
+
+    function getPickUpCompletion() {
+        setIsLoading(true);
+        API.getOrderRequestTracking(userId).then(
+            result=>{
+                setDataOrder(result);
+                setIsLoading(false);
+                console.log("completion order =>",result);
+            }
+        )
+    }
+
+    const getDownloadPoBoqList = () => {
+        API.getOrderRequestTracking(userId).then(
+            result=>{
+                setDownloadData(result);
+                console.log("data  Download :",result);
+               
+                const data = result;
+                //const data = result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
+                const exportType =  exportFromJSON.types.xls;
+                const fileName = `Order Request Tracking`;
+                exportFromJSON({ data, fileName, exportType });
+               
+            }
+        )
+    }
+
+
+    const columns = [
+        {
+            title : "No",
+            width : 50,
+            render: (value, item, index) => 1 + index
+        },
+        {
+            title : "Request No",
+            dataIndex:'requestNo',
+            ...Search('requestNo'),
+        },
+        {
+            title : "Order Type",
+            dataIndex:'orderType',
+            ...Search('requestNo'),
+        },
+        {
+            title : "Request Type Name",
+            dataIndex:'requestTypeName',
+            ...Search('requestrequestTypeNameNo'),
+        },
+        {
+            title : "CT Name",
+            dataIndex:'ctName',
+            ...Search('ctName'),
+        },
+        {
+            title : "Site Condition",
+            dataIndex:'siteCondition',
+            ...Search('siteCondition'),
+        },
+        {
+            title : "Origin",
+            dataIndex:'originName',
+            ...Search(''),
+        },
+        {
+            title : "Destination",
+            dataIndex:'destinationName',
+            ...Search('destinationName'),
+        },
+        {
+            title : "Delivery Type",
+            dataIndex:'deliveryType',
+            ...Search('deliveryType'),
+        },
+        {
+            title :  "Packet Type",
+            dataIndex:'packetType',
+            ...Search('packetType'),
+        },
+        {
+            title :  "Recipent",
+            dataIndex:'recipientOrDismantledBy',
+            ...Search('recipientOrDismantledBy'),
+        },
+        {
+            title : "Requester",
+            dataIndex:'requesterName',
+            ...Search('requesterName'),
+        },
+        {
+            title : "Request Date",
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.requestDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            },
+            ...Search('requestDate'),
+        },
+        {
+            title : "Logistic Completed Date",
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.logisticCompletedDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            },
+            ...Search('logisticCompletedDate'),
+        },
+
+      
+        {
+            title : "Approve Date",
+            dataIndex:'approveDate',
+            responsive: ['md'],
+            ...Search('approveDate'),
+        },
+        {
+            title : "Approve By",
+            dataIndex:'approvedBy',
+            responsive: ['md'],
+            ...Search('approvedBy'),
+        },
+        {
+            title : "Site No",
+            dataIndex:'siteNo',
+            responsive: ['md'],
+            ...Search('siteNo'),
+        },
+        {
+            title : "Site Name",
+            dataIndex:'siteName',
+            responsive: ['md'],
+            ...Search('siteName'),
+        },
+        {
+            title : "Region",
+            dataIndex:'region',
+            ...Search('region'),
+        },
+        {
+            title : "Zone",
+            dataIndex:'zone',
+            ...Search('zone'),
+        },
+        {
+            title : "Workpackage Id",
+            dataIndex:'workpackageid',
+            ...Search('workpackageid'),
+        },
+        {
+            title : "Package Name",
+            dataIndex:'packageName',
+            ...Search('packageName'),
+        },
+     
+    
+        {
+            title : "Logistic Completed By ",
+            dataIndex:'logisticCompletedBy',
+            ...Search('logisticCompletedBy'),
+        },
+        {
+            title : "Logistic Completed Date",
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.logisticCompletedDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            },
+            ...Search('logisticCompletedDate'),
+        },
+
+        {
+            title : "LSP Name",
+            dataIndex:'lspName',
+            ...Search('lspName'),
+        },
+        {
+            title : "RFP Date",
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.rfpDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            },
+            ...Search('rfpDate'),
+        },
+        
+
+        {
+            title : "Total Collies",
+            dataIndex:'totalCollies',
+            ...Search('totalCollies'),
+        },
+        
+        {
+            title : "Total ",
+            dataIndex:'total',
+            ...Search('total'),
+        },
+        
+        {
+            title : "RFP Confirmed By",
+            dataIndex:'rfpConfirmedBy',
+            ...Search('rfpConfirmedBy'),
+        },
+        {
+            title : "Pick Up Date",
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.pickupDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            },
+            ...Search('rfpDpickupDateate'),
+        },
+        
+        {
+            title : "Delivery Complete Date",
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.deliveredCompletedDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            },
+            ...Search('deliveredCompletedDate'),
+        },
+        
+        
+
+    
+
+        {
+            title : " Order Status",
+            dataIndex:'orderStatus',
+            ...Search('orderStatus'),
+        },
+  
+   
+    ]
+
+
+    useEffect(() => {
+        getPickUpCompletion();
+        console.log(userId,"asdasd")
+    },[])
+
+    return (
+        <div>
+            { isLoading ?   
+                <Row justify="center">
+                    <Col span={1}>    
+                        <Spin />
+                    </Col>
+                </Row>  
+                :
+                <><Row>
+                    <Col md={24} sm={24}>
+                        <div className='float-right'>
+                         
+                            <Tooltip title="Download Template">
+                                <IconButton size="medium" color="success" onClick={getDownloadPoBoqList}>
+                                    
+                                    <FileExcelOutlined />
+                  
+                                </IconButton>
+                                {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
+                            </Tooltip>
+                        </div>
+                    </Col>
+                </Row>
+                <Table
+                    scroll={{ x: '200%' }}
+
+                    // expandable={{ expandedRowRender }}
+                    columns={columns}
+                    dataSource={dataOrder}
+                    pagination={{
+                        pageSizeOptions: ['5', '10', '20', '30', '40'],
+                        showSizeChanger: true,
+                        position: ["bottomLeft"],
+                    }}
+                    bordered /></>}
+        </div>
+    )
+}
