@@ -163,8 +163,8 @@ export default function TableOrderRequestTracking() {
         },
         {
             title : "Workpackage Id",
-            dataIndex:'workpackageid',
-            ...Search('workpackageid'),
+            dataIndex:'workpackageId',
+            ...Search('workpackageId'),
         },
         {
             title : "Package Name",
@@ -183,7 +183,7 @@ export default function TableOrderRequestTracking() {
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(record.logisticCompletedDate).format("YYYY-MM-DD")}</p>
+                        <p>{moment(record.logisticCompletedDate).format("YYYY-MM-DD hh:mm:ss")}</p>
                     </Space>
                 )
             },
@@ -209,7 +209,7 @@ export default function TableOrderRequestTracking() {
         
 
         {
-            title : "Total Collies",
+            title : "Total Volume",
             dataIndex:'totalCollies',
             ...Search('totalCollies'),
         },
@@ -293,7 +293,7 @@ export default function TableOrderRequestTracking() {
                     </Col>
                 </Row>
                 <Table
-                    scroll={{ x: '200%' }}
+                    scroll={{ x: '250%' }}
 
                     // expandable={{ expandedRowRender }}
                     columns={columns}

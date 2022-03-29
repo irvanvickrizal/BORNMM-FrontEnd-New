@@ -88,7 +88,7 @@ function* sagaPostReject(action) {
         console.log(res,"result get site condition")
         yield put (postRejectSuccess(res.data))
         yield put (getOrderDetail())
-        yield toast.success("success");
+        yield toast.success("Order request rejected successfully");
     } catch (error) {
         console.log(error,'error get data site condition')
         yield toast.error("error");

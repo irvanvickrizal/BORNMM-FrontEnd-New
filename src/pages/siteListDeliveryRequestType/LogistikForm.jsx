@@ -257,7 +257,7 @@ export default function LogisticForm() {
         },
         {
             title: "Event Desc",
-            dataIndex: "taskName"
+            dataIndex: "taskEventDesc"
         },
         {
             title: "Remarks",

@@ -391,7 +391,7 @@ const Main = () => {
                                         />
                                         <Route
                                             exact
-                                            path="/mm/orderrequesttracking"
+                                            path="/rpt/orderReqTracking"
                                             component={OrderRequestTracking}
                                             
                                         />

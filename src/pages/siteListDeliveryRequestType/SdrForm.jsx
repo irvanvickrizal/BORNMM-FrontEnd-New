@@ -316,18 +316,7 @@ const SdrForm = (props) => {
             }
         )
         console.log("dismantle body",body);
-        API.postDismantleForm(body).then(
-            result=>{
-                if(result.status=="success")
-                {
-                    toast.success(result.message);
-                    navigateTo(`/mm/materialorder?odi=${result.returnVal}`)
-                }
-                else{
-                    toast.error(result.message)
-                }
-            }
-        )
+  
     }
 
     function btnConfirm(values){

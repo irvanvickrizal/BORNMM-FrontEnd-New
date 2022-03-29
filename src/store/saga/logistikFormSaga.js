@@ -89,6 +89,7 @@ function* sagaGetDeliveryMode(action) {
 }
 function* sagaPostLogistikForm(action) {
     const token = yield select(state=>state.auth.token)
+    const message = yield select(state=>state.logistikFormReducer.stats.data.message)
    
     try {
         const res = yield axios.post(`https://bornxldemo-api.nsnebast.com/materialmanagement/orderRequestDetailFormLogisticSubmit`,action.payload
@@ -97,19 +98,20 @@ function* sagaPostLogistikForm(action) {
             }});
         console.log(res,"result get site condition")
         yield put (postLogistikFormSuccess(res))
-        yield toast.success("success");
+        yield toast.success(message);
         yield put (getLogisticPending())
         return res
         
     } catch (error) {
         console.log(error,'error get data site condition')
-        yield toast.error("error");
+        yield toast.error(message);
         return "error"
        
     }
 }
 function* sagaPostAsDraft(action) {
     const token = yield select(state=>state.auth.token)
+    const message = yield select(state=>state.logistikFormReducer.stats.data.message)
     try {
         const res = yield axios.post(`https://bornxldemo-api.nsnebast.com/materialmanagement/orderRequestDetailFormLogisticSubmit`,action.payload
             ,{headers: {
@@ -118,8 +120,9 @@ function* sagaPostAsDraft(action) {
         console.log(res,"result get site condition")
         yield put (postAsDraftSuccess(res))
         yield put (getLogisticPending())
-        yield toast.success("Saved As Draft");
+        yield toast.success(message);
     } catch (error) {
+        yield toast.error(message);
         console.log(error,'error get data site condition')
     }
 }

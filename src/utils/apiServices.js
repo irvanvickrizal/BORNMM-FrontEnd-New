@@ -486,7 +486,7 @@ const getMultiDeliveryConfirmation = (userid) => GETParam('multidelivery/multiDe
 const getMultiDeliveryRequest = (userid) => GETParam('multidelivery/multiDeliveryGetPendingOrderRequestList',userid);
 const postMultiDelivery = (body) => POST('multidelivery/multiDeliveryAddGroup',body)
 
-const getOrderRequestTracking =(odi) => GETParam('audittrail/auditTrailOrderRequestGetList',odi);
+const getOrderRequestTracking =(odi) => GETParam('rpt/orderRequestProgressTracking',odi);
 const deleteWaitingRfp = (body) => PUT('materialmanagement/orderRequestLogisticTransportReject',body);
 
 const API ={

@@ -98,18 +98,14 @@ const WaitingRFPTable = () => {
         setIsLoading(true);
         const body = ({
             "logisticOrderDetailId":logisticOrderDetailId,
-            "rejectedBy":user.uid ,
+            "transportRejectedBy":user.uid ,
             "reasonOfRejection":remarks,
              
         })
         console.log(body,"body")
         API.deleteWaitingRfp(body).then(
             result=>{
-                // setIsLoading(false);
-                // getWaitingRFP();
-                // setIsFormRFP(false);
-                // toast.success(result.message)
-                // console.log("waiting post rfp",result);
+            
                 if(result.status=="success")
                 {
                     setIsLoading(false);
@@ -218,6 +214,11 @@ const WaitingRFPTable = () => {
             },
             ...Search('incomingDate'),
             
+        },
+        {
+            title : "Logistic Note",
+            dataIndex:'logisticNote',
+            ...Search('requestedBy'),
         },
         {
             title:"Action",
