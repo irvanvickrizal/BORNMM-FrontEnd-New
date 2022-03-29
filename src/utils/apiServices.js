@@ -7,9 +7,6 @@ import { toast } from 'react-toastify';
 
 import {useDispatch,useSelector} from 'react-redux';
 
-import {setIsLoading} from '@store/reducers/ui';
-import stores from '@store/stores';
-
 // const tokens = useSelector((state) => state.aurh.cardHeader);
 const baseURL = variables.API_URL;
 const tokenGlobal = localStorage.getItem('token'); 
@@ -172,6 +169,25 @@ const POSTFile = (path,id,file)  => {
     })
     return promise;
 }
+const POSTFileParam3 = (path,param1,param2,param3,file)  => {
+    var formdata = new FormData();
+    formdata.append("fileupload",file);
+
+    const promise = new Promise((resolve, reject) => {
+        axios.post(`${baseURL}${path}/${param1}/${param2}/${param3}`
+            ,formdata
+            ,{headers}
+        ).then((result)=> {
+            console.log('i am post :',result.data);
+            resolve(result.data);
+        },(err)=>{
+            console.log('config errer',err.response.status);
+            resolve(err.response.status);
+            
+        })
+    })
+    return promise;
+}
 const POSTFiled = (path,file)  => {
     var formdata = new FormData();
     formdata.append("fileupload",file);
@@ -321,6 +337,7 @@ const getErrorList = (id) => GETParam('positelist/GetUploadedSitelistErr',id);
 const deleteFileUpload = (id) => PUTFile('positelist/UploadedSitelistDeletedTemp',id);
 const postPOScope = (body) => POST('poscope/poscopeadd',body);
 const postPOFile = (id,file) => POSTFile('positelist/uploadSiteList',id,file);
+const postFileHOConfirm = (orderdetailid,param2,lmby,file) => POSTFileParam3('logevidence/orderRequestEvidenceAdd',orderdetailid,param2,lmby,file);
 const postRevisePOFile = (id,file) => POSTFile('positelist/UploadReviseSiteList',id,file);
 
 
@@ -448,10 +465,19 @@ const getOrderRequest = (odi) => GETParam('materialmanagement/OrderDetailRequest
 const getMaterial = (odi) => GETParam('materialmanagement/orderRequestMaterialGetDetail',odi)
 const getLog = (odi) => GETParam('audittrail/auditTrailOrderRequestGetList',odi)
 
+const getEvidence = (odi) => GETParam('logevidence/orderRequestEvidenceGetAllList',odi)
+const deleteEvidene = (evidenceId) => DELETE('logevidence/orderRequestEvidenceDelete',evidenceId)
+const postLSPDirectToComplete = (body) => POST('lspassignment/lspAssignmentDirectToComplete',body)
+
+
 const deleteOrderDetail = (body,odi) => PUTParam('materialmanagement/OrderDetailDeleteTemp',body,odi);
 
 
 const API ={
+    postLSPDirectToComplete,
+    deleteEvidene,
+    getEvidence,
+    postFileHOConfirm,
     getMaterialOrderLog,
     deleteOrderDetail,
     getOutboundSuccessLog,
