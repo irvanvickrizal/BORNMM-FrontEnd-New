@@ -307,7 +307,7 @@ const SdrForm = (props) => {
                 "siteConditionId":selectedSiteCondition,
                 "CTId":values.ctName,
                 "packetTypeId":selectedPacketType,
-                "proposeDeliveryModeId":values.deliveryModeId,
+                "proposeDeliveryModeId":values.proposeDelivery,
                 "neTypeId" : selectedSiteLocation,
                 "siteAddress": siteAddress,
                 "isExpressDelivery":express,
@@ -321,7 +321,7 @@ const SdrForm = (props) => {
                 if(result.status=="success")
                 {
                     toast.success(result.message);
-                    navigateTo(`/sitelist/materialorder?odi=${result.returnVal}`)
+                    navigateTo(`/mm/materialorder?odi=${result.returnVal}`)
                 }
                 else{
                     toast.error(result.message)
@@ -560,13 +560,13 @@ const SdrForm = (props) => {
                                         onChange={(e) => setSiteAddress(e.target.value)}  
                                     />
                                 </Form.Item>
-                                <Form.Item label="Propose Delivery Mode" name="propseDelivery"
+                                <Form.Item label="Propose Delivery Mode" name="proposeDelivery"
                                     rules={[{ required: true, message: 'Please Select Packet Type!' }]}
                                 >
                                     <Select 
                                         onChange={(e) => setSelectedDeliveryMode(e)} 
                                         placeholder="Select an option"
-                                        name="propseDelivery"
+                                       
                                     >
                                         {
                                             ddlIDeliveryDate.map(dst =>  <Select.Option value={dst.deliveryModeId}> 
