@@ -10,7 +10,7 @@ import { useDispatch,useSelector } from 'react-redux'
 import {Tabs,Tag,Typography,Popconfirm,Select,Upload,message,Form,Modal,Table, Input,Menu, Dropdown, Button, Space, Spin, Row, Col,Tooltip  } from 'antd'
 import {PlusOutlined,FileExcelOutlined, CloseSquareTwoTone ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined, EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined,DeleteTwoTone,UploadOutlined } from '@ant-design/icons'
 import { useHistory } from 'react-router-dom';
-import API  from '../../utils/apiServices';
+import API from '@app/utils/apiServices';
 import {IconButton, TextField}  from '@mui/material/';
 import Search from '@app/components/searchcolumn/SearchColumn';
 import moment from 'moment';

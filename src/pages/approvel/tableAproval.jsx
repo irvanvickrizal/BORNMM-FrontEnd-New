@@ -82,6 +82,11 @@ export default function TableAproval() {
             ...Search("region")
         },
         {
+            title: "Workpackage ID",
+            dataIndex: "workpackageid",
+            ...Search("workpackageid")
+        },
+        {
             title: "Scope Name",
             dataIndex: "scopeName",
             ...Search("scopeName")

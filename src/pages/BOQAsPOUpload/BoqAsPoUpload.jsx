@@ -68,7 +68,7 @@ export default function BoqAsPoUpload() {
     
 
     const getDownloadPoBoqCompletion = (cpoNo,scopeName,poScopeId) => {
-        API.getDownloadPoBoqCompletion(1,1).then(
+        API.getDownloadPoBoqCompletion(bid,poScopeId).then(
             result=>{
                 setDataDownloadPoBoq(result);
                 console.log("data BOQ Download :",result);
@@ -79,12 +79,13 @@ export default function BoqAsPoUpload() {
                 const fileName = `${cpoNo}_${scopeName}_${poScopeId}`;
                 exportFromJSON({ data, fileName, exportType });
                 console.log("SSDA",cpoNo,poScopeId,scopeName)
+                
             }
         )
     }
 
-    const getDownloadPoBoqList = (cpoNo,siteNo,workpackageid) => {
-        API.getDownloadPoBoqList(workpackageid).then(
+    const getDownloadPoBoqList = (cpoNo,siteNo,workpackageid,boqRefCode) => {
+        API.getDownloadPoBoqList(workpackageid,boqRefCode).then(
             result=>{
                 setDataDownloadPoBoqList(result);
                 console.log("data BOQ Download :",result);
@@ -145,6 +146,7 @@ export default function BoqAsPoUpload() {
             dataIndex:'totalSitesWithoutBOQ',
         
         },
+       
         
         {
             title : "Action",
@@ -170,8 +172,13 @@ export default function BoqAsPoUpload() {
         },
         {
             title : "Site No",
-            dataIndex:'SiteNo',
-            ...Search('SiteNo'),
+            dataIndex:'siteNo',
+            ...Search('siteNo'),
+        },
+        {
+            title : "Order Type",
+            dataIndex:'orderType',
+            ...Search('orderType'),
         },
         {
             title : "Work Package ID",
@@ -197,11 +204,11 @@ export default function BoqAsPoUpload() {
                                 <RedoOutlined style={{fontSize:20}} onClick={()=>getDownloadPoBoqListDeleted(record)}/>
                             </Tooltip>
                             <Tooltip title="BOQ Detail">
-                                <FileExcelOutlined style={{color :"#1f6e43",fontSize:20}} onClick={()=>getDownloadPoBoqList(record.cpoNo,record.siteNo,record.workpackageid)}/>
+                                <FileExcelOutlined style={{color :"#1f6e43",fontSize:20}} onClick={()=>getDownloadPoBoqList(record.cpoNo,record.siteNo,record.workpackageid,record.boqRefCode)}/>
                             </Tooltip>
                    
                         </Space>):( <Tooltip title="BOQ Detail">
-                        <FileExcelOutlined style={{color :"#1f6e43",fontSize:20}} onClick={()=>getDownloadPoBoqList(record.cpoNo,record.siteNo,record.workpackageid)}/>
+                        <FileExcelOutlined style={{color :"#1f6e43",fontSize:20}} onClick={()=>getDownloadPoBoqList(record.cpoNo,record.siteNo,record.workpackageid,record.boqRefCode)}/>
                     </Tooltip>)
                     
                     

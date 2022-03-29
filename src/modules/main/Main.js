@@ -60,6 +60,8 @@ import BoqAsPlanUpload from "@app/pages/BOQAsPlanUpload/BoqAsPlanUpload"
 import OrderListRejectionPending from "@app/pages/OrderListRejectionPending/OrderListRejectionPending"
 import OrderList from "@app/pages/OrderList/OrderList"
 
+import PickUpCompletion from "@app/pages/PickUpCompletion/PickUpCompletion"
+
 const Main = () => {
     const dispatch = useDispatch()
     const isSidebarMenuCollapsed = useSelector(
@@ -373,6 +375,11 @@ const Main = () => {
                                             exact
                                             path="/mm/orderlist"
                                             component={OrderList}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/task/lsppickupconf"
+                                            component={PickUpCompletion}
                                         />
                                     </Switch>
                                 </div>

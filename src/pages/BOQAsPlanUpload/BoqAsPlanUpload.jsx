@@ -80,8 +80,8 @@ export default function BoqAsPlanUpload() {
         )
     }
 
-    const getDownloadPlanBoqList = (cpoNo,siteNo,workpackageid) => {
-        API.getDownloadPlanBoqList(workpackageid).then(
+    const getDownloadPlanBoqList = (cpoNo,siteNo,workpackageid,boqRefCode) => {
+        API.getDownloadPlanBoqList(workpackageid,boqRefCode).then(
             result=>{
                 setDataDownloadPoBoqList(result);
                 console.log("data BOQ Download :",result);
@@ -164,8 +164,13 @@ export default function BoqAsPlanUpload() {
         },
         {
             title : "Site No",
-            dataIndex:'SiteNo',
-            ...Search('SiteNo'),
+            dataIndex:'siteNo',
+            ...Search('siteNo'),
+        },
+        {
+            title : "Order Type",
+            dataIndex:'orderType',
+            ...Search('orderType'),
         },
         {
             title : "Work Package ID",
@@ -191,11 +196,11 @@ export default function BoqAsPlanUpload() {
                                 <RedoOutlined style={{fontSize:20}} onClick={()=>getDownloadPlanBoqListDeleted(record)}/>
                             </Tooltip>
                             <Tooltip title="BOQ Detail">
-                                <FileExcelOutlined style={{color :"#1f6e43",fontSize:20}} onClick={()=>getDownloadPlanBoqList(record.cpoNo,record.siteNo,record.workpackageid)}/>
+                                <FileExcelOutlined style={{color :"#1f6e43",fontSize:20}} onClick={()=>getDownloadPlanBoqList(record.cpoNo,record.siteNo,record.workpackageid,record.boqRefCode)}/>
                             </Tooltip>
                    
                         </Space>):( <Tooltip title="BOQ Detail">
-                        <FileExcelOutlined style={{color :"#1f6e43",fontSize:20}} onClick={()=>getDownloadPlanBoqList(record.cpoNo,record.siteNo,record.workpackageid)}/>
+                        <FileExcelOutlined style={{color :"#1f6e43",fontSize:20}} onClick={()=>getDownloadPlanBoqList(record.cpoNo,record.siteNo,record.workpackageid,record.boqRefCode)}/>
                     </Tooltip>)
                     
                     
