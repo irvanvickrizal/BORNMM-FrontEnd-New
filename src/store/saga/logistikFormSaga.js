@@ -128,7 +128,7 @@ function* sagaPutLogistikForm(action) {
     const message = yield select(state=>state.logistikFormReducer.stats.data.message)
    
     try {
-        const res = yield axios.post(`https://bornxldemo-api.nsnebast.com/materialmanagement/orderRequestDetailFormLogisticUpdate`,action.payload
+        const res = yield axios.put(`https://bornxldemo-api.nsnebast.com/materialmanagement/orderRequestDetailFormLogisticUpdate`,action.payload
             ,{headers: {
                 Authorization: `Bearer ${token}` 
             }});

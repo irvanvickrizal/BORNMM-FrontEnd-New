@@ -539,7 +539,7 @@ export default function LogisticForm() {
                                 </Select>
                             </Form.Item>
                             <Form.Item label="Note" name="note" 
-                              rules={[{ required: true, message: 'Please Fill The Note Form!' }]}
+                             
                             >
                             <TextArea rows={4} onChange={(e) => setNote(e.target.value)}/>
                             </Form.Item>

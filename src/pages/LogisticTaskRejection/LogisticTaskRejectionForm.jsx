@@ -118,34 +118,40 @@ export default function LogisticTaskRejectionForm() {
         dispatch(getDeliveryTransport())
     };
 
-    const body = {"logisticOrderDetailId":dataOdiLog,"orderDetailId":dataOdi,"whTeamId":wh,"cdmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"LMBY":dataUser,"note":note}
 
-    const handlePost = () => {
-        dispatch(putLogistikForm(body))
-        console.log(body,)
+    const handlePost = (data) => {
+        // dispatch(putLogistikForm(body))
+        console.log({"logisticOrderDetailId":dataOdiLog,"orderDetailId":dataOdi,"whTeamId":wh,"cdmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"LMBY":dataUser,"note":note})
 
-        if( dataStats == 200){
-            history.push('/mm/tasklogisticreject')
-            cancelModal()
-        }
+        // if( dataStats == 200){
+        //     history.push('/mm/tasklogisticreject')
+        //     cancelModal()
+        // }
         // console.log("test Bod=?>",{"orderDetailId":dataOdi,"whTeamId":wh,"cdmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"note":note})
     };
 
     const saveDraft = () => {
         dispatch(postAsDraft({"orderDetailId":dataOdi,"remarks":remarks}))
         if( dataStats == 200){
-            history.push('/mm/taskasglogistic')
+            history.push('/mm/tasklogisticreject')
          
            
         }
     };
 
-    const showModal = () => {
+    const showModal = (data) => {
         setIsModalVisible(true);
-        console.log(isModalVisible);
+        setWh(data.whTeam)
+        setModeTransport(data.modeTransport)
+        setDeliveMode(data.modeTransport)
+        setDeliveryRequest(data.deliveryRequest)
+        setNote(data.note)
+
+
+        console.log(data,"data");
     };
     const cancelNavigate = () => {
-        history.push('/mm/taskasglogistic')
+        history.push('/mm/tasklogisticreject')
     };
     const showModalCancel = () => {
         setIsModalCancelVisible(true);
@@ -460,7 +466,7 @@ export default function LogisticTaskRejectionForm() {
                     </Card>
                 </Col>
                 <Col span={12}>
-                    <Card hoverable title={CardTitle("Logistic Form")}>
+                    <Card hoverable title={CardTitle("Logistic Rejection Form")}>
                         <Form
                             labelCol={{span: 9}}
                             wrapperCol={{span: 13}}
@@ -470,7 +476,7 @@ export default function LogisticTaskRejectionForm() {
                             initialValues={{
                                 'whTeam':dataOrderLogistik[0].whTeamId,
                                 'deliveryRequest':dataOrderLogistik[0].cdmrId,
-                                'deliveryRequestTransport':dataOrderLogistik[0].cdmrId,
+                                'deliveryRequestTransport':dataOrderLogistik[0].transportModeId,
                                 "note": dataOrderLogistik[0].note,
                                 "transportTeam":dataOrderLogistik[0].transportTeamId,
                                 "modeTransport":dataOrderLogistik[0].transportModeId,
@@ -482,6 +488,7 @@ export default function LogisticTaskRejectionForm() {
                                 <Select
                                     onChange={(e) => setWh(e)}
                                     placeholder="Select an option"
+                                    value={dataOrderLogistik[0].whTeamId}
                                 >
                                     {lsp?.map((inv) => (
                                         <Select.Option value={inv.subconId}>
@@ -554,7 +561,7 @@ export default function LogisticTaskRejectionForm() {
                                 </Select>
                             </Form.Item>
                             <Form.Item label="Note" name="note" 
-                                rules={[{ required: true, message: 'Please Fill The Note Form!' }]}
+                            
                             >
                                 <TextArea rows={4} onChange={(e) => setNote(e.target.value)}/>
                             </Form.Item>
