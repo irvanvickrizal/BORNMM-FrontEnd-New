@@ -12,20 +12,26 @@ import Search from '@app/components/searchcolumn/SearchColumn';
 import moment from 'moment';
 import exportFromJSON from 'export-from-json'
 import {RedoOutlined, CloudUploadOutlined, UploadOutlined,DownloadOutlined,PlusOutlined,FileExcelOutlined,CloseOutlined, EditOutlined,DeleteOutlined,CheckOutlined  } from '@ant-design/icons';
-
+import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 // import { RedoOutlined } from 'node_modules/@mui/icons-material/index';
 
 const TableMultiDeliveryConfirmation = () => {
     const { TabPane } = Tabs;
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
+    const [cancelLoading, setCancelLoading] = useState(false);
     const [multiDeliveryConfirmationList,setMultiDeliveryConfirmationList] = useState([]);
     const [multiDeliveryRequestList,setMultiDeliveryRequestList] = useState([]);
-    const [inventoryReportDetail,setInventoryReportDetail] = useState([]);
+    const [selectedOrderDetailId,setSelectedOrderDetailId] = useState('');
+    const [selectedRFPId,setSelectedRFPId] = useState('');
     const [isAddMultiDelivery,setIsAddMultiDelivery] = useState(false);
+    const [isCancelRFPDone,setIsCancelRFPDone] = useState(false);
     const [ddlSubcon,setDDLSubcon] = useState([]);
     const user = useSelector((state) => state.auth.user);
-
+    const history = useHistory();
+    const navigateTo = (path) => {
+        history.push(path)
+    }
     const getMultiDeliveryConfirmation = () => {
         setIsLoading(true);
         API.getMultiDeliveryConfirmation(user.uid).then(
@@ -54,11 +60,22 @@ const TableMultiDeliveryConfirmation = () => {
             }
         )
     }
-    const handleCancelRFP = () => {
-        API.getmSubcon(user.uid).then(
+    const handleOKCancelRFPDone =(data) =>{
+        setCancelLoading(true)
+        const body = ({
+            "rfpId":selectedRFPId,
+            "orderdetailId": selectedOrderDetailId,
+            "LMBY": user.uid   
+        })
+        console.log(body,"bodycancel")
+        API.putCancelRFP(body).then(
             result=>{
-                setDDLSubcon(result);
-                console.log("inventory",result);
+                console.log(result,"cancelrfp");
+                toast.success(result.message)
+                getMultiDeliveryRequest()
+                // getSconTaskPending();
+                setCancelLoading(false)
+                setIsCancelRFPDone(false)
             }
         )
     }
@@ -68,14 +85,28 @@ const TableMultiDeliveryConfirmation = () => {
         getDDLSubcon()
         setIsAddMultiDelivery(true);
     }
+    const showCancelRFPDone = (record) =>
+    {
+        setIsCancelRFPDone(true);
+        setSelectedOrderDetailId(record.orderdetailId);
+        setSelectedRFPId(record.rfpId)
+        console.log(record,'rfp')
+    }
     const handleCancelAdd = () =>
     {
-        
         setIsAddMultiDelivery(false);
+    }
+    const handleCancelCancelRFPDone = () =>
+    {
+        
+        setIsCancelRFPDone(false);
     }
 
     const handleFailedForm = () =>{
         
+    }
+    const handleEditMultiDelivery = (id) =>{
+        navigateTo(`/task/mdarrangementform?mdid=${id}`)
     }
 
     const handleDDLSubconChange = (data) =>{
@@ -96,6 +127,7 @@ const TableMultiDeliveryConfirmation = () => {
                 console.log(result);
                 toast.success(result.message)
                 getMultiDeliveryConfirmation()
+                setIsAddMultiDelivery(false);
             }
         )
     }
@@ -103,74 +135,73 @@ const TableMultiDeliveryConfirmation = () => {
     const columns = [
         {
             title : "No",
+            width : 50,
             render: (value, item, index) => 1 + index
         },
         {
-            title : "Project",
-            dataIndex:'project',
-            ...Search('project'),
+            title : "Multi Delivery No",
+            dataIndex:'multiDeliveryNo',
+            ...Search('multiDeliveryNo'),
         },
         {
-            title : "WHCode",
-            dataIndex:'whCode',
-            ...Search('whCode'),
+            title : "Created By",
+            dataIndex:'createdBy',
+            ...Search('createdBy'),
         },
         {
-            title : "Warehouse/DOP",
-            dataIndex:'warehouseName',
-            ...Search('warehouseName'),
+            title : "Created Date",
+            ...Search('createdDate'),
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.cdt).format("YYYY-MM-DD HH:mm:ss")}</p>
+                    </Space>
+                )
+            },
         },
         {
-            title : "Material Code",
-            dataIndex:'materialCode',
-            ...Search('materialCode'),
+            title : "WH Team",
+            dataIndex:'lspName',
+            ...Search('lspName'),
         },
         {
-            title : "Material Desc",
-            dataIndex:'materialDesc',
-            ...Search('materialDesc'),
+            title : "Transport Team",
+            dataIndex:'transportTeam',
+            ...Search('transportTeam'),
         },
         {
-            title : "UOM",
-            dataIndex:'uom',
-            responsive: ['md'],
-            ...Search('uom'),
+            title : "Status",
+            width: 100,
+            dataIndex:'multiDeliveryStatus',
+            ...Search('multiDeliveryStatus'),
         },
         {
-            title : "Region",
-            dataIndex:'region',
-            ...Search('region'),
+            title:"Action",
+            // key:"orderDetailId",
+            align:'center',
+            width: 50,
+            fixed:'right',
+            render:(record)=>{
+                return (
+                    <div>  
+                        <Space>
+                            <Tooltip title="Edit Multi Delivery">
+                                <IconButton size="small" color="primary" onClick={()=>handleEditMultiDelivery(record.multiDeliveryId)}>
+                                    <EditOutlined />
+                                </IconButton>
+                            </Tooltip>
+                        </Space>
+                    </div>
+                )
+            }
+            
         },
-        {
-            title : "Inbound QTY",
-            dataIndex:'inboundQty',
-            ...Search('inboundQty'),
-        },
-        {
-            title : "Stock (OnHand)",
-            dataIndex:'onHandQty',
-            ...Search('onHandQty'),
-        },
-        {
-            title : "Requested BORN",
-            dataIndex:'bookedQty',
-            ...Search('bookedQty'),
-        },
-        {
-            title : "Outbond QTY",
-            dataIndex:'outboundQty',
-            ...Search('outboundQty'),
-        },
-        {
-            title:"Balance (FREE QTY)",
-            dataIndex:'balanceQty',
-            ...Search('balanceQty'),
-            key:"balanceQty",
-        },
+        
     ]
     const columnsDeliveryRequestPending = [
         {
             title : "No",
+            width : 50,
             render: (value, item, index) => 1 + index
         },
         {
@@ -180,13 +211,13 @@ const TableMultiDeliveryConfirmation = () => {
         },
         {
             title : "Origin",
-            dataIndex:'origin',
-            ...Search('origin'),
+            dataIndex:'originName',
+            ...Search('originName'),
         },
         {
             title : "Destination",
-            dataIndex:'destination',
-            ...Search('destination'),
+            dataIndex:'destinationName',
+            ...Search('destinationName'),
         },
         {
             title : "Site No",
@@ -205,8 +236,8 @@ const TableMultiDeliveryConfirmation = () => {
         },
         {
             title : "WorkpackageId",
-            dataIndex:'workpackageId',
-            ...Search('workpackageId'),
+            dataIndex:'workpackageid',
+            ...Search('workpackageid'),
         },
         {
             title : "Scope Name",
@@ -215,8 +246,8 @@ const TableMultiDeliveryConfirmation = () => {
         },
         {
             title : "CDMR Req",
-            dataIndex:'cdmrReq',
-            ...Search('cdmrReq'),
+            dataIndex:'cdmrType',
+            ...Search('cdmrType'),
         },
         {
             title : "RFP Date",
@@ -244,12 +275,13 @@ const TableMultiDeliveryConfirmation = () => {
             // key:"orderDetailId",
             align:'center',
             fixed:'right',
+            width: 60,
             render:(record)=>{
                 return (
                     <div>  
                         <Space>
                             <Tooltip title="Cancel Task">
-                                <IconButton size="small" color="error" onClick={showAddMultiDelivery}>
+                                <IconButton size="small" color="error" onClick={showCancelRFPDone}>
                                     <RedoOutlined />
                                 </IconButton>
                             </Tooltip>
@@ -288,7 +320,7 @@ const TableMultiDeliveryConfirmation = () => {
                 </Row> :
                     <>
                         <div className='float-right'>
-                            <Tooltip title="Download As Excell File">
+                            <Tooltip title="Add Multi Delivery Group">
                                 <IconButton size="small" color="success" onClick={showAddMultiDelivery}>
                                     <PlusOutlined />
                                 </IconButton>
@@ -314,7 +346,7 @@ const TableMultiDeliveryConfirmation = () => {
                     </Col>
                 </Row> :
                     <Table
-                        scroll={{ x: '100%' }}
+                        scroll={{ x: '200%' }}
                         size="small"
                         // expandable={{ expandedRowRender }}
                         columns={columnsDeliveryRequestPending}
@@ -381,7 +413,22 @@ const TableMultiDeliveryConfirmation = () => {
                     </Space>
                 </Form.Item>
             </Form>
-        </Modal></>
+        </Modal>
+        <Modal title="Cancel Task"
+            visible={isCancelRFPDone}
+            onOk={handleOKCancelRFPDone}
+            onCancel={handleCancelCancelRFPDone}
+            confirmLoading={cancelLoading}
+            destroyOnClose={true}
+        >
+            <p>
+                Are you sure you want to Cancel RFP Done? 
+            </p>
+            <p>
+                (RFP  Date will be no longer available once it canceled)
+            </p>
+        </Modal>
+        </>
     )
 }
 

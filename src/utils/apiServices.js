@@ -409,6 +409,7 @@ const getTransportPickupPending = () => GET('lspassignment/lspAssignmentTranspor
 const postTransportAssignTo = (body) => POST('taskassignment/lspAssignmentToTransport',body);
 
 const getDDLTransportAssignTo = (subconid,wpid) => GETParam2('subcon/getLSPTransportTeam',subconid,wpid)
+const getDDLTransportAssignTo2 = (subconid) => GETParam('subcon/getLSPTransportTeam',subconid)
 
 const putReAssignTransportTeam = (body) => PUT('taskassignment/taskReAssignmentToEngineer',body);
 const putCancelRFP = (body) => PUT('lspassignment/lspAssignmentRFPDoneCanceled',body);
@@ -484,12 +485,23 @@ const getLogLogistic = (odi) => GETParam('audittrail/auditTrailOrderRequestGetLi
 
 const getMultiDeliveryConfirmation = (userid) => GETParam('multidelivery/multiDeliveryGetPendingList',userid);
 const getMultiDeliveryRequest = (userid) => GETParam('multidelivery/multiDeliveryGetPendingOrderRequestList',userid);
+const getMultiDeliveryDetail = (mdid) => GETParam('multidelivery/multiDeliveryGetDetail',mdid);
+const getMultiDeliveryRequestList = (mdid) => GETParam('multidelivery/multiDeliveryGetOrderRequestList',mdid);
 const postMultiDelivery = (body) => POST('multidelivery/multiDeliveryAddGroup',body)
+const postMultiDeliveryArrangement = (body) => POST('multidelivery/multiDeliveryAddOrderRequest',body)
+const assignMultiDelivery = (body) => POST('multidelivery/multiDeliveryAssignTaskToTransport',body)
+const deleteMultiDeliveryRequest = (mdid) => DELETE('multidelivery/multiDeliveryDeleteOrderRequest',mdid)
 
 const getOrderRequestTracking =(odi) => GETParam('audittrail/auditTrailOrderRequestGetList',odi);
 const deleteWaitingRfp = (body) => PUT('materialmanagement/orderRequestLogisticTransportReject',body);
 
 const API ={
+    assignMultiDelivery,
+    deleteMultiDeliveryRequest,
+    getDDLTransportAssignTo2,
+    postMultiDeliveryArrangement,
+    getMultiDeliveryRequestList,
+    getMultiDeliveryDetail,
     getMultiDeliveryRequest,
     postMultiDelivery,
     postAssitgnTransportTeam2,

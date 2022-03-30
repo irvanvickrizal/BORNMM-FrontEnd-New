@@ -62,6 +62,7 @@ import OrderList from "@app/pages/OrderList/OrderList"
 
 import PickUpCompletion from "@app/pages/PickUpCompletion/PickUpCompletion"
 import MultiDelivery from "@app/pages/MultiDelivery/MultiDelivery"
+import MultiDeliveryArrangement from "@app/pages/MultiDeliveryArrangement/MultiDeliveryArrangement"
 import OrderRequestTracking from "@app/OrderRequestTracking/OrderRequestTracking"
 
 const Main = () => {
@@ -387,13 +388,16 @@ const Main = () => {
                                             exact
                                             path="/task/mdarrangement"
                                             component={MultiDelivery}
-                                            
                                         />
                                         <Route
                                             exact
                                             path="/mm/orderrequesttracking"
                                             component={OrderRequestTracking}
-                                            
+                                        />
+                                        <Route
+                                            exact
+                                            path="/task/mdarrangementform"
+                                            component={MultiDeliveryArrangement}
                                         />
                                     </Switch>
                                 </div>

@@ -226,7 +226,12 @@ export default function TableTransport() {
             ...Search('destinationName'),
         },
         {
-            title: "cdmrType",
+            title: "Delivery Mode",
+            dataIndex:"deliveryMode",
+            ...Search('deliveryMode'),
+        },
+        {
+            title: "CDMR Type",
             dataIndex: "cdmrType",
             ...Search('cdmrType'),
         },

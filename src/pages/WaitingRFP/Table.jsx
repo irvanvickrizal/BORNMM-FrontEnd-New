@@ -250,12 +250,8 @@ const WaitingRFPTable = () => {
                                     <BackspaceIcon style={{color:'#e84141'}} />
                                 </IconButton>
                             </Tooltip>
-                            
                         </Space>
-                        
                     </div>
-                    
-                   
                 )
             }
             
