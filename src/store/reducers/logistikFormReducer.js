@@ -1,6 +1,7 @@
 /* eslint-disable no-duplicate-case */
 const initialState = {
     dataSiteInfo: [],
+    dataSiteInfoLogistik: [],
     dataOrderDetail:[],
     detaDeliveryList:[],
     dataDeliveryMode:[],
@@ -10,6 +11,7 @@ const initialState = {
     idDelivery:'',
     idTaskPending:'',
     odi:'',
+    odiLogistik:'',
     stats:[],
     statsDraft:[],
     isLoading: false,
@@ -30,6 +32,18 @@ export const logistikFormReducer = (state = initialState, action) => {
         return {
             ...state,
             dataSiteInfo:action.payload,
+            isLoading: false,
+        };
+    case "GET_DATA_SITE_INFO_LOGISTIK":
+        return {
+            ...state,
+  
+            isLoading: true,
+        };
+    case "SET_DATA_SITE_INFO_LOGISTIK":
+        return {
+            ...state,
+            dataSiteInfoLogistik:action.payload,
             isLoading: false,
         };
 
@@ -112,6 +126,20 @@ export const logistikFormReducer = (state = initialState, action) => {
             
             isLoading: false,
         };
+    case "PUT_LOGISTIK_FORM":
+        return {
+            ...state,
+            
+            isLoading: true,
+        };
+        
+    case "PUT_LOGISTIK_FORM_SUCCESS":
+        return {
+            ...state,
+            stats:action.payload,
+            
+            isLoading: false,
+        };
         
     case "POST_AS_DRAFT":
         return {
@@ -137,6 +165,12 @@ export const logistikFormReducer = (state = initialState, action) => {
         return {
             ...state,
             odi:action.payload,
+            isLoading: false,
+        };
+    case "GET_ODI_LOGISTIK":
+        return {
+            ...state,
+            odiLogistik:action.payload,
             isLoading: false,
         };
     case "GET_LOGISTIK_PENDING":

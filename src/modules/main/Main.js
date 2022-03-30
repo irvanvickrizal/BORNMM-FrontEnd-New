@@ -64,6 +64,9 @@ import PickUpCompletion from "@app/pages/PickUpCompletion/PickUpCompletion"
 import MultiDelivery from "@app/pages/MultiDelivery/MultiDelivery"
 import MultiDeliveryArrangement from "@app/pages/MultiDeliveryArrangement/MultiDeliveryArrangement"
 import OrderRequestTracking from "@app/OrderRequestTracking/OrderRequestTracking"
+import LogisticTaskRejection from "@app/pages/LogisticTaskRejection/LogisticTaskRejection"
+import LogisticTaskRejectionForm from "@app/pages/LogisticTaskRejection/LogisticTaskRejectionForm"
+
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -398,6 +401,18 @@ const Main = () => {
                                             exact
                                             path="/task/mdarrangementform"
                                             component={MultiDeliveryArrangement}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/mm/tasklogisticreject"
+                                            component={LogisticTaskRejection}
+                                            
+                                        />
+                                        <Route
+                                            exact
+                                            path="/mm/logisticformreject"
+                                            component={LogisticTaskRejectionForm}
+                                            
                                         />
                                     </Switch>
                                 </div>

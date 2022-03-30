@@ -12,6 +12,20 @@ export const setDataSiteInfo = (payload) => {
     };
 };
   
+export const getDataSiteInfoLogistik = (payload) => {
+    return {
+        type: "GET_DATA_SITE_INFO_LOGISTIK",
+        payload,
+    };
+};
+
+export const setDataSiteInfoLogistik = (payload) => {
+    return {
+        type: "SET_DATA_SITE_INFO_LOGISTIK",
+        payload,
+    };
+};
+  
 
 export const getMaterialOrderDetail = (payload) => {
     return {
@@ -85,6 +99,18 @@ export const postLogistikForm = (payload) => {
         payload,
     };
 };
+export const putLogistikFormSuccess = (payload) => {
+    return {
+        type: "PUT_LOGISTIK_FORM_SUCCESS",
+        payload,
+    };
+};
+export const putLogistikForm = (payload) => {
+    return {
+        type: "PUT_LOGISTIK_FORM",
+        payload,
+    };
+};
 export const postAsDraft = (payload) => {
     return {
         type: "POST_AS_DRAFT",
@@ -106,6 +132,12 @@ export const getIdDelivery = (payload) => {
 export const getOdi = (payload) => {
     return {
         type: "GET_ODI",
+        payload,
+    };
+};
+export const getOdiLogistik = (payload) => {
+    return {
+        type: "GET_ODI_LOGISTIK",
         payload,
     };
 };
