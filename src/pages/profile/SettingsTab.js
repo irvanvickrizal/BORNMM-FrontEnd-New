@@ -2,8 +2,13 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 
 import {Button} from '@components';
+import {useDispatch, useSelector} from 'react-redux';
 
 const SettingsTab = ({isActive}) => {
+
+
+    const user = useSelector((state) => state.auth.user);
+
     return (
         <div className={`tab-pane ${isActive ? 'active' : ''}`}>
             <form className="form-horizontal">
@@ -19,7 +24,8 @@ const SettingsTab = ({isActive}) => {
                             type="email"
                             className="form-control"
                             id="inputName"
-                            placeholder="Name"
+                            value={user.name}
+                            disabled
                         />
                     </div>
                 </div>
@@ -35,7 +41,8 @@ const SettingsTab = ({isActive}) => {
                             type="email"
                             className="form-control"
                             id="inputEmail"
-                            placeholder="Email"
+                            value={user.email}
+                            disabled
                         />
                     </div>
                 </div>
@@ -105,8 +112,8 @@ const SettingsTab = ({isActive}) => {
                 </div>
                 <div className="form-group row">
                     <div className="offset-sm-2 col-sm-10">
-                        <Button type="submit" theme="danger">
-                            Submit
+                        <Button type="submit" theme="success">
+                            Change Password
                         </Button>
                     </div>
                 </div>

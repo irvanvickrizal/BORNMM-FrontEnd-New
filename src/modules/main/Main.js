@@ -62,6 +62,7 @@ import OrderList from "@app/pages/OrderList/OrderList"
 
 import PickUpCompletion from "@app/pages/PickUpCompletion/PickUpCompletion"
 import MultiDelivery from "@app/pages/MultiDelivery/MultiDelivery"
+import MultiDeliveryArrangement from "@app/pages/MultiDeliveryArrangement/MultiDeliveryArrangement"
 import OrderRequestTracking from "@app/OrderRequestTracking/OrderRequestTracking"
 import LogisticTaskRejection from "@app/pages/LogisticTaskRejection/LogisticTaskRejection"
 import LogisticTaskRejectionForm from "@app/pages/LogisticTaskRejection/LogisticTaskRejectionForm"
@@ -390,13 +391,16 @@ const Main = () => {
                                             exact
                                             path="/task/mdarrangement"
                                             component={MultiDelivery}
-                                            
                                         />
                                         <Route
                                             exact
                                             path="/rpt/orderReqTracking"
                                             component={OrderRequestTracking}
-                                            
+                                        />
+                                        <Route
+                                            exact
+                                            path="/task/mdarrangementform"
+                                            component={MultiDeliveryArrangement}
                                         />
                                         <Route
                                             exact

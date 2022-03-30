@@ -345,6 +345,7 @@ const getSiteInfo = (wpid) => GETParam('sitelist/siteDetail',wpid);
 const getInventoryActiveList = () => GET('minventory/inventoryCodeGetActiveList');
 const getSiteLocation = () => GET('netype/netypegetlist');
 const getRequestBase = (ordertypeid) => GETParam('deliveryreqtype/RequestTypeGetListBasedOnOrderType',ordertypeid);
+const getRequestBase2 = (ordertypeid,wpid) => GETParam2('deliveryreqtype/RequestTypeGetListBasedOnOrderTypeAndWPID',ordertypeid,wpid);
 const getCTName = (invcodeid) => GETParam('materialmanagement/GetMasterCTBasedInvCodeId',invcodeid);
 const getOrigin = (wpid,ordertypeid) => GETParam2('dopordertype/doporigingetlist',wpid,ordertypeid);
 const getDestination = (wpid,ordertypeid) => GETParam2('dopordertype/dopdestinationgetlist',wpid,ordertypeid);
@@ -409,6 +410,7 @@ const getTransportPickupPending = () => GET('lspassignment/lspAssignmentTranspor
 const postTransportAssignTo = (body) => POST('taskassignment/lspAssignmentToTransport',body);
 
 const getDDLTransportAssignTo = (subconid,wpid) => GETParam2('subcon/getLSPTransportTeam',subconid,wpid)
+const getDDLTransportAssignTo2 = (subconid) => GETParam('subcon/getLSPTransportTeam',subconid)
 
 const putReAssignTransportTeam = (body) => PUT('taskassignment/taskReAssignmentToEngineer',body);
 const putCancelRFP = (body) => PUT('lspassignment/lspAssignmentRFPDoneCanceled',body);
@@ -485,7 +487,12 @@ const getLogLogistic = (odi) => GETParam('audittrail/auditTrailOrderRequestGetLi
 
 const getMultiDeliveryConfirmation = (userid) => GETParam('multidelivery/multiDeliveryGetPendingList',userid);
 const getMultiDeliveryRequest = (userid) => GETParam('multidelivery/multiDeliveryGetPendingOrderRequestList',userid);
+const getMultiDeliveryDetail = (mdid) => GETParam('multidelivery/multiDeliveryGetDetail',mdid);
+const getMultiDeliveryRequestList = (mdid) => GETParam('multidelivery/multiDeliveryGetOrderRequestList',mdid);
 const postMultiDelivery = (body) => POST('multidelivery/multiDeliveryAddGroup',body)
+const postMultiDeliveryArrangement = (body) => POST('multidelivery/multiDeliveryAddOrderRequest',body)
+const assignMultiDelivery = (body) => POST('multidelivery/multiDeliveryAssignTaskToTransport',body)
+const deleteMultiDeliveryRequest = (mdid) => DELETE('multidelivery/multiDeliveryDeleteOrderRequest',mdid)
 
 const getOrderRequestTracking =(odi) => GETParam('rpt/orderRequestProgressTracking',odi);
 const deleteWaitingRfp = (body) => PUT('materialmanagement/orderRequestLogisticTransportReject',body);
@@ -494,6 +501,13 @@ const deleteWaitingRfp = (body) => PUT('materialmanagement/orderRequestLogisticT
 const getLogisticRejectionList = (uid) => GETParam("materialmanagement/orderRequestLogisticAssignmentReject",uid);
 
 const API ={
+    getRequestBase2,
+    assignMultiDelivery,
+    deleteMultiDeliveryRequest,
+    getDDLTransportAssignTo2,
+    postMultiDeliveryArrangement,
+    getMultiDeliveryRequestList,
+    getMultiDeliveryDetail,
     getMultiDeliveryRequest,
     postMultiDelivery,
     postAssitgnTransportTeam2,

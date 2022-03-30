@@ -33,7 +33,7 @@ const Login = () => {
         try {
             setAuthLoading(true);
             const token = await AuthService.loginByAuth(email, password);
-            toast.success('Login is succeed!');
+            toast.success('Login is succeeded!');
             setAuthLoading(false);
             dispatch(loginUser(token));
             history.push('/');

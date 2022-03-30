@@ -324,12 +324,8 @@ const WaitingRFPTable = () => {
                             <Tooltip title="View Detail">
                                 <EyeFilled style={{fontSize:20}} onClick={()=>showModalTab(record.orderDetailId)}/>  
                             </Tooltip>
-                            
                         </Space>
-                        
                     </div>
-                    
-                   
                 )
             }
             

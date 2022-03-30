@@ -85,6 +85,7 @@ const SdrForm = (props) => {
     const [siteAddress,setSiteAddress] = useState('');
     const [selectedTeamCoordinator,setSelectedTeamCoordinator] = useState("")
     const [initialValue,setInitialValue]= useState("")
+    const [selectedINVCode,setSelectedINVCode]= useState("")
 
     const navigateTo = (path) => {
         history.push(path)
@@ -122,7 +123,8 @@ const SdrForm = (props) => {
             result=>{
                 console.log("inventory",result);
                 setDDLInventoryCode(result);
-                setInitialValue(result[0].invCode)
+                setInitialValue(result[0].invCodeId)
+                setSelectedINVCode(result[0].invCodeId)
             }
         )
     }
@@ -137,7 +139,7 @@ const SdrForm = (props) => {
     }
     
     const getRequestBaseDDL = () => {
-        API.getRequestBase(orderTypeId).then(
+        API.getRequestBase2(orderTypeId,wpid).then(
             result=>{
                 console.log("rb",result);
                 setDDLRequestBase(result);
@@ -155,6 +157,7 @@ const SdrForm = (props) => {
     }
     
     const getCTNameDDL = (invcodeid) => {
+        console.log(invcodeid,"ddlctnameinv")
         API.getCTName(invcodeid).then(
             result=>{
                 setDDLCTName(result);
@@ -216,6 +219,13 @@ const SdrForm = (props) => {
                 console.log("express",result);
             }
         )
+    }
+    function onChange(value) {
+        console.log(`selected ${value}`);
+    }
+      
+    function onSearch(val) {
+        console.log('search:', val);
     }
     
     const togleCheckbox = (value)=> {
@@ -316,7 +326,18 @@ const SdrForm = (props) => {
             }
         )
         console.log("dismantle body",body);
-  
+        API.postDismantleForm(body).then(
+            result=>{
+                if(result.status=="success")
+                {
+                    toast.success(result.message);
+                    navigateTo(`/mm/materialorder?odi=${result.returnVal}`)
+                }
+                else{
+                    toast.error(result.message)
+                }
+            }
+        )
     }
 
     function btnConfirm(values){
@@ -349,9 +370,9 @@ const SdrForm = (props) => {
         getSiteCondition();
         getTeamCoordinator()
         getHasExpressDelivery()
-        getCTNameDDL(1);
+        getCTNameDDL(selectedINVCode);
         getDeliveryDateDDL()
-    },[wpid,orderTypeId])
+    },[wpid,orderTypeId,selectedINVCode])
 
     const CardTitle = (title) => (
         <Title level={5}>
@@ -497,8 +518,17 @@ const SdrForm = (props) => {
                                     rules={[{ required: true, message: 'Please Select Subcon Name!' }]}
                                 >
                                     <Select 
+                                        
                                         onChange={(e) => handleSubcon(e)} 
-                                        placeholder="Select an option">
+                                        optionFilterProp="children"
+                                        placeholder="Select an option"
+                                        //onChange={onChange}
+                                        onSearch={onSearch}
+                                        showSearch
+                                        filterOption={(input, option) =>
+                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                        }
+                                    >
                                         {
                                             ddlSubcon.map(dst =>  <Select.Option value={dst.subconId}> 
                                                 {dst.subconName}</Select.Option>)
@@ -601,17 +631,15 @@ const SdrForm = (props) => {
                                         </Row>
                                     </Col>
                                     <Form.Item wrapperCol={{ offset: 8, span: 16 }} style={{marginTop:6}}>
-
-                                        <Col span={4}> 
-                                    
-                                            <Space direction="horizontal">
-                                                <Button type="primary" htmlType="submit" >Confirm</Button>
-                                       
-                                                <Button type="danger" onClick={btnCancel}>Cancel</Button>
-                                            </Space>
-                                   
-                                       
-                                        </Col>
+                                        <Row>
+                                            <Col span={4}> 
+                                                <Space direction="horizontal">
+                                                    <Button type="primary" htmlType="submit" >Confirm</Button>
+                               
+                                                    <Button type="danger" onClick={btnCancel}>Cancel</Button>
+                                                </Space>
+                                            </Col>
+                                        </Row>
                                     </Form.Item>
                                   
                                 </Row>
