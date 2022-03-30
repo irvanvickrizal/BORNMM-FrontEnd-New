@@ -4,7 +4,7 @@ import {Alert} from 'antd'
 import { put, takeLatest, select,call } from "redux-saga/effects";
 import { toast } from 'react-toastify';
 
-import {getLogisticPending,postAsDraftSuccess,setDeliveryTransport,setDataSiteInfo,setMaterialOrderDetail,setLsp,setDeliveryList,setDeliveryMode,postLogistikFormSuccess,setLogistikPending} from "../action/logistikFormAction"
+import {putLogistikFormSuccess,setDataSiteInfoLogistik,getLogisticPending,postAsDraftSuccess,setDeliveryTransport,setDataSiteInfo,setMaterialOrderDetail,setLsp,setDeliveryList,setDeliveryMode,postLogistikFormSuccess,setLogistikPending} from "../action/logistikFormAction"
 
 import { browserHistory } from 'react-router-dom'
 
@@ -20,6 +20,20 @@ function* sagaGetSiteInfo(action) {
         yield put (setDataSiteInfo(res.data))
     } catch (error) {
         console.log(error,'error get data site condition')
+    }
+}
+function* sagaGetSiteInfoLogistik(action) {
+    const token = yield select(state=>state.auth.token)
+    const dataOdi = yield select(state=>state.logistikFormReducer.odi)
+    const dataOdiLogistik = yield select(state=>state.logistikFormReducer.odiLogistik)
+    try {
+        const res = yield axios.get(`https://bornxldemo-api.nsnebast.com/materialmanagement/orderRequestLogisticGetDetail/${dataOdiLogistik}`,{headers: {
+            Authorization: `Bearer ${token}` 
+        }});
+        console.log(res,"result get Logistik Info")
+        yield put (setDataSiteInfoLogistik(res.data))
+    } catch (error) {
+        console.log(error,'error get logistik info')
     }
 }
 function* sagaGetMaterialOrder(action) {
@@ -103,8 +117,30 @@ function* sagaPostLogistikForm(action) {
         return res
         
     } catch (error) {
-        console.log(error,'error get data site condition')
+        console.log(error,'error put')
         yield toast.error(message);
+        return "error"
+       
+    }
+}
+function* sagaPutLogistikForm(action) {
+    const token = yield select(state=>state.auth.token)
+    const message = yield select(state=>state.logistikFormReducer.stats.data.message)
+   
+    try {
+        const res = yield axios.post(`https://bornxldemo-api.nsnebast.com/materialmanagement/orderRequestDetailFormLogisticUpdate`,action.payload
+            ,{headers: {
+                Authorization: `Bearer ${token}` 
+            }});
+        console.log(res,"result get site condition")
+        yield put (putLogistikFormSuccess(res))
+        yield toast.success(message);
+        yield put (getLogisticPending())
+        return res
+        
+    } catch (error) {
+        console.log(error,'error get data site condition')
+        yield toast.error();
         return "error"
        
     }
@@ -151,6 +187,8 @@ export function* SagaLogistikFormWorker() {
     yield takeLatest("POST_AS_DRAFT", sagaPostAsDraft);
     yield takeLatest("GET_LOGISTIK_PENDING", sagaGetLogistikPending);
     yield takeLatest("GET_DELIVERY_TRANSPORT", sagaGetDeliveryTransport);
+    yield takeLatest("GET_DATA_SITE_INFO_LOGISTIK", sagaGetSiteInfoLogistik);
+    yield takeLatest("PUT_LOGISTIK_FORM", sagaPutLogistikForm);
     
     
     

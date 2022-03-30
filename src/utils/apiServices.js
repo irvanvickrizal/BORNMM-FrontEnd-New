@@ -432,6 +432,7 @@ const postBOQASPOFile = (id,file) => POSTFile('boqref/boqAsPOUploadBulk',id,file
 const getInventoryDetail = () => GET("inventory/getInventoryDetail");
 
 
+
 const getBoqSummaryAsPlanBoq = (bid) => GETParam('boqref/boqGetSummaryAsPlanBOQCompletion',bid)
 const getListBoqAsPlan = (boqid) => GETParam('boqref/boqGetListAsPlanBOQ',boqid)
 const getDownloadPlanBoqCompletion = (boqid,poscopeid) => GETParam2('boqref/boqGetListAsPlanBOQCompletion',boqid,poscopeid)
@@ -489,6 +490,9 @@ const postMultiDelivery = (body) => POST('multidelivery/multiDeliveryAddGroup',b
 const getOrderRequestTracking =(odi) => GETParam('rpt/orderRequestProgressTracking',odi);
 const deleteWaitingRfp = (body) => PUT('materialmanagement/orderRequestLogisticTransportReject',body);
 
+// Logistic Task Rejection
+const getLogisticRejectionList = (uid) => GETParam("materialmanagement/orderRequestLogisticAssignmentReject",uid);
+
 const API ={
     getMultiDeliveryRequest,
     postMultiDelivery,
@@ -499,6 +503,7 @@ const API ={
     postPickUpCompletion,
     postLSPDirectToComplete,
     deleteEvidene,
+    getLogisticRejectionList,
     getEvidence,
     postFileHOConfirm,
     getLogLogistic,

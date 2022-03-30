@@ -1,10 +1,10 @@
-/* eslint-disable indent */
-/* eslint-disable no-undef */
-/* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-no-useless-fragment */
+/* eslint-disable no-undef */
 /* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable react/jsx-no-undef */
 import {
     getDataSiteInfo,
+    getDataSiteInfoLogistik,
     getDeliveryList,
     getDeliveryMode,
     getDeliveryTransport,
@@ -13,7 +13,8 @@ import {
     getMaterialOrderDetail,
     postAsDraft,
     postLogistikForm,
-    postLogistikFormSuccess
+    postLogistikFormSuccess,
+    putLogistikForm
 } from "@app/store/action/logistikFormAction"
 import {getDataSite} from "@app/store/action/siteConditionAction"
 import React, {useEffect, useState} from "react"
@@ -36,55 +37,36 @@ import {
 } from "antd"
 import HeaderChanger from "@app/components/cardheader/HeaderChanger"
 import moment from "moment"
-import "./style.css"
 import { useHistory } from "react-router-dom"
 import API from "@app/utils/apiServices"
 
 const { TextArea } = Input;
 
-export default function LogisticForm() {
-    const history = useHistory()
-    const dispatch = useDispatch()
+
+export default function LogisticTaskRejectionForm() {
     const {Title} = Typography
-    const [selectedButton, setSelectedButton] = useState(true)
+    const CardTitle = (title) => <Title level={5}>{title}</Title>
+    const dispatch = useDispatch()
     const {TabPane} = Tabs
+    const [page, setPage] = useState(1)
+    const history = useHistory()
     const [wh, setWh] = useState("")
     const [deliveryRequest, setDeliveryRequest] = useState("")
     const [deliveryTransport, setDeliveryTransport] = useState("")
     const [delivMode, setDeliveMode] = useState("")
     const [modeTransport, setModeTransport] = useState("")
-    const [page, setPage] = useState(1)
+
     const [remarks, setRemarks] = useState("")
     const [note,setNote] = useState("")
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [log, setDataLog] = useState([]);
     const [isModalCancelVisible, setIsModalCancelVisible] = useState(false);
 
+
     const customURL = window.location.href;
     const params = new URLSearchParams(customURL.split('?')[1])
     const odi = params.get('odi');
-
-
-  
-
-
-    const getLogLogistic = () => {
-        API.getLogLogistic(odi).then(
-            result=>{
-                setDataLog(result);
-                console.log("data Log List =>",result);
-            }
-        )
-    }
-
-    useEffect(() => {
-        dispatch(getDataSiteInfo())
-        dispatch(getMaterialOrderDetail())
-        dispatch(getLsp())
-        dispatch(getDeliveryList())
-        dispatch(getDeliveryMode())
-        getLogLogistic()
-    }, [dispatch])
+    // const ordlid = params.get('ordlid');
 
     const lsp = useSelector((state) => state.logistikFormReducer.dataLsp)
     const deliveryList = useSelector(
@@ -102,16 +84,33 @@ export default function LogisticForm() {
     const dataSite = useSelector(
         (state) => state.logistikFormReducer.dataSiteInfo
     )
+    const dataOrderLogistik = useSelector(
+        (state) => state.logistikFormReducer.dataSiteInfoLogistik
+    )
+    
+    const dataUser = useSelector(state=>state.auth.user.uid)
+    
     const DataDeliveryTransport = useSelector(state=> state.logistikFormReducer.detaDeliveryTransport)
     const dataOdi = useSelector(state=> state.logistikFormReducer.odi)
+    const dataOdiLog = useSelector(state=> state.logistikFormReducer.odiLogistik)
     const dataStats = useSelector(state=>state.logistikFormReducer.stats.status)
-    const dataStatsDraft = useSelector(state=>state.logistikFormReducer.statsDraft.status)
+
+
+    const getLogLogistic = () => {
+        API.getLogLogistic(odi).then(
+            result=>{
+                setDataLog(result);
+                console.log("data Log List =>",result);
+            }
+        )
+    }
+
 
     const cancelModal = () => {
         setIsModalVisible(false);
         console.log(isModalVisible);
     };
-    const index2 = deliveryRequest
+    // const index2 = deliveryRequest
 
     const handleDeliveryChange = (e) => {
         setDeliveryRequest(e)
@@ -119,17 +118,20 @@ export default function LogisticForm() {
         dispatch(getDeliveryTransport())
     };
 
+    const body = {"logisticOrderDetailId":dataOdiLog,"orderDetailId":dataOdi,"whTeamId":wh,"cdmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"LMBY":dataUser,"note":note}
+
     const handlePost = () => {
-         dispatch(postLogistikForm({"orderDetailId":dataOdi,"whTeamId":wh,"cdmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"note":note}))
+        dispatch(putLogistikForm(body))
+        console.log(body,)
 
         if( dataStats == 200){
-            history.push('/mm/taskasglogistic')
+            history.push('/mm/tasklogisticreject')
             cancelModal()
         }
         // console.log("test Bod=?>",{"orderDetailId":dataOdi,"whTeamId":wh,"cdmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"note":note})
     };
 
-   const saveDraft = () => {
+    const saveDraft = () => {
         dispatch(postAsDraft({"orderDetailId":dataOdi,"remarks":remarks}))
         if( dataStats == 200){
             history.push('/mm/taskasglogistic')
@@ -266,24 +268,35 @@ export default function LogisticForm() {
     ]
 
     
-    const CardTitle = (title) => <Title level={5}>{title}</Title>
+   
+
+    useEffect(() => {
+        dispatch(getDataSiteInfo())
+        dispatch(getMaterialOrderDetail())
+        dispatch(getLsp())
+        dispatch(getDeliveryList())
+        dispatch(getDeliveryMode())
+        getLogLogistic()
+        dispatch(getDataSiteInfoLogistik())
+    }, [dispatch])
 
     return (
+      
         <div>
-            <HeaderChanger title="Logistic Form" />
+            <HeaderChanger title="Logistic Task Rejection Form"/>
             <Col span={24}>
                 <div className="card card-primary">
-                <Card hoverable title={CardTitle("Site Info")}>
-                    {/* <div className="card-header align-middle">
+                    <Card hoverable title={CardTitle("Site Info")}>
+                        {/* <div className="card-header align-middle">
                         <h3 className="card-title">Site Info</h3>
                     </div> */}
-                    <div className="card-body">
-                        <Table
-                            columns={columns}
-                            pagination={false}
-                            dataSource={dataSite}
-                        />
-                    </div>
+                        <div className="card-body">
+                            <Table
+                                columns={columns}
+                                pagination={false}
+                                dataSource={dataSite}
+                            />
+                        </div>
                     </Card>
                 </div>
             </Col>
@@ -351,7 +364,7 @@ export default function LogisticForm() {
                                             </Form.Item>
                                             <Form.Item label="Origin">
                                                 <Input disabled 
-                                                 value={
+                                                    value={
                                                         dataSite[0].originName
                                                     } />
                                             </Form.Item>
@@ -399,48 +412,48 @@ export default function LogisticForm() {
                                                     {
                                                         required: true,
                                                         message:
-                                                            "Missing Inventory Code"
+                                                        "Missing Inventory Code"
                                                     }
                                                 ]}
                                             >
                                                 <Input disabled value={
                                                     moment( dataSite[0]
-                                                            .expectedDeliveryDate).format("YYYY-MM-DD")
+                                                        .expectedDeliveryDate).format("YYYY-MM-DD")
                                                        
-                                                    } />
+                                                } />
                                             </Form.Item>
                                             {/* <Form.Item>
-                                    <Button type="primary" htmlType="submit">Confirm</Button>
-                                    <Button type="danger">Cancel</Button>
-                                </Form.Item> */}
+                                <Button type="primary" htmlType="submit">Confirm</Button>
+                                <Button type="danger">Cancel</Button>
+                            </Form.Item> */}
                                         </Form>
                                     </Card>
                                 )}
                             </TabPane>
                             <TabPane tab="Material Order" key="2">
                           
-                                    <Table
-                                        scroll={{x: "100%"}}
-                                        bordered
-                                        columns={columnsMaterial}
-                                        pagination={false}
-                                        dataSource={materialOrder}
-                                    />
+                                <Table
+                                    scroll={{x: "100%"}}
+                                    bordered
+                                    columns={columnsMaterial}
+                                    pagination={false}
+                                    dataSource={materialOrder}
+                                />
                        
                             </TabPane>
                             <TabPane tab="Log" key="3">
                         
-                                    <Table
-                                        scroll={{x: "100%"}}
-                                        bordered
-                                        columns={columnsLog}
-                                        pagination={{
-                                            pageSizeOptions: ['5', '10', '20', '30', '40'],
-                                            showSizeChanger: true,
-                                            position: ["bottomLeft"],
-                                        }}
-                                        dataSource={log}
-                                    />
+                                <Table
+                                    scroll={{x: "100%"}}
+                                    bordered
+                                    columns={columnsLog}
+                                    pagination={{
+                                        pageSizeOptions: ['5', '10', '20', '30', '40'],
+                                        showSizeChanger: true,
+                                        position: ["bottomLeft"],
+                                    }}
+                                    dataSource={log}
+                                />
                              
                             </TabPane>
                         </Tabs>
@@ -453,10 +466,18 @@ export default function LogisticForm() {
                             wrapperCol={{span: 13}}
                             layout="horizontal"
                             onFinish={showModal}
-                                onFinishFailed={onFinishFailedAddMaterial}
+                            onFinishFailed={onFinishFailedAddMaterial}
+                            initialValues={{
+                                'whTeam':dataOrderLogistik[0].whTeamId,
+                                'deliveryRequest':dataOrderLogistik[0].cdmrId,
+                                'deliveryRequestTransport':dataOrderLogistik[0].cdmrId,
+                                "note": dataOrderLogistik[0].note,
+                                "transportTeam":dataOrderLogistik[0].transportTeamId,
+                                "modeTransport":dataOrderLogistik[0].transportModeId,
+                            }}
                         >
                             <Form.Item label="WH Team" name="whTeam" 
-                              rules={[{ required: true, message: 'Please Select WH Team!' }]}
+                                rules={[{ required: true, message: 'Please Select WH Team!' }]}
                             >
                                 <Select
                                     onChange={(e) => setWh(e)}
@@ -470,7 +491,7 @@ export default function LogisticForm() {
                                 </Select>
                             </Form.Item>
                             <Form.Item label="Delivery Request" name="deliveryRequest"
-                              rules={[{ required: true, message: 'Please Select Delivery Request!' }]}
+                                rules={[{ required: true, message: 'Please Select Delivery Request!' }]}
                             >
                                 <Select
                                     onChange={(e) => handleDeliveryChange(e)}
@@ -484,30 +505,24 @@ export default function LogisticForm() {
                                 </Select>
                             </Form.Item>
                             <Form.Item label="Delivery Request Transport" name="deliveryRequestTransport"
-                              rules={[{ required: true, message: 'Please Select Delivery Request Transport!' }]}
+                                rules={[{ required: true, message: 'Please Select Delivery Request Transport!' }]}
                             >
-                                {deliveryRequest == "" ? (
-                                    <Select
-                                        status="warning"
-                                        disabled
-                                        placeholder="Please Select Delivery Request Type"
-                                    ></Select>
-                                ) : (
-                                    <Select
-                                        onChange={(e) => setModeTransport(e)}
-                                        placeholder="Select an option"
-                                    >
-                                        {DataDeliveryTransport?.length == 0 ? (<></>):(DataDeliveryTransport?.map((e)=>(
-                                            <Select.Option value={e.transportModeId}>
-                                                {e.transportMode}
-                                            </Select.Option>
-                                        )))
-                                        }
-                                    </Select>
-                                )}
+                      
+                                <Select
+                                    onChange={(e) => setModeTransport(e)}
+                                    placeholder="Select an option"
+                                >
+                                    {DataDeliveryTransport?.length == 0 ? (<></>):(DataDeliveryTransport?.map((e)=>(
+                                        <Select.Option value={e.transportModeId}>
+                                            {e.transportMode}
+                                        </Select.Option>
+                                    )))
+                                    }
+                                </Select>
+                      
                             </Form.Item>
                             <Form.Item label="Transport Team" name="transportTeam"
-                              rules={[{ required: true, message: 'Please Select Transport Team!' }]}
+                                rules={[{ required: true, message: 'Please Select Transport Team!' }]}
                             >
                                 <Select
                                     onChange={(e) => setDeliveryTransport(e)}
@@ -519,11 +534,11 @@ export default function LogisticForm() {
                                             {inv.subconName}
                                         </Select.Option>
                                     )))
-                                   }
+                                    }
                                 </Select>
                             </Form.Item>
                             <Form.Item label="Mode Of Transport" name="modeTransport"
-                              rules={[{ required: true, message: 'Please Select Mode of Transport!' }]}
+                                rules={[{ required: true, message: 'Please Select Mode of Transport!' }]}
                             >
                                 <Select
                                     onChange={(e) => setDeliveMode(e)}
@@ -535,44 +550,44 @@ export default function LogisticForm() {
                                                 {inv.deliveryMode}
                                             </Select.Option>
                                         )))
-                                   }
+                                    }
                                 </Select>
                             </Form.Item>
                             <Form.Item label="Note" name="note" 
-                              rules={[{ required: true, message: 'Please Fill The Note Form!' }]}
+                                rules={[{ required: true, message: 'Please Fill The Note Form!' }]}
                             >
-                            <TextArea rows={4} onChange={(e) => setNote(e.target.value)}/>
+                                <TextArea rows={4} onChange={(e) => setNote(e.target.value)}/>
                             </Form.Item>
                             <Form.Item wrapperCol={{ offset: 8, span: 16 }} style={{marginTop:6,marginLeft:128}}>
-                            <Col span={4} md={8} sm={24}>
-                                <Space direction="horizontal">
-                                    <Button
-                                        type="danger"
-                                        onClick={() =>
-                                           showModalCancel()
-                                        }
-                                    >
-                                        Order Request Cancel
-                                    </Button>
-                                    <Button
-                                        type="primary"
-                                        htmlType="submit"
+                                <Col span={4} md={8} sm={24}>
+                                    <Space direction="horizontal">
+                                        <Button
+                                            type="danger"
+                                            onClick={() =>
+                                                showModalCancel()
+                                            }
+                                        >
+                                    Order Request Cancel
+                                        </Button>
+                                        <Button
+                                            type="primary"
+                                            htmlType="submit"
                                        
-                                    >
-                                        Confirm
-                                    </Button>
-                                    <Button
+                                        >
+                                    Confirm
+                                        </Button>
+                                        <Button
                                        
-                                        htmlType="submit"
-                                        onClick={() =>
-                                            cancelNavigate()
-                                        }
-                                    >
-                                        Back
-                                    </Button>
-                                </Space>
-                            </Col>
-                  </Form.Item>
+                                            htmlType="submit"
+                                            onClick={() =>
+                                                cancelNavigate()
+                                            }
+                                        >
+                                    Back
+                                        </Button>
+                                    </Space>
+                                </Col>
+                            </Form.Item>
                         </Form>
                       
                         
@@ -580,46 +595,46 @@ export default function LogisticForm() {
                 </Col>
             </Row>
             <Modal title="Confirm Order Request" visible={isModalVisible}  onCancel={cancelModal} 
-            footer={[
-                <Button key="back"  onClick={cancelModal}>
-                Cancel
-                </Button>,
-                <Button key="submit" type="primary" onClick={handlePost} >
-                Submit
-                </Button>,
+                footer={[
+                    <Button key="back"  onClick={cancelModal}>
+            Cancel
+                    </Button>,
+                    <Button key="submit" type="primary" onClick={handlePost} >
+            Submit
+                    </Button>,
                 
-            ]} >
+                ]} >
                 <Typography>Are you sure you want to confirm  ?
-</Typography>
+                </Typography>
       
             </Modal>
             <Modal title="Cancel Order Request" visible={isModalCancelVisible}  onCancel={cancelModal2} 
-            footer={
-                remarks.length <= 10 ? ( [
+                footer={
+                    remarks.length <= 10 ? ( [
                 
                 
-                    <Button disabled key="back" type="danger" onClick={saveDraft}>
-                    Reject
-                    </Button>,
-                    <Button key="submit"  onClick={cancelModal2} >
-                    Close
-                    </Button>,
+                        <Button disabled key="back" type="danger" onClick={saveDraft}>
+                Reject
+                        </Button>,
+                        <Button key="submit"  onClick={cancelModal2} >
+                Close
+                        </Button>,
                     
-                ]):( [
+                    ]):( [
                 
                 
-                    <Button key="back" type="danger" onClick={saveDraft}>
-                    Reject
-                    </Button>,
-                    <Button key="submit"  onClick={cancelModal2} >
-                    Close
-                    </Button>,
+                        <Button key="back" type="danger" onClick={saveDraft}>
+                Reject
+                        </Button>,
+                        <Button key="submit"  onClick={cancelModal2} >
+                Close
+                        </Button>,
                     
-                ])
-               } >
+                    ])
+                } >
                 <Typography>Reason Of Cancelation :
-</Typography>
-<TextArea rows={4} onChange={(e) => setRemarks(e.target.value)}/>
+                </Typography>
+                <TextArea rows={4} onChange={(e) => setRemarks(e.target.value)}/>
       
             </Modal>
         </div>

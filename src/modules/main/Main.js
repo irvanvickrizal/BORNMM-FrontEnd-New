@@ -63,6 +63,9 @@ import OrderList from "@app/pages/OrderList/OrderList"
 import PickUpCompletion from "@app/pages/PickUpCompletion/PickUpCompletion"
 import MultiDelivery from "@app/pages/MultiDelivery/MultiDelivery"
 import OrderRequestTracking from "@app/OrderRequestTracking/OrderRequestTracking"
+import LogisticTaskRejection from "@app/pages/LogisticTaskRejection/LogisticTaskRejection"
+import LogisticTaskRejectionForm from "@app/pages/LogisticTaskRejection/LogisticTaskRejectionForm"
+
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -393,6 +396,18 @@ const Main = () => {
                                             exact
                                             path="/rpt/orderReqTracking"
                                             component={OrderRequestTracking}
+                                            
+                                        />
+                                        <Route
+                                            exact
+                                            path="/mm/tasklogisticreject"
+                                            component={LogisticTaskRejection}
+                                            
+                                        />
+                                        <Route
+                                            exact
+                                            path="/mm/logisticformreject"
+                                            component={LogisticTaskRejectionForm}
                                             
                                         />
                                     </Switch>
