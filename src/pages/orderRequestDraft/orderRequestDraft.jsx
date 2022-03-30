@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React,{useEffect} from 'react';
 import HeaderChanger from '@app/components/cardheader/HeaderChanger';
-import API  from '../../utils/apiServices';
+import API from '@app/utils/apiServices';
 import {useSelector} from 'react-redux';
 import TableOrderRequestDraft from './table' ;
 

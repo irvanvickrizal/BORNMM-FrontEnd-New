@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 import React,{useState,useEffect} from 'react'
 import Search from '@app/components/searchcolumn/SearchColumn'
 import moment from "moment"
@@ -118,9 +119,14 @@ export default function TableOrderRequestTracking() {
             title : "Logistic Completed Date",
             render:(record)=>{
                 return (
-                    <Space>
-                        <p>{moment(record.logisticCompletedDate).format("YYYY-MM-DD")}</p>
-                    </Space>
+                    <div>
+                        {record.logisticCompletedDate !== null ? (<> <Space>
+                            <p>{moment(record.logisticCompletedDate).format("YYYY-MM-DD")}</p>
+                        </Space></>):(<>
+                        </>)}
+                    </div>
+                   
+                   
                 )
             },
             ...Search('logisticCompletedDate'),
@@ -129,8 +135,20 @@ export default function TableOrderRequestTracking() {
       
         {
             title : "Approve Date",
-            dataIndex:'approveDate',
+         
             responsive: ['md'],
+            render:(record)=>{
+                return (
+                    <div>
+                        {record.approveDate !== null ? (<> <Space>
+                            <p>{moment(record.approveDate).format("YYYY-MM-DD hh:mm:ss")}</p>
+                        </Space></>):(<>
+                        </>)}
+                    </div>
+                   
+                   
+                )
+            },
             ...Search('approveDate'),
         },
         {
@@ -163,8 +181,8 @@ export default function TableOrderRequestTracking() {
         },
         {
             title : "Workpackage Id",
-            dataIndex:'workpackageid',
-            ...Search('workpackageid'),
+            dataIndex:'workpackageId',
+            ...Search('workpackageId'),
         },
         {
             title : "Package Name",
@@ -178,17 +196,7 @@ export default function TableOrderRequestTracking() {
             dataIndex:'logisticCompletedBy',
             ...Search('logisticCompletedBy'),
         },
-        {
-            title : "Logistic Completed Date",
-            render:(record)=>{
-                return (
-                    <Space>
-                        <p>{moment(record.logisticCompletedDate).format("YYYY-MM-DD")}</p>
-                    </Space>
-                )
-            },
-            ...Search('logisticCompletedDate'),
-        },
+    
 
         {
             title : "LSP Name",
@@ -199,9 +207,13 @@ export default function TableOrderRequestTracking() {
             title : "RFP Date",
             render:(record)=>{
                 return (
-                    <Space>
-                        <p>{moment(record.rfpDate).format("YYYY-MM-DD")}</p>
-                    </Space>
+                    <div>
+                        {record.rfpDate !== null ? (<Space>
+                            <p>{moment(record.rfpDate).format("YYYY-MM-DD")}</p>
+                        </Space>):(<></>)}
+                        
+                    </div>
+                   
                 )
             },
             ...Search('rfpDate'),
@@ -209,7 +221,7 @@ export default function TableOrderRequestTracking() {
         
 
         {
-            title : "Total Collies",
+            title : "Total Volume",
             dataIndex:'totalCollies',
             ...Search('totalCollies'),
         },
@@ -229,9 +241,13 @@ export default function TableOrderRequestTracking() {
             title : "Pick Up Date",
             render:(record)=>{
                 return (
-                    <Space>
-                        <p>{moment(record.pickupDate).format("YYYY-MM-DD")}</p>
-                    </Space>
+                    <div>
+                        {record.pickupDate !== null ? (  <Space>
+                            <p>{moment(record.pickupDate).format("YYYY-MM-DD")}</p>
+                        </Space>):(<></>)}
+                      
+                    </div>
+                  
                 )
             },
             ...Search('rfpDpickupDateate'),
@@ -241,9 +257,14 @@ export default function TableOrderRequestTracking() {
             title : "Delivery Complete Date",
             render:(record)=>{
                 return (
-                    <Space>
-                        <p>{moment(record.deliveredCompletedDate).format("YYYY-MM-DD")}</p>
-                    </Space>
+                    <div>
+                        {record.deliveredCompletedDate !== null ? (  <Space>
+                            <p>{moment(record.deliveredCompletedDate).format("YYYY-MM-DD")}</p>
+                        </Space>):(<></>)}
+                    </div>
+                    
+                
+                  
                 )
             },
             ...Search('deliveredCompletedDate'),
@@ -293,7 +314,7 @@ export default function TableOrderRequestTracking() {
                     </Col>
                 </Row>
                 <Table
-                    scroll={{ x: '200%' }}
+                    scroll={{ x: '300%' }}
 
                     // expandable={{ expandedRowRender }}
                     columns={columns}

@@ -114,6 +114,7 @@ export default function AprovalTaskPendingForm() {
             title: "Package Name",
             dataIndex: "packageName"
         },
+     
         {
             title: "Project Contract",
             dataIndex: "projectName"
@@ -159,11 +160,17 @@ export default function AprovalTaskPendingForm() {
         },
         {
             title: "Incoming Date",
-            dataIndex: "incomingDate"
+            dataIndex: "incomingDate",
+            render : (record) =>{return(
+                <p>{moment(record.incomingDate).format("YYYY-MM-DD hh:mm:ss")}</p>
+            )}
         },
         {
             title: "Execute Date",
-            dataIndex: "executeDate"
+            dataIndex: "executeDate",
+            render : (record) =>{return(
+                <p>{moment(record.executeDate).format("YYYY-MM-DD hh:mm:ss")}</p>
+            )}
         },
 
         {
@@ -172,7 +179,7 @@ export default function AprovalTaskPendingForm() {
         },
         {
             title: "Event Desc",
-            dataIndex: "taskEventDesc "
+            dataIndex: "taskEventDesc"
         },
         {
             title: "Remarks",
@@ -195,8 +202,8 @@ export default function AprovalTaskPendingForm() {
             
         },
         {
-            title: "Inventory Code",
-            dataIndex: "inventoryCode"
+            title: "Propose Delivery Mode",
+            dataIndex: "proposeDeliveryMode"
         },
        
         {
@@ -227,11 +234,11 @@ export default function AprovalTaskPendingForm() {
             title: "Request Date",
             dataIndex: "requestDate",
             render : (text) =>{return(
-                <p>{moment(text).format("YYYY-MM-DD")}</p>
+                <p>{moment(text).format("YYYY-MM-DD hh.mm.ss")}</p>
             )}
         },
         {
-            title: "Delivery Date",
+            title: "Expected Delivery Date",
             dataIndex: "expectedDeliveryDate",
             render : (text) =>{return(
                 <p>{moment(text).format("YYYY-MM-DD")}</p>

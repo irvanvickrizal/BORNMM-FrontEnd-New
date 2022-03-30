@@ -281,6 +281,11 @@ export default function MaterialOrder() {
             key:"orderDetailId"
         },
         {
+            title:"Propose Delivery Mode",
+            dataIndex:"proposeDeliveryMode",
+            key:"orderDetailId"
+        },
+        {
             title:"Subcon",
             dataIndex:"recipientOrDismantledBy",
             key:"orderDetailId"

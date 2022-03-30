@@ -492,7 +492,7 @@ const postMultiDeliveryArrangement = (body) => POST('multidelivery/multiDelivery
 const assignMultiDelivery = (body) => POST('multidelivery/multiDeliveryAssignTaskToTransport',body)
 const deleteMultiDeliveryRequest = (mdid) => DELETE('multidelivery/multiDeliveryDeleteOrderRequest',mdid)
 
-const getOrderRequestTracking =(odi) => GETParam('audittrail/auditTrailOrderRequestGetList',odi);
+const getOrderRequestTracking =(odi) => GETParam('rpt/orderRequestProgressTracking',odi);
 const deleteWaitingRfp = (body) => PUT('materialmanagement/orderRequestLogisticTransportReject',body);
 
 const API ={
