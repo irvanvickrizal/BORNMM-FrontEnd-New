@@ -4,17 +4,22 @@ import {ContentHeader, Button} from '@components';
 import ActivityTab from './ActivityTab';
 import TimelineTab from './TimelineTab';
 import SettingsTab from './SettingsTab';
+import {useDispatch, useSelector} from 'react-redux';
+
+import HeaderChanger from '@app/components/cardheader/HeaderChanger'
 
 const Profile = () => {
+    
     const [activeTab, setActiveTab] = useState('ACTIVITY');
     const [t] = useTranslation();
-
+    const user = useSelector((state) => state.auth.user);
     const toggle = (tab) => {
         if (activeTab !== tab) setActiveTab(tab);
     };
 
     return (
         <>
+            <HeaderChanger title="Profile"/>
             <ContentHeader title="Profile" />
             <section className="content">
                 <div className="container-fluid">
@@ -30,35 +35,11 @@ const Profile = () => {
                                         />
                                     </div>
                                     <h3 className="profile-username text-center">
-                                        Nina Mcintire
+                                        {user.name}
                                     </h3>
                                     <p className="text-muted text-center">
-                                        Software Engineer
+                                        {user.email}
                                     </p>
-                                    <ul className="list-group list-group-unbordered mb-3">
-                                        <li className="list-group-item">
-                                            <b>{t('header.user.followers')}</b>
-
-                                            <span className="float-right">
-                                                1,322
-                                            </span>
-                                        </li>
-                                        <li className="list-group-item">
-                                            <b>{t('views.user.following')}</b>
-                                            <span className="float-right">
-                                                543
-                                            </span>
-                                        </li>
-                                        <li className="list-group-item">
-                                            <b>{t('header.user.friends')}</b>
-                                            <span className="float-right">
-                                                13,287
-                                            </span>
-                                        </li>
-                                    </ul>
-                                    <Button block>
-                                        {t('main.label.follow')}
-                                    </Button>
                                 </div>
                                 {/* /.card-body */}
                             </div>

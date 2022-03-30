@@ -326,6 +326,14 @@ const DismantleForm = (props) => {
         navigateTo("/mm/sitelistdr");
     }
 
+    function onChange(value) {
+        console.log(`selected ${value}`);
+    }
+      
+    function onSearch(val) {
+        console.log('search:', val);
+    }
+
     useEffect(() => {
         console.log('wpid:',wpid,"ordertype:",orderTypeId)
         getSiteInfo();
@@ -498,7 +506,13 @@ const DismantleForm = (props) => {
                                 >
                                     <Select 
                                         onChange={(e) => handleSelectedSubcon(e)} 
-                                        placeholder="Select an option">
+                                        placeholder="Select an option"
+                                        // onSearch={onSearch}
+                                        showSearch
+                                        filterOption={(input, option) =>
+                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                        }
+                                    >
                                         {
                                             ddlSubcon.map(dst =>  <Select.Option value={dst.subconId}> 
                                                 {dst.subconName}</Select.Option>)
@@ -571,7 +585,7 @@ const DismantleForm = (props) => {
                                 </Form.Item> */}
                                 <Divider orientation="center" />
                                 <Row>
-                                    <Col span={20}>
+                                    <Col span={18}>
                                         <Row>
                                             <Col span={3}>Requester</Col>
                                             <Col span={1}>:</Col>

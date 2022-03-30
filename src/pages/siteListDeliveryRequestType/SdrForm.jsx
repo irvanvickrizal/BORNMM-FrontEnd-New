@@ -217,6 +217,13 @@ const SdrForm = (props) => {
             }
         )
     }
+    function onChange(value) {
+        console.log(`selected ${value}`);
+    }
+      
+    function onSearch(val) {
+        console.log('search:', val);
+    }
     
     const togleCheckbox = (value)=> {
         setChecked(value)
@@ -321,7 +328,7 @@ const SdrForm = (props) => {
                 if(result.status=="success")
                 {
                     toast.success(result.message);
-                    navigateTo(`/sitelist/materialorder?odi=${result.returnVal}`)
+                    navigateTo(`/mm/materialorder?odi=${result.returnVal}`)
                 }
                 else{
                     toast.error(result.message)
@@ -508,8 +515,17 @@ const SdrForm = (props) => {
                                     rules={[{ required: true, message: 'Please Select Subcon Name!' }]}
                                 >
                                     <Select 
+                                        
                                         onChange={(e) => handleSubcon(e)} 
-                                        placeholder="Select an option">
+                                        optionFilterProp="children"
+                                        placeholder="Select an option"
+                                        //onChange={onChange}
+                                        onSearch={onSearch}
+                                        showSearch
+                                        filterOption={(input, option) =>
+                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                        }
+                                    >
                                         {
                                             ddlSubcon.map(dst =>  <Select.Option value={dst.subconId}> 
                                                 {dst.subconName}</Select.Option>)
@@ -612,17 +628,15 @@ const SdrForm = (props) => {
                                         </Row>
                                     </Col>
                                     <Form.Item wrapperCol={{ offset: 8, span: 16 }} style={{marginTop:6}}>
-
-                                        <Col span={4}> 
-                                    
-                                            <Space direction="horizontal">
-                                                <Button type="primary" htmlType="submit" >Confirm</Button>
-                                       
-                                                <Button type="danger" onClick={btnCancel}>Cancel</Button>
-                                            </Space>
-                                   
-                                       
-                                        </Col>
+                                        <Row>
+                                            <Col span={4}> 
+                                                <Space direction="horizontal">
+                                                    <Button type="primary" htmlType="submit" >Confirm</Button>
+                               
+                                                    <Button type="danger" onClick={btnCancel}>Cancel</Button>
+                                                </Space>
+                                            </Col>
+                                        </Row>
                                     </Form.Item>
                                   
                                 </Row>
