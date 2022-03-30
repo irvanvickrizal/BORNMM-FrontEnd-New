@@ -345,6 +345,7 @@ const getSiteInfo = (wpid) => GETParam('sitelist/siteDetail',wpid);
 const getInventoryActiveList = () => GET('minventory/inventoryCodeGetActiveList');
 const getSiteLocation = () => GET('netype/netypegetlist');
 const getRequestBase = (ordertypeid) => GETParam('deliveryreqtype/RequestTypeGetListBasedOnOrderType',ordertypeid);
+const getRequestBase2 = (ordertypeid,wpid) => GETParam2('deliveryreqtype/RequestTypeGetListBasedOnOrderTypeAndWPID',ordertypeid,wpid);
 const getCTName = (invcodeid) => GETParam('materialmanagement/GetMasterCTBasedInvCodeId',invcodeid);
 const getOrigin = (wpid,ordertypeid) => GETParam2('dopordertype/doporigingetlist',wpid,ordertypeid);
 const getDestination = (wpid,ordertypeid) => GETParam2('dopordertype/dopdestinationgetlist',wpid,ordertypeid);
@@ -496,6 +497,7 @@ const getOrderRequestTracking =(odi) => GETParam('rpt/orderRequestProgressTracki
 const deleteWaitingRfp = (body) => PUT('materialmanagement/orderRequestLogisticTransportReject',body);
 
 const API ={
+    getRequestBase2,
     assignMultiDelivery,
     deleteMultiDeliveryRequest,
     getDDLTransportAssignTo2,

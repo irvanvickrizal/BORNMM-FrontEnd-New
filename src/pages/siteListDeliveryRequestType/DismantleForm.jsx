@@ -105,12 +105,13 @@ const DismantleForm = (props) => {
             result=>{
                 console.log("inventory",result);
                 setDDLInventoryCode(result);
+                setSelectedInvCode(result[0].invCodeId);
             }
         )
     }
     
     const getRequestBaseDDL = () => {
-        API.getRequestBase(orderTypeId).then(
+        API.getRequestBase2(orderTypeId,wpid).then(
             result=>{
                 console.log("rb",result);
                 setDDLRequestBase(result);
@@ -183,6 +184,10 @@ const DismantleForm = (props) => {
     const handleIsExpress = (value)=> {
         setChecked(value)
         console.log("v",value)
+    }
+
+    const handleCTNameChange = (value)=> {
+        console.log("ctchange",value)
     }
     
     const getSiteCondition = () => {
@@ -279,7 +284,7 @@ const DismantleForm = (props) => {
         return  moment(current).add(1,'d') < moment().endOf('day')
     }
 
-    const postDismantleForm = () => {
+    const postDismantleForm = (data) => {
         const body = (
             {
                 "workpackageid":wpid,            
@@ -290,7 +295,7 @@ const DismantleForm = (props) => {
                 "originId":selectedOrigin,        
                 "destinationId":selectedDestination,        
                 "siteConditionId":selectedSiteCondition,
-                "CTId":selectedCTName,
+                "CTId":data.ctName,
                 "packetTypeId":selectedPacketType,
                 "neTypeId" : selectedSiteLocation,
                 "siteAddress": siteAddress,
@@ -304,7 +309,7 @@ const DismantleForm = (props) => {
                 if(result.status=="success")
                 {
                     toast.success(result.message);
-                    navigateTo(`/sitelist/materialorder?odi=${result.returnVal}`)
+                    navigateTo(`/mm/materialorder?odi=${result.returnVal}`)
                 }
                 else{
                     toast.error(result.message)
@@ -313,9 +318,9 @@ const DismantleForm = (props) => {
         )
     }
 
-    function btnConfirm(){
-    
-        postDismantleForm();
+    function btnConfirm(data){
+        console.log("confirmbutton",data)
+        postDismantleForm(data);
     
     }
     const onFinishFailedAddMaterial = (errorInfo) => {
@@ -346,8 +351,9 @@ const DismantleForm = (props) => {
         getSubcon();
         getSiteCondition();
         getHasExpressDelivery();
+        getCTNameDDL(selectedInvCode);
         // getTeamCoordinator();
-    },[wpid,orderTypeId,express])
+    },[wpid,orderTypeId,express,selectedInvCode])
 
     const CardTitle = (title) => (
         <Title level={5}>
@@ -378,8 +384,8 @@ const DismantleForm = (props) => {
                                 layout="horizontal"
                                 initialValues={{
                                     'isExpressDelivery':false,
-                                    'ctName':1,
-                                    'inventoryCode':1
+                                    'inventoryCode':1,
+                                    'ctName':1
                                 }}
                                 onFinish={btnConfirm}
                                 onFinishFailed={onFinishFailedAddMaterial}
@@ -430,29 +436,15 @@ const DismantleForm = (props) => {
                                         }
                                     </Select>
                                 </Form.Item>
-                                <Form.Item label="CT Name"
-                                    name="ctName"
-                                    rules={[{ required: true, message: 'Please Select CT Name'}]}
+                                <Form.Item label="CT Name" name="ctName"
+                                    rules={[{ required: true, message: 'Please Select CT Name!' }]}
                                 >
-                                    {/* {
-                                        selectedInvCode == '' ?  <Select status="warning" >
-                                        </Select>
-                                            :
-                                            <Select 
-                                                onChange={(e) => setSelectedCTName(e)} 
-                                                placeholder="Select an option">
-                                                {
-                                                    ddlCTName.map(slc =>  <Select.Option value={slc.ctId}> 
-                                                        {slc.ctName}</Select.Option>)
-                                                }
-                                            </Select>
-                                    } */}
                                     {
                                         selectedInvCode == '' ?  <Select status="warning" disabled placeholder="Please Select Inventory Code">
                                         </Select>
                                             :
                                             <Select 
-                                                onChange={(e) => setSelectedCTName(e)} 
+                                                onChange={(e) => handleCTNameChange(e)} 
                                                 placeholder="Select an option">
                                                 {
                                                     ddlCTName.map(slc =>  <Select.Option value={slc.ctId}> 

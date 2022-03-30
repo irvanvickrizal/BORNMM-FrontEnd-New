@@ -85,6 +85,7 @@ const SdrForm = (props) => {
     const [siteAddress,setSiteAddress] = useState('');
     const [selectedTeamCoordinator,setSelectedTeamCoordinator] = useState("")
     const [initialValue,setInitialValue]= useState("")
+    const [selectedINVCode,setSelectedINVCode]= useState("")
 
     const navigateTo = (path) => {
         history.push(path)
@@ -122,7 +123,8 @@ const SdrForm = (props) => {
             result=>{
                 console.log("inventory",result);
                 setDDLInventoryCode(result);
-                setInitialValue(result[0].invCode)
+                setInitialValue(result[0].invCodeId)
+                setSelectedINVCode(result[0].invCodeId)
             }
         )
     }
@@ -137,7 +139,7 @@ const SdrForm = (props) => {
     }
     
     const getRequestBaseDDL = () => {
-        API.getRequestBase(orderTypeId).then(
+        API.getRequestBase2(orderTypeId,wpid).then(
             result=>{
                 console.log("rb",result);
                 setDDLRequestBase(result);
@@ -155,6 +157,7 @@ const SdrForm = (props) => {
     }
     
     const getCTNameDDL = (invcodeid) => {
+        console.log(invcodeid,"ddlctnameinv")
         API.getCTName(invcodeid).then(
             result=>{
                 setDDLCTName(result);
@@ -367,9 +370,9 @@ const SdrForm = (props) => {
         getSiteCondition();
         getTeamCoordinator()
         getHasExpressDelivery()
-        getCTNameDDL(1);
+        getCTNameDDL(selectedINVCode);
         getDeliveryDateDDL()
-    },[wpid,orderTypeId])
+    },[wpid,orderTypeId,selectedINVCode])
 
     const CardTitle = (title) => (
         <Title level={5}>

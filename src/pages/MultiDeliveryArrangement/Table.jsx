@@ -93,7 +93,7 @@ const MultiDeliveryArrangementPanel = () => {
                     if(result.status=="success")
                     {
                         toast.success(result.message)
-                        getMultiDeliveryRequestList();
+                        getMultiDeliveryRequestList(mdid);
                     }
                 }
             )
@@ -195,6 +195,18 @@ const MultiDeliveryArrangementPanel = () => {
             dataIndex:'lspName',
         },
         {
+            title : "Total Order Req Group",
+            dataIndex:'totalOrderRequestGroup',
+        },
+        {
+            title : "Total Collies",
+            dataIndex:'totalCollies',
+        },
+        {
+            title : "Total Volume",
+            dataIndex:'totalVolume',
+        },
+        {
             title : "Transport Team",
             dataIndex:'transportTeam',
         },
@@ -289,7 +301,7 @@ const MultiDeliveryArrangementPanel = () => {
                 return (
                     <div>  
                         <Space>
-                            <Tooltip title="Cancel Task">
+                            <Tooltip title="Delete Order Request">
                                 <IconButton size="small" color="error" onClick={()=>handleDeleteRequestList(record)}>
                                     <DeleteOutlined />
                                 </IconButton>
@@ -455,10 +467,17 @@ const MultiDeliveryArrangementPanel = () => {
                         <Row>
                             <Col md={24} sm={24}>
                                 <div className='float-right'>
-                                    <Tooltip title="Add Request List">
-                                        <Button type="primary" onClick={handleSubmit}>Submit</Button>
+                                    {multiDeliveryRequestList=='' ? 
+                                        <Tooltip title="Add Request List">
+                                            <Button type="primary" disabled onClick={handleSubmit}>Submit</Button>
 
-                                    </Tooltip>
+                                        </Tooltip> :
+                                        <Tooltip title="Add Request List">
+                                            <Button type="primary" onClick={handleSubmit}>Submit</Button>
+
+                                        </Tooltip>
+                                    }
+                                    
                                 </div>
                             </Col>
                         </Row>  
