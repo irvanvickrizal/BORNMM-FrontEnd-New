@@ -93,7 +93,8 @@ const MultiDeliveryArrangementPanel = () => {
                     if(result.status=="success")
                     {
                         toast.success(result.message)
-                        getMultiDeliveryRequestList(mdid);
+                        getMultiDeliveryDetail(mdid)
+                        getMultiDeliveryRequestList(mdid)
                     }
                 }
             )
@@ -166,6 +167,7 @@ const MultiDeliveryArrangementPanel = () => {
                 console.log(result,"rst add")
                 toast.success(result.message)
                 getMultiDeliveryRequestPending()
+                getMultiDeliveryDetail(mdid)
                 getMultiDeliveryRequestList(mdid)
             }
         )
@@ -275,7 +277,7 @@ const MultiDeliveryArrangementPanel = () => {
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(record.rfpDate).format("YYYY-MM-DD")}</p>
+                        <p>{moment(record.rfpDate).format("YYYY-MM-DD HH:mm:ss")}</p>
                     </Space>
                 )
             },
@@ -550,13 +552,7 @@ const MultiDeliveryArrangementPanel = () => {
                                     }
                                 </Select>
                             </Form.Item>
-                            <Form.Item
-                                // hidden
-                                label="Notes"
-                                name="notes"
-                            >
-                                <Input.TextArea/>
-                            </Form.Item>
+                            
                             <Form.Item wrapperCol={{ offset: 10, span: 14 }}>
                                 <Space>
                                     <Button type="primary" htmlType="submit">

@@ -58,6 +58,7 @@ const DismantleForm = (props) => {
     const [ddlPacketType,setDDLPacketType] = useState([]);
     const [ddlSubcon,setDDLSubcon] = useState([]);
     const [ddlSiteCondition,setDDLSiteCondition] = useState([]);
+    const [ddlIDeliveryMode,setDDLDeliveryMode] = useState([]);
     const current = new Date();
     const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
     
@@ -76,6 +77,7 @@ const DismantleForm = (props) => {
     const [selectedTeamCoordinator,setSelectedTeamCoordinator] = useState('');
     const [ddlTeamCoordinator,setDDLTeamCoordinator] = useState([]);
     const [checked,setChecked] = useState(false);
+    const [selectedDeliveryMode,setSelectedDeliveryMode] = useState('');
 
     const [express,setExpress] = useState(false);
     const navigateTo = (path) => {
@@ -106,6 +108,16 @@ const DismantleForm = (props) => {
                 console.log("inventory",result);
                 setDDLInventoryCode(result);
                 setSelectedInvCode(result[0].invCodeId);
+            }
+        )
+    }
+
+    const getDeliveryModeDDL = () => {
+        API.getDdlDeliveryDate(orderTypeId).then(
+            result=>{
+                console.log("propose",result);
+                setDDLDeliveryMode(result);
+                // setInitialValue(result[0].invCode)
             }
         )
     }
@@ -299,6 +311,7 @@ const DismantleForm = (props) => {
                 "packetTypeId":selectedPacketType,
                 "neTypeId" : selectedSiteLocation,
                 "siteAddress": siteAddress,
+                "proposeDeliveryModeId":data.proposeDelivery,
                 "expectedDeliveryDate":deliveryDate,
                 "requestBy": user.uid
             }
@@ -352,6 +365,7 @@ const DismantleForm = (props) => {
         getSiteCondition();
         getHasExpressDelivery();
         getCTNameDDL(selectedInvCode);
+        getDeliveryModeDDL()
         // getTeamCoordinator();
     },[wpid,orderTypeId,express,selectedInvCode])
 
@@ -550,6 +564,20 @@ const DismantleForm = (props) => {
                                     <Input.TextArea 
                                         onChange={(e) => setSiteAddress(e.target.value)}  
                                     />
+                                </Form.Item>
+                                <Form.Item label="Propose Delivery Mode" name="proposeDelivery"
+                                    rules={[{ required: true, message: 'Please Select Packet Type!' }]}
+                                >
+                                    <Select 
+                                        onChange={(e) => setSelectedDeliveryMode(e)} 
+                                        placeholder="Select an option"
+                                       
+                                    >
+                                        {
+                                            ddlIDeliveryMode.map(dst =>  <Select.Option value={dst.deliveryModeId}> 
+                                                {dst.deliveryMode}</Select.Option>)
+                                        }
+                                    </Select>
                                 </Form.Item>
                                 <Form.Item label="Delivery Date" name="deliveryDate" rules={[{ required: true, message: 'Please Select Delivery Date' }]}>
                                     {checked ? <DatePicker
