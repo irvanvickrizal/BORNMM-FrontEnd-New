@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 
 import {putLogistikFormSuccess,setDataSiteInfoLogistik,getLogisticPending,postAsDraftSuccess,setDeliveryTransport,setDataSiteInfo,setMaterialOrderDetail,setLsp,setDeliveryList,setDeliveryMode,postLogistikFormSuccess,setLogistikPending} from "../action/logistikFormAction"
 
-import { browserHistory } from 'react-router-dom'
+
 
 
 function* sagaGetSiteInfo(action) {
@@ -139,8 +139,9 @@ function* sagaPutLogistikForm(action) {
         return res
         
     } catch (error) {
+
         console.log(error,'error get data site condition')
-        yield toast.error();
+        yield toast.error("error");
         return "error"
        
     }

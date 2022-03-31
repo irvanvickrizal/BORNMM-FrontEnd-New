@@ -505,13 +505,25 @@ const deleteWaitingRfp = (body) => PUT('materialmanagement/orderRequestLogisticT
 
 // Logistic Task Rejection
 const getLogisticRejectionList = (uid) => GETParam("materialmanagement/orderRequestLogisticAssignmentReject",uid);
+const putLogisticRejection = (body) => POST("materialmanagement/orderRequestDetailFormLogisticUpdate",body);
+const postLogisticCancel = (body) => POST("materialmanagement/orderRequestDetailCancellation",body);
+
+// 
+const postLogisticForm = (body) => POST("materialmanagement/orderRequestDetailFormLogisticSubmit",body);
+const postLogisticCancelForm = (body) => POST("materialmanagement/orderRequestDetailCancellation",body);
+
+
 
 const API ={
     putDeleteMultiDeliveryRequest,
     postMultiDeliveryCancelAssigned,
+    postLogisticForm,
+    postLogisticCancelForm,
     getMultiDeliveryAssigned,
     getMultiDeliveryCompletion,
     getRequestBase2,
+    postLogisticCancel,
+    putLogisticRejection,
     assignMultiDelivery,
     deleteMultiDeliveryRequest,
     getDDLTransportAssignTo2,

@@ -14,7 +14,8 @@ import {
     postAsDraft,
     postLogistikForm,
     postLogistikFormSuccess,
-    putLogistikForm
+    putLogistikForm,
+    
 } from "@app/store/action/logistikFormAction"
 import {getDataSite} from "@app/store/action/siteConditionAction"
 import React, {useEffect, useState} from "react"
@@ -39,6 +40,7 @@ import HeaderChanger from "@app/components/cardheader/HeaderChanger"
 import moment from "moment"
 import { useHistory } from "react-router-dom"
 import API from "@app/utils/apiServices"
+import { toast } from 'react-toastify';
 
 const { TextArea } = Input;
 
@@ -55,6 +57,7 @@ export default function LogisticTaskRejectionForm() {
     const [deliveryTransport, setDeliveryTransport] = useState("")
     const [delivMode, setDeliveMode] = useState("")
     const [modeTransport, setModeTransport] = useState("")
+    const [isLoading, setIsLoading] = useState(true)
 
     const [remarks, setRemarks] = useState("")
     const [note,setNote] = useState("")
@@ -123,24 +126,69 @@ export default function LogisticTaskRejectionForm() {
     };
 
 
-    const handlePost = (data) => {
-        // dispatch(putLogistikForm(body))
-        console.log({"logisticOrderDetailId":dataOdiLog,"orderDetailId":dataOdi,"whTeamId":wh,"cdmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"LMBY":dataUser,"notes":note})
+    const handlePost = () => {
+        // dispatch(putLogistikForm(
+        //     {"logisticOrderDetailId":dataOdiLog,"orderDetailId":dataOdi,"whTeamId":wh,"cdmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"LMBY":dataUser,"notes":note}
+        // ))
+        // console.log({"logisticOrderDetailId":dataOdiLog,"orderDetailId":dataOdi,"whTeamId":wh,"cdmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"LMBY":dataUser,"notes":note})
 
         // if( dataStats == 200){
         //     history.push('/mm/tasklogisticreject')
         //     cancelModal()
         // }
         // console.log("test Bod=?>",{"orderDetailId":dataOdi,"whTeamId":wh,"cdmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"note":note})
+    
+        const body =  {"logisticOrderDetailId":dataOdiLog,"orderDetailId":dataOdi,"whTeamId":wh,"cdmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"LMBY":dataUser,"notes":note}
+
+        API.putLogisticRejection(body).then(
+            result=>{
+                try{
+                    if(result.status=="success"){
+                        setIsLoading(false)
+                        history.push('/mm/tasklogisticreject')
+                        toast.success(result.message)
+                    
+                       
+                     
+                    }
+              
+                }
+                catch(e){
+                    toast.error(result.message)
+                    setIsLoading(false)
+                    console.log(e,"error catch")
+                }
+            }
+        )
+        
     };
 
     const saveDraft = () => {
-        dispatch(postAsDraft({"orderDetailId":dataOdi,"remarks":remarks}))
-        if( dataStats == 200){
-            history.push('/mm/tasklogisticreject')
-         
-           
-        }
+      
+
+        const body = {"orderDetailId":dataOdi,"remarks":remarks}
+
+        API.postLogisticCancel(body).then(
+            result=>{
+                try{
+                    if(result.status=="success"){
+                        setIsLoading(false)
+                        history.push('/mm/tasklogisticreject')
+                        toast.success(result.message)
+                    
+                       
+                     
+                    }
+              
+                }
+                catch(e){
+                    toast.error(result.message)
+                    setIsLoading(false)
+                    console.log(e,"error catch")
+                }
+            }
+        )
+     
     };
 
     const showModal = (data) => {
@@ -174,7 +222,7 @@ export default function LogisticTaskRejectionForm() {
         console.log(isModalVisible);
     };
 
-    useEffect((data) => {
+    useEffect(() => {
         dispatch(getIdDelivery(dataTransportId))
         dispatch(getDataSiteInfo())
         dispatch(getMaterialOrderDetail())
@@ -310,9 +358,7 @@ export default function LogisticTaskRejectionForm() {
             <Col span={24}>
                 <div className="card card-primary">
                     <Card hoverable title={CardTitle("Site Info")}>
-                        {/* <div className="card-header align-middle">
-                        <h3 className="card-title">Site Info</h3>
-                    </div> */}
+                       
                         <div className="card-body">
                             <Table
                                 columns={columns}
