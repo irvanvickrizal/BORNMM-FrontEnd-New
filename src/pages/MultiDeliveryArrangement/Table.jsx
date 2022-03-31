@@ -167,8 +167,8 @@ const MultiDeliveryArrangementPanel = () => {
                 console.log(result,"rst add")
                 toast.success(result.message)
                 getMultiDeliveryRequestPending()
-                getMultiDeliveryDetail(mdid)
-                getMultiDeliveryRequestList(mdid)
+                // getMultiDeliveryDetail(mdid)
+                // getMultiDeliveryRequestList(mdid)
             }
         )
     }

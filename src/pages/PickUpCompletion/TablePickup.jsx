@@ -323,7 +323,7 @@ export default function TablePickup() {
     }
     const handleCloseManage = () =>{
         setIsManageMulti(false);
-
+        getMultideliveryCompletion(userId)
     }
     const handleCancelAssignmentOK = (record) =>{
         // setIsManageMulti(true);
@@ -936,7 +936,7 @@ export default function TablePickup() {
       
             </Modal>
 
-            <Modal title="Add Order Request Pending List"
+            <Modal title="Manage Order Request Pending List"
                 visible={isManageMulti}
                 destroyOnClose={true}
                 footer={

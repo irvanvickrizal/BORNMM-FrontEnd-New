@@ -496,6 +496,9 @@ const postMultiDelivery = (body) => POST('multidelivery/multiDeliveryAddGroup',b
 const postMultiDeliveryArrangement = (body) => POST('multidelivery/multiDeliveryAddOrderRequest',body)
 const assignMultiDelivery = (body) => POST('multidelivery/multiDeliveryAssignTaskToTransport',body)
 const deleteMultiDeliveryRequest = (mdid) => DELETE('multidelivery/multiDeliveryDeleteOrderRequest',mdid)
+const putDeleteMultiDeliveryRequest = (body) => PUT('multidelivery/multiDeliveryDeleteGroup',body)
+
+
 
 const getOrderRequestTracking =(odi) => GETParam('rpt/orderRequestProgressTracking',odi);
 const deleteWaitingRfp = (body) => PUT('materialmanagement/orderRequestLogisticTransportReject',body);
@@ -504,6 +507,7 @@ const deleteWaitingRfp = (body) => PUT('materialmanagement/orderRequestLogisticT
 const getLogisticRejectionList = (uid) => GETParam("materialmanagement/orderRequestLogisticAssignmentReject",uid);
 
 const API ={
+    putDeleteMultiDeliveryRequest,
     postMultiDeliveryCancelAssigned,
     getMultiDeliveryAssigned,
     getMultiDeliveryCompletion,
