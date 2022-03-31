@@ -144,6 +144,21 @@ const TableMultiDeliveryConfirmation = () => {
             ...Search('multiDeliveryNo'),
         },
         {
+            title : "Multi Delivery Note",
+            dataIndex:'multideliveryNote',
+            ...Search('multideliveryNote'),
+        },
+        {
+            title : "WH Team",
+            dataIndex:'lspName',
+            ...Search('lspName'),
+        },
+        {
+            title : "Transport Team",
+            dataIndex:'transportTeam',
+            ...Search('transportTeam'),
+        },
+        {
             title : "Created By",
             dataIndex:'createdBy',
             ...Search('createdBy'),
@@ -160,16 +175,6 @@ const TableMultiDeliveryConfirmation = () => {
             },
         },
         {
-            title : "WH Team",
-            dataIndex:'lspName',
-            ...Search('lspName'),
-        },
-        {
-            title : "Transport Team",
-            dataIndex:'transportTeam',
-            ...Search('transportTeam'),
-        },
-        {
             title : "Status",
             width: 100,
             dataIndex:'multiDeliveryStatus',
@@ -179,7 +184,7 @@ const TableMultiDeliveryConfirmation = () => {
             title:"Action",
             // key:"orderDetailId",
             align:'center',
-            width: 50,
+            width: 80,
             fixed:'right',
             render:(record)=>{
                 return (
@@ -190,6 +195,14 @@ const TableMultiDeliveryConfirmation = () => {
                                     <EditOutlined />
                                 </IconButton>
                             </Tooltip>
+                            {record.viewToDelete ? 
+                                <Tooltip title="Delete Multi Delivery">
+                                    <IconButton size="small" color="error">
+                                        <DeleteOutlined />
+                                    </IconButton>
+                                </Tooltip>
+                                :null
+                            }
                         </Space>
                     </div>
                 )
