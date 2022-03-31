@@ -28,7 +28,7 @@ const TableOutboundUpload = () => {
     const [fileUpload, setFileUpload] = useState(null);
     const [uploading, setUploading] = useState(false);
     const [inbFileId, setInbFileId] = useState(0);
-    const [fileName, setFileName] = useState('');
+    const [fileNameExisting, setFileNameExisting] = useState('');
     const [outboundSuccessLog, setOutboundSuccessLog] = useState('');
     const { Title } = Typography;
     const { TabPane } = Tabs;
@@ -142,6 +142,17 @@ const TableOutboundUpload = () => {
             }
         )
     }
+
+    const getDownloadDataDetail = () => {
+        API.getOutboundUploadFile().then(
+            result=>{
+                const data = result//result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
+                const exportType =  exportFromJSON.types.xls;
+                const fileName = `InventoryInbound_${Date()}`;
+                exportFromJSON({ data, fileName, exportType });
+            }
+        )
+    }
     const getOutboundSuccessLog = () => {
         setIsLoading(true);
         API.getOutboundSuccessLog().then(
@@ -173,7 +184,7 @@ const TableOutboundUpload = () => {
     const handleUploadFile = (id,filenameparam) =>
     {
         setInbFileId(id);
-        setFileName(filenameparam);
+        setFileNameExisting(filenameparam);
         console.log("inbfileid: ", filenameparam);
         setIsReviseFile(true);
     }
@@ -472,19 +483,27 @@ const TableOutboundUpload = () => {
                             </Col>
                         </Row>  
                         :
-                
-                        <Table
-                            scroll={{ x: '150%' }}
-                            size="small"
-                            // expandable={{ expandedRowRender }}
-                            columns={columsOutboundSuccessLog}
-                            dataSource={outboundSuccessLog}
-                            pagination={{
-                                pageSizeOptions: ['5', '10', '20', '30', '40'],
-                                showSizeChanger: true,
-                                position: ["bottomLeft"],
-                            }}
-                            bordered />
+                        <>
+                            <div className='float-right'>
+                                <Tooltip title="Download As Excell File">
+                                    <IconButton size="small" color="success" onClick={getDownloadDataDetail}>
+                                        <FileExcelOutlined />
+                                    </IconButton>
+                                    {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
+                                </Tooltip>
+                            </div>
+                            <Table
+                                scroll={{ x: '150%' }}
+                                size="small"
+                                // expandable={{ expandedRowRender }}
+                                columns={columsOutboundSuccessLog}
+                                dataSource={outboundSuccessLog}
+                                pagination={{
+                                    pageSizeOptions: ['5', '10', '20', '30', '40'],
+                                    showSizeChanger: true,
+                                    position: ["bottomLeft"],
+                                }}
+                                bordered /></>
                     }
                 </TabPane>
             </Tabs>
@@ -496,7 +515,7 @@ const TableOutboundUpload = () => {
                 destroyOnClose={true}
             >
                 <div>
-                    <p>Existing File Name : {fileName}</p>
+                    <p>Existing File Name : {fileNameExisting}</p>
                     <Upload {...props}>
                         <Button icon={<UploadOutlined />}>Select File</Button>
                     </Upload>

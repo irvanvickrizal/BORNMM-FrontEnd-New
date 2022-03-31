@@ -28,11 +28,12 @@ const TableInboundUpload = () => {
     const [fileUpload, setFileUpload] = useState(null);
     const [uploading, setUploading] = useState(false);
     const [inbFileId, setInbFileId] = useState(0);
-    const [fileName, setFileName] = useState('');
+    const [fileNameExisting, setFileNameExisting] = useState('');
     const [inboundSuccessLog, setInboundSuccessLog] = useState([]);
     const { Title } = Typography;
     const { TabPane } = Tabs;
-
+    const newDate = new Date()
+    const date = newDate.getDate();
 
     const props = {
         onRemove: () => {
@@ -54,6 +55,16 @@ const TableInboundUpload = () => {
                 setInboundUploadFile(result);
                 setIsLoading(false);
                 console.log("scontaskpendnig",result);
+            }
+        )
+    }
+    const getDownloadDataDetail = () => {
+        API.getInboundUploadFile().then(
+            result=>{
+                const data = result//result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
+                const exportType =  exportFromJSON.types.xls;
+                const fileName = `InventoryInbound_${Date()}`;
+                exportFromJSON({ data, fileName, exportType });
             }
         )
     }
@@ -87,7 +98,7 @@ const TableInboundUpload = () => {
     const handleUploadFile = (id,filenameparam) =>
     {
         setInbFileId(id);
-        setFileName(filenameparam);
+        setFileNameExisting(filenameparam);
         console.log("inbfileid: ", filenameparam);
         setIsReviseFile(true);
     }
@@ -471,8 +482,18 @@ const TableInboundUpload = () => {
                             </Col>
                         </Row>  
                         :
-                
-                        <Table
+                        <><Row>
+                            <Col md={24} sm={24}>
+                                <div className='float-right'>
+                                    <Tooltip title="Download As Excell File">
+                                        <IconButton size="small" color="success" onClick={getDownloadDataDetail}>
+                                            <FileExcelOutlined />
+                                        </IconButton>
+                                        {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
+                                    </Tooltip>
+                                </div>
+                            </Col>
+                        </Row><Table
                             scroll={{ x: '150%' }}
                             size="small"
                             // expandable={{ expandedRowRender }}
@@ -483,7 +504,7 @@ const TableInboundUpload = () => {
                                 showSizeChanger: true,
                                 position: ["bottomLeft"],
                             }}
-                            bordered />
+                            bordered /></>
                     }
                 </TabPane>
             </Tabs>
@@ -496,7 +517,7 @@ const TableInboundUpload = () => {
                 destroyOnClose={true}
             >
                 <div>
-                    <p>Existing File Name : {fileName}</p>
+                    <p>Existing File Name : {fileNameExisting}</p>
                     <Upload {...props}>
                         <Button icon={<UploadOutlined />}>Select File</Button>
                     </Upload>

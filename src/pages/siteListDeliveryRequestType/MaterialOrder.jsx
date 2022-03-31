@@ -300,7 +300,7 @@ export default function MaterialOrder() {
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(record.requestDate).format("YYYY-MM-DD")}</p>
+                        <p>{moment(record.requestDate).format("YYYY-MM-DD HH:mm:ss")}</p>
                     </Space>
                 )
             }
