@@ -475,135 +475,138 @@ export default function LogisticTaskRejectionForm() {
                 </Col>
                 <Col span={12}>
                     <Card hoverable title={CardTitle("Logistic Rejection Form")}>
-                        <Form
-                            labelCol={{span: 9}}
-                            wrapperCol={{span: 13}}
-                            layout="horizontal"
-                            onFinish={showModal}
-                            onFinishFailed={onFinishFailedAddMaterial}
-                            initialValues={{
-                                'whTeam':dataOrderLogistik[0].whTeamId,
-                                'deliveryRequest':dataOrderLogistik[0].cdmrId,
-                                'deliveryRequestTransport':dataOrderLogistik[0].transportModeId,
-                                "note": dataOrderLogistik[0].note,
-                                "transportTeam":dataOrderLogistik[0].transportTeamId,
-                                "modeTransport":dataOrderLogistik[0].transportModeId,
-                            }}
-                        >
-                            <Form.Item label="WH Team" name="whTeam" 
-                                rules={[{ required: true, message: 'Please Select WH Team!' }]}
+                        {dataOrderLogistik.length === 0 ? (<></>):
+                            (<Form
+                                labelCol={{span: 9}}
+                                wrapperCol={{span: 13}}
+                                layout="horizontal"
+                                onFinish={showModal}
+                                onFinishFailed={onFinishFailedAddMaterial}
+                                initialValues={{
+                                    'whTeam':dataOrderLogistik[0].whTeamId,
+                                    'deliveryRequest':dataOrderLogistik[0].cdmrId,
+                                    'deliveryRequestTransport':dataOrderLogistik[0].transportModeId,
+                                    "note": dataOrderLogistik[0].note,
+                                    "transportTeam":dataOrderLogistik[0].transportTeamId,
+                                    "modeTransport":dataOrderLogistik[0].transportModeId,
+                                }}
                             >
-                                <Select
-                                    onChange={(e) => setWh(e)}
-                                    placeholder="Select an option"
-                                    value={dataOrderLogistik[0].whTeamId}
+                                <Form.Item label="WH Team" name="whTeam" 
+                                    rules={[{ required: true, message: 'Please Select WH Team!' }]}
                                 >
-                                    {lsp?.map((inv) => (
-                                        <Select.Option value={inv.subconId}>
-                                            {inv.subconName}
-                                        </Select.Option>
-                                    ))}
-                                </Select>
-                            </Form.Item>
-                            <Form.Item label="Delivery Request" name="deliveryRequest"
-                                rules={[{ required: true, message: 'Please Select Delivery Request!' }]}
-                            >
-                                <Select
-                                    onChange={(e) => handleDeliveryChange(e)}
-                                    placeholder="Select an option"
+                                    <Select
+                                        onChange={(e) => setWh(e)}
+                                        placeholder="Select an option"
+                                        value={dataOrderLogistik[0].whTeamId}
+                                    >
+                                        {lsp?.map((inv) => (
+                                            <Select.Option value={inv.subconId}>
+                                                {inv.subconName}
+                                            </Select.Option>
+                                        ))}
+                                    </Select>
+                                </Form.Item>
+                                <Form.Item label="Delivery Request" name="deliveryRequest"
+                                    rules={[{ required: true, message: 'Please Select Delivery Request!' }]}
                                 >
-                                    {deliveryList?.length == 0 ? null : deliveryList?.map((inv) => (
-                                        <Select.Option value={inv.cdmrId}>
-                                            {inv.cdmrName}
-                                        </Select.Option>
-                                    ))}
-                                </Select>
-                            </Form.Item>
-                            <Form.Item label="Delivery Request Transport" name="deliveryRequestTransport"
-                                rules={[{ required: true, message: 'Please Select Delivery Request Transport!' }]}
-                            >
-                      
-                                <Select
-                                    onChange={(e) => setModeTransport(e)}
-                                    placeholder="Select an option"
+                                    <Select
+                                        onChange={(e) => handleDeliveryChange(e)}
+                                        placeholder="Select an option"
+                                    >
+                                        {deliveryList?.length == 0 ? null : deliveryList?.map((inv) => (
+                                            <Select.Option value={inv.cdmrId}>
+                                                {inv.cdmrName}
+                                            </Select.Option>
+                                        ))}
+                                    </Select>
+                                </Form.Item>
+                                <Form.Item label="Delivery Request Transport" name="deliveryRequestTransport"
+                                    rules={[{ required: true, message: 'Please Select Delivery Request Transport!' }]}
                                 >
-                                    {DataDeliveryTransport?.length == 0 ? (<></>):(DataDeliveryTransport?.map((e)=>(
-                                        <Select.Option value={e.transportModeId}>
-                                            {e.transportMode}
-                                        </Select.Option>
-                                    )))
-                                    }
-                                </Select>
-                      
-                            </Form.Item>
-                            <Form.Item label="Transport Team" name="transportTeam"
-                                rules={[{ required: true, message: 'Please Select Transport Team!' }]}
-                            >
-                                <Select
-                                    onChange={(e) => setDeliveryTransport(e)}
-                                    placeholder="Select an option"
-                                
-                                >
-                                    {lsp?.length == 0 ? (<></>):( lsp?.map((inv) => (
-                                        <Select.Option value={inv.subconId}>
-                                            {inv.subconName}
-                                        </Select.Option>
-                                    )))
-                                    }
-                                </Select>
-                            </Form.Item>
-                            <Form.Item label="Mode Of Transport" name="modeTransport"
-                                rules={[{ required: true, message: 'Please Select Mode of Transport!' }]}
-                            >
-                                <Select
-                                    onChange={(e) => setDeliveMode(e)}
-                                    placeholder="Select an option"
-                                >
-                                    {
-                                        deliveryMode?.length == 0 ? (null):( deliveryMode?.map((inv) => (
-                                            <Select.Option value={inv.deliveryModeId}>
-                                                {inv.deliveryMode}
+                  
+                                    <Select
+                                        onChange={(e) => setModeTransport(e)}
+                                        placeholder="Select an option"
+                                    >
+                                        {DataDeliveryTransport?.length == 0 ? (<></>):(DataDeliveryTransport?.map((e)=>(
+                                            <Select.Option value={e.transportModeId}>
+                                                {e.transportMode}
                                             </Select.Option>
                                         )))
-                                    }
-                                </Select>
-                            </Form.Item>
-                            <Form.Item label="Note" name="note" 
+                                        }
+                                    </Select>
+                  
+                                </Form.Item>
+                                <Form.Item label="Transport Team" name="transportTeam"
+                                    rules={[{ required: true, message: 'Please Select Transport Team!' }]}
+                                >
+                                    <Select
+                                        onChange={(e) => setDeliveryTransport(e)}
+                                        placeholder="Select an option"
                             
-                            >
-                                <TextArea rows={4} onChange={(e) => setNote(e.target.value)}/>
-                            </Form.Item>
-                            <Form.Item wrapperCol={{ offset: 8, span: 16 }} style={{marginTop:6,marginLeft:128}}>
-                                <Col span={4} md={8} sm={24}>
-                                    <Space direction="horizontal">
-                                        <Button
-                                            type="danger"
-                                            onClick={() =>
-                                                showModalCancel()
-                                            }
-                                        >
-                                    Order Request Cancel
-                                        </Button>
-                                        <Button
-                                            type="primary"
-                                            htmlType="submit"
-                                       
-                                        >
-                                    Confirm
-                                        </Button>
-                                        <Button
-                                       
-                                            htmlType="submit"
-                                            onClick={() =>
-                                                cancelNavigate()
-                                            }
-                                        >
-                                    Back
-                                        </Button>
-                                    </Space>
-                                </Col>
-                            </Form.Item>
-                        </Form>
+                                    >
+                                        {lsp?.length == 0 ? (<></>):( lsp?.map((inv) => (
+                                            <Select.Option value={inv.subconId}>
+                                                {inv.subconName}
+                                            </Select.Option>
+                                        )))
+                                        }
+                                    </Select>
+                                </Form.Item>
+                                <Form.Item label="Mode Of Transport" name="modeTransport"
+                                    rules={[{ required: true, message: 'Please Select Mode of Transport!' }]}
+                                >
+                                    <Select
+                                        onChange={(e) => setDeliveMode(e)}
+                                        placeholder="Select an option"
+                                    >
+                                        {
+                                            deliveryMode?.length == 0 ? (null):( deliveryMode?.map((inv) => (
+                                                <Select.Option value={inv.deliveryModeId}>
+                                                    {inv.deliveryMode}
+                                                </Select.Option>
+                                            )))
+                                        }
+                                    </Select>
+                                </Form.Item>
+                                <Form.Item label="Note" name="note" 
+                        
+                                >
+                                    <TextArea rows={4} onChange={(e) => setNote(e.target.value)}/>
+                                </Form.Item>
+                                <Form.Item wrapperCol={{ offset: 8, span: 16 }} style={{marginTop:6,marginLeft:128}}>
+                                    <Col span={4} md={8} sm={24}>
+                                        <Space direction="horizontal">
+                                            <Button
+                                                type="danger"
+                                                onClick={() =>
+                                                    showModalCancel()
+                                                }
+                                            >
+                                Order Request Cancel
+                                            </Button>
+                                            <Button
+                                                type="primary"
+                                                htmlType="submit"
+                                   
+                                            >
+                                Confirm
+                                            </Button>
+                                            <Button
+                                   
+                                                htmlType="submit"
+                                                onClick={() =>
+                                                    cancelNavigate()
+                                                }
+                                            >
+                                Back
+                                            </Button>
+                                        </Space>
+                                    </Col>
+                                </Form.Item>
+                            </Form>)}
+                       
+                        
                       
                         
                     </Card>
