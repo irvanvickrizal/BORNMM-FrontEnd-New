@@ -5,9 +5,10 @@ import {Table,Modal,Space,Col,Typography,Row,Spin,Tooltip,Button, Tabs,Card} fro
 import API from '@app/utils/apiServices'
 import Search from '@app/components/searchcolumn/SearchColumn'
 import moment from "moment"
-import { EditOutlined,DeleteFilled,EyeFilled   } from '@ant-design/icons'
 import { toast } from 'react-toastify'
+import {DeleteFilled,EyeFilled,PlusOutlined,FileExcelOutlined, CloseSquareTwoTone ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined, EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined,DeleteTwoTone,UploadOutlined } from '@ant-design/icons'
 
+import {IconButton, TextField}  from '@mui/material/';
 import { useHistory } from 'react-router-dom';
 
 
@@ -20,6 +21,8 @@ export default function TableOrderList() {
     const [isLoading, setIsLoading] = useState(true);
     const history = useHistory()
     const [modalDeleteVisible,setModalDeleteVisible] = useState(false)
+    const [isAddButton,setIsAddButton] = useState(false)
+    const [formPath,setFormPath] = useState('')
     const [odi,setOdi] = useState("")
     const [isModalVisible,setIsModalVisible] = useState(false)
     const {Title} = Typography
@@ -98,10 +101,7 @@ export default function TableOrderList() {
         )
     }
 
-    useEffect(() => {
-        getOrderList();
-    },[])
- 
+    
     const hideModalDelete = () => {
         setModalDeleteVisible(false)
     }
@@ -124,8 +124,24 @@ export default function TableOrderList() {
         console.log("cosnoel",record)
     }
 
+    const checkPlusButton = (wpids,ots) => {
+        API.checkAddButtonOrderList(wpids,ots).then(
+            result=>{
+                console.log(result,"viewto add")
+                setIsAddButton(result[0].viewToAdd)
+                setFormPath(result[0].formPath)
+            }
+        )
+    }
+
     const navigateToMaterialOrderForm = (record) => {
         history.push(`materialorder?odi=${record}`)
+    }
+    const navigateTo = (path) => {
+        history.push(path)
+    }
+    const handleAddButton = () =>{
+        navigateTo(formPath)
     }
 
     
@@ -502,7 +518,11 @@ export default function TableOrderList() {
         }
         console.log("keytabs",key);
     }
-   
+    useEffect(() => {
+        getOrderList();
+        checkPlusButton(wpid,ot);
+    },[])
+ 
 
     return (
         <div>
@@ -513,18 +533,27 @@ export default function TableOrderList() {
                     </Col>
                 </Row>  
                 :
-                <Table
-                    scroll={{ x: '150%' }}
-              
-                    // expandable={{ expandedRowRender }}
-                    columns={columns}
-                    dataSource={dataOrderList}
-                    pagination={{
-                        pageSizeOptions: ['5', '10', '20', '30', '40'],
-                        showSizeChanger: true,
-                        position: ["bottomLeft"],
-                    }}
-                    bordered />}
+                <>
+                    {isAddButton ? <div className='float-right'>
+                        <Tooltip title="Add Order List">
+                            <IconButton size="small" color="success" onClick={handleAddButton}>
+                                <PlusOutlined />
+                            </IconButton>
+                            {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
+                        </Tooltip>
+                    </div>: isAddButton}
+                    <Table
+                        scroll={{ x: '150%' }}
+
+                        // expandable={{ expandedRowRender }}
+                        columns={columns}
+                        dataSource={dataOrderList}
+                        pagination={{
+                            pageSizeOptions: ['5', '10', '20', '30', '40'],
+                            showSizeChanger: true,
+                            position: ["bottomLeft"],
+                        }}
+                        bordered /></>}
          
                      
             {/*  Modal Delete */}

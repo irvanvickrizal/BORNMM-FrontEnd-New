@@ -176,7 +176,7 @@ export default function LogisticTaskRejectionForm() {
         dispatch(getDeliveryMode())
         getLogLogistic()
         dispatch(getDataSiteInfoLogistik())
-    }, [dispatch])
+    }, [dispatch,dataOrderLogistik])
 
     const columns = [
     
