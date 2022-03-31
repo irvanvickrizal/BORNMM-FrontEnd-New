@@ -313,7 +313,8 @@ const DismantleForm = (props) => {
                 "siteAddress": siteAddress,
                 "proposeDeliveryModeId":data.proposeDelivery,
                 "expectedDeliveryDate":deliveryDate,
-                "requestBy": user.uid
+                "requestBy": user.uid,
+                "picOnSiteId":data.teamCoordinator
             }
         )
         console.log("dismantle body",body);
@@ -336,6 +337,12 @@ const DismantleForm = (props) => {
         postDismantleForm(data);
     
     }
+
+    const handleConfirm=(data)=>{
+        console.log("confirmbutton",data)
+        postDismantleForm(data);
+    }
+
     const onFinishFailedAddMaterial = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
@@ -401,7 +408,7 @@ const DismantleForm = (props) => {
                                     'inventoryCode':1,
                                     'ctName':1
                                 }}
-                                onFinish={btnConfirm}
+                                onFinish={handleConfirm}
                                 onFinishFailed={onFinishFailedAddMaterial}
                             >
                                 <Form.Item label="Order Type" 
@@ -625,7 +632,7 @@ const DismantleForm = (props) => {
                                     <Form.Item wrapperCol={{ offset: 8, span: 16 }} style={{marginTop:6}}>
                                         <Col span={4}> 
                                             <Space direction="horizontal">
-                                                <Button type="primary" htmlType="submit" onClick={btnConfirm}>Confirm</Button>
+                                                <Button type="primary" htmlType="submit" >Confirm</Button>
                                                 <Button type="danger" onClick={btnCancel}>Cancel</Button>
                                             </Space>
                                         </Col>
