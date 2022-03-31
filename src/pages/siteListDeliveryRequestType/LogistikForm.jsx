@@ -120,7 +120,7 @@ export default function LogisticForm() {
     };
 
     const handlePost = () => {
-         dispatch(postLogistikForm({"orderDetailId":dataOdi,"whTeamId":wh,"cdmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"note":note}))
+         dispatch(postLogistikForm({"orderDetailId":dataOdi,"whTeamId":wh,"cdmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"notes":note}))
 
         if( dataStats == 200){
             history.push('/mm/taskasglogistic')

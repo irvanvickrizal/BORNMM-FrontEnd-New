@@ -330,11 +330,12 @@ export default function AprovalTaskPendingForm() {
       
             <Modal title="Approve Task" style={{borderRadius:"4px"}} visible={isModalVisible}  onCancel={cancelModal} 
                 footer={[
+                    <Button key="submit" type="primary"  onClick={handleAproval}>
+                    Approve
+                    </Button>,
+                    
                     <Button key="back"  onClick={cancelModal}>
                 Cancel
-                    </Button>,
-                    <Button key="submit" type="primary"  onClick={handleAproval}>
-                Submit
                     </Button>,
                 
                 ]} >

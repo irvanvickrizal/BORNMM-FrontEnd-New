@@ -265,18 +265,23 @@ export default function TableOrderList() {
                
                         </Space>
                             :
+                            <><Space size={20}>
+
+                                {record.allowToDelete == "true" ? <Tooltip title=" Delete Order Request">
+                                    <DeleteFilled style={{ fontSize: 20, color: 'red' }} onClick={() => showModalDelete(record.orderDetailId)} />
+                                </Tooltip> : null}
+
+
+
+
+                            </Space>
                             <Space size={20}>
-                      
-                                {record.allowToDelete=="true" ?   <>
-                                    <Tooltip title="Edit Order Request ">
-                                        <EditOutlined style={{ fontSize: 20 }} onClick={()=>navigateToMaterialOrderForm(record.orderDetailId)}/>
-                                    </Tooltip><Tooltip title=" Delete Order Request">
-                                        <DeleteFilled style={{ fontSize: 20, color: 'red' }} onClick={()=>showModalDelete(record.orderDetailId)}/>
-                                    </Tooltip>
-                                </> : null}               
-                              
-                     
-                            </Space> }
+
+                                {record.allowToEdit == "true" ? <Tooltip title="Edit Order Request ">
+                                    <EditOutlined style={{ fontSize: 20 }} onClick={() => navigateToMaterialOrderForm(record.orderDetailId)} />
+                                </Tooltip> : null}
+                            </Space></>
+                        }
                     </div>
                  
                    

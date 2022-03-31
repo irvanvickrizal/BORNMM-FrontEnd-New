@@ -68,6 +68,8 @@ export default function LogisticTaskRejectionForm() {
     const odi = params.get('odi');
     // const ordlid = params.get('ordlid');
 
+    
+
     const lsp = useSelector((state) => state.logistikFormReducer.dataLsp)
     const deliveryList = useSelector(
         (state) => state.logistikFormReducer.detaDeliveryList
@@ -90,10 +92,14 @@ export default function LogisticTaskRejectionForm() {
     
     const dataUser = useSelector(state=>state.auth.user.uid)
     
+
+
+
     const DataDeliveryTransport = useSelector(state=> state.logistikFormReducer.detaDeliveryTransport)
     const dataOdi = useSelector(state=> state.logistikFormReducer.odi)
     const dataOdiLog = useSelector(state=> state.logistikFormReducer.odiLogistik)
     const dataStats = useSelector(state=>state.logistikFormReducer.stats.status)
+
 
 
     const getLogLogistic = () => {
@@ -167,6 +173,17 @@ export default function LogisticTaskRejectionForm() {
         setIsModalCancelVisible(false);
         console.log(isModalVisible);
     };
+
+    useEffect(() => {
+        dispatch(getDataSiteInfo())
+        dispatch(getMaterialOrderDetail())
+        dispatch(getLsp())
+        dispatch(getDeliveryList())
+        dispatch(getDeliveryMode())
+        getLogLogistic()
+        dispatch(getDataSiteInfoLogistik())
+    }, [dispatch])
+
     const columns = [
     
 
@@ -276,15 +293,6 @@ export default function LogisticTaskRejectionForm() {
     
    
 
-    useEffect(() => {
-        dispatch(getDataSiteInfo())
-        dispatch(getMaterialOrderDetail())
-        dispatch(getLsp())
-        dispatch(getDeliveryList())
-        dispatch(getDeliveryMode())
-        getLogLogistic()
-        dispatch(getDataSiteInfoLogistik())
-    }, [dispatch])
 
     return (
       
