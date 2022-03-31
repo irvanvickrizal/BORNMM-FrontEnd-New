@@ -578,7 +578,6 @@ export default function LogisticTaskRejectionForm() {
                                 <Form.Item label="Delivery Request Transport" name="deliveryRequestTransport"
                                     rules={[{ required: true, message: 'Please Select Delivery Request Transport!' }]}
                                 >
-                  
                                     <Select
                                         onChange={(e) => setModeTransport(e)}
                                         placeholder="Select an option"
@@ -629,8 +628,8 @@ export default function LogisticTaskRejectionForm() {
                                 >
                                     <TextArea rows={4} onChange={(e) => setNote(e.target.value)}/>
                                 </Form.Item>
-                                <Form.Item wrapperCol={{ offset: 8, span: 16 }} style={{marginTop:6,marginLeft:128}}>
-                                    <Col span={4} md={8} sm={24}>
+                                <Form.Item wrapperCol={{ offset: 5, span: 19 }} style={{marginTop:6,marginLeft:128}}>
+                                    <Col span={24} md={24} sm={24}>
                                         <Space direction="horizontal">
                                             <Button
                                                 type="danger"
@@ -660,10 +659,6 @@ export default function LogisticTaskRejectionForm() {
                                     </Col>
                                 </Form.Item>
                             </Form>)}
-                       
-                        
-                      
-                        
                     </Card>
                 </Col>
             </Row>

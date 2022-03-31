@@ -478,8 +478,9 @@ const deleteOrderDetail = (body,odi) => PUTParam('materialmanagement/OrderDetail
 // Pickup Complletion
 
 const getPickUpCompletion = (uid) => GETParam('lspassignment/lspAssignmentTransportAssignmentPickupPending',uid);
+const getPickUpCompletion2 = (uid) => GETParam('lspassignment/lspAssignmentTransportAssignmentPickupPending',uid);
 const getDdlTransportTeam = (tid,wpid) => GETParam2('subcon/getLSPTransportTeam',tid,wpid);
-const postPickUpCompletion = (body) => POST('lspassignment/lspAssignmentToChangePIC ',body);
+const postPickUpCompletion = (body) => POST('lspassignment/lspAssignmentToChangePIC',body);
 
 const getMultiDeliveryCompletion = (uid) => GETParam('multidelivery/multiDeliveryGetAssignedList',uid);
 const getMultiDeliveryAssigned = (mdid) => GETParam('multidelivery/multiDeliveryGetDetailAssignedList',mdid);
@@ -513,8 +514,10 @@ const postLogisticForm = (body) => POST("materialmanagement/orderRequestDetailFo
 const postLogisticCancelForm = (body) => POST("materialmanagement/orderRequestDetailCancellation",body);
 
 
+const checkAddButtonOrderList = (wpid,ot) => GETParam2("materialmanagement/orderRequestGetOrderedListViewToAdd",wpid,ot);
 
 const API ={
+    checkAddButtonOrderList,
     putDeleteMultiDeliveryRequest,
     postMultiDeliveryCancelAssigned,
     postLogisticForm,

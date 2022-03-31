@@ -650,7 +650,7 @@ const WaitingRFPTable = () => {
                         </Form.Item>
                         <Form.Item
                         // hidden
-                            label="Total Volume (CBN)"
+                            label="Total Volume (CBM)"
                             name="totalVolume"
                             rules={[{ required: true, message: 'Please input Total Volume!' }]}
                         >

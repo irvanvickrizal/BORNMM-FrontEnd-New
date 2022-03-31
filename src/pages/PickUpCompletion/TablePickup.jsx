@@ -18,6 +18,7 @@ export default function TablePickup() {
     const [dataPickUp,setDataPickup] = useState([])
     const [isLoading, setIsLoading] = useState(true);
     const [isModalVisible,setIsModalVisible] = useState(false)
+    const [isModalVisibleReaasignment,setIsModalVisibleReaasignment] = useState(false)
     const [transDelegateId,setTransDelegateId] = useState(false)
     const [selectedRequestNo,setRequestNo] = useState('');
     const [selectedRFPDate,setSelectedRFPDate] = useState('');
@@ -37,6 +38,8 @@ export default function TablePickup() {
     const [multiDeliveryRequestPendingList,setMultiDeliveryRequestPendingList] = useState([])
     const [isManageMulti,setIsManageMulti] = useState(false);
 
+
+    const [currentAssignTo,setCurrentAssignTo] = useState('')
     const history = useHistory()
     const {Title} = Typography
 
@@ -65,8 +68,6 @@ export default function TablePickup() {
     }
 
     const { width } = useWindowDimensions();
-
-
 
     function getPickUpCompletion() {
         setIsLoading(true);
@@ -99,10 +100,9 @@ export default function TablePickup() {
         )
     }
 
-    
-    function getOrderDetail(data) {
+    function getOrderDetail(odis) {
         setIsLoading(true);
-        API.getOrderRequest(data).then(
+        API.getOrderRequest(odis).then(
             result=>{
                 setDataOrderDetail(result);
                 setIsLoading(false);
@@ -133,54 +133,52 @@ export default function TablePickup() {
 
     
     const ddlTransporTeam = (transportTeamId,workpackageid) => {
-        setIsLoading(true);
         API.getDdlTransportTeam(transportTeamId,workpackageid).then(
             result=>{
                 setDdl(result);
-                setIsLoading(false);
                 console.log("ddl =>",result);
             }
         )
     }
 
-
     const showModal = (record) => {
         setTransDelegateId(record.transDelegateId)
         setRequestNo(record.requestNo)
+        setCurrentAssignTo(record.currentAssignToId)
         setSelectedRFPDate(record.rfpDate);
         setSelectedTransportTeam(record.transportTeamId)
         setSelectedWpid(record.workpackageid)
-        setIsModalVisible(true)
+        setIsModalVisibleReaasignment(true)
         ddlTransporTeam(record.transportTeamId,record.workpackageid)
         console.log(record.transportTeamId)
     }
 
     const hideModal = () => {
-        setIsModalVisible(false)
+        setIsModalVisibleReaasignment(false)
     }
     const showModalTab = (record) => {
         setIsModalTabVisible(true)
+        console.log(record,"modaltab")
         setOdi(record)
+        getOrderDetail(record)
     }
 
     const hideModalTab = () => {
-        setIsModalVisible(false)
+        setIsModalTabVisible(false)
     }
     const handlePost = () => {
-        setIsLoading(true);
         const body = {
             "transDelegateId":transDelegateId,
             "transferTo":selectedAssignTo,
-            "transferBy":userId
+            "transferBy":userId,
+            "currentAssignTo":currentAssignTo
         }
         API.postPickUpCompletion(body).then(
             result=>{
-              
                 if(result.status=="success")
                 {
                     toast.success(result.message);
                     getPickUpCompletion()
-                    setIsModalVisible(false)
                 }
                 else{
                     toast.error(result.message)
@@ -296,16 +294,17 @@ export default function TablePickup() {
                             <Tooltip title="Re-Assign Transport team Form">
                                 <LocalShippingIcon style={{fontSize:24,color:"#2886b8"}} onClick={()=>showModal(record)}/>  
                             </Tooltip>
-                             
-                    
-                                                         
+
+
+                            <Tooltip title="View Detail">
+                                <EyeFilled style={{fontSize:20}} onClick={()=>showModalTab(record.orderDetailId)}/>  
+                            </Tooltip>
+
+                            {/*                                                          
                             <Tooltip title=" Delete Order Request">
                                 <EyeFilled style={{fontSize:20}} />
-                            </Tooltip>
+                            </Tooltip> */}
                         </Space>
-                        <Tooltip title="View Detail">
-                            <EyeFilled style={{fontSize:20}} onClick={()=>showModalTab(record.orderDetailId)}/>  
-                        </Tooltip>
                         
                     </div>
                     
@@ -428,7 +427,6 @@ export default function TablePickup() {
             
         },
     ]
-
     
 
     const columnsDeliveryRequestPendingList = [
@@ -699,6 +697,7 @@ export default function TablePickup() {
 
     function callback(key) {
         if(key==1){
+            
             // getPickUpCompletion();
         }
         else if(key==2){
@@ -713,7 +712,7 @@ export default function TablePickup() {
     function callbackMain(key) {
      
         if(key==1){
-            //getMaterial()
+            getPickUpCompletion()
         }
         else if(key==2){
             getMultideliveryCompletion(userId);
@@ -728,8 +727,6 @@ export default function TablePickup() {
 
     return (
         <div>
-            
-
             <Tabs defaultActiveKey="1" centered={false} onChange={callbackMain}>
                 <TabPane tab="Single Delivery Progress" key="1">
                     { isLoading ?   
@@ -780,7 +777,7 @@ export default function TablePickup() {
             </Tabs>
 
             <Modal title="ReAssignment Task"
-                visible={isModalVisible}
+                visible={isModalVisibleReaasignment}
                 destroyOnClose
                 footer={null}
                 
@@ -832,8 +829,8 @@ export default function TablePickup() {
                                 onChange={(e) => setSelectedAssignTo(e)} 
                                 placeholder="Select an option">
                                 {
-                                    ddl?.map(rbs =>  <Select.Option value={rbs.requestTypeId}> 
-                                        {rbs.requestTypeName}</Select.Option>)
+                                    ddl.map(rbs =>  <Select.Option value={rbs.userId}> 
+                                        {rbs.fullname}</Select.Option>)
                                 }
                             </Select>
                         </Form.Item>
@@ -853,7 +850,7 @@ export default function TablePickup() {
                 
             </Modal>
 
-            <Modal visible={isModalVisible}  onCancel={hideModalTab} 
+            <Modal visible={isModalTabVisible}  onCancel={hideModalTab} 
                 footer={[
           
                 ]} 
