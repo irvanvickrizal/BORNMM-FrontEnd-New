@@ -39,6 +39,7 @@ import moment from "moment"
 import "./style.css"
 import { useHistory } from "react-router-dom"
 import API from "@app/utils/apiServices"
+import { toast } from 'react-toastify';
 
 const { TextArea } = Input;
 
@@ -59,6 +60,7 @@ export default function LogisticForm() {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [log, setDataLog] = useState([]);
     const [isModalCancelVisible, setIsModalCancelVisible] = useState(false);
+    const [isLoading, setIsLoading] = useState(true)
 
     const customURL = window.location.href;
     const params = new URLSearchParams(customURL.split('?')[1])
@@ -102,7 +104,7 @@ export default function LogisticForm() {
         setIsModalVisible(false);
         console.log(isModalVisible);
     };
-    const index2 = deliveryRequest
+
 
     const handleDeliveryChange = (e) => {
         setDeliveryRequest(e)
@@ -111,22 +113,67 @@ export default function LogisticForm() {
     };
 
     const handlePost = () => {
-         dispatch(postLogistikForm({"orderDetailId":dataOdi,"whTeamId":wh,"cdmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"notes":note}))
+        // dispatch(putLogistikForm(
+        //     {"logisticOrderDetailId":dataOdiLog,"orderDetailId":dataOdi,"whTeamId":wh,"cdmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"LMBY":dataUser,"notes":note}
+        // ))
+        // console.log({"logisticOrderDetailId":dataOdiLog,"orderDetailId":dataOdi,"whTeamId":wh,"cdmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"LMBY":dataUser,"notes":note})
 
-        if( dataStats == 200){
-            history.push('/mm/taskasglogistic')
-            cancelModal()
-        }
+        // if( dataStats == 200){
+        //     history.push('/mm/tasklogisticreject')
+        //     cancelModal()
+        // }
         // console.log("test Bod=?>",{"orderDetailId":dataOdi,"whTeamId":wh,"cdmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"note":note})
+    
+        const body =  {"orderDetailId":dataOdi,"whTeamId":wh,"cdmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"notes":note}
+
+        API.postLogisticForm(body).then(
+            result=>{
+                try{
+                    if(result.status=="success"){
+                        setIsLoading(false)
+                        history.push('/mm/taskasglogistic')
+                        toast.success(result.message)
+                    
+                       
+                     
+                    }
+                }
+                catch(e){
+                    toast.error(result.message)
+                    setIsLoading(false)
+                    console.log(e,"error catch")
+                }
+            }
+        )
+        
     };
 
-   const saveDraft = () => {
-        dispatch(postAsDraft({"orderDetailId":dataOdi,"remarks":remarks}))
-        if( dataStats == 200){
-            history.push('/mm/taskasglogistic')
-         
-           
-        }
+    const saveDraft = () => {
+      
+
+        const body = {"orderDetailId":dataOdi,"remarks":remarks}
+
+        API.postLogisticCancelForm(body).then(
+            result=>{
+                try{
+                    if(result.status=="error"){
+                        setIsLoading(false)
+                        history.push('/mm/taskasglogistic')
+                        toast.success(result.message)
+                    
+                       
+                     
+                    }
+              
+                }
+                catch(e){
+                    toast.error(result.message)
+                    setIsLoading(false)
+                    console.log(e,"error catch")
+                }
+            }
+        )
+     
     };
 
     const showModal = () => {

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 import { put, takeLatest, select } from "redux-saga/effects";
-
+import { API } from "@app/Variables";
 
 import { setDataDone, setDataOnProgress, setDataPending,setSubcon } from "@app/store/action/taskAssignmentPendingAction";
 //action
@@ -10,7 +10,7 @@ import { setDataDone, setDataOnProgress, setDataPending,setSubcon } from "@app/s
 function* sagaGetTaskPending(action) {
     const token = yield select(state=>state.auth.token)
     try {
-        const res = yield axios.get(`https://bornxldemo-api.nsnebast.com/taskassignment/taskAssignmentSubconPending`,{headers: {
+        const res = yield axios.get(`${API}taskassignment/taskAssignmentSubconPending`,{headers: {
             Authorization: `Bearer ${token}` 
         }});
         console.log(res,"result")
@@ -22,7 +22,7 @@ function* sagaGetTaskPending(action) {
 function* sagaGetTaskOnProgress(action) {
     const token = yield select(state=>state.auth.token)
     try {
-        const res = yield axios.get(`https://bornxldemo-api.nsnebast.com/taskassignment/taskAssignmentSubconOnProgress`,{headers: {
+        const res = yield axios.get(`${API}taskassignment/taskAssignmentSubconOnProgress`,{headers: {
             Authorization: `Bearer ${token}` 
         }});
         console.log(res,"result")
@@ -34,7 +34,7 @@ function* sagaGetTaskOnProgress(action) {
 function* sagaGetTaskDone(action) {
     const token = yield select(state=>state.auth.token)
     try {
-        const res = yield axios.get(`https://bornxldemo-api.nsnebast.com/taskassignment/taskAssignmentSubconDone`,{headers: {
+        const res = yield axios.get(`${API}taskassignment/taskAssignmentSubconDone`,{headers: {
             Authorization: `Bearer ${token}` 
         }});
         console.log(res,"result get site condition")
@@ -46,7 +46,7 @@ function* sagaGetTaskDone(action) {
 function* sagaSubcon(action) {
     const token = yield select(state=>state.auth.token)
     try {
-        const res = yield axios.get(`/subcon/getFieldSubcontractorEngineer/{subconid}/{workpackageid}
+        const res = yield axios.get(`${API}subcon/getFieldSubcontractorEngineer/{subconid}/{workpackageid}
         `,{headers: {
             Authorization: `Bearer ${token}` 
         }});

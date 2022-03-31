@@ -164,7 +164,9 @@ export default function TableOrderList() {
                     console.log(e,"error catch")
                 }
             }
+  
         )
+        setModalDeleteVisible(false)
     }
 
     const columns = [
@@ -242,12 +244,17 @@ export default function TableOrderList() {
 
  
         {
-            title : "Incoming Date",
+            title : "Request Date",
             render:(record)=>{
                 return (
-                    <Space>
-                        <p>{moment(record.incomingDate).format("YYYY-MM-DD")}</p>
-                    </Space>
+                    <div>
+                        {record.incomingDate !== null ? (<> <Space>
+                            <p>{moment(record.incomingDate).format("YYYY-MM-DD")}</p>
+                        </Space></>):(<>
+                        </>)}
+                    </div>
+                   
+                   
                 )
             },
             ...Search('incomingDate'),

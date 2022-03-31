@@ -20,13 +20,15 @@ import { useHistory } from "react-router-dom"
 import moment from 'moment'
 import HeaderChanger from "@app/components/cardheader/HeaderChanger"
 import { getLog, getMaterial, getOrderDetail, postAprove,postReject,getOdi,getSno } from "@app/store/action/aprovalTaskPendingAction"
+import API from "@app/utils/apiServices"
+import { toast } from 'react-toastify';
 
 const { TextArea } = Input;
 
 export default function AprovalTaskPendingForm() {
     const dispatch = useDispatch()
     const history = useHistory()
-    
+    const [isLoading, setIsLoading] = useState(true)
     const [page, setPage] = useState(1)
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isModalRejectVisible, setIsModalRejectVisible] = useState(false);
@@ -66,20 +68,50 @@ export default function AprovalTaskPendingForm() {
     }
 
     const handleAproval = () => {
-        dispatch(postAprove({"sno":dataSno,"LMBY":dataUserId}))
-        if(dataStats == "success"){
-            history.push('/sitelist/aprovaltaskpending')
-        }
-        dispatch(getOdi(""))
-        dispatch(getSno(""))
+
+        const body = {"sno":dataSno,"LMBY":dataUserId}
+        API.postApprovalConfirm(body).then(
+            result=>{
+                try{
+                    if(result.status=="success"){
+                        setIsLoading(false)
+                        history.push('/sitelist/aprovaltaskpending')
+                        toast.success(result.message)
+                        
+                    }
+                }
+                catch(e){
+                    toast.error(result.message)
+                    setIsLoading(false)
+                    console.log(e,"error catch")
+                }
+            }
+        )
+     
+        setIsModalVisible(false)
     }
+    
     const handleReject = () => {
-        dispatch(postReject({"sno":dataSno,"LMBY":dataUserId,"reasonOfRejection":remarks}))
-        if(dataStats2 == "success"){
-            history.push('/sitelist/aprovaltaskpending')
-        }
-        dispatch(getOdi(""))
-        dispatch(getSno(""))
+    
+        const body = {"sno":dataSno,"LMBY":dataUserId,"reasonOfRejection":remarks}
+        API.postRejectAproval(body).then(
+            result=>{
+                try{
+                    if(result.status=="success"){
+                        setIsLoading(false)
+                        history.push('/sitelist/aprovaltaskpending')
+                        toast.success(result.message)
+                        
+                    }
+                }
+                catch(e){
+                    toast.error(result.message)
+                    setIsLoading(false)
+                    console.log(e,"error catch")
+                }
+            }
+        )
+        setIsModalRejectVisible(false)
     
     }
 

@@ -9,7 +9,7 @@ import {setDataScope} from '../action/scopeAction'
 function* sagaGetDataScope(action) {
     const token = yield select(state=>state.auth.token)
     try {
-        const res = yield axios.get(`https://bornxldemo-api.nsnebast.com/poscope`,{headers: {
+        const res = yield axios.get(`${API}/poscope`,{headers: {
             Authorization: `Bearer ${token}` 
         }});
         console.log(res,"result get scope")

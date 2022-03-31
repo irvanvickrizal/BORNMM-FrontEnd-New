@@ -6,14 +6,14 @@ import { toast } from 'react-toastify';
 
 import {putLogistikFormSuccess,setDataSiteInfoLogistik,getLogisticPending,postAsDraftSuccess,setDeliveryTransport,setDataSiteInfo,setMaterialOrderDetail,setLsp,setDeliveryList,setDeliveryMode,postLogistikFormSuccess,setLogistikPending} from "../action/logistikFormAction"
 
-import { browserHistory } from 'react-router-dom'
+
 
 
 function* sagaGetSiteInfo(action) {
     const token = yield select(state=>state.auth.token)
     const dataOdi = yield select(state=>state.logistikFormReducer.odi)
     try {
-        const res = yield axios.get(`https://bornxldemo-api.nsnebast.com/materialmanagement/OrderDetailRequestGetDetail/${dataOdi}`,{headers: {
+        const res = yield axios.get(`${API}materialmanagement/OrderDetailRequestGetDetail/${dataOdi}`,{headers: {
             Authorization: `Bearer ${token}` 
         }});
         console.log(res,"result get site condition")
@@ -27,7 +27,7 @@ function* sagaGetSiteInfoLogistik(action) {
     const dataOdi = yield select(state=>state.logistikFormReducer.odi)
     const dataOdiLogistik = yield select(state=>state.logistikFormReducer.odiLogistik)
     try {
-        const res = yield axios.get(`https://bornxldemo-api.nsnebast.com/materialmanagement/orderRequestLogisticGetDetail/${dataOdiLogistik}`,{headers: {
+        const res = yield axios.get(`${API}materialmanagement/orderRequestLogisticGetDetail/${dataOdiLogistik}`,{headers: {
             Authorization: `Bearer ${token}` 
         }});
         console.log(res,"result get Logistik Info")
@@ -40,7 +40,7 @@ function* sagaGetMaterialOrder(action) {
     const token = yield select(state=>state.auth.token)
     const dataOdi = yield select(state=>state.logistikFormReducer.odi)
     try {
-        const res = yield axios.get(`https://bornxldemo-api.nsnebast.com/materialmanagement/orderRequestMaterialGetDetailBasedOnOrderRequest/${dataOdi}`,{headers: {
+        const res = yield axios.get(`${API}materialmanagement/orderRequestMaterialGetDetailBasedOnOrderRequest/${dataOdi}`,{headers: {
             Authorization: `Bearer ${token}` 
         }});
         console.log(res,"result get site condition")
@@ -52,7 +52,7 @@ function* sagaGetMaterialOrder(action) {
 function* sagaGetLsp(action) {
     const token = yield select(state=>state.auth.token)
     try {
-        const res = yield axios.get(`https://bornxldemo-api.nsnebast.com/subcon/GetLSP`,{headers: {
+        const res = yield axios.get(`${API}subcon/GetLSP`,{headers: {
             Authorization: `Bearer ${token}` 
         }});
         console.log(res,"result get site condition")
@@ -65,7 +65,7 @@ function* sagaGetDeliveryList(action) {
     const token = yield select(state=>state.auth.token)
     
     try {
-        const res = yield axios.get(`https://bornxldemo-api.nsnebast.com/cdmr/getListIncludeTransportMode`,{headers: {
+        const res = yield axios.get(`${API}cdmr/getListIncludeTransportMode`,{headers: {
             Authorization: `Bearer ${token}` 
         }});
         console.log(res,"result get site condition")
@@ -78,7 +78,7 @@ function* sagaGetDeliveryTransport(action) {
     const token = yield select(state=>state.auth.token)
     const deliveryId = yield select(state=>state.logistikFormReducer.idDelivery)
     try {
-        const res = yield axios.get(`https://bornxldemo-api.nsnebast.com/cdmr/getTransportModeBasedOnCDMR/${deliveryId}`,{headers: {
+        const res = yield axios.get(`${API}cdmr/getTransportModeBasedOnCDMR/${deliveryId}`,{headers: {
             Authorization: `Bearer ${token}` 
         }});
         console.log(res,"result get transport")
@@ -92,7 +92,7 @@ function* sagaGetDeliveryMode(action) {
     const token = yield select(state=>state.auth.token)
     const dataOdi = yield select(state=>state.logistikFormReducer.odi)
     try {
-        const res = yield axios.get(`https://bornxldemo-api.nsnebast.com/deliveryMode/getListBasedonOrderRequest/${dataOdi}`,{headers: {
+        const res = yield axios.get(`${API}deliveryMode/getListBasedonOrderRequest/${dataOdi}`,{headers: {
             Authorization: `Bearer ${token}` 
         }});
         console.log(res,"result get selivery mode")
@@ -106,7 +106,7 @@ function* sagaPostLogistikForm(action) {
     const message = yield select(state=>state.logistikFormReducer.stats.data.message)
    
     try {
-        const res = yield axios.post(`https://bornxldemo-api.nsnebast.com/materialmanagement/orderRequestDetailFormLogisticSubmit`,action.payload
+        const res = yield axios.post(`${API}materialmanagement/orderRequestDetailFormLogisticSubmit`,action.payload
             ,{headers: {
                 Authorization: `Bearer ${token}` 
             }});
@@ -128,7 +128,7 @@ function* sagaPutLogistikForm(action) {
     const message = yield select(state=>state.logistikFormReducer.stats.data.message)
    
     try {
-        const res = yield axios.put(`https://bornxldemo-api.nsnebast.com/materialmanagement/orderRequestDetailFormLogisticUpdate`,action.payload
+        const res = yield axios.put(`${API}materialmanagement/orderRequestDetailFormLogisticUpdate`,action.payload
             ,{headers: {
                 Authorization: `Bearer ${token}` 
             }});
@@ -139,8 +139,9 @@ function* sagaPutLogistikForm(action) {
         return res
         
     } catch (error) {
+
         console.log(error,'error get data site condition')
-        yield toast.error();
+        yield toast.error("error");
         return "error"
        
     }
@@ -149,7 +150,7 @@ function* sagaPostAsDraft(action) {
     const token = yield select(state=>state.auth.token)
     const message = yield select(state=>state.logistikFormReducer.stats.data.message)
     try {
-        const res = yield axios.post(`https://bornxldemo-api.nsnebast.com/materialmanagement/orderRequestDetailFormLogisticSubmit`,action.payload
+        const res = yield axios.post(`${API}materialmanagement/orderRequestDetailFormLogisticSubmit`,action.payload
             ,{headers: {
                 Authorization: `Bearer ${token}` 
             }});
@@ -165,7 +166,7 @@ function* sagaPostAsDraft(action) {
 function* sagaGetLogistikPending(action) {
     const token = yield select(state=>state.auth.token)
     try {
-        const res = yield axios.get(`https://bornxldemo-api.nsnebast.com/materialmanagement/orderRequestLogisticAssignmentPending`,{headers: {
+        const res = yield axios.get(`${API}materialmanagement/orderRequestLogisticAssignmentPending`,{headers: {
             Authorization: `Bearer ${token}` 
         }});
         console.log(res,"result get site condition")

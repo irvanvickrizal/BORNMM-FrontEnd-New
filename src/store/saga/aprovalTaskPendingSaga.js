@@ -11,7 +11,7 @@ import {setAprovalPending,setOrderDetail,setMaterial,setLog,postAproveSuccess,ge
 function* sagaGetAprovalTaskPending(action) {
     const token = yield select(state=>state.auth.token)
     try {
-        const res = yield axios.get(`https://bornxldemo-api.nsnebast.com/wftransaction/orderRequestGetApprovalPendingList`,{headers: {
+        const res = yield axios.get(`${API}wftransaction/orderRequestGetApprovalPendingList`,{headers: {
             Authorization: `Bearer ${token}` 
         }});
         console.log(res,"result get site condition")
@@ -24,7 +24,7 @@ function* sagaGetOrderRequesDetail(action) {
     const token = yield select(state=>state.auth.token)
     const dataOdi = yield select(state=>state.aprovalTaskPendingReducer.odi)
     try {
-        const res = yield axios.get(`https://bornxldemo-api.nsnebast.com/materialmanagement/OrderDetailRequestGetDetail/${dataOdi}`,{headers: {
+        const res = yield axios.get(`${API}materialmanagement/OrderDetailRequestGetDetail/${dataOdi}`,{headers: {
             Authorization: `Bearer ${token}` 
         }});
         console.log(res,"result get site condition")
@@ -37,7 +37,7 @@ function* sagaGetMaterial(action) {
     const token = yield select(state=>state.auth.token)
     const dataOdi = yield select(state=>state.aprovalTaskPendingReducer.odi)
     try {
-        const res = yield axios.get(`https://bornxldemo-api.nsnebast.com/materialmanagement/orderRequestMaterialGetDetailBasedOnOrderRequest/${dataOdi}`,{headers: {
+        const res = yield axios.get(`${API}materialmanagement/orderRequestMaterialGetDetailBasedOnOrderRequest/${dataOdi}`,{headers: {
             Authorization: `Bearer ${token}` 
         }});
         console.log(res,"result get site condition")
@@ -50,7 +50,7 @@ function* sagaGetLog(action) {
     const token = yield select(state=>state.auth.token)
     const dataOdi = yield select(state=>state.aprovalTaskPendingReducer.odi)
     try {
-        const res = yield axios.get(`https://bornxldemo-api.nsnebast.com/audittrail/auditTrailOrderRequestGetList/${dataOdi}`,{headers: {
+        const res = yield axios.get(`${API}audittrail/auditTrailOrderRequestGetList/${dataOdi}`,{headers: {
             Authorization: `Bearer ${token}` 
         }});
         console.log(res,"result get site condition")
@@ -64,7 +64,7 @@ function* sagaPostAproval(action) {
     const token = yield select(state=>state.auth.token)
     const dataOdi = yield select(state=>state.aprovalTaskPendingReducer.odi)
     try {
-        const res = yield axios.post(`https://bornxldemo-api.nsnebast.com/wftransaction/orderRequestApprove`,action.payload
+        const res = yield axios.post(`${API}wftransaction/orderRequestApprove`,action.payload
             ,{headers: {
                 Authorization: `Bearer ${token}` 
             }});
@@ -81,7 +81,7 @@ function* sagaPostReject(action) {
     const token = yield select(state=>state.auth.token)
     const dataOdi = yield select(state=>state.aprovalTaskPendingReducer.odi)
     try {
-        const res = yield axios.post(`https://bornxldemo-api.nsnebast.com/wftransaction/orderRequestReject`,action.payload
+        const res = yield axios.post(`${API}wftransaction/orderRequestReject`,action.payload
             ,{headers: {
                 Authorization: `Bearer ${token}` 
             }});

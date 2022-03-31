@@ -9,7 +9,7 @@ import {setDataSite,getDataSite,postDataSite,postDataSiteSuccess,editDataSiteSuc
 function* sagaGetDataSite(action) {
     const token = yield select(state=>state.auth.token)
     try {
-        const res = yield axios.get(`https://bornxldemo-api.nsnebast.com/sitecondition`,{headers: {
+        const res = yield axios.get(`${API}sitecondition`,{headers: {
             Authorization: `Bearer ${token}` 
         }});
         console.log(res,"result get site condition")
@@ -22,7 +22,7 @@ function* sagaGetDataSite(action) {
 function* sagaPostDataSite(action) {
     const token = yield select(state=>state.auth.token)
     try {
-        const res = yield axios.post(`https://bornxldemo-api.nsnebast.com/sitecondition`,action.payload
+        const res = yield axios.post(`${API}sitecondition`,action.payload
             ,{headers: {
                 Authorization: `Bearer ${token}` 
             }});
@@ -37,7 +37,7 @@ function* sagaPutDataSite(action) {
     const token = yield select(state=>state.auth.token)
     
     try {
-        const res = yield axios.put(`https://bornxldemo-api.nsnebast.com/sitecondition`,action.payload
+        const res = yield axios.put(`${API}sitecondition`,action.payload
             ,{headers: {
                 Authorization: `Bearer ${token}` 
             }});
@@ -52,7 +52,7 @@ function* sagaPutActivationSite(action) {
     const token = yield select(state=>state.auth.token)
     
     try {
-        const res = yield axios.put(`https://bornxldemo-api.nsnebast.com/sitecondition/setactivationstatus`,action.payload
+        const res = yield axios.put(`${API}sitecondition/setactivationstatus`,action.payload
             ,{headers: {
                 Authorization: `Bearer ${token}` 
             }});
