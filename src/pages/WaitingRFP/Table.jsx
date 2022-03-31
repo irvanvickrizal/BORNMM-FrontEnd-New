@@ -75,31 +75,31 @@ const WaitingRFPTable = () => {
     }
 
     function getOrderDetail(data) {
-        setIsLoading(true);
-        API.getOrderRequest(orderDetailId).then(
+        //setIsLoading(true);
+        API.getOrderRequest(data).then(
             result=>{
                 setDataOrderDetail(result);
-                setIsLoading(false);
+                //setIsLoading(false);
                 console.log("data order detail =>",result);
             }
         )
     }
     function getMaterial(data) {
-        setIsLoading(true);
+        //setIsLoading(true);
         API.getMaterial(orderDetailId).then(
             result=>{
                 setDataMaterial(result);
-                setIsLoading(false);
+                //setIsLoading(false);
                 console.log("data order Material =>",result);
             }
         )
     }
     function getLog(data) {
-        setIsLoading(true);
+        //setIsLoading(true);
         API.getLog(orderDetailId).then(
             result=>{
                 setDataLog(result);
-                setIsLoading(false);
+                //setIsLoading(false);
                 console.log("data order Material =>",result);
             }
         )
@@ -141,14 +141,14 @@ const WaitingRFPTable = () => {
       
         setIsModalTabVisible(true)
         setOrderDetailId(data)
-        getOrderDetail()
+        getOrderDetail(data)
     }
 
     const handleRFPForm = (record) => {
         setOrderDetailId(record.orderDetailId);
         setRequestNo(record.requestNo);
         setOrderType(record.orderType);
-        setOrderRequestNo(record.orderRquestNo)
+        setOrderRequestNo(record.orderRequestNo)
         setPickuporDeliveryDate(record.pickupOrDeliveryDate);
 
         setIsFormRFP(true);
@@ -536,8 +536,10 @@ const WaitingRFPTable = () => {
     ]
 
     function callback(key) {
-     
-        if(key==2){
+        if(key==1){
+            getOrderDetail(orderDetailId)
+        }
+        else if(key==2){
             getMaterial()
         }
         else if(key==3){
@@ -575,7 +577,7 @@ const WaitingRFPTable = () => {
                         Return Pickup Request
                     </TabPane>
                 </Tabs>
-                <Modal title="Cancel Task"
+                <Modal title="RFP Confirmation"
                     visible={isFormRFP}
                     confirmLoading={formLoading}
                     destroyOnClose={true}
@@ -612,15 +614,8 @@ const WaitingRFPTable = () => {
                         </Form.Item>
                         <Form.Item
                         // hidden
-                            label="Request No"
-                            name="requestNo"
-                        >
-                            <Input disabled/>
-                        </Form.Item>
-                        <Form.Item
-                        // hidden
                             label="Order Req No"
-                            name="orderReqNo"
+                            name="orderRequestNo"
                         >
                             <Input disabled/>
                         </Form.Item>
@@ -655,7 +650,7 @@ const WaitingRFPTable = () => {
                         </Form.Item>
                         <Form.Item
                         // hidden
-                            label="Total Volume"
+                            label="Total Volume (CBN)"
                             name="totalVolume"
                             rules={[{ required: true, message: 'Please input Total Volume!' }]}
                         >

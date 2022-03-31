@@ -92,15 +92,10 @@ export default function LogisticTaskRejectionForm() {
     
     const dataUser = useSelector(state=>state.auth.user.uid)
     
-
-
-
     const DataDeliveryTransport = useSelector(state=> state.logistikFormReducer.detaDeliveryTransport)
     const dataOdi = useSelector(state=> state.logistikFormReducer.odi)
     const dataOdiLog = useSelector(state=> state.logistikFormReducer.odiLogistik)
     const dataStats = useSelector(state=>state.logistikFormReducer.stats.status)
-
-
 
     const getLogLogistic = () => {
         API.getLogLogistic(odi).then(
@@ -110,7 +105,6 @@ export default function LogisticTaskRejectionForm() {
             }
         )
     }
-
 
     const cancelModal = () => {
         setIsModalVisible(false);
@@ -182,7 +176,7 @@ export default function LogisticTaskRejectionForm() {
         dispatch(getDeliveryMode())
         getLogLogistic()
         dispatch(getDataSiteInfoLogistik())
-    }, [dispatch])
+    }, [dispatch,dataOrderLogistik])
 
     const columns = [
     
