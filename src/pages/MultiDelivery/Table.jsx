@@ -108,6 +108,25 @@ const TableMultiDeliveryConfirmation = () => {
     const handleEditMultiDelivery = (id) =>{
         navigateTo(`/task/mdarrangementform?mdid=${id}`)
     }
+    const handleDeleteMultiDelivery = (id) =>{
+        if (window.confirm('Are you sure you want to process this action ?')) {
+            console.log(id)
+            const body = (
+                {
+                    "multiDeliveryId":id,
+                    "LMBY": user.uid
+                }
+            )
+            console.log(body,"body")
+            API.putDeleteMultiDeliveryRequest(body).then(
+                result=>{
+                    console.log(result);
+                    toast.success(result.message)
+                    getMultiDeliveryConfirmation()
+                }
+            )
+        }
+    }
 
     const handleDDLSubconChange = (data) =>{
         console.log("ddlsubcon", data)
@@ -197,7 +216,7 @@ const TableMultiDeliveryConfirmation = () => {
                             </Tooltip>
                             {record.viewToDelete ? 
                                 <Tooltip title="Delete Multi Delivery">
-                                    <IconButton size="small" color="error">
+                                    <IconButton size="small" color="error" onClick={()=>handleDeleteMultiDelivery(record.multiDeliveryId)}>
                                         <DeleteOutlined />
                                     </IconButton>
                                 </Tooltip>
