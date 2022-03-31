@@ -127,7 +127,7 @@ export default function LogisticTaskRejectionForm() {
 
     const handlePost = (data) => {
         // dispatch(putLogistikForm(body))
-        console.log({"logisticOrderDetailId":dataOdiLog,"orderDetailId":dataOdi,"whTeamId":wh,"cdmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"LMBY":dataUser,"note":note})
+        console.log({"logisticOrderDetailId":dataOdiLog,"orderDetailId":dataOdi,"whTeamId":wh,"cdmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"LMBY":dataUser,"notes":note})
 
         // if( dataStats == 200){
         //     history.push('/mm/tasklogisticreject')
