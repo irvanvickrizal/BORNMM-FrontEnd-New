@@ -164,7 +164,9 @@ export default function TableOrderList() {
                     console.log(e,"error catch")
                 }
             }
+  
         )
+        setModalDeleteVisible(false)
     }
 
     const columns = [
