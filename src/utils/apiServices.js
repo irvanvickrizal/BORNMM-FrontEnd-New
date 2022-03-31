@@ -516,11 +516,19 @@ const postLogisticCancelForm = (body) => POST("materialmanagement/orderRequestDe
 
 const checkAddButtonOrderList = (wpid,ot) => GETParam2("materialmanagement/orderRequestGetOrderedListViewToAdd",wpid,ot);
 
+
+// Approval 
+const postApprovalConfirm = (body) => POST("wftransaction/orderRequestApprove",body);
+const postRejectAproval = (body) => POST("wftransaction/orderRequestReject",body);
+
+
 const API ={
     checkAddButtonOrderList,
     putDeleteMultiDeliveryRequest,
     postMultiDeliveryCancelAssigned,
     postLogisticForm,
+    postApprovalConfirm,
+    postRejectAproval,
     postLogisticCancelForm,
     getMultiDeliveryAssigned,
     getMultiDeliveryCompletion,

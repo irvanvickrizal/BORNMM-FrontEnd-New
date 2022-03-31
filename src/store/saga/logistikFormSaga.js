@@ -13,7 +13,7 @@ function* sagaGetSiteInfo(action) {
     const token = yield select(state=>state.auth.token)
     const dataOdi = yield select(state=>state.logistikFormReducer.odi)
     try {
-        const res = yield axios.get(`${API}/materialmanagement/OrderDetailRequestGetDetail/${dataOdi}`,{headers: {
+        const res = yield axios.get(`${API}materialmanagement/OrderDetailRequestGetDetail/${dataOdi}`,{headers: {
             Authorization: `Bearer ${token}` 
         }});
         console.log(res,"result get site condition")
@@ -27,7 +27,7 @@ function* sagaGetSiteInfoLogistik(action) {
     const dataOdi = yield select(state=>state.logistikFormReducer.odi)
     const dataOdiLogistik = yield select(state=>state.logistikFormReducer.odiLogistik)
     try {
-        const res = yield axios.get(`${API}/materialmanagement/orderRequestLogisticGetDetail/${dataOdiLogistik}`,{headers: {
+        const res = yield axios.get(`${API}materialmanagement/orderRequestLogisticGetDetail/${dataOdiLogistik}`,{headers: {
             Authorization: `Bearer ${token}` 
         }});
         console.log(res,"result get Logistik Info")
@@ -40,7 +40,7 @@ function* sagaGetMaterialOrder(action) {
     const token = yield select(state=>state.auth.token)
     const dataOdi = yield select(state=>state.logistikFormReducer.odi)
     try {
-        const res = yield axios.get(`${API}/materialmanagement/orderRequestMaterialGetDetailBasedOnOrderRequest/${dataOdi}`,{headers: {
+        const res = yield axios.get(`${API}materialmanagement/orderRequestMaterialGetDetailBasedOnOrderRequest/${dataOdi}`,{headers: {
             Authorization: `Bearer ${token}` 
         }});
         console.log(res,"result get site condition")
@@ -52,7 +52,7 @@ function* sagaGetMaterialOrder(action) {
 function* sagaGetLsp(action) {
     const token = yield select(state=>state.auth.token)
     try {
-        const res = yield axios.get(`${API}/subcon/GetLSP`,{headers: {
+        const res = yield axios.get(`${API}subcon/GetLSP`,{headers: {
             Authorization: `Bearer ${token}` 
         }});
         console.log(res,"result get site condition")
