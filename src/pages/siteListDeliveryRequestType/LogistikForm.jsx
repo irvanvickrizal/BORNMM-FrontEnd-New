@@ -113,7 +113,7 @@ export default function LogisticForm() {
         setIsModalVisible(false);
         console.log(isModalVisible);
     };
-    const index2 = deliveryRequest
+
 
     const handleDeliveryChange = (e) => {
         setDeliveryRequest(e)
@@ -165,9 +165,9 @@ export default function LogisticForm() {
         API.postLogisticCancelForm(body).then(
             result=>{
                 try{
-                    if(result.status=="success"){
+                    if(result.status=="error"){
                         setIsLoading(false)
-                        history.push('mm/taskasglogistic')
+                        history.push('/mm/taskasglogistic')
                         toast.success(result.message)
                     
                        

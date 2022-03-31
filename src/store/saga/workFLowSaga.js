@@ -10,7 +10,7 @@ import { setDataWorkFlow,postDataWorkFlow, getDataWorkFlow,postDataWorkFlowSucce
 function* sagaGetDataWorkFlow(action) {
     const token = yield select(state=>state.auth.token)
     try {
-        const res = yield axios.get(`https://bornxldemo-api.nsnebast.com/workflow`,{headers: {
+        const res = yield axios.get(`${API}workflow`,{headers: {
             Authorization: `Bearer ${token}` 
         }});
         console.log(res,"result get site condition")
@@ -23,7 +23,7 @@ function* sagaGetDataWorkFlow(action) {
 function* sagaPostDataWorkFLow(action) {
     const token = yield select(state=>state.auth.token)
     try {
-        const res = yield axios.post(`https://bornxldemo-api.nsnebast.com/workflow`,action.payload
+        const res = yield axios.post(`${API}workflow`,action.payload
             ,{headers: {
                 Authorization: `Bearer ${token}` 
             }});
@@ -38,7 +38,7 @@ function* sagaPutDataWorkFlow(action) {
     const token = yield select(state=>state.auth.token)
     
     try {
-        const res = yield axios.put(`https://bornxldemo-api.nsnebast.com/workflow`,action.payload
+        const res = yield axios.put(`${API}workflow`,action.payload
             ,{headers: {
                 Authorization: `Bearer ${token}` 
             }});

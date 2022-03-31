@@ -72,6 +72,7 @@ export default function AprovalTaskPendingForm() {
         }
         dispatch(getOdi(""))
         dispatch(getSno(""))
+        setIsModalVisible(false)
     }
     const handleReject = () => {
         dispatch(postReject({"sno":dataSno,"LMBY":dataUserId,"reasonOfRejection":remarks}))
@@ -80,6 +81,7 @@ export default function AprovalTaskPendingForm() {
         }
         dispatch(getOdi(""))
         dispatch(getSno(""))
+        setIsModalRejectVisible(false)
     
     }
 

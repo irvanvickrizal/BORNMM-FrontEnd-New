@@ -10,7 +10,7 @@ import { setDataSiteList,setOrderRejectionPending } from "@app/store/action/site
 function* sagaGetSiteList(action) {
     const token = yield select(state=>state.auth.token)
     try {
-        const res = yield axios.get(`https://bornxldemo-api.nsnebast.com/sitelist/SitelistRequireDeliveryReq`,{headers: {
+        const res = yield axios.get(`${API}sitelist/SitelistRequireDeliveryReq`,{headers: {
             Authorization: `Bearer ${token}` 
         }});
         console.log(res,"result get site condition")
@@ -22,7 +22,7 @@ function* sagaGetSiteList(action) {
 function* sagaGetOrderRejectionPending(action) {
     const token = yield select(state=>state.auth.token)
     try {
-        const res = yield axios.get(`https://bornxldemo-api.nsnebast.com/wftransaction/orderRequestGetRejectionPendingList`,{headers: {
+        const res = yield axios.get(`${API}wftransaction/orderRequestGetRejectionPendingList`,{headers: {
             Authorization: `Bearer ${token}` 
         }});
         console.log(res,"result get site condition")

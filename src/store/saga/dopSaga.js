@@ -9,7 +9,7 @@ import { setDataDop } from "@app/store/action/dopAction";
 function* sagaGetDataDop(action) {
     const token = yield select(state=>state.auth.token)
     try {
-        const res = yield axios.get(`https://bornxldemo-api.nsnebast.com/masterdop`,{headers: {
+        const res = yield axios.get(`${API}masterdop`,{headers: {
             Authorization: `Bearer ${token}` 
         }});
         console.log(res.data, "result get data");

@@ -11,7 +11,7 @@ import { editDataScopeSuccess, getDataScopeOrder, postDataScope, postDataScopeSu
 function* sagaGetScopeOrder(action) {
     const token = yield select(state=>state.auth.token)
     try {
-        const res = yield axios.get(`https://bornxldemo-api.nsnebast.com/masterscopeordertype`,{headers: {
+        const res = yield axios.get(`${API}masterscopeordertype`,{headers: {
             Authorization: `Bearer ${token}` 
         }});
         console.log(res,"result get site condition")
@@ -24,7 +24,7 @@ function* sagaGetScopeOrder(action) {
 function* sagaPostScopeOrderType(action) {
     const token = yield select(state=>state.auth.token)
     try {
-        const res = yield axios.post(`https://bornxldemo-api.nsnebast.com/masterscopeordertype`,action.payload
+        const res = yield axios.post(`${API}masterscopeordertype`,action.payload
             ,{headers: {
                 Authorization: `Bearer ${token}` ,
                 'Content-Type': 'application/json'
@@ -40,7 +40,7 @@ function* sagaPutScopetype(action) {
     const token = yield select(state=>state.auth.token)
     
     try {
-        const res = yield axios.put(`https://bornxldemo-api.nsnebast.com/masterscopeordertype/SetActivationStatus`,action.payload
+        const res = yield axios.put(`${API}masterscopeordertype/SetActivationStatus`,action.payload
             ,{headers: {
                 Authorization: `Bearer ${token}` 
             }});
@@ -55,7 +55,7 @@ function* sagaPutScopetype(action) {
 function* sagaGetOrder(action) {
     const token = yield select(state=>state.auth.token)
     try {
-        const res = yield axios.get(`https://bornxldemo-api.nsnebast.com/masterordertype`,{headers: {
+        const res = yield axios.get(`${API}masterordertype`,{headers: {
             Authorization: `Bearer ${token}` ,
             
         }});
@@ -70,7 +70,7 @@ function* sagaPutDataScopetype(action) {
     const token = yield select(state=>state.auth.token)
     
     try {
-        const res = yield axios.put(`https://bornxldemo-api.nsnebast.com/masterscopeordertype`,action.payload
+        const res = yield axios.put(`${API}masterscopeordertype`,action.payload
             ,{headers: {
                 Authorization: `Bearer ${token}` 
             }});
