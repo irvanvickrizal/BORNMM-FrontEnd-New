@@ -90,6 +90,10 @@ export default function LogisticTaskRejectionForm() {
         (state) => state.logistikFormReducer.dataSiteInfoLogistik
     )
     
+    const dataTransportId = useSelector(
+        (state) => state?.logistikFormReducer?.dataSiteInfoLogistik[0]?.cdmrId
+    )
+    
     const dataUser = useSelector(state=>state.auth.user.uid)
     
     const DataDeliveryTransport = useSelector(state=> state.logistikFormReducer.detaDeliveryTransport)
@@ -145,6 +149,8 @@ export default function LogisticTaskRejectionForm() {
         setModeTransport(data.modeTransport)
         setDeliveMode(data.modeTransport)
         setDeliveryRequest(data.deliveryRequest)
+        dispatch(getIdDelivery(data.deliveryRequest))
+        dispatch(getDeliveryTransport())
         setNote(data.note)
 
 
@@ -168,15 +174,24 @@ export default function LogisticTaskRejectionForm() {
         console.log(isModalVisible);
     };
 
-    useEffect(() => {
+    useEffect((data) => {
+        dispatch(getIdDelivery(dataTransportId))
         dispatch(getDataSiteInfo())
         dispatch(getMaterialOrderDetail())
         dispatch(getLsp())
         dispatch(getDeliveryList())
         dispatch(getDeliveryMode())
+      
         getLogLogistic()
-        dispatch(getDataSiteInfoLogistik())
-    }, [dispatch])
+        
+        dispatch(getIdDelivery(dataTransportId))
+        dispatch(getDeliveryTransport())
+
+        // dispatch(getDataSiteInfoLogistik())
+        // dispatch(getIdDelivery(data.deliveryRequest))
+        // dispatch(getDeliveryTransport(deliveryRequest))
+        console.log(dataTransportId,"data ini")
+    }, [dispatch,dataTransportId])
 
     const columns = [
     

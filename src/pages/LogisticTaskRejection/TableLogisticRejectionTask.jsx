@@ -8,7 +8,7 @@ import { toast } from 'react-toastify'
 
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
-import { getOdi,getOdiLogistik } from '@app/store/action/logistikFormAction'
+import { getOdi,getOdiLogistik,getDataSiteInfoLogistik } from '@app/store/action/logistikFormAction'
 
 export default function TableLogisticRejectionTask() {
     const history = useHistory()
@@ -35,6 +35,7 @@ export default function TableLogisticRejectionTask() {
     const navigateTo = (logisticOrderDetailId,odi) => {
         dispatch(getOdi(odi))
         dispatch(getOdiLogistik(logisticOrderDetailId))
+        dispatch(getDataSiteInfoLogistik())
         history.push(`logisticformreject?ordlid=${logisticOrderDetailId}&odi=${odi}`
         )
     }
