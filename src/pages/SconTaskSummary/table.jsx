@@ -57,14 +57,19 @@ export default function TableTaskSummary(props) {
     const [selectedTaskSchedule,setSelectedTaskSchedule] = useState("")
     const [selectedTransDelegateId,setSelectedtransDelegateId] = useState("")
     const [isPickupRequest,setIsPickupRequest] = useState("")
+
+    const dataUid = useSelector(state=>state.auth.user.uid)
    
     function disabledDate(current) {
         // Can not select days before today and today
         return current < moment().add(2,'d');
     }
+    // task assigment pending = uid
+    // task assgnment on progress = uid
+    // task assigment done = uid
     
     const getSconTaskPending = () => {
-        API.getSconTaskPending().then(
+        API.getSconTaskPending(dataUid).then(
             result=>{
                 setSconTaskPending(result);
                 console.log("scontaskpendnig",result);
@@ -83,7 +88,7 @@ export default function TableTaskSummary(props) {
     }
     const getSconOnProgress = () => {
      
-        API.getSconTaskOnProgress().then(
+        API.getSconTaskOnProgress(dataUid).then(
             result=>{
               
                 setTaskOnProgress(result);
@@ -94,7 +99,7 @@ export default function TableTaskSummary(props) {
     
     const getSconTaskOnDone = () => {
      
-        API.getSconTaskOnDone().then(
+        API.getSconTaskOnDone(dataUid).then(
             result=>{
               
                 setTaskDone(result);
@@ -351,7 +356,7 @@ export default function TableTaskSummary(props) {
                     <div>
                         {record.scheduleStatus=="newpropose" ? <p style={{ color:'red' }}>Propose New Schedule Request</p>
                             :
-                            <Space>
+                            <Space size={16}>
                                 <Tooltip title="Assign Task">
                                     <UserAddOutlined  onClick={() => showModal(record)} />
                                 </Tooltip>
@@ -506,19 +511,19 @@ export default function TableTaskSummary(props) {
         
         {
             title: "Action",
-            dataIndex: "",
+         
             fixed: 'right',
             render:(record)=>{
                 return (
-                    <Space>
+                    <Space size={16}>
                         <Tooltip title="Re-Assign Task">
-                            <UserSwitchOutlined style={{fontSize:"16px"}} onClick={()=> showModalOnProgress(record)}  />
+                            <UserSwitchOutlined style={{fontSize:"18px"}} onClick={()=> showModalOnProgress(record)}  />
                         </Tooltip>
                   
                           
                       
                         <Tooltip title="Cancel Task">
-                            <CloseSquareTwoTone twoToneColor="#FF0000" style={{fontSize:"16px"}} onClick={()=>showModalCancel(record)}/>
+                            <CloseSquareTwoTone twoToneColor="#FF0000" style={{fontSize:"18px"}} onClick={()=>showModalCancel(record)}/>
                         </Tooltip>
                     </Space>
                 )
@@ -622,7 +627,7 @@ export default function TableTaskSummary(props) {
         <div>
             <Tabs defaultActiveKey="1" centered={false} onChange={callback}>
                 <TabPane tab="Assignment Pending" key="1" onChange={getSconTaskPending}>
-                    <Card title={CardTitle("Assignment Pending")}>
+                    <Card >
                         <div >
                             <Table
                                 columns={columnsAssigmentPending}
@@ -644,6 +649,7 @@ export default function TableTaskSummary(props) {
                         <div >
                             <Table
                                 columns={columnsAssigmentOnProgress}
+                                size="small"
                                 pagination={{
                                     pageSizeOptions: ['5', '10', '20', '30', '40'],
                                     showSizeChanger: true,
@@ -661,6 +667,7 @@ export default function TableTaskSummary(props) {
                             <Table
                                 columns={columnsAssigmentOnDone}
                                 scroll={{x: "150%"}}
+                                size="small"
                                 pagination={{
                                     pageSizeOptions: ['5', '10', '20', '30', '40'],
                                     showSizeChanger: true,

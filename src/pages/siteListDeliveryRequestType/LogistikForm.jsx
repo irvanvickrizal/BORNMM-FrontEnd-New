@@ -657,12 +657,13 @@ export default function LogisticForm() {
             </Row>
             <Modal title="Confirm Order Request" visible={isModalVisible}  onCancel={cancelModal} 
             footer={[
+                <Button key="submit" type="primary" onClick={handlePost} >
+                Confirm
+                </Button>,
                 <Button key="back"  onClick={cancelModal}>
                 Cancel
                 </Button>,
-                <Button key="submit" type="primary" onClick={handlePost} >
-                Submit
-                </Button>,
+               
                 
             ]} >
                 <Typography>Are you sure you want to confirm  ?

@@ -31,11 +31,12 @@ const TaskPendingTable = () => {
     const [pickupDate, setPickupDate] = useState('');
     const [cancelLoading, setCancelLoading] = useState(false);
     const user = useSelector((state) => state.auth.user);
+    const userId = useSelector((state) => state.auth.user.uid);
 
 
     function getSconTaskPending() {
         setIsLoading(true);
-        API.getSconTaskPending().then(
+        API.getSconTaskPending(userId).then(
             result=>{
                 setSconTaskPending(result);
                 setIsLoading(false);
