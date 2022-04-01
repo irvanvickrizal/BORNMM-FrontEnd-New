@@ -148,14 +148,14 @@ const POSTParam = (path,body,param)  => {
         })
     })
     return promise;
-
+}
 const POSTParam2 = (path,body,param,param2)  => {
     const promise = new Promise((resolve, reject) => {
         axios.post(`${baseURL}${path}/${param}/${param2}`
             ,body
             ,{headers}
         ).then((result)=> {
-            console.log('i am post :',result.data);
+            console.log('i am post Param2:',result.data);
             resolve(result.data);
         },(err)=>{
             console.log('config',headers);
@@ -470,7 +470,7 @@ const getDownloadUploadedBoq = (bid) => GETParam('boqref/boqAsPODataCheckSummary
 const getLatestAsPlanCheckPoint = (bid) => GETParam('boqref/boqAsPlanUploadDataCheckHasCleared',bid);
 const getDownloadUploadedAsPlanBoq = (bid) => GETParam('boqref/boqAsPlanDataCheckGetList',bid)
 const getDownloadUploadedBoqSummaryAsPlan = (bid) => GETParam('boqref/boqAsPlanDataCheckSummary',bid)
-const postBoqAsPlanUploadProceed = (body,bid,uid) => POSTParam2('boqref/boqAsPlanUploadedProceed',body,bid,uid)
+const postBoqAsPlanUploadProceed = (body,bid,uid) => POSTParam('boqref/boqAsPlanUploadedProceed',body,bid,uid)
 const postResetUploadedBoqAsPlan = (body,bid) => POSTParam('boqref/boqAsPlanUploadedReset',body,bid)
 
 
