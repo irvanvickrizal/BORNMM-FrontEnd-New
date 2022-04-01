@@ -509,7 +509,7 @@ const postDismantleForm = (body) => POST('materialmanagement/OrderDetailAdd',bod
 const getTeamCoordinator= (subconid,workpackageid) => GETParam2('subcon/getCoordinatorSubcontractorEngineer',subconid,workpackageid);
 const getHasExpressDelivery= (ordertypeid) => GETParam('masterordertype/orderTypeHasExpressDelivery',ordertypeid);
 
-const getOrderRequestDraft = () => GET('mmReport/OrderRequestGetListDraft');
+const getOrderRequestDraft = (uid) => GETParam('mmReport/OrderRequestGetListDraft',uid);
 
 const getOrderDetailForm = (odi) => GETParam('materialmanagement/OrderDetailRequestGetDetail',odi);
 const getMaterialOrderLog = (odi) => GETParam('audittrail/auditTrailOrderRequestGetList',odi);
@@ -527,7 +527,7 @@ const deleteMaterialOrderRequest = (param) => DELETE('materialmanagement/orderRe
 
 const getOrderDetailEdit =  (odi) => GETParam('materialmanagement/OrderDetailRequestGetDetail',odi);
 
-const getSconTaskPending = () => GET('taskassignment/taskAssignmentSubconPending');
+const getSconTaskPending = (uid) => GETParam('taskassignment/taskAssignmentSubconPending',uid);
 const getSconEngineer = (sconid,wpid) => GETParam2('subcon/getFieldSubcontractorEngineer',sconid,wpid)
 const postAssignEngineer = (body) => POST("taskassignment/taskAssignmentToEngineer",body);
 const postCancelTask = (body) => POST("taskassignment/taskAssignmentCanceled",body);
@@ -554,8 +554,8 @@ const postOutboundFile2 = (file,userid) => POSTFile('inventory/outboundFileUploa
 const deleteOutboundFile = (body,id) => PUTParam('inventory/outboundFileDelete',body,id);
 const deleteOutboundFile2 = (body,id,userid) => PUTParam2('inventory/outboundFileDelete',body,id,userid);
 
-const getSconTaskOnProgress = () => GET('taskassignment/taskAssignmentSubconOnProgress');
-const getSconTaskOnDone = () => GET('taskassignment/taskAssignmentSubconDone');
+const getSconTaskOnProgress = (uid) => GETParam('taskassignment/taskAssignmentSubconOnProgress',uid);
+const getSconTaskOnDone = (uid) => GETParam('taskassignment/taskAssignmentSubconDone',uid);
 const postReAssignmentEngineer = (body) => POST("taskassignment/taskReAssignmentToEngineer",body);
 
 const getWaitingRFP = (userid) => GETParam('lspassignment/lspAssignmentRFPPending',userid);
@@ -679,6 +679,7 @@ const postApprovalConfirm = (body) => POST("wftransaction/orderRequestApprove",b
 const postRejectAproval = (body) => POST("wftransaction/orderRequestReject",body);
 
 const getAddress = (siteNo,ddlDestination) => GETParam2('materialmanagement/orderRequestGetDestinationAddress',siteNo,ddlDestination)
+const orderRequestDraft = (body) => PUT("materialManagement/orderRequestChangeExpectedDeliveryDate",body)
 
 const API ={
     getAddress,
@@ -693,6 +694,7 @@ const API ={
     postMultiDeliveryCancelAssigned,
     postLogisticForm,
     postApprovalConfirm,
+    orderRequestDraft,
     postRejectAproval,
     postLogisticCancelForm,
     getMultiDeliveryAssigned,
