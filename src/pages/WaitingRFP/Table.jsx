@@ -295,18 +295,41 @@ const WaitingRFPTable = () => {
                 return (
                     <div>
                         <Space>
-                            {record.scheduleStatus=="newpropose" ? <p style={{ color:'red' }}>Propose New Schedule Request</p>
+                            {record.isPickupRequest ? 
+                                record.dayToGo == 1 ?
+                                    <Tooltip title="RFP Done">
+                                        <IconButton
+                                            size="small"
+                                            onClick={() => handleRFPForm(record)}
+                                        >
+                                            <CheckCircleTwoTone twoToneColor="#52c41a" />
+                                        </IconButton>
+                                    </Tooltip>
+
+                                    :
+
+                                    <Tooltip title="rfp for pickup req should be h-1" color="#ff0000">
+                                        <IconButton
+                                            size="small"
+                                            
+                                        >
+                                            <CheckCircleTwoTone twoToneColor="#777772" />
+                                        </IconButton>
+                                    </Tooltip>
                                 :
-                                <Tooltip title="RFP Done">
-                                    <IconButton
-                                        size="small"
-                                        onClick={() => handleRFPForm(record)}
-                                    >
-                                        <CheckCircleTwoTone twoToneColor="#52c41a" />
-                                    </IconButton>
-                                </Tooltip>
-                                
-                    
+                            
+                                record.scheduleStatus=="newpropose" ? <p style={{ color:'red' }}>Propose New Schedule Request</p>
+                                    :
+
+                                    <Tooltip title="RFP Done">
+                                        <IconButton
+                                            size="small"
+                                            onClick={() => handleRFPForm(record)}
+                                        >
+                                            <CheckCircleTwoTone twoToneColor="#52c41a" />
+                                        </IconButton>
+                                    </Tooltip>
+                            
                             }
                             <Tooltip title="Order Request Rejection">
                                 <IconButton
