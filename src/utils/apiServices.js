@@ -472,7 +472,7 @@ const getOutboundUploadFile = () => GET('inventory/outboundFileUploadGetList');
 const getOutboundSuccessLog = () => GET('inventory/outboundSuccessLogList');
 const getOutboundErrorList = (id) => GETParam('inventory/outboundFileUploadGetErrLogList',id);
 const postReviseOutboundFile = (id,file) => POSTFile('inventory/outboundFileRevisionUpload',id,file);
-const postOutboundFile = (file) => POSTFiled('inventory/outboundFileUpload',file);
+const postOutboundFile = (file) => POSTFiled('inventory/outboundFileUpload',file);q 
 const deleteOutboundFile = (body,id) => PUTParam('inventory/outboundFileDelete',body,id);
 
 const getSconTaskOnProgress = () => GET('taskassignment/taskAssignmentSubconOnProgress');
