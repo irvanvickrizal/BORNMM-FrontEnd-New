@@ -7,7 +7,7 @@ import React,{useEffect,useState} from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import {Select,Form,Modal,Table,Tabs, Input,Menu, Dropdown, Button, Space, Spin, Row, Col,Tooltip  } from 'antd'
 import {IconButton, TextField}  from '@mui/material/';
-import API  from '../../utils/apiServices';
+import API from '@app/utils/apiServices';
 import Search from '@app/components/searchcolumn/SearchColumn';
 import moment from 'moment';
 import exportFromJSON from 'export-from-json'

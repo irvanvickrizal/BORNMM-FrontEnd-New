@@ -145,6 +145,7 @@ export default function LogisticForm() {
                 }
             }
         )
+        console.log(body,"this body")
         
     };
 
@@ -177,6 +178,7 @@ export default function LogisticForm() {
     };
 
     const showModal = () => {
+        setDeliveMode(dataSite[0].proposeDeliveryModeId)
         setIsModalVisible(true);
         console.log(isModalVisible);
     };
@@ -274,7 +276,7 @@ export default function LogisticForm() {
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(record.incomingDate).format("YYYY-MM-DD")}</p>
+                        <p>{moment(record.incomingDate).format("YYYY-MM-DD hh:mm:ss")}</p>
                     </Space>
                 )
             },
@@ -285,7 +287,7 @@ export default function LogisticForm() {
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(record.executeDate).format("YYYY-MM-DD")}</p>
+                        <p>{moment(record.executeDate).format("YYYY-MM-DD hh:mm:ss")}</p>
                     </Space>
                 )
             },
@@ -379,6 +381,52 @@ export default function LogisticForm() {
                                                     }
                                                 />
                                             </Form.Item>
+                                            {dataSite[0]?.isPickupRequest ? (<> <Form.Item
+                                                label="Propose Delivery Mode"
+                                                rules={[
+                                                    {
+                                                        required: true
+                                                    }
+                                                ]}
+                                            >
+                                                <Input
+                                                    disabled
+                                                    value={
+                                                        dataSite[0].proposeDeliveryMode
+                                                    }
+                                                />
+                                            </Form.Item></>):(<> <Form.Item
+                                                label="Proposed Delivery Mode"
+                                                rules={[
+                                                    {
+                                                        required: true
+                                                    }
+                                                ]}
+                                            >
+                                                <Input
+                                                    disabled
+                                                    value={
+                                                        dataSite[0].proposeDeliveryMode
+                                                    }
+                                                />
+                                            </Form.Item></>)}
+                                           
+                                            <Form.Item
+                                                label="Delivery Date"
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message:
+                                                            "Missing Inventory Code"
+                                                    }
+                                                ]}
+                                            >
+                                                <Input disabled value={
+                                                    moment( dataSite[0]
+                                                            .expectedDeliveryDate).format("YYYY-MM-DD")
+                                                       
+                                                    } />
+                                            </Form.Item>
                                             <Form.Item label="Site Location">
                                                 <Input
                                                     disabled
@@ -426,37 +474,7 @@ export default function LogisticForm() {
                                                     }
                                                 />
                                             </Form.Item>
-                                            <Form.Item
-                                                label="Proposed Delivery Mode"
-                                                rules={[
-                                                    {
-                                                        required: true
-                                                    }
-                                                ]}
-                                            >
-                                                <Input
-                                                    disabled
-                                                    value={
-                                                        dataSite[0].proposeDeliveryMode
-                                                    }
-                                                />
-                                            </Form.Item>
-                                            <Form.Item
-                                                label="Delivery Date"
-                                                rules={[
-                                                    {
-                                                        required: true,
-                                                        message:
-                                                            "Missing Inventory Code"
-                                                    }
-                                                ]}
-                                            >
-                                                <Input disabled value={
-                                                    moment( dataSite[0]
-                                                            .expectedDeliveryDate).format("YYYY-MM-DD")
-                                                       
-                                                    } />
-                                            </Form.Item>
+                                           
                                             {/* <Form.Item>
                                     <Button type="primary" htmlType="submit">Confirm</Button>
                                     <Button type="danger">Cancel</Button>
@@ -503,7 +521,7 @@ export default function LogisticForm() {
                             onFinish={showModal}
                             onFinishFailed={onFinishFailedAddMaterial}
                             initialValues={{
-                                //'transportTeam':31,
+                                "modeTransport":dataSite[0].proposeDeliveryModeId,
                             }}
                         >
                             <Form.Item label="WH Team" name="whTeam" 
@@ -573,7 +591,7 @@ export default function LogisticForm() {
                                    }
                                 </Select>
                             </Form.Item>
-                            <Form.Item label="Mode Of Transport" name="modeTransport"
+                            <Form.Item label="Mode Of Delivery" name="modeTransport"
                               rules={[{ required: true, message: 'Please Select Mode of Transport!' }]}
                             >
                                 <Select
@@ -595,7 +613,8 @@ export default function LogisticForm() {
                             <TextArea rows={4} onChange={(e) => setNote(e.target.value)}/>
                             </Form.Item>
                             <Form.Item wrapperCol={{ offset: 0, span: 24 }} style={{marginTop:6,marginLeft:128}}>
-                            <Col span={4} md={8} sm={24}>
+                            <div className="float-right">
+                            <Col span={4} md={8} sm={24} >
                                 <Space direction="horizontal">
                                     <Button
                                         type="danger"
@@ -623,6 +642,8 @@ export default function LogisticForm() {
                                     </Button>
                                 </Space>
                             </Col>
+                            </div>
+                          
                   </Form.Item>
                         </Form>
                       

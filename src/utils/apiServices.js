@@ -461,7 +461,7 @@ const postBOQASPlanFile = (id,file) => POSTFile('boqref/boqAsPlanUploadBulk',id,
 
 // as PO
 
-const postBoqUploadProceed = (body,bid) => POSTParam('boqref/boqUploadedProceed',body,bid)
+const postBoqUploadProceed = (body,bid,uid) => POSTParam2('boqref/boqUploadedProceed',body,bid,uid)
 const postResetUploadedBoq = (body,bid) => POSTParam('boqref/boqUploadedReset',body,bid)
 const getDownloadedUloaded = (bid) => GETParam('boqref/boqAsPODataCheckGetList',bid)
 const getDownloadUploadedBoq = (bid) => GETParam('boqref/boqAsPODataCheckSummary',bid)
@@ -470,7 +470,7 @@ const getDownloadUploadedBoq = (bid) => GETParam('boqref/boqAsPODataCheckSummary
 const getLatestAsPlanCheckPoint = (bid) => GETParam('boqref/boqAsPlanUploadDataCheckHasCleared',bid);
 const getDownloadUploadedAsPlanBoq = (bid) => GETParam('boqref/boqAsPlanDataCheckGetList',bid)
 const getDownloadUploadedBoqSummaryAsPlan = (bid) => GETParam('boqref/boqAsPlanDataCheckSummary',bid)
-const postBoqAsPlanUploadProceed = (body,bid,uid) => POSTParam('boqref/boqAsPlanUploadedProceed',body,bid,uid)
+const postBoqAsPlanUploadProceed = (body,bid,uid) => POSTParam2('boqref/boqAsPlanUploadedProceed',body,bid,uid)
 const postResetUploadedBoqAsPlan = (body,bid) => POSTParam('boqref/boqAsPlanUploadedReset',body,bid)
 
 

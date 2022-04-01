@@ -10,6 +10,7 @@ import Search from '@app/components/searchcolumn/SearchColumn'
 import {CheckCircleFilled } from "@ant-design/icons"
 import { toast } from 'react-toastify';
 import exportFromJSON from 'export-from-json'
+import { useSelector } from 'react-redux'
 
 
 export default function TableSummary() {
@@ -39,9 +40,11 @@ export default function TableSummary() {
        
     }, [])
 
+    const dataUserId = useSelector(state=>state.auth.user.uid)
+
     const postProceedUploadedBoq = () => {
    
-        API.postBoqUploadProceed("",bid).then(
+        API.postBoqUploadProceed("",bid,dataUserId).then(
             result=>{
                 try{
                     if(result.status=="success"){
