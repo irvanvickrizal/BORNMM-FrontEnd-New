@@ -406,7 +406,8 @@ const DismantleForm = (props) => {
                                 initialValues={{
                                     'isExpressDelivery':false,
                                     'inventoryCode':1,
-                                    'ctName':1
+                                    'ctName':1,
+                                    'deliveryDate': moment().add(2,'d')
                                 }}
                                 onFinish={handleConfirm}
                                 onFinishFailed={onFinishFailedAddMaterial}
@@ -586,7 +587,7 @@ const DismantleForm = (props) => {
                                         }
                                     </Select>
                                 </Form.Item>
-                                <Form.Item label="Delivery Date" name="deliveryDate" rules={[{ required: true, message: 'Please Select Delivery Date' }]}>
+                                <Form.Item label="Pickup Date" name="deliveryDate" rules={[{ required: true, message: 'Please Select Delivery Date' }]}>
                                     {checked ? <DatePicker
                                         format="YYYY-MM-DD"
                                         disabledDate={
