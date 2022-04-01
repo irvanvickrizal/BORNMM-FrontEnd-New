@@ -79,15 +79,6 @@ export default function LogisticForm() {
         )
     }
 
-    useEffect(() => {
-        dispatch(getDataSiteInfo())
-        dispatch(getMaterialOrderDetail())
-        dispatch(getLsp())
-        dispatch(getDeliveryList())
-        dispatch(getDeliveryMode())
-        getLogLogistic()
-    }, [dispatch])
-
     const lsp = useSelector((state) => state.logistikFormReducer.dataLsp)
     const deliveryList = useSelector(
         (state) => state.logistikFormReducer.detaDeliveryList
@@ -206,9 +197,11 @@ export default function LogisticForm() {
         setIsModalCancelVisible(false);
         console.log(isModalVisible);
     };
+    const handleChangeWHTeam = (data) => {
+        setWh(33)
+        console.log(data,"whChange",wh,"wh")
+    };
     const columns = [
-    
-
         {
             title: "PO No/RO No",
             dataIndex: "cpoNo"
@@ -315,6 +308,15 @@ export default function LogisticForm() {
     
     const CardTitle = (title) => <Title level={5}>{title}</Title>
 
+    useEffect(() => {
+        dispatch(getDataSiteInfo())
+        dispatch(getMaterialOrderDetail())
+        dispatch(getLsp())
+        dispatch(getDeliveryList())
+        dispatch(getDeliveryMode())
+        getLogLogistic()
+    }, [dispatch,wh])
+
     return (
         <div>
             <HeaderChanger title="Logistic Form" />
@@ -350,7 +352,6 @@ export default function LogisticForm() {
                                             labelCol={{span: 8}}
                                             wrapperCol={{span: 14}}
                                             layout="horizontal"
-                                            
                                         >
                                             <Form.Item label="Order Type">
                                                 <Input
@@ -496,11 +497,14 @@ export default function LogisticForm() {
                 <Col span={12}>
                     <Card hoverable title={CardTitle("Logistic Form")}>
                         <Form
-                            labelCol={{span: 9}}
-                            wrapperCol={{span: 13}}
+                            labelCol={{span: 12}}
+                            wrapperCol={{span: 12}}
                             layout="horizontal"
                             onFinish={showModal}
-                                onFinishFailed={onFinishFailedAddMaterial}
+                            onFinishFailed={onFinishFailedAddMaterial}
+                            initialValues={{
+                                //'transportTeam':31,
+                            }}
                         >
                             <Form.Item label="WH Team" name="whTeam" 
                               rules={[{ required: true, message: 'Please Select WH Team!' }]}
@@ -559,7 +563,7 @@ export default function LogisticForm() {
                                 <Select
                                     onChange={(e) => setDeliveryTransport(e)}
                                     placeholder="Select an option"
-                                
+                                    
                                 >
                                     {lsp?.length == 0 ? (<></>):( lsp?.map((inv) => (
                                         <Select.Option value={inv.subconId}>
@@ -590,7 +594,7 @@ export default function LogisticForm() {
                             >
                             <TextArea rows={4} onChange={(e) => setNote(e.target.value)}/>
                             </Form.Item>
-                            <Form.Item wrapperCol={{ offset: 8, span: 16 }} style={{marginTop:6,marginLeft:128}}>
+                            <Form.Item wrapperCol={{ offset: 0, span: 24 }} style={{marginTop:6,marginLeft:128}}>
                             <Col span={4} md={8} sm={24}>
                                 <Space direction="horizontal">
                                     <Button

@@ -179,6 +179,7 @@ export default function TablePickup() {
                 {
                     toast.success(result.message);
                     getPickUpCompletion()
+                    setIsModalVisibleReaasignment(false)
                 }
                 else{
                     toast.error(result.message)
@@ -261,6 +262,11 @@ export default function TablePickup() {
             title : "Assigned By",
             dataIndex:'assignBy',
             ...Search('assignBy'),
+        },
+        {
+            title : "Assigned To",
+            dataIndex:'assignTo',
+            ...Search('assignTo'),
         },
   
         {
@@ -737,7 +743,7 @@ export default function TablePickup() {
                         </Row>  
                         :
                         <Table
-                            scroll={{ x: '150%' }}
+                            scroll={{ x: '250%' }}
 
                             // expandable={{ expandedRowRender }}
                             columns={columns}

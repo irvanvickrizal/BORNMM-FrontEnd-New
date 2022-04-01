@@ -88,7 +88,7 @@ const TableMultiDeliveryConfirmation = () => {
     const showCancelRFPDone = (record) =>
     {
         setIsCancelRFPDone(true);
-        setSelectedOrderDetailId(record.orderdetailId);
+        setSelectedOrderDetailId(record.orderDetailId);
         setSelectedRFPId(record.rfpId)
         console.log(record,'rfp')
     }
@@ -313,7 +313,7 @@ const TableMultiDeliveryConfirmation = () => {
                     <div>  
                         <Space>
                             <Tooltip title="Cancel Task">
-                                <IconButton size="small" color="error" onClick={showCancelRFPDone}>
+                                <IconButton size="small" color="error" onClick={()=>showCancelRFPDone(record)}>
                                     <RedoOutlined />
                                 </IconButton>
                             </Tooltip>
@@ -340,7 +340,7 @@ const TableMultiDeliveryConfirmation = () => {
 
     useEffect(() => {
         getMultiDeliveryConfirmation();
-    },[])
+    },[selectedOrderDetailId,selectedRFPId])
 
     return(
         <><Tabs onChange={callback} type="card">
@@ -446,7 +446,7 @@ const TableMultiDeliveryConfirmation = () => {
                 </Form.Item>
             </Form>
         </Modal>
-        <Modal title="Cancel Task"
+        <Modal title="RFP Done Cancel"
             visible={isCancelRFPDone}
             onOk={handleOKCancelRFPDone}
             onCancel={handleCancelCancelRFPDone}
