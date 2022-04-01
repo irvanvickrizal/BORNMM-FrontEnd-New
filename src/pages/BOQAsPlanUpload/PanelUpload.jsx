@@ -39,6 +39,7 @@ const PanelUpload = ({boqId}) => {
 
     const handleUpload = () => {
         setUploading(true)
+        console.log(fileUpload,"console file upload")
         try{
             API.postBOQASPlanFile(boqId,fileUpload).then(
                 result=>{

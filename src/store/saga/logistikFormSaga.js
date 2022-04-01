@@ -1,6 +1,5 @@
 import axios from "axios";
 import { API } from "@app/Variables";
-import {Alert} from 'antd'
 import { put, takeLatest, select,call } from "redux-saga/effects";
 import { toast } from 'react-toastify';
 
