@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-duplicate-props */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable react/jsx-no-useless-fragment */
@@ -29,12 +30,13 @@ import { CloseSquareTwoTone ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined
 import { toast } from 'react-toastify';
 import {IconButton, TextField}  from '@mui/material/';
 
-
+const { TextArea } = Input;
 export default function TableTaskSummary(props) {
     const dispatch = useDispatch()
     const {TabPane} = Tabs
     const {Title} = Typography
     const [page,setPage] = useState(1)
+    const [remarks, setRemarks] = useState("")
     const [isModalVisible,setIsModalVisible] = useState(false)
     const [isModalOnProgressVisible,setIsModalonProgressVisible] = useState(false)
     const [isModalRescheduleVisible,setIsModalRescheduleVisible] = useState(false)
@@ -358,14 +360,14 @@ export default function TableTaskSummary(props) {
                                     :
                                     record.dayToGo <= -2 ?
                                         <Tooltip title="Request Reschedule">
-                                            <CalendarTwoTone onClick={() => showModalReschedule(record)} />
+                                            <CalendarTwoTone onClick={() => showModalReschedule(record)} style={{fontSize:18}}/>
                                         </Tooltip> :
-                                        <Tooltip color='#f50' title="Cannot request reschedule, day to go h-1 or higher">
-                                            <CalendarTwoTone style={{color:"#0000"}} />
+                                        <Tooltip color='#f50' title="Cannot request reschedule,Max. day to go h-1">
+                                            <CalendarTwoTone style={{color:"#0000"}} style={{fontSize:18}}/>
                                         </Tooltip>
                                 }
                                 <Tooltip title="Cancel Task">
-                                    <CloseSquareTwoTone twoToneColor="#FF0000" onClick={() => showModalCancel(record)} />
+                                    <CloseSquareTwoTone twoToneColor="#FF0000" onClick={() => showModalCancel(record)} style={{fontSize:18}} />
                                 </Tooltip>
                             </Space>
                         }
@@ -490,7 +492,7 @@ export default function TableTaskSummary(props) {
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(stateDataOnProgress.incomingDate).format("YYYY-MM-DD")}</p>
+                        <p>{moment(stateDataOnProgress.incomingDate).format("YYYY-MM-DD hh:mm:ss")}</p>
                     </Space>
                 )
             },
@@ -819,24 +821,32 @@ export default function TableTaskSummary(props) {
                 </div>
             </Modal>
             <Modal visible={isModalCancelVisible} onCancel={hideModalCancel}
-                footer={[
-                    <Button key="back"  onClick={hideModalCancel}>
-            Cancel
-                    </Button>,
-                    <Button key="submit" type="primary"  onClick={onFinishCancelTask}>
-            Submit
-                    </Button>,
+                footer={
+                    remarks.length <= 10 ? ( [
             
-                ]}>
-                <div> <Card  title={CardTitle("Assign Task Form")}>
-                    <p>
-                Are you sure you want to Cancel this task? 
-                    </p>
-                    <p>
-                (task will be no longer available once it canceled)
-                    </p>
-                </Card>
-                </div>
+            
+                        <Button disabled key="back" type="danger" >
+            Cancel
+                        </Button>,
+                        <Button key="submit"  onClick={hideModalCancel} >
+            Close
+                        </Button>,
+                
+                    ]):( [
+            
+            
+                        <Button key="back" type="danger" >
+            Cancel
+                        </Button>,
+                        <Button key="submit" onClick={hideModalCancel} >
+            Close
+                        </Button>,
+                
+                    ])
+                } >
+                <Typography>Reason Of Cancelation :
+                </Typography>
+                <TextArea rows={4} onChange={(e) => setRemarks(e.target.value)}/>
             </Modal>
     
         </div>

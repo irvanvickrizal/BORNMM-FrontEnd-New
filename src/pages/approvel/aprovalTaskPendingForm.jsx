@@ -184,9 +184,13 @@ export default function AprovalTaskPendingForm() {
             dataIndex: "reqQTY"
         },
         {
-            title: "Delta QTY",
-            dataIndex: "deltaQTY"
-        }
+            title: "Delta BOQ Ref QTY",
+            dataIndex: "deltaBOQRefQTY"
+        },
+        {
+            title: "Total Req QTY",
+            dataIndex: "totalReqQTY"
+        },
     ]
     const columnsLog = [
         {

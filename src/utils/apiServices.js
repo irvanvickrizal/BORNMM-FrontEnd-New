@@ -149,6 +149,22 @@ const POSTParam = (path,body,param)  => {
     })
     return promise;
 }
+const POSTParam2 = (path,body,param,param2)  => {
+    const promise = new Promise((resolve, reject) => {
+        axios.post(`${baseURL}${path}/${param}/${param2}`
+            ,body
+            ,{headers}
+        ).then((result)=> {
+            console.log('i am post Param2:',result.data);
+            resolve(result.data);
+        },(err)=>{
+            console.log('config',headers);
+            toast.error(err);
+            reject(err);
+        })
+    })
+    return promise;
+}
 
 const POSTFile = (path,id,file)  => {
     var formdata = new FormData();
@@ -445,7 +461,7 @@ const postBOQASPlanFile = (id,file) => POSTFile('boqref/boqAsPlanUploadBulk',id,
 
 // as PO
 
-const postBoqUploadProceed = (body,bid) => POSTParam('boqref/boqUploadedProceed',body,bid)
+const postBoqUploadProceed = (body,bid,uid) => POSTParam2('boqref/boqUploadedProceed',body,bid,uid)
 const postResetUploadedBoq = (body,bid) => POSTParam('boqref/boqUploadedReset',body,bid)
 const getDownloadedUloaded = (bid) => GETParam('boqref/boqAsPODataCheckGetList',bid)
 const getDownloadUploadedBoq = (bid) => GETParam('boqref/boqAsPODataCheckSummary',bid)

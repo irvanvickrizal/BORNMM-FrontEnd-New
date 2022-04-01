@@ -10,6 +10,7 @@ import {Table,Typography,Row,Col,Button,Space,Modal,Card} from "antd"
 
 import { toast } from 'react-toastify';
 import exportFromJSON from 'export-from-json'
+import { useSelector } from 'react-redux';
 
 
 export default function TableSummary() {
@@ -39,9 +40,11 @@ export default function TableSummary() {
        
     }, [])
 
+    const dataUserId = useSelector(state=>state.auth.user.uid)
+
     const postProceedUploadedBoq = () => {
       
-        API.postBoqAsPlanUploadProceed("",bid).then(
+        API.postBoqAsPlanUploadProceed("",bid,dataUserId).then(
             result=>{
                 try{
                     if(result.status=="success"){
