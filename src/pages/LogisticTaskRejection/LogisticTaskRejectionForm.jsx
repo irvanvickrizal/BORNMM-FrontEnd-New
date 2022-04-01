@@ -139,7 +139,7 @@ export default function LogisticTaskRejectionForm() {
         // console.log("test Bod=?>",{"orderDetailId":dataOdi,"whTeamId":wh,"cdmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"note":note})
     
         const body =  {"logisticOrderDetailId":dataOdiLog,"orderDetailId":dataOdi,"whTeamId":wh,"cdmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"LMBY":dataUser,"notes":note}
-
+        console.log(body,"ini body")
         API.putLogisticRejection(body).then(
             result=>{
                 try{
@@ -198,6 +198,7 @@ export default function LogisticTaskRejectionForm() {
         setDeliveMode(data.modeTransport)
         setDeliveryRequest(data.deliveryRequest)
         dispatch(getIdDelivery(data.deliveryRequest))
+        setDeliveryTransport(data.transportTeam)
         dispatch(getDeliveryTransport())
         setNote(data.note)
 
