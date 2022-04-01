@@ -550,8 +550,8 @@ const DismantleForm = (props) => {
                                     </Select>)}
                                     
                                 </Form.Item>
-                                <Form.Item label="Express Delivery" valuePropName="checked" name="isExpressDelivery">  
-                                    {!express ? (<Checkbox onChange={(e)=>handleIsExpress(e.target.checked)}/>):(
+                                <Form.Item label="Express Pickup" valuePropName="checked" name="isExpressDelivery">  
+                                    {express ? (<Checkbox onChange={(e)=>handleIsExpress(e.target.checked)}/>):(
                                         <Tooltip color='#f50' title="Cannot request Express Delivery"><Checkbox disabled /></Tooltip>
                                     )}
                                 </Form.Item>
