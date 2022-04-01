@@ -61,6 +61,7 @@ const DismantleForm = (props) => {
     const [ddlIDeliveryMode,setDDLDeliveryMode] = useState([]);
     const current = new Date();
     const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
+    const date2 = `${current.getFullYear()}-${current.getMonth()+1}-${current.getDate()}`;
     
     const history = useHistory();
     const [selectedInvCode,setSelectedInvCode] = useState('');
@@ -72,7 +73,7 @@ const DismantleForm = (props) => {
     const [selectedPacketType,setSelectedPacketType] = useState('');
     const [selectedSubcon,setSelectedSubcon] = useState('');
     const [selectedSiteCondition,setSelectedSiteCondition] = useState('');
-    const [deliveryDate,setDeliveryDate] = useState('');
+    const [deliveryDate,setDeliveryDate] = useState(moment(date2, "YYYY-MM-DD").add(3,'d'));
     const [siteAddress,setSiteAddress] = useState('');
     const [selectedTeamCoordinator,setSelectedTeamCoordinator] = useState('');
     const [ddlTeamCoordinator,setDDLTeamCoordinator] = useState([]);
@@ -407,7 +408,7 @@ const DismantleForm = (props) => {
                                     'isExpressDelivery':false,
                                     'inventoryCode':1,
                                     'ctName':1,
-                                    'deliveryDate': moment().add(2,'d')
+                                    'deliveryDate': moment(date2, "YYYY-MM-DD").add(3,'d')
                                 }}
                                 onFinish={handleConfirm}
                                 onFinishFailed={onFinishFailedAddMaterial}
@@ -602,6 +603,7 @@ const DismantleForm = (props) => {
                                             disabledDate={
                                                 disabledDate
                                             }
+                                            // defaultValue={moment('2015/01/01', "YYYY-MM-DD")}
                                             onChange={(e) => setDeliveryDate(moment(e).format("YYYY-MM-DD"))} 
                                         // disabledDate={current && current < moment().endOf('day')}
                                         // showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}

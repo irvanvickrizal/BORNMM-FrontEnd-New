@@ -298,12 +298,12 @@ export default function TablePickup() {
                         <Space size={20}>
                       
                             <Tooltip title="Re-Assign Transport team Form">
-                                <LocalShippingIcon style={{fontSize:24,color:"#2886b8"}} onClick={()=>showModal(record)}/>  
+                                <LocalShippingIcon style={{fontSize:24,color:"#06ac14"}} onClick={()=>showModal(record)}/>  
                             </Tooltip>
 
 
                             <Tooltip title="View Detail">
-                                <EyeFilled style={{fontSize:20}} onClick={()=>showModalTab(record.orderDetailId)}/>  
+                                <EyeFilled style={{fontSize:20 ,color:'#008de3'}} onClick={()=>showModalTab(record.orderDetailId)}/>  
                             </Tooltip>
 
                             {/*                                                          

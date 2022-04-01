@@ -184,6 +184,28 @@ export default function MaterialOrder() {
                     </Space>
                 )
             }
+        }, 
+        {
+            title:"Total Req QTY",
+            dataIndex:'totalReqQTY',
+            key:"orderMaterialId",
+        },
+        {
+            title:"Delta BOQ Ref QTY",
+            key:"deltaBOQRefQTY",
+            render:(record)=>{
+                return (
+                    <Space>
+                        {record.deltaBOQRefQTY < 0 
+                            ?
+                            <p style={{ color:'red' }}>{record.deltaBOQRefQTY}</p>:
+                            <p>
+                                {record.deltaBOQRefQTY}
+                            </p>}
+                    </Space>
+                )
+            }
+
         },
         {
             title:"Balance",

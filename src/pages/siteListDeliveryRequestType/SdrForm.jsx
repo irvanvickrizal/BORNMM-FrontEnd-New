@@ -70,6 +70,7 @@ const SdrForm = (props) => {
     const [checked,setChecked] = useState(false)
     const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
     
+    const date2 = `${current.getFullYear()}-${current.getMonth()+1}-${current.getDate()}`;
     const history = useHistory();
     const [selectedInvCode,setSelectedInvCode] = useState(1);
     const [selectedSiteLocation,setSelectedSiteLocation] = useState('');
@@ -81,7 +82,7 @@ const SdrForm = (props) => {
     const [selectedSubcon,setSelectedSubcon] = useState('');
     const [selectedDeliveryMode,setSelectedDeliveryMode] = useState('');
     const [selectedSiteCondition,setSelectedSiteCondition] = useState('');
-    const [deliveryDate,setDeliveryDate] = useState('');
+    const [deliveryDate,setDeliveryDate] = useState(moment(date2, "YYYY-MM-DD").add(3,'d'));
     const [siteAddress,setSiteAddress] = useState('');
     const [selectedTeamCoordinator,setSelectedTeamCoordinator] = useState("")
     const [initialValue,setInitialValue]= useState("")
@@ -414,7 +415,8 @@ const SdrForm = (props) => {
                                 initialValues={{
                                     'isExpressDelivery':false,
                                     'ctName':1,
-                                    'invName':1
+                                    'invName':1,
+                                    'deliveryDates': moment(date2, "YYYY-MM-DD").add(3,'d')
                                 }}
                                 onFinish={btnConfirm}
                                 onFinishFailed={onFinishFailedAddMaterial}

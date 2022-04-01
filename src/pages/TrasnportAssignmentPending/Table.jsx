@@ -12,7 +12,7 @@ import DragHandleIcon from '@mui/icons-material/DragHandle';
 import moment from 'moment';
 import Search from '@app/components/searchcolumn/SearchColumn'
 import { toast } from 'react-toastify';
-
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 
 export default function TableTransport() {
     const dispatch = useDispatch()
@@ -302,7 +302,7 @@ export default function TableTransport() {
                                     onClick={() => handleAssign(record)}
                                     color="primary"
                                 >
-                                    <ShoppingCartOutlined />
+                                    <LocalShippingIcon style={{fontSize:24,color:"#06ac14"}}  />
                                 </IconButton>
                             </Tooltip> :
                                 <></>

@@ -38,6 +38,7 @@ const WaitingRFPTable = () => {
     const [dataMaterial,setDataMaterial] = useState([])
     const [dataLog,setDataLog] = useState([])
     const [isModalTabVisible,setIsModalTabVisible] = useState(false)
+    const [isPickupRequest,setIsPickupRequest] = useState(false)
     
     
     const getWindowDimensions = () => {
@@ -150,7 +151,7 @@ const WaitingRFPTable = () => {
         setOrderType(record.orderType);
         setOrderRequestNo(record.orderRequestNo)
         setPickuporDeliveryDate(record.pickupOrDeliveryDate);
-
+        setIsPickupRequest(record.isPickupRequest)
         setIsFormRFP(true);
         console.log("rfp form",record);
     }
@@ -198,12 +199,7 @@ const WaitingRFPTable = () => {
             render: (value, item, index) => 1 + index
         },
         {
-            title : "Request No",
-            dataIndex:'requestNo',
-            ...Search('requestNo'),
-        },
-        {
-            title : "Order No",
+            title : "Order Request No",
             dataIndex:'orderRequestNo',
             ...Search('orderRequestNo'),
         },
@@ -231,6 +227,17 @@ const WaitingRFPTable = () => {
             title : "Delivery Mode",
             dataIndex:'deliveryMode',
             ...Search('deliveryMode'),
+        },
+        {
+            title : "Request Delivery / pickup Date",
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.pickupOrDeliveryDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            },
+            ...Search('pickupOrDeliveryDate'),
         },
         {
             title : "Site ID",
@@ -263,17 +270,6 @@ const WaitingRFPTable = () => {
             ...Search('requestedBy'),
         },
         {
-            title : "Expected Delivery Date",
-            render:(record)=>{
-                return (
-                    <Space>
-                        <p>{moment(record.pickupOrDeliveryDate).format("YYYY-MM-DD")}</p>
-                    </Space>
-                )
-            },
-            ...Search('pickupOrDeliveryDate'),
-        },
-        {
             title:"Incoming Date",
             render:(record)=>{
                 return (
@@ -301,7 +297,6 @@ const WaitingRFPTable = () => {
                         <Space>
                             {record.scheduleStatus=="newpropose" ? <p style={{ color:'red' }}>Propose New Schedule Request</p>
                                 :
-                
                                 <Tooltip title="RFP Done">
                                     <IconButton
                                         size="small"
@@ -322,7 +317,7 @@ const WaitingRFPTable = () => {
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="View Detail">
-                                <EyeFilled style={{fontSize:20}} onClick={()=>showModalTab(record.orderDetailId)}/>  
+                                <EyeFilled style={{fontSize:20, color:'#008de3'}} onClick={()=>showModalTab(record.orderDetailId)}/>  
                             </Tooltip>
                         </Space>
                     </div>
@@ -557,26 +552,19 @@ const WaitingRFPTable = () => {
             </Row>  
             :
             <>
-                <Tabs defaultActiveKey="1">
-                    <TabPane tab="Delivery Request" key="1">
-                        <Table
-                            // scroll={{ x: '100%' }}
-                            scroll={{ x: 2500, y: 300 }}
-                            // size="small"
-                            // expandable={{ expandedRowRender }}
-                            columns={columns}
-                            dataSource={waitingRFP}
-                            pagination={{
-                                pageSizeOptions: ['5', '10', '20', '30', '40'],
-                                showSizeChanger: true,
-                                position: ["bottomLeft"],
-                            }}
-                            bordered />
-                    </TabPane>
-                    <TabPane tab="Return Pickup Request" key="2">
-                        Return Pickup Request
-                    </TabPane>
-                </Tabs>
+                <Table
+                    // scroll={{ x: '100%' }}
+                    scroll={{ x: 2500, y: 300 }}
+                    // size="small"
+                    // expandable={{ expandedRowRender }}
+                    columns={columns}
+                    dataSource={waitingRFP}
+                    pagination={{
+                        pageSizeOptions: ['5', '10', '20', '30', '40'],
+                        showSizeChanger: true,
+                        position: ["bottomLeft"],
+                    }}
+                    bordered />
                 <Modal title="RFP Confirmation"
                     visible={isFormRFP}
                     confirmLoading={formLoading}
@@ -633,36 +621,75 @@ const WaitingRFPTable = () => {
                         >
                             <Input disabled/>
                         </Form.Item>
-                        <Form.Item
-                        // hidden
-                            label="Total Collies"
-                            name="totalCollies"
-                            rules={[{ required: true, message: 'Please input Total Collies!' }]}
-                        >
-                            <InputNumber
-                                style={{ width: 200 }}
-                                defaultValue="0"
-                                min="0"
-                                step="0.01"
-                                // onChange={onChange}
-                                stringMode
-                            />
-                        </Form.Item>
-                        <Form.Item
-                        // hidden
-                            label="Total Volume (CBM)"
-                            name="totalVolume"
-                            rules={[{ required: true, message: 'Please input Total Volume!' }]}
-                        >
-                            <InputNumber
-                                style={{ width: 200 }}
-                                defaultValue="0"
-                                min="0"
-                                step="0.01"
-                                // onChange={onChange}
-                                stringMode
-                            />
-                        </Form.Item>
+
+                        {isPickupRequest ? 
+                            <Form.Item
+                                // hidden
+                                label="Total Collies"
+                                name="totalCollies"
+                                // rules={[{ required: true, message: 'Please input Total Collies!' }]}
+                            >
+                                <InputNumber
+                                    style={{ width: 200 }}
+                                    defaultValue="0"
+                                    min="0"
+                                    step="0.01"
+                                    // onChange={onChange}
+                                    stringMode
+                                    disabled
+                                />
+                            </Form.Item> :
+                            <Form.Item
+                                // hidden
+                                label="Total Collies"
+                                name="totalCollies"
+                                rules={[{ required: true, message: 'Please input Total Collies!' }]}
+                            >
+                                <InputNumber
+                                    style={{ width: 200 }}
+                                    defaultValue="0"
+                                    min="0"
+                                    step="0.01"
+                                    // onChange={onChange}
+                                    stringMode
+                                />
+                            </Form.Item>
+                        }
+                        {isPickupRequest ? 
+                            <Form.Item
+                                // hidden
+                                label="Total Volume (CBM)"
+                                name="totalVolume"
+                                // rules={[{ required: true, message: 'Please input Total Volume!' }]}
+                            >
+                                <InputNumber
+                                    style={{ width: 200 }}
+                                    defaultValue="0"
+                                    min="0"
+                                    step="0.01"
+                                    // onChange={onChange}
+                                    stringMode
+                                    disabled
+                                />
+                            </Form.Item> 
+                            :
+                            <Form.Item
+                                // hidden
+                                label="Total Volume (CBM)"
+                                name="totalVolume"
+                                rules={[{ required: true, message: 'Please input Total Volume!' }]}
+                            >
+                                <InputNumber
+                                    style={{ width: 200 }}
+                                    defaultValue="0"
+                                    min="0"
+                                    step="0.01"
+                                    // onChange={onChange}
+                                    stringMode
+                                />
+                            </Form.Item> 
+                        }
+                        
                         <Form.Item wrapperCol={{ offset: 10, span: 14 }}>
                             <Space>
                                 <Button type="primary" htmlType="submit">
