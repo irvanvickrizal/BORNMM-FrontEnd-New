@@ -50,6 +50,7 @@ module.exports = {
         'vars-on-top': 'off',
         'no-var': 'off',
         'object-shorthand': 'off',
-        'jsx-a11y/control-has-associated-label': 'off'
+        'jsx-a11y/control-has-associated-label': 'off',
+        "import/no-named-as-default": 0
     }
 };

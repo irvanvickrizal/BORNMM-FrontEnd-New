@@ -119,9 +119,16 @@ const GETParam2 = (path,param1,param2)  => {
 
 const POST = (path,body)  => {
     const promise = new Promise((resolve, reject) => {
+        const token = localStorage.getItem('token'); 
         axios.post(`${baseURL}${path}`
             ,body
-            ,{headers}
+            ,{
+                headers: {
+                    'Content-Type' : 'application/json',
+                    Authorization: `Bearer ${token}` 
+                    
+                }
+            },
         ).then((result)=> {
             console.log('i am post :',result.data);
             resolve(result.data);
@@ -135,9 +142,15 @@ const POST = (path,body)  => {
 }
 const POSTParam = (path,body,param)  => {
     const promise = new Promise((resolve, reject) => {
+        const token = localStorage.getItem('token'); 
         axios.post(`${baseURL}${path}/${param}`
             ,body
-            ,{headers}
+            ,{
+                headers: { 
+                    'Content-Type' : 'application/json',
+                    Authorization: `Bearer ${token}` 
+                }
+            },
         ).then((result)=> {
             console.log('i am post :',result.data);
             resolve(result.data);
@@ -153,9 +166,15 @@ const POSTParam = (path,body,param)  => {
 
 const POSTParam2 = (path,body,param,param2)  => {
     const promise = new Promise((resolve, reject) => {
+        const token = localStorage.getItem('token'); 
         axios.post(`${baseURL}${path}/${param}/${param2}`
             ,body
-            ,{headers}
+            ,{
+                headers: { 
+                    'Content-Type' : 'application/json',
+                    Authorization: `Bearer ${token}` 
+                }
+            },
         ).then((result)=> {
             console.log('i am post Param2:',result.data);
             resolve(result.data);
@@ -173,9 +192,15 @@ const POSTFile = (path,id,file)  => {
     formdata.append("fileupload",file);
 
     const promise = new Promise((resolve, reject) => {
+        const token = localStorage.getItem('token'); 
         axios.post(`${baseURL}${path}/${id}`
             ,formdata
-            ,{headers}
+            ,{
+                headers: { 
+                    'Content-Type' : 'application/json',
+                    Authorization: `Bearer ${token}` 
+                }
+            },
         ).then((result)=> {
             console.log('i am post :',result.data);
             resolve(result.data);
@@ -192,9 +217,15 @@ const POSTFileParam3 = (path,param1,param2,param3,file)  => {
     formdata.append("fileupload",file);
 
     const promise = new Promise((resolve, reject) => {
+        const token = localStorage.getItem('token'); 
         axios.post(`${baseURL}${path}/${param1}/${param2}/${param3}`
             ,formdata
-            ,{headers}
+            ,{
+                headers: { 
+                    'Content-Type' : 'application/json',
+                    Authorization: `Bearer ${token}` 
+                }
+            },
         ).then((result)=> {
             console.log('i am post :',result.data);
             resolve(result.data);
@@ -211,9 +242,15 @@ const POSTFiled = (path,file)  => {
     formdata.append("fileupload",file);
 
     const promise = new Promise((resolve, reject) => {
+        const token = localStorage.getItem('token'); 
         axios.post(`${baseURL}${path}`
             ,formdata
-            ,{headers}
+            ,{
+                headers: { 
+                    'Content-Type' : 'application/json',
+                    Authorization: `Bearer ${token}` 
+                }
+            },
         ).then((result)=> {
             console.log('i am post :',result.data);
             resolve(result.data);
@@ -230,9 +267,15 @@ const PUTFile = (path,id)  => {
     var formdata = new FormData();
     // formdata.append("fileupload",file);
     const promise = new Promise((resolve, reject) => {
+        const token = localStorage.getItem('token'); 
         axios.put(`${baseURL}${path}/${id}`
             ,formdata
-            ,{headers}
+            ,{
+                headers: { 
+                    'Content-Type' : 'application/json',
+                    Authorization: `Bearer ${token}` 
+                }
+            },
         ).then((result)=> {
             console.log('i am PUTFILE :',result.data);
             resolve(result.data);
@@ -246,9 +289,15 @@ const PUTFile = (path,id)  => {
 
 const PUT = (path,body)  => {
     const promise = new Promise((resolve, reject) => {
+        const token = localStorage.getItem('token'); 
         axios.put(`${baseURL}${path}`
             ,body
-            ,{headers}
+            ,{
+                headers: { 
+                    'Content-Type' : 'application/json',
+                    Authorization: `Bearer ${token}` 
+                }
+            },
         ).then((result)=> {
             console.log('i am put :',result.data);
             resolve(result.data);
@@ -262,9 +311,15 @@ const PUT = (path,body)  => {
 
 const PUTParam = (path,body,id)  => {
     const promise = new Promise((resolve, reject) => {
+        const token = localStorage.getItem('token'); 
         axios.put(`${baseURL}${path}/${id}`
             ,body
-            ,{headers}
+            ,{
+                headers: { 
+                    'Content-Type' : 'application/json',
+                    Authorization: `Bearer ${token}` 
+                }
+            },
         )
             .then((result)=> {
                 console.log('i am get :',result.data);
@@ -279,8 +334,14 @@ const PUTParam = (path,body,id)  => {
 
 const DELETE = (path,param)  => {
     const promise = new Promise((resolve, reject) => {
+        const token = localStorage.getItem('token'); 
         axios.delete(`${baseURL}${path}/${param}`
-            ,{headers}
+            ,{
+                headers: { 
+                    'Content-Type' : 'application/json',
+                    Authorization: `Bearer ${token}` 
+                }
+            },
         ).then((result)=> {
             console.log('i am put :',result.data);
             resolve(result.data);
