@@ -533,7 +533,7 @@ const getDownloadUploadedBoq = (bid) => GETParam('boqref/boqAsPODataCheckSummary
 const getLatestAsPlanCheckPoint = (bid) => GETParam('boqref/boqAsPlanUploadDataCheckHasCleared',bid);
 const getDownloadUploadedAsPlanBoq = (bid) => GETParam('boqref/boqAsPlanDataCheckGetList',bid)
 const getDownloadUploadedBoqSummaryAsPlan = (bid) => GETParam('boqref/boqAsPlanDataCheckSummary',bid)
-const postBoqAsPlanUploadProceed = (body,bid) => POSTParam('boqref/boqAsPlanUploadedProceed',body,bid)
+const postBoqAsPlanUploadProceed = (body,bid,uid) => POSTParam2('boqref/boqAsPlanUploadedProceed',body,bid,uid)
 const postResetUploadedBoqAsPlan = (body,bid) => POSTParam('boqref/boqAsPlanUploadedReset',body,bid)
 
 

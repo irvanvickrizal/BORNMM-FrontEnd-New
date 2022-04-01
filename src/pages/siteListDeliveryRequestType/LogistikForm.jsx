@@ -514,14 +514,16 @@ export default function LogisticForm() {
                 </Col>
                 <Col span={12}>
                     <Card hoverable title={CardTitle("Logistic Form")}>
-                        <Form
+                        {dataSite?.length === 0 ? (<></>):
+                        (<>
+                          <Form
                             labelCol={{span: 12}}
                             wrapperCol={{span: 12}}
                             layout="horizontal"
                             onFinish={showModal}
                             onFinishFailed={onFinishFailedAddMaterial}
                             initialValues={{
-                                "modeTransport":dataSite[0].proposeDeliveryModeId,
+                                "modeTransport":dataSite[0]?.proposeDeliveryModeId,
                             }}
                         >
                             <Form.Item label="WH Team" name="whTeam" 
@@ -646,6 +648,8 @@ export default function LogisticForm() {
                           
                   </Form.Item>
                         </Form>
+                        </>)}
+                      
                       
                         
                     </Card>
