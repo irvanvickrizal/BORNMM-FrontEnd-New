@@ -30,9 +30,11 @@ import { CloseSquareTwoTone ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined
 import { toast } from 'react-toastify';
 import {IconButton, TextField}  from '@mui/material/';
 
+
 const { TextArea } = Input;
 export default function TableTaskSummary(props) {
     const dispatch = useDispatch()
+    const [isLoading,setIsLoading] = useState(false)
     const {TabPane} = Tabs
     const {Title} = Typography
     const [page,setPage] = useState(1)
@@ -49,6 +51,8 @@ export default function TableTaskSummary(props) {
     const [taskOnProgress,setTaskOnProgress] = useState([])
     const [taskDone,setTaskDone] = useState([])
     const [selecteSconId,setSelectedSconId] = useState("")
+    const [transferBy,setTransferBy] = useState("")
+    const [currentAssignTo,setCurrentAssignTo] = useState("")
     const [selectedEngineer,setSelectedEngineer] = useState("")
     const [selectedReAssignedEngineer,setSelectedReAssignedEngineer] = useState("")
     const [selectedWpId,setSelectedWpId] = useState("")
@@ -200,6 +204,37 @@ export default function TableTaskSummary(props) {
         )
     }
 
+    const cancelTaskConfirm = (data) => {
+        // console.log("datasubmitreschedule", rescheduleDate)
+        const body = (
+            {
+                "transDelegateId":selectedTransDelegateId,
+                "orderdetailId":selectedOdi,
+                "transferBy":user.uid,
+                "currentAssignTo":currentAssignTo,
+                "reasonOfCancellation":remarks
+
+            }
+        )
+        API.postSconTaskCancel(body).then(
+          
+            result=>{
+                setIsLoading(true)
+                if(result.status=="success")
+                {
+                    toast.success(result.message);
+                    setIsLoading(false)
+                    window.location.reload();
+                }
+                else{
+                    toast.error(result.message)
+                    setIsLoading(false)
+                }
+            }
+        )
+        console.log(body,"body cancel")
+    }
+
 
 
     const showModal = (data) => {
@@ -243,7 +278,10 @@ export default function TableTaskSummary(props) {
     const showModalCancel = (data) => {
         setIsModalCancelVisible(true)
         setSelectedtransDelegateId(data.transDelegateId)
-        setSelectedOdi(data.orderdetailId)
+        setSelectedOdi(data.orderDetailId)
+        setTransferBy(data.assignedBy)
+        setCurrentAssignTo(data.currentAssignTo)
+        
     }
     const hideModalCancel = () => {
         setIsModalCancelVisible(false)
@@ -251,15 +289,16 @@ export default function TableTaskSummary(props) {
     const stateDataPending =  useSelector(state=>state.taskAssignmentSummaryReducer.dataPending) 
     const stateDataOnProgress =  useSelector(state=>state.taskAssignmentSummaryReducer.dataOnProgress) 
   
-   
-    useEffect(() => {
-        getSconTaskPending()
-       
-    }, [])
     const scheduleStatuss = sconTaskPending.map(e=>e.scheduleStatus)
     const cobaConsole = ()=>{
         console.log(scheduleStatuss,'coba fata')
     }
+
+    useEffect(() => {
+        getSconTaskPending()
+       
+    }, [])
+ 
 
     const columnsAssigmentPending = [
         {
@@ -306,6 +345,7 @@ export default function TableTaskSummary(props) {
         {
             title: "Work Pakgae ID",
             dataIndex: "workpackageid",
+            
             ...Search("workpackageid")
         },
         {
@@ -336,7 +376,7 @@ export default function TableTaskSummary(props) {
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(stateDataPending.incomingDate).format("YYYY-MM-DD")}</p>
+                        <p>{moment(stateDataPending.incomingDate).format("YYYY-MM-DD hh:mm:ss")}</p>
                     </Space>
                 )
             },
@@ -353,7 +393,7 @@ export default function TableTaskSummary(props) {
             fixed: 'right',
             render:(record)=>{
                 return (
-                    <div>
+                    <div style={{display:"flex",alignItems:'center',justifyContent:'center'}}>
                         {record.scheduleStatus=="newpropose" ? <p style={{ color:'red' }}>Propose New Schedule Request</p>
                             :
                             <Space size={16}>
@@ -515,17 +555,20 @@ export default function TableTaskSummary(props) {
             fixed: 'right',
             render:(record)=>{
                 return (
-                    <Space size={16}>
-                        <Tooltip title="Re-Assign Task">
-                            <UserSwitchOutlined style={{fontSize:"18px"}} onClick={()=> showModalOnProgress(record)}  />
-                        </Tooltip>
+                    <div style={{display:"flex",alignItems:'center',justifyContent:'center'}}>
+                        <Space size={16} >
+                            <Tooltip title="Re-Assign Task">
+                                <UserSwitchOutlined style={{fontSize:"18px"}} onClick={()=> showModalOnProgress(record)}  />
+                            </Tooltip>
                   
                           
                       
-                        <Tooltip title="Cancel Task">
-                            <CloseSquareTwoTone twoToneColor="#FF0000" style={{fontSize:"18px"}} onClick={()=>showModalCancel(record)}/>
-                        </Tooltip>
-                    </Space>
+                            <Tooltip title="Cancel Task">
+                                <CloseSquareTwoTone twoToneColor="#FF0000" style={{fontSize:"18px"}} onClick={()=>showModalCancel(record)}/>
+                            </Tooltip>
+                        </Space>
+                    </div>
+                   
                 )
             }
         },
@@ -601,6 +644,7 @@ export default function TableTaskSummary(props) {
             dataIndex: "incomingDate",
             render:(record)=>{
                 return (
+                    
                     <Space>
                         <p>{moment(columnsAssigmentOnDone.incomingDate).format("YYYY-MM-DD")}</p>
                     </Space>
@@ -661,7 +705,7 @@ export default function TableTaskSummary(props) {
                         </div>
                     </Card>
                 </TabPane>
-                <TabPane tab="Assignment Done" key="3">
+                <TabPane tab="Task Complete" key="3">
                     <Card>
                         <div >
                             <Table
@@ -842,7 +886,7 @@ export default function TableTaskSummary(props) {
                     ]):( [
             
             
-                        <Button key="back" type="danger" >
+                        <Button key="back" type="danger" onClick={cancelTaskConfirm}>
             Cancel
                         </Button>,
                         <Button key="submit" onClick={hideModalCancel} >

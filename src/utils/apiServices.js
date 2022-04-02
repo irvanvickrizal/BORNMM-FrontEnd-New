@@ -682,6 +682,14 @@ const postRejectAproval = (body) => POST("wftransaction/orderRequestReject",body
 const getAddress = (siteNo,ddlDestination) => GETParam2('materialmanagement/orderRequestGetDestinationAddress',siteNo,ddlDestination)
 const orderRequestDraft = (body) => PUT("materialManagement/orderRequestChangeExpectedDeliveryDate",body)
 
+
+// scon Task Summary cancel
+
+const postSconTaskCancel = (body) => POST("taskassignment/taskOrderRequestAssignmentCancelled",body);
+const postSconTaskReassignment = (body) => POST("taskassignment/taskOrderRequestReAssignmentToSubcon",body);
+
+const getSconTaskCancel = (uid) => GETParam("materialmanagement/orderRequestSubconTaskAssignmentCancelled",uid);
+
 const API ={
     postmMaterial,
     getAddress,
@@ -691,10 +699,13 @@ const API ={
     deleteInboundFile2,
     postInboundFile2,
     postReviseInboundFile2,
+    postSconTaskCancel,
     checkAddButtonOrderList,
+    postSconTaskReassignment,
     putDeleteMultiDeliveryRequest,
     postMultiDeliveryCancelAssigned,
     postLogisticForm,
+    getSconTaskCancel,
     postApprovalConfirm,
     orderRequestDraft,
     postRejectAproval,

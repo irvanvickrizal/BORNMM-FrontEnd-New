@@ -28,7 +28,7 @@ import FormControl from '@mui/material/FormControl';
 import DropdownButton from 'react-bootstrap/DropdownButton'
 import {useDispatch, useSelector} from 'react-redux';
 import API from '@app/utils/apiServices';
-import CreateDataDismantle from './DataGenerator';
+import CreateDataDismantle from '../siteListDeliveryRequestType/DataGenerator';
 import moment from 'moment';
 
 
@@ -409,7 +409,7 @@ const SdrForm = (props) => {
 
     return (
         <div>
-            <HeaderChanger title="SDR Form"/>
+     
             <Row>
                 <Col span={24}>
                     <div className="card card-primary">
@@ -444,7 +444,7 @@ const SdrForm = (props) => {
                                 onFinishFailed={onFinishFailedAddMaterial}
                             >
                                 <Form.Item label="Order Type">
-                                    <Input disabled value="SDR" />
+                                    <Input disabled value="LTR" />
                                 </Form.Item>
                                 <Form.Item name="invName" label="Inventory Code"
                                    
@@ -673,7 +673,7 @@ const SdrForm = (props) => {
                                             </Row>
                                         </Form.Item>
                                     </div>
-                              
+                                   
                                   
                                 </Row>
                                 
