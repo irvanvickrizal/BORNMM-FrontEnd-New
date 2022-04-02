@@ -51,69 +51,26 @@ const SettingsTab = ({isActive}) => {
                         htmlFor="inputName2"
                         className="col-sm-2 col-form-label"
                     >
-                        Name
+                        Phone Number
                     </label>
                     <div className="col-sm-10">
                         <input
                             type="text"
                             className="form-control"
                             id="inputName2"
-                            placeholder="Name"
+                            placeholder="Phone Number"
                         />
                     </div>
                 </div>
                 <div className="form-group row">
-                    <label
-                        htmlFor="inputExperience"
-                        className="col-sm-2 col-form-label"
-                    >
-                        Experience
-                    </label>
-                    <div className="col-sm-10">
-                        <textarea
-                            className="form-control"
-                            id="inputExperience"
-                            placeholder="Experience"
-                            defaultValue=""
-                        />
-                    </div>
-                </div>
-                <div className="form-group row">
-                    <label
-                        htmlFor="inputSkills"
-                        className="col-sm-2 col-form-label"
-                    >
-                        Skills
-                    </label>
-                    <div className="col-sm-10">
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="inputSkills"
-                            placeholder="Skills"
-                        />
-                    </div>
-                </div>
-                <div className="form-group row">
-                    <div className="offset-sm-2 col-sm-10">
-                        <div className="icheck-primary">
-                            <input
-                                type="checkbox"
-                                id="agreeTerms"
-                                name="terms"
-                                defaultValue="agree"
-                            />
-                            <label htmlFor="agreeTerms">
-                                <span>I agree to the </span>
-                                <Link to="/">terms and condition</Link>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div className="form-group row">
-                    <div className="offset-sm-2 col-sm-10">
+                    <div className="offset-sm-2 col-sm-10 col-md-3">
                         <Button type="submit" theme="success">
                             Change Password
+                        </Button>
+                    </div>
+                    <div className="col-sm-10 col-md-3">
+                        <Button type="submit" theme="primary" >
+                           Save
                         </Button>
                     </div>
                 </div>
