@@ -81,6 +81,7 @@ const DismantleForm = (props) => {
     const [selectedDeliveryMode,setSelectedDeliveryMode] = useState('');
 
     const [express,setExpress] = useState(false);
+    const [siteNo,setSiteNo] = useState('')
     const navigateTo = (path) => {
         history.push(path)
     }
@@ -99,6 +100,8 @@ const DismantleForm = (props) => {
                     ,result.packageName
                     ,result.region)]
                 setSiteInfo(data);
+                setSiteNo(result.siteNo)
+                console.log("site info",data)
             }
         )
     }
@@ -197,6 +200,18 @@ const DismantleForm = (props) => {
     const handleIsExpress = (value)=> {
         setChecked(value)
         console.log("v",value)
+    }
+
+    const handleDestinationChange = (value) =>{
+        setSelectedDestination(value);
+        API.getAddress(siteNo,value).then(
+            result=>{
+                setSiteAddress(result[0].endPointAddress)  
+                console.log("teslog",result[0].endPointAddress);    
+                
+                console.log(siteAddress,"siteAddress");  
+            }
+        )
     }
 
     const handleCTNameChange = (value)=> {
@@ -408,7 +423,8 @@ const DismantleForm = (props) => {
                                     'isExpressDelivery':false,
                                     'inventoryCode':1,
                                     'ctName':1,
-                                    'deliveryDate': moment(date2, "YYYY-MM-DD").add(3,'d')
+                                    'deliveryDate': moment(date2, "YYYY-MM-DD").add(3,'d'),
+                                    
                                 }}
                                 onFinish={handleConfirm}
                                 onFinishFailed={onFinishFailedAddMaterial}
@@ -507,7 +523,7 @@ const DismantleForm = (props) => {
                                     rules={[{ required: true, message: 'Please Select Destination!'}]}
                                 >
                                     <Select 
-                                        onChange={(e) => setSelectedDestination(e)} 
+                                        onChange={(e) => handleDestinationChange(e)} 
                                         placeholder="Select an option">
                                         {
                                             ddlDestination.map(dst =>  <Select.Option value={dst.dopId}> 
@@ -539,15 +555,20 @@ const DismantleForm = (props) => {
                                     name="teamCoordinator"
                                     rules={[{ required: true, message: 'Please Select Team Coordinator!'}]}
                                 >
-                                    {ddlTeamCoordinator.length == null ? (<></>):(<Select 
-                                        onChange={(e) => setSelectedTeamCoordinator(e)} 
-                                        placeholder="Select an option">
+                                    {ddlTeamCoordinator.length == null ? (<></>):(
+                                        <Select 
+                                            showSearch
+                                            filterOption={(input, option) =>
+                                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                            }
+                                            onChange={(e) => setSelectedTeamCoordinator(e)} 
+                                            placeholder="Select an option">
                                             
-                                        {
-                                            ddlTeamCoordinator.map(dst =>  <Select.Option value={dst.userId}> 
-                                                {dst.fullname}</Select.Option>)
-                                        }
-                                    </Select>)}
+                                            {
+                                                ddlTeamCoordinator.map(dst =>  <Select.Option value={dst.userId}> 
+                                                    {dst.fullname}</Select.Option>)
+                                            }
+                                        </Select>)}
                                     
                                 </Form.Item>
                                 <Form.Item label="Express Pickup" valuePropName="checked" name="isExpressDelivery">  
@@ -571,6 +592,7 @@ const DismantleForm = (props) => {
                                 <Form.Item label="Site Address"   name="siteAdress"
                                     rules={[{ required: true, message: 'Please Input Site Adress Field!'}]}>
                                     <Input.TextArea 
+                                        value={siteAddress}
                                         onChange={(e) => setSiteAddress(e.target.value)}  
                                     />
                                 </Form.Item>

@@ -240,10 +240,61 @@ const POSTFileParam3 = (path,param1,param2,param3,file)  => {
 const POSTFiled = (path,file)  => {
     var formdata = new FormData();
     formdata.append("fileupload",file);
-
+    
     const promise = new Promise((resolve, reject) => {
         const token = localStorage.getItem('token'); 
         axios.post(`${baseURL}${path}`
+            ,formdata
+            ,{
+                headers: { 
+                    'Content-Type' : 'application/json',
+                    Authorization: `Bearer ${token}` 
+                }
+            },
+        ).then((result)=> {
+            console.log('i am post :',result.data);
+            resolve(result.data);
+        },(err)=>{
+            console.log('config',headers);
+            toast.error(err);
+            reject(err);
+        })
+    })
+    return promise;
+}
+
+const POSTFileParam1 = (path,file,param1)  => {
+    var formdata = new FormData();
+    formdata.append("fileupload",file);
+
+    const promise = new Promise((resolve, reject) => {
+        const token = localStorage.getItem('token'); 
+        axios.post(`${baseURL}${path}/${param1}`
+            ,formdata
+            ,{
+                headers: { 
+                    'Content-Type' : 'application/json',
+                    Authorization: `Bearer ${token}` 
+                }
+            },
+        ).then((result)=> {
+            console.log('i am post :',result.data);
+            resolve(result.data);
+        },(err)=>{
+            console.log('config',headers);
+            toast.error(err);
+            reject(err);
+        })
+    })
+    return promise;
+}
+const POSTFileParam2 = (path,param1,param2,file)  => {
+    var formdata = new FormData();
+    formdata.append("fileupload",file);
+
+    const promise = new Promise((resolve, reject) => {
+        const token = localStorage.getItem('token'); 
+        axios.post(`${baseURL}${path}/${param1}/${param2}`
             ,formdata
             ,{
                 headers: { 
@@ -313,6 +364,28 @@ const PUTParam = (path,body,id)  => {
     const promise = new Promise((resolve, reject) => {
         const token = localStorage.getItem('token'); 
         axios.put(`${baseURL}${path}/${id}`
+            ,body
+            ,{
+                headers: { 
+                    'Content-Type' : 'application/json',
+                    Authorization: `Bearer ${token}` 
+                }
+            },
+        )
+            .then((result)=> {
+                console.log('i am get :',result.data);
+                resolve(result.data);
+            },(err)=>{
+                console.log(config);
+                reject(err);
+            })
+    })
+    return promise;
+}
+const PUTParam2 = (path,body,param1,param2)  => {
+    const promise = new Promise((resolve, reject) => {
+        const token = localStorage.getItem('token'); 
+        axios.put(`${baseURL}${path}/${param1}/${param2}`
             ,body
             ,{
                 headers: { 
@@ -465,15 +538,21 @@ const getInboundSuccessLog = () => GET('inventory/inboundSuccessLogList');
 const getInboundUploadFile = () => GET('inventory/inboundFileUploadGetList');
 const getInboundErrorList = (id) => GETParam('inventory/inboundFileUploadGetErrLogList',id);
 const postReviseInboundFile = (id,file) => POSTFile('inventory/inboundFileRevisionUpload',id,file);
+const postReviseInboundFile2 = (id,userid,file) => POSTFileParam2('inventory/inboundFileRevisionUpload',id,userid,file);
 const postInboundFile = (file) => POSTFiled('inventory/inboundFileUpload',file);
+const postInboundFile2 = (userid,file) => POSTFile('inventory/inboundFileUpload',userid,file);
 const deleteInboundFile = (body,id) => PUTParam('inventory/inboundFileDelete',body,id);
+const deleteInboundFile2 = (body,id,userid) => PUTParam2('inventory/inboundFileDelete',body,id,userid);
 
 const getOutboundUploadFile = () => GET('inventory/outboundFileUploadGetList');
 const getOutboundSuccessLog = () => GET('inventory/outboundSuccessLogList');
 const getOutboundErrorList = (id) => GETParam('inventory/outboundFileUploadGetErrLogList',id);
 const postReviseOutboundFile = (id,file) => POSTFile('inventory/outboundFileRevisionUpload',id,file);
+const postReviseOutboundFile2 = (id,userid,file) => POSTFileParam2('inventory/outboundFileRevisionUpload',id,userid,file);
 const postOutboundFile = (file) => POSTFiled('inventory/outboundFileUpload',file);
+const postOutboundFile2 = (file,userid) => POSTFile('inventory/outboundFileUpload',userid,file);
 const deleteOutboundFile = (body,id) => PUTParam('inventory/outboundFileDelete',body,id);
+const deleteOutboundFile2 = (body,id,userid) => PUTParam2('inventory/outboundFileDelete',body,id,userid);
 
 const getSconTaskOnProgress = (uid) => GETParam('taskassignment/taskAssignmentSubconOnProgress',uid);
 const getSconTaskOnDone = (uid) => GETParam('taskassignment/taskAssignmentSubconDone',uid);
@@ -595,14 +674,21 @@ const postLogisticCancelForm = (body) => POST("materialmanagement/orderRequestDe
 
 const checkAddButtonOrderList = (wpid,ot) => GETParam2("materialmanagement/orderRequestGetOrderedListViewToAdd",wpid,ot);
 
-
 // Approval 
 const postApprovalConfirm = (body) => POST("wftransaction/orderRequestApprove",body);
 const postRejectAproval = (body) => POST("wftransaction/orderRequestReject",body);
 
+const getAddress = (siteNo,ddlDestination) => GETParam2('materialmanagement/orderRequestGetDestinationAddress',siteNo,ddlDestination)
 const orderRequestDraft = (body) => PUT("materialManagement/orderRequestChangeExpectedDeliveryDate",body)
 
 const API ={
+    getAddress,
+    deleteOutboundFile2,
+    postOutboundFile2,
+    postReviseOutboundFile2,
+    deleteInboundFile2,
+    postInboundFile2,
+    postReviseInboundFile2,
     checkAddButtonOrderList,
     putDeleteMultiDeliveryRequest,
     postMultiDeliveryCancelAssigned,

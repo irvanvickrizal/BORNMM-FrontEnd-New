@@ -541,16 +541,21 @@ const SdrForm = (props) => {
                                     rules={[{ required: true, message: 'Please Select Team Coordinator!' }]}
                                 >
                             
-                                    {ddlTeam.length == null ? (<></>):(<Select 
-                                        onChange={(e) => setSelectedTeamCoordinator(e)} 
-                                        placeholder="Select an option"
-                                        allowClear='true'
-                                    >
-                                        {
-                                            ddlTeam.map(dst =>  <Select.Option allowClear value={dst.userId}> 
-                                                {dst.fullname}</Select.Option>)
-                                        }
-                                    </Select>)}
+                                    {ddlTeam.length == null ? (<></>):(
+                                        <Select 
+                                            showSearch
+                                            filterOption={(input, option) =>
+                                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                            }
+                                            onChange={(e) => setSelectedTeamCoordinator(e)} 
+                                            placeholder="Select an option"
+                                            allowClear='true'
+                                        >
+                                            {
+                                                ddlTeam.map(dst =>  <Select.Option allowClear value={dst.userId}> 
+                                                    {dst.fullname}</Select.Option>)
+                                            }
+                                        </Select>)}
                                 </Form.Item>
                                 
                                 <Form.Item label="Express Delivery" valuePropName="checked" name="isExpressDelivery">  

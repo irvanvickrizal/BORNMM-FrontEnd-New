@@ -32,7 +32,7 @@ const TableOutboundUpload = () => {
     const [outboundSuccessLog, setOutboundSuccessLog] = useState('');
     const { Title } = Typography;
     const { TabPane } = Tabs;
-
+    const user = useSelector((state) => state.auth.user);
     const props = {
         onRemove: () => {
             setFileUpload(null);
@@ -192,7 +192,7 @@ const TableOutboundUpload = () => {
     {
         if (window.confirm('Are you sure you want to delete this file ?')) {
             console.log(id)
-            API.deleteOutboundFile("",id).then(
+            API.deleteOutboundFile2("",id,user.uid).then(
                 result=>{
                     console.log("handledelete",result)
                     if(result.status=="success"){
@@ -362,7 +362,7 @@ const TableOutboundUpload = () => {
     const handleUpload = () => {
         setUploading(true)
         
-        API.postReviseOutboundFile(inbFileId,fileUpload).then(
+        API.postReviseOutboundFile2(inbFileId,user.uid,fileUpload).then(
             result=>{
                 if(result.value.status=="success"){
                     setFileUpload(null);
@@ -387,7 +387,7 @@ const TableOutboundUpload = () => {
     }
     const handleUploadFileNew = () => {
         setUploading(true)
-        API.postOutboundFile(fileUpload).then(
+        API.postOutboundFile2(user.uid,fileUpload).then(
             result=>{
                 if(result.value.status=="success"){
                     setFileUpload(null);

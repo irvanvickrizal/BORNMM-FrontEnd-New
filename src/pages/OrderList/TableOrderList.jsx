@@ -154,7 +154,7 @@ export default function TableOrderList() {
                         setIsLoading(false)
                         toast.success(result.message)
                         getOrderList()
-                     
+                        checkPlusButton(wpid,ot);     
                     }
               
                 }
@@ -175,12 +175,6 @@ export default function TableOrderList() {
             width : 50,
             render: (value, item, index) => 1 + index
         },
-        {
-            title : "Sys Request No",
-            dataIndex:'requestSysNo',
-            ...Search('requestSysNo'),
-        },
-  
         {
             title : "Order Type",
             dataIndex:'orderType',
@@ -248,8 +242,8 @@ export default function TableOrderList() {
             render:(record)=>{
                 return (
                     <div>
-                        {record.incomingDate !== null ? (<> <Space>
-                            <p>{moment(record.incomingDate).format("YYYY-MM-DD")}</p>
+                        {record.requestDate !== null ? (<> <Space>
+                            <p>{moment(record.requestDate).format("YYYY-MM-DD")}</p>
                         </Space></>):(<>
                         </>)}
                     </div>

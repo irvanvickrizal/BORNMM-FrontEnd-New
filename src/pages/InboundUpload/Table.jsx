@@ -34,7 +34,7 @@ const TableInboundUpload = () => {
     const { TabPane } = Tabs;
     const newDate = new Date()
     const date = newDate.getDate();
-
+    const user = useSelector((state) => state.auth.user);
     const props = {
         onRemove: () => {
             setFileUpload(null);
@@ -106,7 +106,7 @@ const TableInboundUpload = () => {
     {
         if (window.confirm('Are you sure you want to delete this file ?')) {
             console.log(id)
-            API.deleteInboundFile("",id).then(
+            API.deleteInboundFile2("",id,user.uid).then(
                 result=>{
                     console.log("handledelete",result)
                     if(result.status=="success"){
@@ -363,7 +363,7 @@ const TableInboundUpload = () => {
     const handleUpload = () => {
         setUploading(true)
         
-        API.postReviseInboundFile(inbFileId,fileUpload).then(
+        API.postReviseInboundFile2(inbFileId,user.uid,fileUpload).then(
             result=>{
                 if(result.value.status=="success"){
                     setFileUpload(null);
@@ -389,7 +389,7 @@ const TableInboundUpload = () => {
     const handleUploadFileNew = () => {
         setUploading(true)
         
-        API.postInboundFile(fileUpload).then(
+        API.postInboundFile2(user.uid,fileUpload).then(
             result=>{
                 if(result.value.status=="success"){
                     setFileUpload(null);

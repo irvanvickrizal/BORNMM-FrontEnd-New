@@ -35,6 +35,8 @@ import {IconButton, TextField}  from '@mui/material/';
 import {useDispatch, useSelector} from 'react-redux';
 import "./style.css";
 
+import Search from '@app/components/searchcolumn/SearchColumn'
+
 export default function MaterialOrder() {
     
     const user = useSelector((state) => state.auth.user);
@@ -386,9 +388,44 @@ export default function MaterialOrder() {
     }
 
     const onFinishAddMaterial = (values) => {
+        console.log(values,"add material submit",stockCheck,"stockche")
         if(stockCheck==true){
             if(values.balance < values.reqQTY){
                 toast.error("req qty exceeds balance")
+            }
+            else{
+                const body=(
+                    {
+                        "orderDetailId":odiParam,
+                        "materialCode":values.materialCode,
+                        "reqQty":values.reqQTY,
+                        "LMBY":user.uid,
+                        "stockCheck":false,
+                        "neType":values.neType
+                    }
+                )
+                console.log("submit material",body)
+                API.postAddMaterial(body).then(
+                    result=>{
+                        if(result.status=="success"){
+                            toast.success(result.message)
+                            setIsModalAddMaterial(false);
+                            setMaterialChoosed([]);
+                            getOrderDetailMaterial(odiParam);
+                        }
+                        else if(result.status=="warning"){
+                            toast.warning(result.message)
+                            setIsModalAddMaterial(false);
+                            setMaterialChoosed([]);
+                            getOrderDetailMaterial(odiParam);
+                        }
+                        else{
+                            toast.error(result.message)
+                            setIsModalAddMaterial(false);
+                            setMaterialChoosed([]);
+                        }
+                    }
+                )
             }
         }
         else{
@@ -471,17 +508,22 @@ export default function MaterialOrder() {
         {
             title:"Material Code",
             dataIndex:"materialCode",
-            key:"materialCode"
+            key:"materialCode",
+            ...Search('materialCode'),
         },
         {
             title:"Subcategory Name",
             dataIndex:"subCategoryName",
-            key:"subCategoryName"
+            key:"subCategoryName",
+            
+            ...Search('subCategoryName'),
         }, 
         {
             title:"Material Desc",
             dataIndex:"materialDesc",
-            key:"materialDesc"
+            key:"materialDesc",
+            
+            ...Search('materialDesc'),
         },
         {
             title:"Action",
@@ -505,22 +547,29 @@ export default function MaterialOrder() {
         {
             title:"Material Code",
             dataIndex:"materialCode",
-            key:"materialCode"
+            key:"materialCode",
+            
+            ...Search('materialCode'),
         },
         {
             title:"Subcategory Name",
             dataIndex:"subCategoryName",
-            key:"subCategoryName"
+            key:"subCategoryName",
+            
+            ...Search('subCategoryName'),
         }, 
         {
             title:"Material Desc",
             dataIndex:"materialDesc",
-            key:"materialDesc"
+            key:"materialDesc",
+            
+            ...Search('materialDesc'),
         },
         {
             title:"Available QTY",
             dataIndex:"availableQTY",
             key:"availableQTY"
+
         },
         {
             title:"Action",
