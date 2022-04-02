@@ -70,10 +70,6 @@ export default function TableSite() {
   
 
     const CardTitle = (title) => <Title level={5}>{title}</Title>
-   
-
-  
-
 
     const getOrderRequestDraft=()=>{
         setIsLoading(true)

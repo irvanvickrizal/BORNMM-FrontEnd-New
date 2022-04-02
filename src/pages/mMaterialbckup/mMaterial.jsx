@@ -3,17 +3,17 @@
 import React,{useEffect} from 'react';
 import HeaderChanger from '@app/components/cardheader/HeaderChanger';
 import API  from '../../utils/apiServices';
+import MaterialList from './mMaterialList';
 import {useSelector} from 'react-redux';
-import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
-import TableMaterial from './Table'
+
 
 const mMaterial = () => {
-    
+
     return (
         <div>
             <HeaderChanger title="Master Material"/>
-            <TableMaterial/>
+            {/* {isEdit || isNew ? <DOPPanel/> : null} */}
+            <MaterialList />
         </div>
     );
 };

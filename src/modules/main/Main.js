@@ -12,6 +12,7 @@ import Profile from "@pages/profile/Profile"
 import mMaterialCategory from "@pages/mMaterialCategory/mMaterialCategory"
 import mSubMaterialCategory from "@pages/mSubMaterialCategory/mSubMaterialCategory"
 import mMaterial from "@pages/mMaterial/mMaterial"
+import mMaterial2 from "@pages/mMaterialbckup/mMaterial"
 import mDeliveryType from "@pages/mDeliveryType/MDeliveryType"
 import mOrderType from "@pages/mOrderType/MOrderType"
 import mDOP from "@pages/mDOP/mDOP"
@@ -199,6 +200,11 @@ const Main = () => {
                                             exact
                                             path="/master/material"
                                             component={mMaterial}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/master/material2"
+                                            component={mMaterial2}
                                         />
                                         <Route
                                             exact

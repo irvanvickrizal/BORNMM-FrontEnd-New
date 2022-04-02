@@ -469,6 +469,7 @@ const getmMaterialList = () => GET('mastermaterial');
 const putMaterial = (body) => PUT('mastermaterial',body);
 const putMaterialActivation = (body) => PUT('mastermaterial/setactivationstatus',body);
 const getUomList = () => GET('mastermaterial/UomGetList');
+const postmMaterial = (body) => POST('mastermaterial',body);
 
 const getmScope = () => GET('poscope');
 const postmScope = (body) => POST('poscope', body);
@@ -682,6 +683,7 @@ const getAddress = (siteNo,ddlDestination) => GETParam2('materialmanagement/orde
 const orderRequestDraft = (body) => PUT("materialManagement/orderRequestChangeExpectedDeliveryDate",body)
 
 const API ={
+    postmMaterial,
     getAddress,
     deleteOutboundFile2,
     postOutboundFile2,
