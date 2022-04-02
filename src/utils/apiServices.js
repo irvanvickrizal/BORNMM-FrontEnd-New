@@ -682,9 +682,12 @@ const getAddress = (siteNo,ddlDestination) => GETParam2('materialmanagement/orde
 const orderRequestDraft = (body) => PUT("materialManagement/orderRequestChangeExpectedDeliveryDate",body)
 
 
-// scon Task Summary 
+// scon Task Summary cancel
 
 const postSconTaskCancel = (body) => POST("taskassignment/taskOrderRequestAssignmentCancelled",body);
+const postSconTaskReassignment = (body) => POST("taskassignment/taskOrderRequestReAssignmentToSubcon",body);
+
+const getSconTaskCancel = (uid) => GETParam("materialmanagement/orderRequestSubconTaskAssignmentCancelled",uid);
 
 const API ={
     getAddress,
@@ -696,9 +699,11 @@ const API ={
     postReviseInboundFile2,
     postSconTaskCancel,
     checkAddButtonOrderList,
+    postSconTaskReassignment,
     putDeleteMultiDeliveryRequest,
     postMultiDeliveryCancelAssigned,
     postLogisticForm,
+    getSconTaskCancel,
     postApprovalConfirm,
     orderRequestDraft,
     postRejectAproval,
