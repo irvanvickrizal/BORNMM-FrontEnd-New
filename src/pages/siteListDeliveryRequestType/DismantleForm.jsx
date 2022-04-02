@@ -79,6 +79,7 @@ const DismantleForm = (props) => {
     const [ddlTeamCoordinator,setDDLTeamCoordinator] = useState([]);
     const [checked,setChecked] = useState(false);
     const [selectedDeliveryMode,setSelectedDeliveryMode] = useState('');
+    const [form] = Form.useForm();
 
     const [express,setExpress] = useState(false);
     const [siteNo,setSiteNo] = useState('')
@@ -208,7 +209,9 @@ const DismantleForm = (props) => {
             result=>{
                 setSiteAddress(result[0].endPointAddress)  
                 console.log("teslog",result[0].endPointAddress);    
-                
+                // form.setFieldsValue({
+                //     siteAddress: "result[0].endPointAddress"
+                // });
                 console.log(siteAddress,"siteAddress");  
             }
         )
@@ -307,10 +310,13 @@ const DismantleForm = (props) => {
         // Can not select days before today and today
         return current > moment().add(2,'d');
     }
+
     function disabledDateExpress(current) {
         // Can not select days before today and today
         return  moment(current).add(1,'d') < moment().endOf('day')
     }
+
+    
 
     const postDismantleForm = (data) => {
         const body = (
@@ -328,7 +334,7 @@ const DismantleForm = (props) => {
                 "neTypeId" : selectedSiteLocation,
                 "siteAddress": siteAddress,
                 "proposeDeliveryModeId":data.proposeDelivery,
-                "expectedDeliveryDate":deliveryDate,
+                "expectedDeliveryDate":moment(data.deliveryDate).format("YYYY-MM-DD"),
                 "requestBy": user.uid,
                 "picOnSiteId":data.teamCoordinator
             }
@@ -416,6 +422,7 @@ const DismantleForm = (props) => {
                     <Card hoverable title={CardTitle("Order Detail")}>
                         <Space direction="vertical" style={{ width: '100%' }}>
                             <Form
+                                form={form}
                                 labelCol={{ span: 5 }}
                                 wrapperCol={{ span: 18 }}
                                 layout="horizontal"
@@ -426,6 +433,12 @@ const DismantleForm = (props) => {
                                     'deliveryDate': moment(date2, "YYYY-MM-DD").add(3,'d'),
                                     
                                 }}
+                                fields={[
+                                    {
+                                        name: ["siteAddress"],
+                                        value: siteAddress,
+                                    },
+                                ]}
                                 onFinish={handleConfirm}
                                 onFinishFailed={onFinishFailedAddMaterial}
                             >
@@ -589,13 +602,6 @@ const DismantleForm = (props) => {
                                         }
                                     </Select>
                                 </Form.Item>
-                                <Form.Item label="Site Address"   name="siteAdress"
-                                    rules={[{ required: true, message: 'Please Input Site Adress Field!'}]}>
-                                    <Input.TextArea 
-                                        value={siteAddress}
-                                        onChange={(e) => setSiteAddress(e.target.value)}  
-                                    />
-                                </Form.Item>
                                 <Form.Item label="Propose Delivery Mode" name="proposeDelivery"
                                     rules={[{ required: true, message: 'Please Select Packet Type!' }]}
                                 >
@@ -631,6 +637,13 @@ const DismantleForm = (props) => {
                                         // showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
                                         /> }
                                 </Form.Item>
+                                <Form.Item label="Site Address"   name="siteAddress"
+                                    rules={[{ required: true, message: 'Please Input Site Adress Field!'}]}>
+                                    <Input.TextArea 
+                                        // value={siteAddress}
+                                        onChange={(e) => setSiteAddress(e.target.value)}  
+                                    />
+                                </Form.Item>
                                 {/* <Form.Item>
                                     <Button type="primary" htmlType="submit">Confirm</Button>
                                     <Button type="danger">Cancel</Button>
@@ -662,10 +675,8 @@ const DismantleForm = (props) => {
                                             </Space>
                                         </Col>
                                     </Form.Item>
-                                   
                                 </Row>
                             </Form>
-                            
                         </Space>
                     </Card>
                 </Col>

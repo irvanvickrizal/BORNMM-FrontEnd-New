@@ -88,6 +88,7 @@ const SdrForm = (props) => {
     const [initialValue,setInitialValue]= useState("")
     const [selectedINVCode,setSelectedINVCode]= useState("")
 
+    const [siteNo,setSiteNo] = useState('')
     const navigateTo = (path) => {
         history.push(path)
     }
@@ -107,6 +108,7 @@ const SdrForm = (props) => {
                     ,result.region
                     ,result.workpackageID)]
                 setSiteInfo(data);
+                setSiteNo(result.siteNo)
             }
         )
     }
@@ -233,6 +235,20 @@ const SdrForm = (props) => {
         setChecked(value)
         console.log("v",value)
     }
+
+    const handleDestinationChange = (value) =>{
+        setSelectedDestination(value);
+        API.getAddress(siteNo,value).then(
+            result=>{
+                setSiteAddress(result[0].endPointAddress)  
+                console.log("teslog",result[0].endPointAddress);    
+                // form.setFieldsValue({
+                //     siteAddress: "result[0].endPointAddress"
+                // });
+                console.log(siteAddress,"siteAddress");  
+            }
+        )
+    }
     
     const columns = [
         {
@@ -322,7 +338,7 @@ const SdrForm = (props) => {
                 "neTypeId" : selectedSiteLocation,
                 "siteAddress": siteAddress,
                 "isExpressDelivery":express,
-                "expectedDeliveryDate":deliveryDate,
+                "expectedDeliveryDate":moment(deliveryDate).format("YYYY-MM-DD"),
                 "requestBy": user.uid
             }
         )
@@ -418,6 +434,12 @@ const SdrForm = (props) => {
                                     'invName':1,
                                     'deliveryDates': moment(date2, "YYYY-MM-DD").add(3,'d')
                                 }}
+                                fields={[
+                                    {
+                                        name: ["siteAddress"],
+                                        value: siteAddress,
+                                    },
+                                ]}
                                 onFinish={btnConfirm}
                                 onFinishFailed={onFinishFailedAddMaterial}
                             >
@@ -508,7 +530,7 @@ const SdrForm = (props) => {
                                     rules={[{ required: true, message: 'Please Select Destination!' }]}
                                 >
                                     <Select 
-                                        onChange={(e) => setSelectedDestination(e)} 
+                                        onChange={(e) => handleDestinationChange(e)} 
                                         placeholder="Select an option">
                                         {
                                             ddlDestination.map(dst =>  <Select.Option value={dst.dopId}> 
@@ -578,14 +600,7 @@ const SdrForm = (props) => {
                                         }
                                     </Select>
                                 </Form.Item>
-                                <Form.Item label="Site Address"
-                                    name="siteAdress"
-                                    rules={[{ required: true, message: 'Please input Site Adress Field!' }]}
-                                >
-                                    <Input.TextArea 
-                                        onChange={(e) => setSiteAddress(e.target.value)}  
-                                    />
-                                </Form.Item>
+                                
                                 <Form.Item label="Propose Delivery Mode" name="proposeDelivery"
                                     rules={[{ required: true, message: 'Please Select Packet Type!' }]}
                                 >
@@ -617,6 +632,14 @@ const SdrForm = (props) => {
                                         // showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
                                     />)}
                                    
+                                </Form.Item>
+                                <Form.Item label="Site Address"
+                                    name="siteAddress"
+                                    rules={[{ required: true, message: 'Please input Site Adress Field!' }]}
+                                >
+                                    <Input.TextArea 
+                                        onChange={(e) => setSiteAddress(e.target.value)}  
+                                    />
                                 </Form.Item>
                                 <Divider orientation="center" />
                                 <Row>
