@@ -88,7 +88,7 @@ export default function TableSite() {
 
 
     const handleEditRequest=(data)=>{
-        // navigateTo(`/mm/materialorder?odi=${data.orderDetailId}`)
+        navigateTo(`/mm/materialorder?odi=${data.orderDetailId}`)
         console.log(moment(data.expectedDeliveryDate).format("YYYY-MM-DD"),"da")
     }
     const handleDelete=(id)=>{
