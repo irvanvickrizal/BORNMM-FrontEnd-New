@@ -67,6 +67,8 @@ import OrderRequestTracking from "@app/OrderRequestTracking/OrderRequestTracking
 import LogisticTaskRejection from "@app/pages/LogisticTaskRejection/LogisticTaskRejection"
 import LogisticTaskRejectionForm from "@app/pages/LogisticTaskRejection/LogisticTaskRejectionForm"
 
+import TableSubconCancelation from "@app/pages/SconTaskCancel/TableSubconCancelation"
+import SconTaskCancel from "@app/pages/SconTaskCancel/SconTaskCancel"
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -412,6 +414,12 @@ const Main = () => {
                                             exact
                                             path="/mm/logisticformreject"
                                             component={LogisticTaskRejectionForm}
+                                            
+                                        />
+                                        <Route
+                                            exact
+                                            path="/task/SubconTaskCancelled"
+                                            component={SconTaskCancel}
                                             
                                         />
                                     </Switch>
