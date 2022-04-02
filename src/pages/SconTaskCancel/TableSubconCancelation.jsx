@@ -136,7 +136,7 @@ export default function TableSubconCancelation() {
         API.postSconTaskReassignment(body).then(
             result=>{
                 try{
-                    if(result.status=="error"){
+                    if(result.status=="success"){
                         getApiTaskSconCancel()
                         setIsLoading(false)
                         toast.success(result.message)
@@ -153,8 +153,8 @@ export default function TableSubconCancelation() {
             }
   
         )
+      
         setIsModalVisible(false)
-  
     }
 
     const handleDropdownCoordinator = (data) => {
@@ -291,7 +291,7 @@ export default function TableSubconCancelation() {
                                 <GroupIcon  style={{fontSize:20}} onClick={()=>showModal(record)}/>
                             </Tooltip>
                             <Tooltip title="View Detail">
-                                <EyeFilled  style={{fontSize:20}} onClick={()=>showModalTab(record.orderDetailId)}/>
+                                <EyeFilled  style={{fontSize:20,color:"#008de3"}} onClick={()=>showModalTab(record.orderDetailId)}/>
                             </Tooltip>
                         </Space>
                     </div>

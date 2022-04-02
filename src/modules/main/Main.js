@@ -69,6 +69,7 @@ import LogisticTaskRejectionForm from "@app/pages/LogisticTaskRejection/Logistic
 
 import TableSubconCancelation from "@app/pages/SconTaskCancel/TableSubconCancelation"
 import SconTaskCancel from "@app/pages/SconTaskCancel/SconTaskCancel"
+import index from "@app/pages/LtrForm/index"
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -420,6 +421,12 @@ const Main = () => {
                                             exact
                                             path="/task/SubconTaskCancelled"
                                             component={SconTaskCancel}
+                                            
+                                        />
+                                        <Route
+                                            exact
+                                            path="/MM/LTR"
+                                            component={index}
                                             
                                         />
                                     </Switch>
