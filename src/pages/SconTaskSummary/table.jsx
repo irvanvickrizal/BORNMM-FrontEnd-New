@@ -358,7 +358,7 @@ export default function TableTaskSummary(props) {
                             :
                             <Space size={16}>
                                 <Tooltip title="Assign Task">
-                                    <UserAddOutlined  onClick={() => showModal(record)} />
+                                    <UserAddOutlined  onClick={() => showModal(record)} style={{fontSize:18}}/>
                                 </Tooltip>
                                 {!record.requestReschedule?
                                     null

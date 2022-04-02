@@ -205,21 +205,21 @@ const TaskPendingTable = () => {
                             :
                             <Space>
                                 <Tooltip title="Assign Task">
-                                    <UserAddOutlined  onClick={() => handleAssignTask(record)} />
+                                    <UserAddOutlined  onClick={() => handleAssignTask(record)} style={{fontSize: 18}}/>
                                 </Tooltip>
                                 {!record.requestReschedule?
                                     null
                                     :
                                     record.dayToGo <= -2 ?
                                         <Tooltip title="Request Reschedule">
-                                            <CalendarTwoTone onClick={() => handleRequestSchedule(record)} />
+                                            <CalendarTwoTone onClick={() => handleRequestSchedule(record)} style={{fontSize: 18}} />
                                         </Tooltip> :
                                         <Tooltip color='#f50' title="Cannot request reschedule, day to go h-1 or higher">
-                                            <CalendarTwoTone />
+                                            <CalendarTwoTone style={{fontSize: 18}}/>
                                         </Tooltip>
                                 }
                                 <Tooltip title="Cancel Task">
-                                    <CloseSquareTwoTone twoToneColor="#FF0000" onClick={() => handleCancelTask(record)} />
+                                    <CloseSquareTwoTone twoToneColor="#FF0000" onClick={() => handleCancelTask(record)} style={{fontSize: 18}}/>
                                 </Tooltip>
                             </Space>
                         }
