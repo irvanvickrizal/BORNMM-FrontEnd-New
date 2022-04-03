@@ -85,16 +85,6 @@ export default function TableOutboundStatusReport() {
             ...Search('deliveryMode'),
         },
         {
-            title : "",
-            dataIndex:'destinationName',
-            ...Search('destinationName'),
-        },
-        {
-            title : "Delivery Type",
-            dataIndex:'deliveryType',
-            ...Search('deliveryType'),
-        },
-        {
             title :  "RFP Date",
             ...Search('rdpDate'),
             render:(record)=>{
@@ -107,8 +97,8 @@ export default function TableOutboundStatusReport() {
         },
         {
             title :  "Order Request No",
-            dataIndex:'orderRequestNo',
-            ...Search('orderRequestNo'),
+            dataIndex:'orderReqNo',
+            ...Search('orderReqNo'),
         },
         {
             title : "Total Request QTY",
@@ -167,7 +157,7 @@ export default function TableOutboundStatusReport() {
                 </Row>  
                 :
                 <Table
-                    scroll={{ x: '300%' }}
+                    scroll={{ x: '200%' }}
                     columns={columns}
                     dataSource={dataOutboundStatus}
                     pagination={{
