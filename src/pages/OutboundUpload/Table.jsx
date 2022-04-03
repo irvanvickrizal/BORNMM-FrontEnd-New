@@ -289,7 +289,7 @@ const TableOutboundUpload = () => {
             ...Search('executeStatus'),
         },
         {
-            title : "System Execeute Date",
+            title : "System Execute Date",
             render:(record)=>{
                 return (
                     <Space>

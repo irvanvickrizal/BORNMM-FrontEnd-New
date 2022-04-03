@@ -38,7 +38,9 @@ export default function TableTransport() {
     
     const [fileUpload, setFileUpload] = useState(null);
     const [uploading, setUploading] = useState(false);
+    const [isViewDoc, setIsViewDoc] = useState(false);
 
+    const [previewDoc,setPreviewDoc] = useState('')
     const props = {
         onRemove: () => {
             setFileUpload(null);
@@ -91,6 +93,9 @@ export default function TableTransport() {
 
     const handleCancelCancelTask =() =>{
         setIsCancelTask(false)
+    }   
+    const handleCancelView =() =>{
+        setIsViewDoc(false)
     }   
     const handleCancelHOConfirmation =() =>{
         setIsHOConfirmation(false)
@@ -196,6 +201,12 @@ export default function TableTransport() {
     const handleFailedForm = () =>
     {
 
+    }
+
+    const handleViewDoc = (record) =>
+    {
+        setPreviewDoc(record.evidencePath)
+        setIsViewDoc(true)
     }
 
     useEffect(() => {
@@ -355,9 +366,8 @@ export default function TableTransport() {
                         <Tooltip title="View Document ">
                             <IconButton
                                 size="small"
-                                onClick={() => handleCancelRFP(record)}
+                                onClick={() => handleViewDoc(record)}
                                 color="primary"
-                                disabled
                             >
                                 <EyeOutlined />
                             </IconButton>
@@ -590,6 +600,18 @@ export default function TableTransport() {
                 <p>
                 (RFP  Date will be no longer available once it canceled)
                 </p>
+            </Modal>
+            <Modal title="View Doc"
+                visible={isViewDoc}
+                onCancel={handleCancelView}
+                footer={null}
+                confirmLoading={cancelLoading}
+                destroyOnClose={true}
+                width={1000}
+                height={1000}
+            >
+                <embed src={previewDoc}  style={{ width: '100%' ,height: '100%' }}></embed>
+                {/* <img alt="example" style={{ width: '100%' }} src={previewDoc} /> */}
             </Modal>
         </div>
     )
