@@ -461,8 +461,28 @@ export default function TableOrderList() {
             dataIndex: "refQTY"
         },
         {
-            title: "Delta QTY",
+            title: "BOQ Req QTY",
             dataIndex: "reqQTY"
+        },
+        {
+            title: "Total Req QTY",
+            dataIndex: "totalReqQTY"
+        },
+        {
+            title: "Delta QTY",
+   
+            render:(record)=>{
+                return (
+                    <div>
+                        {record?.deltaBOQRefQTY < 0 ? ( <Typography style={{color:"red"}}>
+                            {record.deltaBOQRefQTY}
+                        </Typography>):( <Typography >
+                            {record.deltaBOQRefQTY}
+                        </Typography>)}
+                       
+                    </div>
+                )
+            },
         }
     ]
 

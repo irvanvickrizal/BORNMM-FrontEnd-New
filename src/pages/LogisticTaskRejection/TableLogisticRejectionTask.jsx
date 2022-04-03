@@ -64,16 +64,6 @@ export default function TableLogisticRejectionTask() {
             ...Search('orderType'),
         },
         {
-            title:'Work Package Id',
-            dataIndex:'workpackageid',
-            ...Search('orderType'),
-        },
-        {
-            title:'Site No',
-            dataIndex:'siteNo',
-            ...Search('siteNo'),
-        },
-        {
             title:'Origin',
             dataIndex:'originName',
             ...Search('originName'),
@@ -83,6 +73,37 @@ export default function TableLogisticRejectionTask() {
             dataIndex:'destinationName',
             ...Search('destinationName'),
         },
+        {
+            title:'Delivery Mode',
+            dataIndex:'deliveryMode',
+            ...Search('deliveryMode'),
+        },
+        {
+            title:'Delivery Type',
+            dataIndex:'deliveryType',
+            ...Search('deliveryDate'),
+        },
+        {
+            title:'Reason of Rejection',
+            dataIndex:'reasonOfRejection',
+            ...Search('reasonOfRejection'),
+        },
+        {
+            title:'Transport Rejected By',
+            dataIndex:'transportRejectedBy',
+            ...Search('transportRejectedBy'),
+        },
+        {
+            title:'Work Package Id',
+            dataIndex:'workpackageid',
+            ...Search('orderType'),
+        },
+        {
+            title:'Site No',
+            dataIndex:'siteNo',
+            ...Search('siteNo'),
+        },
+ 
         {
             title:'Site Name',
             dataIndex:'siteName',
@@ -105,17 +126,14 @@ export default function TableLogisticRejectionTask() {
             dataIndex:'scopeDetail',
             ...Search('scopeDetail'),
         },
-        {
-            title:'Delivery Type',
-            dataIndex:'deliveryType',
-            ...Search('deliveryDate'),
-        },
+   
+    
         {
             title:'Incoming Date',
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(record.incomingDate).format("YYYY-MM-DD")}</p>
+                        <p>{moment(record.incomingDate).format("YYYY-MM-DD hh:mm:ss")}</p>
                     </Space>
                 )
             },
@@ -143,7 +161,7 @@ export default function TableLogisticRejectionTask() {
                 </Row>  
                 :
                 <Table
-                    scroll={{ x: '120%' }}
+                    scroll={{ x: '200%' }}
               
                     // expandable={{ expandedRowRender }}
                     columns={columns}
