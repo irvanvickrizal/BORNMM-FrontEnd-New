@@ -54,7 +54,7 @@ export default function TableSite() {
     const [selectedTaskSchedule,setSelectedTaskSchedule] = useState("")
     const current = new Date();
     const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
-    
+    const page =1
     const date2 = `${current.getFullYear()}-${current.getMonth()+1}-${current.getDate()}`;
     const [deliveryDate,setDeliveryDate] = useState(moment(date2, "YYYY-MM-DD").add(3,'d'));
 
@@ -153,6 +153,12 @@ export default function TableSite() {
 
     const columnsOrderRequestDraft =[
         {
+            title: "No",
+            key: "index",
+            width:"2%",
+            render: (value, item, index) => page + index
+        },
+        {
             title:"CPO No",
             dataIndex:"cpoNo",
             key:"cpoNo",
@@ -219,7 +225,7 @@ export default function TableSite() {
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(record.expectedDeliveryDate).format("YYYY-MM-DD")}</p>
+                        <p>{moment(record.expectedDeliveryDate).format("YYYY-MM-DD hh:mm:ss")}</p>
                     </Space>
                 )
             }
@@ -236,7 +242,7 @@ export default function TableSite() {
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(record.requestDate).format("YYYY-MM-DD   hh.mm.ss")}</p>
+                        <p>{moment(record.requestDate).format("YYYY-MM-DD hh:mm:ss")}</p>
                     </Space>
                 )
             }

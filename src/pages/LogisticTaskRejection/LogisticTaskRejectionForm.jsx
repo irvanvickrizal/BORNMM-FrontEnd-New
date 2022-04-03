@@ -147,7 +147,7 @@ export default function LogisticTaskRejectionForm() {
                         setIsLoading(false)
                         history.push('/mm/tasklogisticreject')
                         toast.success(result.message)
-                    
+                        
                        
                      
                     }
@@ -223,24 +223,7 @@ export default function LogisticTaskRejectionForm() {
         console.log(isModalVisible);
     };
 
-    useEffect(() => {
-        dispatch(getIdDelivery(dataTransportId))
-        dispatch(getDataSiteInfo())
-        dispatch(getMaterialOrderDetail())
-        dispatch(getLsp())
-        dispatch(getDeliveryList())
-        dispatch(getDeliveryMode())
-      
-        getLogLogistic()
-        
-        dispatch(getIdDelivery(dataTransportId))
-        dispatch(getDeliveryTransport())
-
-        // dispatch(getDataSiteInfoLogistik())
-        // dispatch(getIdDelivery(data.deliveryRequest))
-        // dispatch(getDeliveryTransport(deliveryRequest))
-        console.log(dataTransportId,"data ini")
-    }, [dispatch,dataTransportId])
+    
 
     const columns = [
     
@@ -251,7 +234,7 @@ export default function LogisticTaskRejectionForm() {
         },
         {
             title: "General Scope",
-            dataIndex: "requestTypeName"
+            dataIndex: "scopeName"
         },
         {
             title: "Site No",
@@ -348,7 +331,25 @@ export default function LogisticTaskRejectionForm() {
         }
     ]
 
+    useEffect(() => {
+        dispatch(getIdDelivery(dataTransportId))
+        dispatch(getDataSiteInfo())
+        dispatch(getMaterialOrderDetail())
+        dispatch(getLsp())
+        dispatch(getDeliveryList())
+        dispatch(getDeliveryMode())
+      
+        getLogLogistic()
+      
+        dispatch(getIdDelivery(dataTransportId))
+        dispatch(getDeliveryTransport())
     
+
+        // dispatch(getDataSiteInfoLogistik())
+        // dispatch(getIdDelivery(data.deliveryRequest))
+        // dispatch(getDeliveryTransport(deliveryRequest))
+        console.log(note,"data ini")
+    }, [dispatch,dataTransportId,dataOrderLogistik])
    
 
 
@@ -542,10 +543,16 @@ export default function LogisticTaskRejectionForm() {
                                     'whTeam':dataOrderLogistik[0].whTeamId,
                                     'deliveryRequest':dataOrderLogistik[0].cdmrId,
                                     'deliveryRequestTransport':dataOrderLogistik[0].transportModeId,
-                                    "note": dataOrderLogistik[0].note,
+                                 
                                     "transportTeam":dataOrderLogistik[0].transportTeamId,
-                                    "modeTransport":dataOrderLogistik[0].transportModeId,
+                                    "modeTransport":dataOrderLogistik[0].deliveryModeId,
                                 }}
+                                fields={[
+                                    {
+                                        name: ["note"],
+                                        value: dataOrderLogistik[0]?.note
+                                    },
+                                ]}
                             >
                                 <Form.Item label="WH Team" name="whTeam" 
                                     rules={[{ required: true, message: 'Please Select WH Team!' }]}
@@ -608,7 +615,7 @@ export default function LogisticTaskRejectionForm() {
                                         }
                                     </Select>
                                 </Form.Item>
-                                <Form.Item label="Mode Of Transport" name="modeTransport"
+                                <Form.Item label="Mode Of Delivery" name="modeTransport"
                                     rules={[{ required: true, message: 'Please Select Mode of Transport!' }]}
                                 >
                                     <Select
