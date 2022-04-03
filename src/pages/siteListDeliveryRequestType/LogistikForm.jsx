@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-duplicate-props */
 /* eslint-disable indent */
 /* eslint-disable no-undef */
 /* eslint-disable no-nested-ternary */
@@ -112,7 +113,7 @@ export default function LogisticForm() {
         dispatch(getDeliveryTransport())
     };
 
-    const handlePost = () => {
+    const handlePost = (data) => {
         // dispatch(putLogistikForm(
         //     {"logisticOrderDetailId":dataOdiLog,"orderDetailId":dataOdi,"whTeamId":wh,"cdmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"LMBY":dataUser,"notes":note}
         // ))
@@ -161,8 +162,6 @@ export default function LogisticForm() {
                         setIsLoading(false)
                         history.push('/mm/taskasglogistic')
                         toast.success(result.message)
-                    
-                       
                      
                     }
               
@@ -177,8 +176,8 @@ export default function LogisticForm() {
      
     };
 
-    const showModal = () => {
-        setDeliveMode(dataSite[0].proposeDeliveryModeId)
+    const showModal = (data) => {
+        setDeliveMode(data.modeTransport)
         setIsModalVisible(true);
         console.log(isModalVisible);
     };
@@ -210,7 +209,7 @@ export default function LogisticForm() {
         },
         {
             title: "General Scope",
-            dataIndex: "requestTypeName"
+            dataIndex: "scopeName"
         },
         {
             title: "Site No",
@@ -251,6 +250,14 @@ export default function LogisticForm() {
         {
             title: "Req QTY",
             dataIndex: "reqQTY"
+        },
+        {
+            title: "Total Req QTY",
+            dataIndex: "totalReqQTY"
+        },
+        {
+            title: "Delta BOQ Ref QTY",
+            dataIndex: "deltaBOQRefQTY"
         },
 
         {
@@ -525,6 +532,7 @@ export default function LogisticForm() {
                             initialValues={{
                                 "modeTransport":dataSite[0]?.proposeDeliveryModeId,
                             }}
+                         
                         >
                             <Form.Item label="WH Team" name="whTeam" 
                               rules={[{ required: true, message: 'Please Select WH Team!' }]}
