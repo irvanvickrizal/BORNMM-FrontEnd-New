@@ -387,7 +387,7 @@ const TableOutboundUpload = () => {
     }
     const handleUploadFileNew = () => {
         setUploading(true)
-        API.postOutboundFile2(user.uid,fileUpload).then(
+        API.postOutboundFile2(fileUpload,user.uid).then(
             result=>{
                 if(result.value.status=="success"){
                     setFileUpload(null);

@@ -45,9 +45,11 @@ export default function TableTransport() {
             return fileUpload
         },
         beforeUpload: file => {
+            console.log(file,"file")
             setFileUpload(file);
             return false;
         },
+        
         fileUpload,
     };
 
@@ -332,8 +334,8 @@ export default function TableTransport() {
         },
         {
             title: "File Name",
-            dataIndex: "evidencePath",
-            ...Search('evidencePath'),
+            dataIndex: "evidenceFilename ",
+            ...Search('evidenceFilename '),
         },
         {
             title: "Action",
@@ -348,6 +350,7 @@ export default function TableTransport() {
                                 size="small"
                                 onClick={() => handleCancelRFP(record)}
                                 color="primary"
+                                disabled
                             >
                                 <EyeOutlined />
                             </IconButton>
@@ -371,7 +374,7 @@ export default function TableTransport() {
 
     const handleUpload = () => {
         setUploading(true)
-        
+        // const isPNG = file.type === 'image/png';
         API.postFileHOConfirm(selectedOrderDetailId,0,user.uid,fileUpload).then(
             result=>{
                 if(result.status=="success"){
