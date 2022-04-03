@@ -148,7 +148,7 @@ const TableOutboundUpload = () => {
             result=>{
                 const data = result//result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
                 const exportType =  exportFromJSON.types.xls;
-                const fileName = `InventoryInbound_${Date()}`;
+                const fileName = `InventoryOutbound_${Date()}`;
                 exportFromJSON({ data, fileName, exportType });
             }
         )
@@ -451,7 +451,7 @@ const TableOutboundUpload = () => {
                                         </Tooltip>
                                         <Tooltip title="Download Template">
                                             <IconButton size="small" color="secondary">
-                                                <a href='/file/Outbound.xlsx' download="[ProjectCode]_SHPCON_[YYYMMDD]_[HHMMSS]_[RunningNo]">
+                                                <a href='/file/Inbound.xlsx' download="[ProjectCode]_SHPCON_[YYYMMDD]_[HHMMSS]_[RunningNo]">
                                                     <FileExcelOutlined />
                                                 </a>
                                             </IconButton>
