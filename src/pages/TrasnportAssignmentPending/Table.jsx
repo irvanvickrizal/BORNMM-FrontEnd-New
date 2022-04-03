@@ -45,11 +45,18 @@ export default function TableTransport() {
             return fileUpload
         },
         beforeUpload: file => {
-            console.log(file,"file")
-            setFileUpload(file);
-            return false;
+            console.log(file,"file");
+            const isJPEG = file.type === 'image/jpeg';
+            const isJPG = file.type === 'image/jpg';
+            const isPNG = file.type === 'image/png';
+            const isPDF = file.type === 'application/pdf';
+            if(isPDF||isPNG||isJPG||isJPEG){
+                setFileUpload(file);
+                return false;
+            }
+            toast.error(`${file.name} is not allowed file`)
+            return isPNG || isJPEG || isJPG || isPDF || Upload.LIST_IGNORE;
         },
-        
         fileUpload,
     };
 
@@ -334,8 +341,8 @@ export default function TableTransport() {
         },
         {
             title: "File Name",
-            dataIndex: "evidenceFilename ",
-            ...Search('evidenceFilename '),
+            dataIndex: "evidenceFilename",
+            ...Search('evidenceFilename'),
         },
         {
             title: "Action",
