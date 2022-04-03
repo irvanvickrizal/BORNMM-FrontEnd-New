@@ -38,15 +38,26 @@ export default function TableTransport() {
     
     const [fileUpload, setFileUpload] = useState(null);
     const [uploading, setUploading] = useState(false);
+    const [isViewDoc, setIsViewDoc] = useState(false);
 
+    const [previewDoc,setPreviewDoc] = useState('')
     const props = {
         onRemove: () => {
             setFileUpload(null);
             return fileUpload
         },
         beforeUpload: file => {
-            setFileUpload(file);
-            return false;
+            console.log(file,"file");
+            const isJPEG = file.type === 'image/jpeg';
+            const isJPG = file.type === 'image/jpg';
+            const isPNG = file.type === 'image/png';
+            const isPDF = file.type === 'application/pdf';
+            if(isPDF||isPNG||isJPG||isJPEG){
+                setFileUpload(file);
+                return false;
+            }
+            toast.error(`${file.name} is not allowed file`)
+            return isPNG || isJPEG || isJPG || isPDF || Upload.LIST_IGNORE;
         },
         fileUpload,
     };
@@ -82,6 +93,9 @@ export default function TableTransport() {
 
     const handleCancelCancelTask =() =>{
         setIsCancelTask(false)
+    }   
+    const handleCancelView =() =>{
+        setIsViewDoc(false)
     }   
     const handleCancelHOConfirmation =() =>{
         setIsHOConfirmation(false)
@@ -187,6 +201,12 @@ export default function TableTransport() {
     const handleFailedForm = () =>
     {
 
+    }
+
+    const handleViewDoc = (record) =>
+    {
+        setPreviewDoc(record.evidencePath)
+        setIsViewDoc(true)
     }
 
     useEffect(() => {
@@ -332,8 +352,8 @@ export default function TableTransport() {
         },
         {
             title: "File Name",
-            dataIndex: "evidencePath",
-            ...Search('evidencePath'),
+            dataIndex: "evidenceFilename",
+            ...Search('evidenceFilename'),
         },
         {
             title: "Action",
@@ -346,7 +366,7 @@ export default function TableTransport() {
                         <Tooltip title="View Document ">
                             <IconButton
                                 size="small"
-                                onClick={() => handleCancelRFP(record)}
+                                onClick={() => handleViewDoc(record)}
                                 color="primary"
                             >
                                 <EyeOutlined />
@@ -371,7 +391,7 @@ export default function TableTransport() {
 
     const handleUpload = () => {
         setUploading(true)
-        
+        // const isPNG = file.type === 'image/png';
         API.postFileHOConfirm(selectedOrderDetailId,0,user.uid,fileUpload).then(
             result=>{
                 if(result.status=="success"){
@@ -580,6 +600,18 @@ export default function TableTransport() {
                 <p>
                 (RFP  Date will be no longer available once it canceled)
                 </p>
+            </Modal>
+            <Modal title="View Doc"
+                visible={isViewDoc}
+                onCancel={handleCancelView}
+                footer={null}
+                confirmLoading={cancelLoading}
+                destroyOnClose={true}
+                width={1000}
+                height={1000}
+            >
+                <embed src={previewDoc}  style={{ width: '100%' ,height: '100%' }}></embed>
+                {/* <img alt="example" style={{ width: '100%' }} src={previewDoc} /> */}
             </Modal>
         </div>
     )
