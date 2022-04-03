@@ -236,6 +236,11 @@ export default function LogisticForm() {
 
     const columnsMaterial = [
         {
+            title: "No",
+            key: "index",
+            render: (value, item, index) => page + index
+        },
+        {
             title: "Material Code",
             dataIndex: "materialCode"
         },
@@ -257,7 +262,18 @@ export default function LogisticForm() {
         },
         {
             title: "Delta BOQ Ref QTY",
-            dataIndex: "deltaBOQRefQTY"
+            render:(record)=>{
+                return (
+                    <div>
+                        {record?.deltaBOQRefQTY < 0 ? ( <Typography style={{color:"red"}}>
+                            {record.deltaBOQRefQTY}
+                        </Typography>):( <Typography >
+                            {record.deltaBOQRefQTY}
+                        </Typography>)}
+                       
+                    </div>
+                )
+            },
         },
 
         {
@@ -493,7 +509,7 @@ export default function LogisticForm() {
                             <TabPane tab="Material Order" key="2">
                           
                                     <Table
-                                        scroll={{x: "100%"}}
+                                        scroll={{x: "150%"}}
                                         bordered
                                         columns={columnsMaterial}
                                         pagination={false}

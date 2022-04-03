@@ -39,6 +39,7 @@ export default function Logistic() {
         {
             title:'No',
             key:"index",
+            width:60,
             render:(value, item, index) => (page )  + index
         },
         {
@@ -99,7 +100,7 @@ export default function Logistic() {
         {
             title:'Action',
             fixed:'right',
-            width: 50,
+            width: 70,
             render:(record)=>{
                 return <EditOutlined onClick={() => handleEdit(record)}/>
             }
@@ -112,7 +113,7 @@ export default function Logistic() {
             <Table
                 columns={columns}
                 dataSource={dataPending}
-                scroll={{ x: '120%' }}
+                scroll={{ x: '200%' }}
                
                 pagination={{
                     pageSizeOptions: ['5','10','20','30', '40'],
@@ -120,8 +121,8 @@ export default function Logistic() {
                     position: ["bottomLeft"],
                 }}
                     
-                style={{marginTop : 36}}
-                size='small'
+            
+              
                 bordered
             />
         

@@ -161,7 +161,7 @@ export default function TableLogisticRejectionTask() {
                 </Row>  
                 :
                 <Table
-                    scroll={{ x: '150%' }}
+                    scroll={{ x: '200%' }}
               
                     // expandable={{ expandedRowRender }}
                     columns={columns}

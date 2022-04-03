@@ -41,6 +41,7 @@ import moment from "moment"
 import { useHistory } from "react-router-dom"
 import API from "@app/utils/apiServices"
 import { toast } from 'react-toastify';
+import Search from "@app/components/searchcolumn/SearchColumn"
 
 const { TextArea } = Input;
 
@@ -226,7 +227,11 @@ export default function LogisticTaskRejectionForm() {
     
 
     const columns = [
-    
+        {
+            title: "No",
+            key: "index",
+            render: (value, item, index) => page + index
+        },
 
         {
             title: "PO No/RO No",
@@ -261,6 +266,11 @@ export default function LogisticTaskRejectionForm() {
 
     const columnsMaterial = [
         {
+            title: "No",
+            key: "index",
+            render: (value, item, index) => page + index
+        },
+        {
             title: "Material Code",
             dataIndex: "materialCode"
         },
@@ -276,6 +286,25 @@ export default function LogisticTaskRejectionForm() {
             title: "Req QTY",
             dataIndex: "reqQTY"
         },
+        {
+            title: "Total Req QTY",
+            dataIndex: "totalReqQTY"
+        },
+        {
+            title: "Delta BOQ Ref QTY",
+            render:(record)=>{
+                return (
+                    <div>
+                        {record?.deltaBOQRefQTY < 0 ? ( <Typography style={{color:"red"}}>
+                            {record.deltaBOQRefQTY}
+                        </Typography>):( <Typography >
+                            {record.deltaBOQRefQTY}
+                        </Typography>)}
+                       
+                    </div>
+                )
+            },
+        },
 
         {
             title: "UOM",
@@ -285,6 +314,16 @@ export default function LogisticTaskRejectionForm() {
             title: "Site",
             dataIndex: "site"
         }
+
+        
+        // {
+        //     title: "UOM",
+        //     dataIndex: "uom"
+        // },
+        // {
+        //     title: "Site",
+        //     dataIndex: "site"
+        // }
     ]
 
 
@@ -504,7 +543,7 @@ export default function LogisticTaskRejectionForm() {
                             <TabPane tab="Material Order" key="2">
                           
                                 <Table
-                                    scroll={{x: "100%"}}
+                                    scroll={{x: "150%"}}
                                     bordered
                                     columns={columnsMaterial}
                                     pagination={false}
