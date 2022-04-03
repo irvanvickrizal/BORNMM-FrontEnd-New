@@ -1,6 +1,6 @@
 import React from 'react'
 import HeaderChanger from '@app/components/cardheader/HeaderChanger'
-import TableOrderRequestTracking from '@app/OrderRequestTracking/TableOrderRequestTracking'
+import TableOrderRequestTracking from '@app/pages/OrderRequestTracking/TableOrderRequestTracking'
 
 export default function OrderRequestTracking() {
     return (

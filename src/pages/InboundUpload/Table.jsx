@@ -63,7 +63,7 @@ const TableInboundUpload = () => {
             result=>{
                 const data = result//result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
                 const exportType =  exportFromJSON.types.xls;
-                const fileName = `InventoryInbound_${Date()}`;
+                const fileName = `InventoryInbound_${moment().format("DD-MM-YYYY hh:mm:ss")}`;
                 exportFromJSON({ data, fileName, exportType });
             }
         )
@@ -89,7 +89,7 @@ const TableInboundUpload = () => {
                 const data = result;
                 //const data = result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
                 const exportType =  exportFromJSON.types.xls;
-                const fileNameDownload = `errorlog_${fileNames}`;
+                const fileNameDownload = `errorlog_${fileNames}_${moment().format("DD-MM-YYYY hh:mm:ss")}`;
                 exportFromJSON({ data, fileNameDownload, exportType });
             }
         )
@@ -196,8 +196,8 @@ const TableInboundUpload = () => {
         },
         {
             title : "SDR LTR No",
-            dataIndex:'sdrltrNo',
-            ...Search('sdrltrNo'),
+            dataIndex:'sdrLtrNo',
+            ...Search('sdrLtrNo'),
         },
         {
             title : "Customer PO",
@@ -235,12 +235,22 @@ const TableInboundUpload = () => {
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(record.recordDate).format("YYYY-MM-DD")}</p>
+                        <p>{moment(record.recordDate).format("YYYY-MM-DD HH:mm:ss")}</p>
                     </Space>
                 )
             },
             ...Search('uploadedDate'),
-        },        
+        },   
+        {
+            title : "File Name",
+            dataIndex:'fileName',
+            ...Search('fileName'),
+        },
+        {
+            title : "Uploaded By",
+            dataIndex:'uploadedBy',
+            ...Search('uploadedBy'),
+        },     
     ]
 
     const columns = [
@@ -319,7 +329,7 @@ const TableInboundUpload = () => {
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(record.systemExecuteDate).format("YYYY-MM-DD HH:mm:ss")}</p>
+                        <p>{record.systemExecuteDate==null ? (<div>-</div>) : moment(record.systemExecuteDate).format("YYYY-MM-DD HH:mm:ss")}</p>
                     </Space>
                 )
             },

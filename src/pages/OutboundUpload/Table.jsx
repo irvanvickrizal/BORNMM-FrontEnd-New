@@ -30,6 +30,7 @@ const TableOutboundUpload = () => {
     const [inbFileId, setInbFileId] = useState(0);
     const [fileNameExisting, setFileNameExisting] = useState('');
     const [outboundSuccessLog, setOutboundSuccessLog] = useState('');
+    const [itemBookedList, setItemBookedList] = useState([]);
     const { Title } = Typography;
     const { TabPane } = Tabs;
     const user = useSelector((state) => state.auth.user);
@@ -124,12 +125,22 @@ const TableOutboundUpload = () => {
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(record.recordDate).format("YYYY-MM-DD")}</p>
+                        <p>{moment(record.recordDate).format("YYYY-MM-DD HH:mm:ss")}</p>
                     </Space>
                 )
             },
             ...Search('uploadedDate'),
-        },        
+        },
+        {
+            title : "File Name",
+            dataIndex:'fileName',
+            ...Search('fileName'),
+        },
+        {
+            title : "Uploaded By",
+            dataIndex:'uploadedBy',
+            ...Search('uploadedBy'),
+        },             
     ]
     const getOutboundUploadFileList = () => {
         setIsLoading(true);
@@ -148,7 +159,7 @@ const TableOutboundUpload = () => {
             result=>{
                 const data = result//result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
                 const exportType =  exportFromJSON.types.xls;
-                const fileName = `InventoryOutbound_${Date()}`;
+                const fileName = `InventoryOutbound_${moment().format("DD-MM-YYYY hh:mm:ss")}`;
                 exportFromJSON({ data, fileName, exportType });
             }
         )
@@ -164,6 +175,7 @@ const TableOutboundUpload = () => {
             }
         )
     }
+    
 
     function getErrorLog(id,fileNames){
 
@@ -175,7 +187,7 @@ const TableOutboundUpload = () => {
                 const data = result;
                 //const data = result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
                 const exportType =  exportFromJSON.types.xls;
-                const fileNameDownload = `errorlog_${fileNames}`;
+                const fileNameDownload = `errorlog_${fileNames}_${moment().format("DD-MM-YYYY hh:mm:ss")}`;
                 exportFromJSON({ data, fileNameDownload, exportType });
             }
         )
@@ -293,7 +305,7 @@ const TableOutboundUpload = () => {
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(record.systemExecuteDate).format("YYYY-MM-DD HH:mm:ss")}</p>
+                        <p>{record.systemExecuteDate==null ? (<div>-</div>) : moment(record.systemExecuteDate).format("YYYY-MM-DD HH:mm:ss")}</p>
                     </Space>
                 )
             },

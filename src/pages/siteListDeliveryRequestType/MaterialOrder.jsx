@@ -822,6 +822,7 @@ export default function MaterialOrder() {
                                 <Card hoverable>
                                     <Row>
                                         <Col md={24} sm={24} >
+                                            <b>Quantity of materials ordered : {orderDetailMaterial.length}</b>
                                             <div className='float-right'>
                                                 <Tooltip title="Add Material">
                                                     <IconButton size="small" color="primary" onClick={showModalAddMaterial}>
@@ -862,13 +863,29 @@ export default function MaterialOrder() {
                                                                     </Button> 
                                                                 </Tooltip>
                                                                 :
-                                                                <Button type="primary" htmlType="submit" onClick={handleBookSubmit}>
-                                                        Book and Submit
-                                                                </Button> 
+                                                                orderDetailMaterial.length == 0 ?
+
+                                                                    <Tooltip color='red' title="Material not ordered yet">
+                                                                        <Button type="primary" danger disabled htmlType="submit" onClick={handleBookSubmit}>
+                                                                Book and Submit
+                                                                        </Button> 
+                                                                    </Tooltip>
+
+                                                                    :
+                                                                    <Button type="primary" htmlType="submit" onClick={handleBookSubmit}>
+                                                                Book and Submit
+                                                                    </Button> 
                                                             :
-                                                            <Button type="primary" htmlType="submit" onClick={handleSubmitDirect}>
-                                                Submit
-                                                            </Button>
+                                                            orderDetailMaterial.length == 0 ?
+                                                                <Tooltip color='red' title="Certain item has out of stock status">
+                                                                    <Button type="primary" danger disabled htmlType="submit" onClick={handleBookSubmit}>
+                                                                    Submit
+                                                                    </Button> 
+                                                                </Tooltip>
+                                                                :
+                                                                <Button type="primary" htmlType="submit" onClick={handleSubmitDirect}>
+                                                                    Submit
+                                                                </Button>
                                                         }
                                                     </Space>
                                                 </div>

@@ -452,6 +452,16 @@ export default function TablePickup() {
             ...Search('multiDeliveryStatus'),
         },
         {
+            title : "Order Request Number",
+            dataIndex:'orderReqNo',
+            ...Search('orderReqNo'),
+        },
+        {
+            title : "Transport Team",
+            dataIndex:'transportTeam',
+            ...Search('transportTeam'),
+        },
+        {
             title : "PIC Name",
             dataIndex:'picName',
             ...Search('picName'),
@@ -476,11 +486,7 @@ export default function TablePickup() {
             dataIndex:'totalVolume',
             ...Search('totalVolume'),
         },
-        {
-            title : "Transport Team",
-            dataIndex:'transportTeam',
-            ...Search('transportTeam'),
-        },
+        
         {
             title:"Action",
             // key:"orderDetailId",

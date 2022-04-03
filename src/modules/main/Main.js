@@ -64,13 +64,15 @@ import OrderList from "@app/pages/OrderList/OrderList"
 import PickUpCompletion from "@app/pages/PickUpCompletion/PickUpCompletion"
 import MultiDelivery from "@app/pages/MultiDelivery/MultiDelivery"
 import MultiDeliveryArrangement from "@app/pages/MultiDeliveryArrangement/MultiDeliveryArrangement"
-import OrderRequestTracking from "@app/OrderRequestTracking/OrderRequestTracking"
+import OrderRequestTracking from "@app/pages/OrderRequestTracking/OrderRequestTracking"
 import LogisticTaskRejection from "@app/pages/LogisticTaskRejection/LogisticTaskRejection"
 import LogisticTaskRejectionForm from "@app/pages/LogisticTaskRejection/LogisticTaskRejectionForm"
 
 import TableSubconCancelation from "@app/pages/SconTaskCancel/TableSubconCancelation"
 import SconTaskCancel from "@app/pages/SconTaskCancel/SconTaskCancel"
+// import OutBoundStatusReport from "@app/pages/OutboundStatusReport/OutboundStatusReport"
 import index from "@app/pages/LtrForm/index"
+import OutboundStatusReport from "@app/pages/OutboundStatusReport/OutboundStatusReport"
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -433,6 +435,12 @@ const Main = () => {
                                             exact
                                             path="/MM/LTR"
                                             component={index}
+                                            
+                                        />
+                                        <Route
+                                            exact
+                                            path="/rpt/OutboundStatus"
+                                            component={OutboundStatusReport}
                                             
                                         />
                                     </Switch>
