@@ -68,6 +68,7 @@ export default function TableSite() {
     const [express,setExpress] = useState("");
     const [odi,setOdi] = useState("")
   
+    const dataMap = orderRequestDraft.map(e=>e.isPickupRequest)
 
     const CardTitle = (title) => <Title level={5}>{title}</Title>
 
@@ -123,7 +124,7 @@ export default function TableSite() {
         console.log("datasubmitassign", express)
         const body = {
             "orderDetailId":odi,
-            "expectedDeliveryDate" : data.deliveryDates,
+            "expectedDeliveryDate" : moment(data.deliveryDates).format("YYYY-MM-DD"),
             requestBy: dataUserId
 
         }
@@ -140,7 +141,7 @@ export default function TableSite() {
                 }
             }
         )
-        // console.log(body,"ini body")
+        console.log(body,"ini body")
      
         setIsModalRescheduleVisible(false)
     }
@@ -225,7 +226,7 @@ export default function TableSite() {
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(record.expectedDeliveryDate).format("YYYY-MM-DD hh:mm:ss")}</p>
+                        <p>{moment(record.expectedDeliveryDate).format("YYYY-MM-DD")}</p>
                     </Space>
                 )
             }
@@ -355,67 +356,130 @@ export default function TableSite() {
                         bordered /><Modal visible={isModalRescheduleVisible} onCancel={hideModalReschedule}
                         footer={null}
                     >
-                        <div> <Card title={CardTitle("Express Delivery")}>
-                            <Form
-                                name="basic"
-                                labelCol={{ span: 8 }}
-                                wrapperCol={{ span: 16 }}
+                        <div> 
+                            {/* {orderRequestDraft?.map(e=>e.isPickupRequest == "true" ? ():())} */}
+                            {dataMap == "true" ? (<Card title={CardTitle("Change Pickup Date")}>
+                                <Form
+                                    name="basic"
+                                    labelCol={{ span: 8 }}
+                                    wrapperCol={{ span: 16 }}
                   
-                                initialValues={{
-                                    'deliveryDates': moment(date2, "YYYY-MM-DD").add(3,'d')
+                                    initialValues={{
+                                        'deliveryDates': moment(date2, "YYYY-MM-DD").add(3,'d')
                                     //'pickupDate': moment(props.pickupDate).format("YYYY-MM-DD"),
                                     // remember: true
-                                }}
-                                onFinish={onFinishRequestReschedule}
+                                    }}
+                                    onFinish={onFinishRequestReschedule}
                 
 
 
-                                autoComplete="off"
-                            >
+                                    autoComplete="off"
+                                >
 
-                                <Form.Item label="Express Delivery" valuePropName="checked" name="isExpressDelivery">  
-                                    {express ? (<Checkbox onChange={(e)=>togleCheckbox(e.target.checked)}/>):(
-                                        <Tooltip color='#f50' title="Cannot request Express Delivery"><Checkbox disabled  onChange={(e)=>togleCheckbox(e.target.checked)}/></Tooltip>
-                                    )}
-                                </Form.Item>
-
-                                <Form.Item label="Delivery Date" 
-                                    name="deliveryDates"
-                                    rules={[{ required: true, message: 'Please Select Delivery Date' }]}>
-                                    {checked ? (<DatePicker 
-                                        format="YYYY-MM-DD"
-                                        disabledDate={disabledDateExpressTrue}
-                                        onChange={(e) => setDeliveryDate(moment(e).format("YYYY-MM-DD"))} 
-                                        // disabledDate={current && current < moment().endOf('day')}
-                                        // showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
-                                    />):(<DatePicker 
-                                        format="YYYY-MM-DD"
-                                        disabledDate={disabledDate}
-                                        onChange={(e) => setDeliveryDate(moment(e).format("YYYY-MM-DD"))} 
-                                        // disabledDate={current && current < moment().endOf('day')}
-                                        // showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
-                                    />)}
-                                   
-                                </Form.Item>
-                                <div className='float-sm-right ml-10'>
-                                    <Form.Item wrapperCol={{ offset: 1, span: 16 }} style={{marginTop:6}}>
-                                        <Row>
-                                            <Col span={4}> 
-                                                <Space direction="horizontal">
-                                                    <Button type="primary" htmlType="submit" >Confirm</Button>
-                               
-                                                    <Button type="danger" onClick={hideModalReschedule}>Cancel</Button>
-                                                </Space>
-                                            </Col>
-                                        </Row>
+                                    <Form.Item label="Express Delivery" valuePropName="checked" name="isExpressDelivery">  
+                                        {express ? (<Checkbox onChange={(e)=>togleCheckbox(e.target.checked)}/>):(
+                                            <Tooltip color='#f50' title="Cannot request Express Delivery"><Checkbox disabled  onChange={(e)=>togleCheckbox(e.target.checked)}/></Tooltip>
+                                        )}
                                     </Form.Item>
-                                </div>
+
+                                    <Form.Item label="Delivery Date" 
+                                        name="deliveryDates"
+                                        rules={[{ required: true, message: 'Please Select Delivery Date' }]}>
+                                        {checked ? (<DatePicker 
+                                            format="YYYY-MM-DD"
+                                            disabledDate={disabledDateExpressTrue}
+                                            onChange={(e) => setDeliveryDate(moment(e).format("YYYY-MM-DD"))} 
+                                        // disabledDate={current && current < moment().endOf('day')}
+                                        // showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+                                        />):(<DatePicker 
+                                            format="YYYY-MM-DD"
+                                            disabledDate={disabledDate}
+                                            onChange={(e) => setDeliveryDate(moment(e).format("YYYY-MM-DD"))} 
+                                        // disabledDate={current && current < moment().endOf('day')}
+                                        // showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+                                        />)}
+                                   
+                                    </Form.Item>
+                                    <div className='float-sm-right ml-10'>
+                                        <Form.Item wrapperCol={{ offset: 1, span: 16 }} style={{marginTop:6}}>
+                                            <Row>
+                                                <Col span={4}> 
+                                                    <Space direction="horizontal">
+                                                        <Button type="primary" htmlType="submit" >Confirm</Button>
+                               
+                                                        <Button type="danger" onClick={hideModalReschedule}>Cancel</Button>
+                                                    </Space>
+                                                </Col>
+                                            </Row>
+                                        </Form.Item>
+                                    </div>
                   
              
 
 
-                            </Form>
-                        </Card>
+                                </Form>
+                            </Card>):(<Card title={CardTitle("Change Delivery Date")}>
+                                <Form
+                                    name="basic"
+                                    labelCol={{ span: 8 }}
+                                    wrapperCol={{ span: 16 }}
+                  
+                                    initialValues={{
+                                        'deliveryDates': moment(date2, "YYYY-MM-DD").add(3,'d')
+                                    //'pickupDate': moment(props.pickupDate).format("YYYY-MM-DD"),
+                                    // remember: true
+                                    }}
+                                    onFinish={onFinishRequestReschedule}
+                
+
+
+                                    autoComplete="off"
+                                >
+
+                                    <Form.Item label="Express Delivery" valuePropName="checked" name="isExpressDelivery">  
+                                        {express ? (<Checkbox onChange={(e)=>togleCheckbox(e.target.checked)}/>):(
+                                            <Tooltip color='#f50' title="Cannot request Express Delivery"><Checkbox disabled  onChange={(e)=>togleCheckbox(e.target.checked)}/></Tooltip>
+                                        )}
+                                    </Form.Item>
+
+                                    <Form.Item label="Delivery Date" 
+                                        name="deliveryDates"
+                                        rules={[{ required: true, message: 'Please Select Delivery Date' }]}>
+                                        {checked ? (<DatePicker 
+                                            format="YYYY-MM-DD"
+                                            disabledDate={disabledDateExpressTrue}
+                                            onChange={(e) => setDeliveryDate(moment(e).format("YYYY-MM-DD"))} 
+                                        // disabledDate={current && current < moment().endOf('day')}
+                                        // showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+                                        />):(<DatePicker 
+                                            format="YYYY-MM-DD"
+                                            disabledDate={disabledDate}
+                                            onChange={(e) => setDeliveryDate(moment(e).format("YYYY-MM-DD"))} 
+                                        // disabledDate={current && current < moment().endOf('day')}
+                                        // showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+                                        />)}
+                                   
+                                    </Form.Item>
+                                    <div className='float-sm-right ml-10'>
+                                        <Form.Item wrapperCol={{ offset: 1, span: 16 }} style={{marginTop:6}}>
+                                            <Row>
+                                                <Col span={4}> 
+                                                    <Space direction="horizontal">
+                                                        <Button type="primary" htmlType="submit" >Confirm</Button>
+                               
+                                                        <Button type="danger" onClick={hideModalReschedule}>Cancel</Button>
+                                                    </Space>
+                                                </Col>
+                                            </Row>
+                                        </Form.Item>
+                                    </div>
+                  
+             
+
+
+                                </Form>
+                            </Card>)}
+                            
                         </div>
                     </Modal></>
             }
