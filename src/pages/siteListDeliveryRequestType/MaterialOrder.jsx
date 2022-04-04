@@ -822,7 +822,7 @@ export default function MaterialOrder() {
                                 <Card hoverable>
                                     <Row>
                                         <Col md={24} sm={24} >
-                                            <b>Quantity of materials ordered : {orderDetailMaterial.length}</b>
+                                            <b>Total Material Item(s) : {orderDetailMaterial.length}</b>
                                             <div className='float-right'>
                                                 <Tooltip title="Add Material">
                                                     <IconButton size="small" color="primary" onClick={showModalAddMaterial}>
