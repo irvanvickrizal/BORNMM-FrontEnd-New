@@ -548,6 +548,7 @@ const deleteInboundFile2 = (body,id,userid) => PUTParam2('inventory/inboundFileD
 const getOutboundUploadFile = () => GET('inventory/outboundFileUploadGetList');
 const getOutboundSuccessLog = () => GET('inventory/outboundSuccessLogList');
 const getItemBookedList = () => GET('materialmanagement/OrderRequestMaterialGetItemListBooked');
+const getItemBookedList2 = (odi) => GETParam('materialmanagement/orderRequestMaterialGetItemListBookedBasedId',odi);
 const getOutboundErrorList = (id) => GETParam('inventory/outboundFileUploadGetErrLogList',id);
 const postReviseOutboundFile = (id,file) => POSTFile('inventory/outboundFileRevisionUpload',id,file);
 const postReviseOutboundFile2 = (id,userid,file) => POSTFileParam2('inventory/outboundFileRevisionUpload',id,userid,file);
@@ -662,7 +663,7 @@ const putDeleteMultiDeliveryRequest = (body) => PUT('multidelivery/multiDelivery
 
 
 const getOrderRequestTracking =(odi) => GETParam('rpt/orderRequestProgressTracking',odi);
-const getItemOrderedList =(odi) => GETParam('materialmanagement/orderRequestMaterialGetItemListBookedBasedIdg',odi);
+const getItemOrderedList =(odi) => GETParam('materialmanagement/orderRequestMaterialGetItemListBookedBasedId',odi);
 const getOutboundStatusReport =(userid) => GETParam('rpt/orderRequestOutboundStatus',userid);
 const deleteWaitingRfp = (body) => PUT('materialmanagement/orderRequestLogisticTransportReject',body);
 
@@ -694,6 +695,7 @@ const postSconTaskReassignment = (body) => POST("taskassignment/taskOrderRequest
 const getSconTaskCancel = (uid) => GETParam("materialmanagement/orderRequestSubconTaskAssignmentCancelled",uid);
 
 const API ={
+    getItemBookedList2,
     getItemOrderedList,
     getOutboundStatusReport,
     getItemBookedList,

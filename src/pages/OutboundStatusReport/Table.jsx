@@ -27,7 +27,7 @@ export default function TableOutboundStatusReport() {
     }
 
     const handleDownloadItemOrdered = (odi) => {
-        API.getItemBookedList(odi).then(
+        API.getItemBookedList2(odi).then(
             result=>{
                 setDownloadData(result);
                 console.log("data  Download :",result);
