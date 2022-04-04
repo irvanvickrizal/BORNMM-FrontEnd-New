@@ -1,5 +1,7 @@
 import axios from "axios";
-import { API } from "@app/Variables";
+
+import { variables } from "@app/Variables";
+
 import {Alert} from 'antd'
 import { put, takeLatest, select } from "redux-saga/effects";
 import { toast } from 'react-toastify';
@@ -7,6 +9,8 @@ import { toast } from 'react-toastify';
 
 //action
 import {setAprovalPending,setOrderDetail,setMaterial,setLog,postAproveSuccess,getOrderDetail,postRejectSuccess} from '../action/aprovalTaskPendingAction'
+
+const API = variables.API_URL;
 
 function* sagaGetAprovalTaskPending(action) {
     const token = yield select(state=>state.auth.token)

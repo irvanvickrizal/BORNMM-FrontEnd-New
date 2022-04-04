@@ -1,12 +1,12 @@
 import axios from "axios";
-import { API } from "@app/Variables";
+import { variables } from "@app/Variables";
 import { put, takeLatest, select,call } from "redux-saga/effects";
 import { toast } from 'react-toastify';
 
 import {putLogistikFormSuccess,setDataSiteInfoLogistik,getLogisticPending,postAsDraftSuccess,setDeliveryTransport,setDataSiteInfo,setMaterialOrderDetail,setLsp,setDeliveryList,setDeliveryMode,postLogistikFormSuccess,setLogistikPending} from "../action/logistikFormAction"
 
 
-
+const API = variables.API_URL;
 
 function* sagaGetSiteInfo(action) {
     const token = yield select(state=>state.auth.token)
