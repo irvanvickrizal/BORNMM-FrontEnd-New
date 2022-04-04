@@ -67,8 +67,8 @@ export default function TableSite() {
     const [checked,setChecked] = useState(false)
     const [express,setExpress] = useState("");
     const [odi,setOdi] = useState("")
-  
-    const dataMap = orderRequestDraft.map(e=>e.isPickupRequest)
+    const [dataMap,setDataMap] = useState([]);
+    // const dataMap = orderRequestDraft?.map(e=>e.isPickupRequest)
 
     const CardTitle = (title) => <Title level={5}>{title}</Title>
 
@@ -78,6 +78,7 @@ export default function TableSite() {
             result=>{
                 console.log("order request draft", result);
                 setOrderRequestDraft(result);
+                setDataMap(result?.map(e=>e.isPickupRequest))
                 setIsLoading(false)
             }
         )
@@ -474,9 +475,6 @@ export default function TableSite() {
                                         </Form.Item>
                                     </div>
                   
-             
-
-
                                 </Form>
                             </Card>)}
                             
