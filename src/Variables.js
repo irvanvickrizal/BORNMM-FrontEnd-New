@@ -1,6 +1,6 @@
 export const variables = {
-    API_URL: 'https://bornxl-api.nsnebast.com/',
-    API_URL_DEMO: 'https://bornxldemo-api.nsnebast.com/',
+    //API_URL: 'https://bornxl-api.nsnebast.com/', => live
+    API_URL: 'https://bornxldemo-api.nsnebast.com/',
     PHOTO_URL: 'https://localhost:7118/photos/'
 };
 
