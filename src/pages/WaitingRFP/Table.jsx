@@ -296,7 +296,7 @@ const WaitingRFPTable = () => {
                     <div>
                         <Space>
                             {record.isPickupRequest ? 
-                                record.dayToGo == 1 ?
+                                record.dayToGo <= 1 ?
                                     <Tooltip title="RFP Done">
                                         <IconButton
                                             size="small"

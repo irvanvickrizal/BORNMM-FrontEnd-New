@@ -6,7 +6,7 @@ import HeaderChanger from '@app/components/cardheader/HeaderChanger'
 export default function PickUpCompletion() {
     return (
         <div>
-            <HeaderChanger title="Pickup Completion"/>
+            <HeaderChanger title="Delivery Completion"/>
             <TablePickup/>
         </div>
     )

@@ -19,6 +19,7 @@ const TableInventoryReport = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [inventoryReport,setInventoryReport] = useState([]);
     const [inventoryReportDetail,setInventoryReportDetail] = useState([]);
+    const [itemBookedList,setItemBookedList] = useState([]);
 
 
     const getInventoryReport = () => {
@@ -42,7 +43,17 @@ const TableInventoryReport = () => {
             }
         )
     }
-
+    const getItemBookedList = () => {
+        setIsLoading(true);
+        API.getItemBookedList().then(
+            result=>{
+                
+                console.log("item booked list",result);
+                setItemBookedList(result)
+                setIsLoading(false);
+            }
+        )
+    }
 
     const columns = [
         {
@@ -163,12 +174,52 @@ const TableInventoryReport = () => {
         
     
     ]
+    const columnsItemBookedList = [
+        {
+            title : "No",
+            render: (value, item, index) => 1 + index
+        },
+        {
+            title : "Site No",
+            dataIndex:'siteNo',
+            ...Search('siteNo'),
+        },
+        {
+            title : "WorkpackageId",
+            dataIndex:'workpackageid',
+            ...Search('workpackageid'),
+        },
+        {
+            title : "Order Req No",
+            dataIndex:'orderReqNo',
+            ...Search('orderReqNo'),
+        },
+        {
+            title : "Material Code",
+            dataIndex:'materialCode',
+            ...Search('materialCode'),
+        },
+        {
+            title:"QTY",
+            dataIndex:'QTY',
+            ...Search('QTY'),
+        },
+        {
+            title:"Status",
+            dataIndex:'itemStatus',
+            ...Search('itemStatus'),            
+        },
+    ]
+
     function callback(key) {
         if(key==1){
             getInventoryReport();
         }
         else if(key==2){
             getInventoryReportDetail()
+        }
+        else if(key==3){
+            getItemBookedList();
         }
         console.log("keytabs",key);
     }
@@ -181,7 +232,7 @@ const TableInventoryReport = () => {
                 
                 const data = result//result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
                 const exportType =  exportFromJSON.types.xls;
-                const fileName = `InventoryStockDetail_today`;
+                const fileName = `InventoryStockDetail_${moment().format("DD-MM-YYYY hh:mm:ss")}`;
                 exportFromJSON({ data, fileName, exportType });
             }
         )
@@ -194,7 +245,20 @@ const TableInventoryReport = () => {
                 
                 const data = result//result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
                 const exportType =  exportFromJSON.types.xls;
-                const fileName = `InventoryStockDetail_today`;
+                const fileName = `InventoryStockDetail_${moment().format("DD-MM-YYYY hh:mm:ss")}`;
+                exportFromJSON({ data, fileName, exportType });
+            }
+        )
+    }
+    function getDownloadBookedList(){
+
+        API.getItemBookedList().then(
+            result=>{
+                console.log('i am error log Scope',result)
+
+                const data = result//result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
+                const exportType =  exportFromJSON.types.xls;
+                const fileName = `OrderRequest_ItemBookedList_${moment().format("DD-MM-YYYY hh:mm:ss")}`;
                 exportFromJSON({ data, fileName, exportType });
             }
         )
@@ -253,6 +317,33 @@ const TableInventoryReport = () => {
                         // expandable={{ expandedRowRender }}
                         columns={columnsDetail}
                         dataSource={inventoryReportDetail}
+                        pagination={{
+                            pageSizeOptions: ['5', '10', '20', '30', '40'],
+                            showSizeChanger: true,
+                            position: ["bottomLeft"],
+                        }}
+                        bordered /></>
+                }
+            </TabPane>
+            <TabPane tab="Item Booked List" key="3">
+                {isLoading ? <Row justify="center">
+                    <Col span={1}>    
+                        <Spin />
+                    </Col>
+                </Row>  :
+                    <><div className='float-right'>
+                        <Tooltip title="Download As Excell File">
+                            <IconButton size="small" color="success" onClick={getDownloadBookedList}>
+                                <FileExcelOutlined />
+                            </IconButton>
+                            {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
+                        </Tooltip>
+                    </div><Table
+                        scroll={{ x: '100%' }}
+                        size="small"
+                        // expandable={{ expandedRowRender }}
+                        columns={columnsItemBookedList}
+                        dataSource={itemBookedList}
                         pagination={{
                             pageSizeOptions: ['5', '10', '20', '30', '40'],
                             showSizeChanger: true,

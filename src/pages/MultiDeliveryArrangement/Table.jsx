@@ -152,6 +152,7 @@ const MultiDeliveryArrangementPanel = () => {
     }
     const handleCloseAdd = () =>{
         getMultiDeliveryRequestList(mdid)
+        getMultiDeliveryDetail(mdid)
         console.log("closeadd")
         setIsAddOrderRequest(false)
     }
