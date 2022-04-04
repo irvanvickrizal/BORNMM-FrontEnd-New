@@ -190,7 +190,7 @@ export default function AprovalTaskPendingForm() {
         },
         {
             title: "Delta BOQ Ref QTY",
-            dataIndex: "deltaBOQRefQTY",
+         
             render:(record)=>{
                 return (
                     <div>

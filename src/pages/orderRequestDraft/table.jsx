@@ -58,6 +58,7 @@ export default function TableSite() {
     const date2 = `${current.getFullYear()}-${current.getMonth()+1}-${current.getDate()}`;
     const [deliveryDate,setDeliveryDate] = useState(moment(date2, "YYYY-MM-DD").add(3,'d'));
 
+    const day = -1
 
     const [isModalRescheduleVisible,setIsModalRescheduleVisible] = useState(false)
     const dataUserId = useSelector(state=>state.auth.user.uid)
@@ -122,7 +123,7 @@ export default function TableSite() {
     }
 
     const onFinishRequestReschedule = (data) => {
-        console.log("datasubmitassign", express)
+        // console.log("datasubmitassign", express)
         const body = {
             "orderDetailId":odi,
             "expectedDeliveryDate" : moment(data.deliveryDates).format("YYYY-MM-DD"),
@@ -142,7 +143,7 @@ export default function TableSite() {
                 }
             }
         )
-        console.log(body,"ini body")
+        // console.log(body,"ini body")
      
         setIsModalRescheduleVisible(false)
     }
@@ -256,7 +257,39 @@ export default function TableSite() {
             render:(record)=>{
                 return (
                     <>
-                        {moment(record.expectedDeliveryDate).isAfter(dateNow)? (<><Tooltip title="Edit Draft">
+                        {record?.dayToGo < 0 ? (
+                        
+                        
+                            <>
+                                {record.isPickupRequest ? ( <Tooltip title="Change Expected Picup Date">
+                                    <IconButton
+                                        aria-label="expand row"
+                                        size="small"
+                                        color="primary"
+                                        onClick={() => showModalReschedule(record)}
+                                    >
+                                        <CalendarOutlined />
+
+                                    </IconButton>
+                                </Tooltip>):( <Tooltip title="Change Expected Delivery Date">
+                                    <IconButton
+                                        aria-label="expand row"
+                                        size="small"
+                                        color="primary"
+                                        onClick={() => showModalReschedule(record)}
+                                    >
+                                        <CalendarOutlined />
+
+                                    </IconButton>
+                                </Tooltip>)}
+                                <IconButton
+                                    aria-label="expand row"
+                                    size="small"
+                                    color="error"
+                                    onClick={() => handleDelete(record.orderDetailId)}
+                                >
+                                    <DeleteOutlined />
+                                </IconButton></>):(<><Tooltip title="Edit Draft">
                             <IconButton
                                 aria-label="expand row"
                                 size="small"
@@ -273,36 +306,7 @@ export default function TableSite() {
                             onClick={() => handleDelete(record.orderDetailId)}
                         >
                             <DeleteOutlined />
-                        </IconButton></>):(<>
-                            {record.isPickupRequest ? ( <Tooltip title="Change Expected Picup Date">
-                                <IconButton
-                                    aria-label="expand row"
-                                    size="small"
-                                    color="primary"
-                                    onClick={() => showModalReschedule(record)}
-                                >
-                                    <CalendarOutlined />
-
-                                </IconButton>
-                            </Tooltip>):( <Tooltip title="Change Expected Delivery Date">
-                                <IconButton
-                                    aria-label="expand row"
-                                    size="small"
-                                    color="primary"
-                                    onClick={() => showModalReschedule(record)}
-                                >
-                                    <CalendarOutlined />
-
-                                </IconButton>
-                            </Tooltip>)}
-                            <IconButton
-                                aria-label="expand row"
-                                size="small"
-                                color="error"
-                                onClick={() => handleDelete(record.orderDetailId)}
-                            >
-                                <DeleteOutlined />
-                            </IconButton></>)}
+                        </IconButton></>)}
                     </>
                 )
             },

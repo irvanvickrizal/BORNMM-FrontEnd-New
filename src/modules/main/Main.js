@@ -74,6 +74,9 @@ import SconTaskCancel from "@app/pages/SconTaskCancel/SconTaskCancel"
 import index from "@app/pages/LtrForm/index"
 import OutboundStatusReport from "@app/pages/OutboundStatusReport/OutboundStatusReport"
 
+// Site Location Map
+import siteLocation from "../../pages/ExampleTableLocation/index"
+
 const Main = () => {
     const dispatch = useDispatch()
     const isSidebarMenuCollapsed = useSelector(
@@ -441,6 +444,12 @@ const Main = () => {
                                             exact
                                             path="/rpt/OutboundStatus"
                                             component={OutboundStatusReport}
+                                            
+                                        />
+                                        <Route
+                                            exact
+                                            path="/mm/sitelocation"
+                                            component={siteLocation}
                                             
                                         />
                                     </Switch>
