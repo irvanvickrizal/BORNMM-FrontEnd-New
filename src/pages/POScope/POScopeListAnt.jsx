@@ -493,7 +493,7 @@ const POScopeListAnt = () => {
                         </Col>
                         <Col md={8} sm={24} >
                             <div className='float-right'>
-                                <Tooltip title="Add Material">
+                                <Tooltip title="Add PO Scope">
                                     <IconButton size="small" color="primary" onClick={handleShowAdd}>
                                         <PlusOutlined />
                                     </IconButton>
