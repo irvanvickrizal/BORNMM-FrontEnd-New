@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import {useDispatch,useSelector} from 'react-redux';
 
 // const tokens = useSelector((state) => state.aurh.cardHeader);
-const baseURL = variables.API_URL;
+const baseURL = variables.API_URL_DEMO;
 const tokenGlobal = localStorage.getItem('token'); 
 // const token = stores.getState().auth.token;
 const config = {
@@ -445,6 +445,7 @@ const DELETEParam = (path,body,param)  => {
 
 
 const getMenu = (id,tokens) => GetMenu('menu',id,tokens);
+const changePassword = (body) => PUT('user/userChangePassword',body);
 
 const getMaterialCategory = () => GET('mastermaterialcategory');
 const postMaterialCategory = (body) => POST('mastermaterialcategory',body);
@@ -695,6 +696,7 @@ const postSconTaskReassignment = (body) => POST("taskassignment/taskOrderRequest
 const getSconTaskCancel = (uid) => GETParam("materialmanagement/orderRequestSubconTaskAssignmentCancelled",uid);
 
 const API ={
+    changePassword,
     getItemBookedList2,
     getItemOrderedList,
     getOutboundStatusReport,

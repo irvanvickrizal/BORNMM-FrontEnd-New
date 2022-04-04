@@ -408,7 +408,7 @@ export default function TableTaskSummary(props) {
                                             <CalendarTwoTone onClick={() => showModalReschedule(record)} style={{fontSize:18}}/>
                                         </Tooltip> :
                                         <Tooltip color='#f50' title="Cannot request reschedule,Max. day to go h-1">
-                                            <CalendarTwoTone style={{color:"#0000"}} style={{fontSize:18}}/>
+                                            <CalendarTwoTone style={{color:"#0000"}}/>
                                         </Tooltip>
                                 }
                                 <Tooltip title="Cancel Task">
