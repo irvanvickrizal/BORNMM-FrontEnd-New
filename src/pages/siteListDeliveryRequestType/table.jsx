@@ -141,6 +141,12 @@ export default function TableSite() {
             ...Search('workpackageID'),
         },
         {
+            title : "Package Type",
+            dataIndex:'packageType',
+            
+            ...Search('packageType'),
+        },
+        {
             title : "Scope",
             dataIndex:'scopeDetail',
             
