@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import {useDispatch,useSelector} from 'react-redux';
 
 // const tokens = useSelector((state) => state.aurh.cardHeader);
-const baseURL = variables.API_URL_DEMO;
+const baseURL = variables.API_URL;
 const tokenGlobal = localStorage.getItem('token'); 
 // const token = stores.getState().auth.token;
 const config = {
