@@ -152,6 +152,7 @@ export default function TableOrderRejection() {
             key:"orderMaterialId",
             align:'center',
             fixed:'right',
+            width:90,
             render:(record)=>{
                 return (
                     <div>
@@ -195,7 +196,8 @@ export default function TableOrderRejection() {
                 :
                 <Table
                     scroll={{ x: '150%' }}
-              
+                    rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
+                    // expandable={{ expandedRowRender }}
                     // expandable={{ expandedRowRender }}
                     columns={columns}
                     dataSource={dataOrderRejectionPending}

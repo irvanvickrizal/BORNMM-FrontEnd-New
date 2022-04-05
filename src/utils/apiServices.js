@@ -693,7 +693,14 @@ const orderRequestDraft = (body) => PUT("materialManagement/orderRequestChangeEx
 const postSconTaskCancel = (body) => POST("taskassignment/taskOrderRequestAssignmentCancelled",body);
 const postSconTaskReassignment = (body) => POST("taskassignment/taskOrderRequestReAssignmentToSubcon",body);
 
+
 const getSconTaskCancel = (uid) => GETParam("materialmanagement/orderRequestSubconTaskAssignmentCancelled",uid);
+
+// PickUp Reschedule
+const getScheduleAssignment = (uid) => GETParam("scheduleassignment/openPickupRescheduleList",uid);
+const postRescheduleDirect = (body) => POST("scheduleassignment/directChangePickupSchedule",body);
+const postRescheduleIndirect = (body) => POST("scheduleassignment/indirectChangePickupSchedule",body);
+
 
 const API ={
     changePassword,
@@ -702,6 +709,9 @@ const API ={
     getOutboundStatusReport,
     getItemBookedList,
     postmMaterial,
+    getScheduleAssignment,
+    postRescheduleDirect,
+    postRescheduleIndirect,
     getAddress,
     deleteOutboundFile2,
     postOutboundFile2,
