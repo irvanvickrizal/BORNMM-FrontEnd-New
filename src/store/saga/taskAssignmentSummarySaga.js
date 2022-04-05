@@ -1,12 +1,12 @@
 import axios from "axios";
 
 import { put, takeLatest, select } from "redux-saga/effects";
-import { API } from "@app/Variables";
+import { variables } from "@app/Variables";
 
 import { setDataDone, setDataOnProgress, setDataPending,setSubcon } from "@app/store/action/taskAssignmentPendingAction";
 //action
 
-
+const API = variables.API_URL;
 function* sagaGetTaskPending(action) {
     const token = yield select(state=>state.auth.token)
     try {
