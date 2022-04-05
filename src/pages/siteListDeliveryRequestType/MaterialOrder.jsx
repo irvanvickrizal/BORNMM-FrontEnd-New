@@ -160,12 +160,14 @@ export default function MaterialOrder() {
         {
             title:"Item Code",
             dataIndex:"materialCode",
-            key:"orderMaterialId"
+            key:"orderMaterialId",
+            ...Search('materialCode'),
         },
         {
             title:"Material Desc",
             dataIndex:"materialDesc",
             key:"orderMaterialId",
+            ...Search('materialDesc'),
         },
         {
             title:"UOM",
@@ -197,16 +199,17 @@ export default function MaterialOrder() {
             key:"deltaBOQRefQTY",
             render:(record)=>{
                 return (
-                    <Space>
+                    <div>
                         {record.deltaBOQRefQTY < 0 
                             ?
                             <p style={{ color:'red' }}>{record.deltaBOQRefQTY}</p>:
                             <p>
                                 {record.deltaBOQRefQTY}
                             </p>}
-                    </Space>
+                    </div>
                 )
-            }
+            },
+            ...Search('deltaBOQRefQTY'),
 
         },
         {
@@ -214,14 +217,14 @@ export default function MaterialOrder() {
             key:"orderMaterialId",
             render:(record)=>{
                 return (
-                    <Space>
+                    <div>
                         {record.balanceQTY < 0 
                             ?
                             <p style={{ color:'red' }}>{record.balanceQTY}</p>:
                             <p>
                                 {record.balanceQTY}
                             </p>}
-                    </Space>
+                    </div>
                 )
             }
 
@@ -235,15 +238,17 @@ export default function MaterialOrder() {
             title:"Order Status",
             key:"orderMaterialId",
             render:(record)=>{
-                return (
-                    <Space>
-                        {record.balanceQTY < 0 ? <p style={{ color:'red' }}>{record.orderStatus}</p>:
-                            <p>
-                                {record.orderStatus}
-                            </p>}
-                    </Space>
+                return (<div>
+                    {record.balanceQTY < 0 ? <p style={{ color:'red' }}>{record.orderStatus}</p>:
+                        <div>
+                            {record.orderStatus}
+                        </div>
+                            
+                    }
+                </div>
                 )
-            }
+            },
+            ...Search('orderStatus'),
         },
         {
             title:"Action",
