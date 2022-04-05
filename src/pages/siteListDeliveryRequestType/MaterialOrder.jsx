@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable no-nested-ternary */
@@ -20,10 +21,11 @@ import {Table, Row, Col,Card, Typography, Input, Space, Form,
     Switch,
     message,
     Divider ,
+    Checkbox,
     Tabs,
     Tooltip,
     Modal } from 'antd'
-import { DownloadOutlined,PlusOutlined,FileExcelOutlined,CloseOutlined, EditOutlined,DeleteOutlined,CheckOutlined  } from '@ant-design/icons';
+import { CalendarOutlined,DownloadOutlined,PlusOutlined,FileExcelOutlined,CloseOutlined, EditOutlined,DeleteOutlined,CheckOutlined  } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import HeaderChanger from '@app/components/cardheader/HeaderChanger'
@@ -39,6 +41,7 @@ import Search from '@app/components/searchcolumn/SearchColumn'
 
 export default function MaterialOrder() {
     
+    const CardTitle = (title) => <Title level={5}>{title}</Title>
     const user = useSelector((state) => state.auth.user);
     const { Option } = Select;
     const customURL = window.location.href;
@@ -77,7 +80,13 @@ export default function MaterialOrder() {
     const [selectedSite,setSelectedSite] = useState('');
     const [selectedOrderStatus,setSelectedOrderStatus] = useState('');
     const [isOutOfStock,setIsOutOfStock] = useState(null)
+    const [isPickupRequest,setIsPickupRequest] = useState(false)
     const [materialOrderLog,setMaterialOrderLog] = useState([])
+    const [isModalRescheduleVisible,setIsModalRescheduleVisible] = useState(false)
+    const [isExpress,setIsExpress] = useState(false)
+    const [checkExpress,setCheckExpress] = useState(false)
+    const [deliveryDate,setDeliveryDate] = useState('')
+    const [newDeliveryDate,setNewDeliveryDate] = useState('')
 
     const navigateTo = (path) => {
         history.push(path)
@@ -89,13 +98,28 @@ export default function MaterialOrder() {
         }
     }
 
+    const getOrderDetail=(odi)=>{
+        API.getOrderDetailForm(odi).then(
+            result=>{
+                setOrderDetailData(result);
+                setWPID(result[0].workpackageId);
+                setSiteNo(result[0].siteNo);
+                setStockCheck(result[0].stockCheck);
+                setOrderTypeId(result[0].orderTypeId);
+                setIsPickupRequest(result[0].isPickupRequest)
+                setIsExpress(result[0].hasExpressDelivery)
+                setDeliveryDate(result[0].expectedDeliveryDate)
+                console.log('orderdetailform',result);
+            }
+        )
+    }
+
     const getOrderDetailMaterial=(odi)=>{
         setIsOutOfStock(0);
         API.getOrderDetailMaterial(odi).then(
             result=>{
                 result.map((rst)=>checkoutofstock(rst.balanceQTY)) 
                 setOrderDetailMaterial(result);
-
             }
         )
     }
@@ -148,12 +172,61 @@ export default function MaterialOrder() {
 
     }
 
+    function disabledDate(currents) {
+        // Can not select days before today and today
+        //if(!isExpress){
+        return currents < moment().add(2,'d');
+        //}
+        //return (current < moment().endOf('day'))
+    }
+
+    function disabledDateExpress(currents) {
+        // Can not select days before today and today
+        return  moment(currents).add(1,'d') < moment().endOf('day')
+    }
+
     const handleChangeNeType=(value) => {
         console.log(`selected ${value}`);
     }
 
     const handleChangeQTY=(value) => {
         console.log(`selected ${value}`);
+    }
+    const handleFailedForm=() => {
+        //console.log(`selected ${value}`);
+    }
+
+    const handleOKForm = (data) => {
+        console.log("datasubmitassign", data)
+        const body = {
+            "orderDetailId":odiParam,
+            "expectedDeliveryDate" : moment(data.deliveryDates).format("YYYY-MM-DD"),
+            requestBy: user.uid
+
+        }
+        console.log(body,"body")
+        API.orderRequestDraft(body).then(
+            result=>{
+                console.log("handle put",result)
+                if(result.status=="success"){
+                    getOrderDetail(odiParam);
+                    toast.success(result.message)
+                    setIsModalRescheduleVisible(false)
+                }
+                else{        
+                    getOrderDetail(odiParam);
+                    toast.error(result.message)
+                    setIsModalRescheduleVisible(false)
+                }
+            }
+        )
+
+        // setIsModalRescheduleVisible(false)
+    }
+
+    const showModalReschedule = (data) => {
+        setIsModalRescheduleVisible(true)
+        // setIsExpress(data.hasExpressDelivery)
     }
 
     const columnsMaterialOrder =[
@@ -386,6 +459,9 @@ export default function MaterialOrder() {
         }
         
     ]
+    const hideModalReschedule = () => {
+        setIsModalRescheduleVisible(false)
+    }
     
     const handleAddMaterial = (data) => {
         console.log("handleAddplus",data)
@@ -624,18 +700,7 @@ export default function MaterialOrder() {
         setIsModalEditMaterial(false);
     };
 
-    const getOrderDetail=(odi)=>{
-        API.getOrderDetailForm(odi).then(
-            result=>{
-                setOrderDetailData(result);
-                setWPID(result[0].workpackageId);
-                setSiteNo(result[0].siteNo);
-                setStockCheck(result[0].stockCheck);
-                setOrderTypeId(result[0].orderTypeId);
-                console.log('orderdetailform',result);
-            }
-        )
-    }
+    
    
     const handleDownloadBtn=()=>{
         API.getBOQRefGetList(odiParam).then(
@@ -803,11 +868,27 @@ export default function MaterialOrder() {
                         </Col>
                         <Col md={8} sm={12} >
                             <div className='float-right'>
-                                <Tooltip title="Edit Order Detail">
-                                    <IconButton size="small" color="primary" onClick={handleEditOrderDetail}>
-                                        <EditOutlined />
+                                {isPickupRequest ? ( <Tooltip title="Change Expected Pickup Date">
+                                    <IconButton
+                                        aria-label="expand row"
+                                        size="small"
+                                        color="primary"
+                                        onClick={() => showModalReschedule()}
+                                    >
+                                        <CalendarOutlined />
+
                                     </IconButton>
-                                </Tooltip>
+                                </Tooltip>):( <Tooltip title="Change Expected Delivery Date">
+                                    <IconButton
+                                        aria-label="expand row"
+                                        size="small"
+                                        color="primary"
+                                        onClick={() => showModalReschedule()}
+                                    >
+                                        <CalendarOutlined />
+
+                                    </IconButton>
+                                </Tooltip>)}
                             </div>
                         </Col>
                     </Row>
@@ -925,15 +1006,17 @@ export default function MaterialOrder() {
                 onOk={handleOk} 
                 onCancel={handleCancel}
                 footer={null}
+                width={700}
             >
                 {materialChoosed.length == 0 ? 
                     <Table 
-                        scroll={{ x: '100%' }} 
+                        scroll={{ x: '100%' ,y: 240  }} 
                         size="small"  
                         columns={stockCheck? columnsMaterialListExcludedStockCheck : columnsMaterialListExcluded} 
                         dataSource={orderDetailMaterialExcluded} 
                         pagination={false} 
-                        bordered/>    :
+                        bordered
+                    />    :
                     <Form
                         name="basic"
                         labelCol={{ span: 8 }}
@@ -1124,6 +1207,60 @@ export default function MaterialOrder() {
                     </Form.Item>
                 </Form>
 
+            </Modal>
+            <Modal 
+                title={isPickupRequest?"Change Pickup Date" : "Change Delivery Date"} 
+                visible={isModalRescheduleVisible} 
+                onCancel={hideModalReschedule}
+                footer={null}
+            >
+                <div> 
+                    <Form
+                        name="basic"
+                        style={{marginRight:96}}
+                        labelCol={{ span: 10 }}
+                        wrapperCol={{ span: 14 }}
+                        initialValues={{
+                            'expressDelivery' : isExpress,
+                            'deliveryDates': moment(deliveryDate, "YYYY-MM-DD"),
+                            
+                        }}
+                        onFinish={handleOKForm}
+                        onFinishFailed={handleFailedForm}
+                        autoComplete="off"
+                    >
+
+                        <Form.Item label="Express Delivery" valuePropName="checked" name="isExpressDelivery">  
+                            {isExpress ? (<Checkbox onChange={(e)=>setCheckExpress(e.target.checked)}/>):(
+                                <Tooltip color='#f50' title="Cannot request Express Delivery"><Checkbox disabled/></Tooltip>
+                            )}
+                        </Form.Item>
+                        <Form.Item label={isPickupRequest?"Pickup Date" : "Delivery Date"}  name="deliveryDates" rules={[{ required: true, message: 'Please Select Delivery Date' }]}>
+                            {checkExpress ? <DatePicker
+                                format="YYYY-MM-DD"
+                                disabledDate={
+                                    disabledDateExpress
+                                }
+                                onChange={(e) => setNewDeliveryDate(moment(e).format("YYYY-MM-DD"))} 
+                            /> :
+                                <DatePicker
+                                    format="YYYY-MM-DD"
+                                    disabledDate={
+                                        disabledDate
+                                    }
+                                    onChange={(e) => setNewDeliveryDate(moment(e).format("YYYY-MM-DD"))} 
+                                /> }
+                        </Form.Item>
+
+                        <Form.Item wrapperCol={{ offset: 10, span: 14 }}>
+                      
+                            <Button type="primary" htmlType="submit">
+                                Confirm
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                            
+                </div>
             </Modal>
         </div>
     )

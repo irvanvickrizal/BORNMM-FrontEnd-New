@@ -41,7 +41,16 @@ export default function TableOutboundStatusReport() {
             }
         )
     }
-
+    const getDownloadDataDetail = () => {
+        API.getOutboundStatusReport(userId).then(
+            result=>{
+                const data = result//result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
+                const exportType =  exportFromJSON.types.xls;
+                const fileName = `OutboundStatusReport_${moment().format("DD-MM-YYYY hh:mm:ss")}`;
+                exportFromJSON({ data, fileName, exportType });
+            }
+        )
+    }
 
     const columns = [
         {
@@ -116,6 +125,11 @@ export default function TableOutboundStatusReport() {
             ...Search('outQTY'),
         },
         {
+            title : "Outbound Status",
+            dataIndex:'outboundStatus',
+            ...Search('outboundStatus'),
+        },
+        {
             title:"Action",
             key:"orderMaterialId",
             align:'center',
@@ -156,7 +170,14 @@ export default function TableOutboundStatusReport() {
                     </Col>
                 </Row>  
                 :
-                <Table
+                <><div className='float-right'>
+                    <Tooltip title="Download As Excell File">
+                        <IconButton size="small" color="success" onClick={getDownloadDataDetail}>
+                            <FileExcelOutlined />
+                        </IconButton>
+                        {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
+                    </Tooltip>
+                </div><Table
                     scroll={{ x: '200%' }}
                     columns={columns}
                     dataSource={dataOutboundStatus}
@@ -165,7 +186,7 @@ export default function TableOutboundStatusReport() {
                         showSizeChanger: true,
                         position: ["bottomLeft"],
                     }}
-                    bordered />}
+                    bordered /></>}
         </div>
     )
 }

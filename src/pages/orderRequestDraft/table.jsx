@@ -114,12 +114,9 @@ export default function TableSite() {
         setIsModalRescheduleVisible(true)
         setExpress(data.hasExpressDelivery)
         setOdi(data.orderDetailId)
-  
     }
     const hideModalReschedule = (data) => {
         setIsModalRescheduleVisible(false)
-        
-    
     }
 
     const onFinishRequestReschedule = (data) => {
@@ -358,7 +355,10 @@ export default function TableSite() {
 
                         style={{ marginTop: 36 }}
                         size='small'
-                        bordered /><Modal visible={isModalRescheduleVisible} onCancel={hideModalReschedule}
+                        bordered />
+                    <Modal 
+                        visible={isModalRescheduleVisible} o
+                        nCancel={hideModalReschedule}
                         footer={null}
                     >
                         <div> 
@@ -375,9 +375,6 @@ export default function TableSite() {
                                     // remember: true
                                     }}
                                     onFinish={onFinishRequestReschedule}
-                
-
-
                                     autoComplete="off"
                                 >
 

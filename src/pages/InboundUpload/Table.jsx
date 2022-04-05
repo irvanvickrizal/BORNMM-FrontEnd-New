@@ -59,11 +59,11 @@ const TableInboundUpload = () => {
         )
     }
     const getDownloadDataDetail = () => {
-        API.getInboundUploadFile().then(
+        API.getInboundSuccessLog().then(
             result=>{
                 const data = result//result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
                 const exportType =  exportFromJSON.types.xls;
-                const fileName = `InventoryInbound_${moment().format("DD-MM-YYYY hh:mm:ss")}`;
+                const fileName = `InventoryInbound_successlog_${moment().format("DD-MM-YYYY hh:mm:ss")}`;
                 exportFromJSON({ data, fileName, exportType });
             }
         )
