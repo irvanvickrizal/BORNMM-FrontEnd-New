@@ -6,6 +6,7 @@ import { EditOutlined,DeleteFilled  } from '@ant-design/icons'
 import moment from 'moment'
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify'
+import {IconButton, TextField}  from '@mui/material/';
 
 export default function TableOrderRejection() {
     const history = useHistory()
@@ -157,13 +158,17 @@ export default function TableOrderRejection() {
                        
                         <Space size={20}>
                             <Tooltip title="Material Order Form ">
-                                <EditOutlined style={{fontSize:20}} onClick={()=>navigateTo(record.orderDetailId)}/>  
+                                <IconButton size="small" color="primary" onClick={()=>navigateTo(record.orderDetailId)}>
+                                    <EditOutlined style={{fontSize:20}} />
+                                </IconButton>
                             </Tooltip>
                              
                     
                                                          
                             <Tooltip title=" Delete Order Request">
-                                <DeleteFilled style={{fontSize:20,color:'red'}} onClick={()=>showModalDelete(record.orderDetailId)}/>
+                                <IconButton size="small" color="error" onClick={()=>showModalDelete(record.orderDetailId)}>
+                                    <DeleteFilled style={{fontSize:20,color:'red'}} />
+                                </IconButton>
                             </Tooltip>
                         </Space>
                         

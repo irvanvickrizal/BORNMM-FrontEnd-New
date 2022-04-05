@@ -288,7 +288,7 @@ export default function TableSubconCancelation() {
                     <div style={{display:"flex",alignItems:'center',justifyContent:'center'}}>
                         <Space size={20}>
                             <Tooltip title="Re-Assign Task">
-                                <GroupIcon  style={{fontSize:20}} onClick={()=>showModal(record)}/>
+                                <GroupIcon  style={{fontSize:20,color:"#008de3"}} onClick={()=>showModal(record)}/>
                             </Tooltip>
                             <Tooltip title="View Detail">
                                 <EyeFilled  style={{fontSize:20,color:"#008de3"}} onClick={()=>showModalTab(record.orderDetailId)}/>

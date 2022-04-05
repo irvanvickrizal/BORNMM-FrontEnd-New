@@ -331,13 +331,17 @@ export default function MaterialOrder() {
                 return (
                     <Space>
                         <Tooltip title="Edit Req Quantity">
-                            <EditOutlined onClick={() => handleEditMaterial(record)} />
+                            <IconButton size="small" color="primary" onClick={() => handleEditMaterial(record)}>
+                                <EditOutlined />
+                            </IconButton>
                         </Tooltip>
                         {record.isBoqRef?
                             null
                             :
                             <Tooltip title="Delete Material">
-                                <DeleteOutlined onClick={() => handleDeleteMaterial(record)} />
+                                <IconButton size="small" color="error" onClick={() => handleDeleteMaterial(record)}>
+                                    <DeleteOutlined  />
+                                </IconButton>
                             </Tooltip>
                         }
                     </Space>
@@ -613,7 +617,9 @@ export default function MaterialOrder() {
             render:(record)=>{
                 return (
                     <Space>
-                        <PlusOutlined  onClick={(e) => handleAddMaterial(record)} />
+                        <IconButton size="small" color="primary"  onClick={(e) => handleAddMaterial(record)}>
+                            <PlusOutlined  />
+                        </IconButton>
                     </Space>
                 )
             }
@@ -659,7 +665,9 @@ export default function MaterialOrder() {
             render:(record)=>{
                 return (
                     <Space>
-                        <PlusOutlined  onClick={(e) => handleAddMaterial(record)} />
+                        <IconButton size="small" color="primary" onClick={(e) => handleAddMaterial(record)}>
+                            <PlusOutlined   />
+                        </IconButton>
                     </Space>
                 )
             }
