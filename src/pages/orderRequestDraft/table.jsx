@@ -279,14 +279,16 @@ export default function TableSite() {
 
                                     </IconButton>
                                 </Tooltip>)}
-                                <IconButton
-                                    aria-label="expand row"
-                                    size="small"
-                                    color="error"
-                                    onClick={() => handleDelete(record.orderDetailId)}
-                                >
-                                    <DeleteOutlined />
-                                </IconButton></>):(<><Tooltip title="Edit Draft">
+                                <Tooltip title="Remove Draft">
+                                    <IconButton
+                                        aria-label="expand row"
+                                        size="small"
+                                        color="error"
+                                        onClick={() => handleDelete(record.orderDetailId)}
+                                    >
+                                        <DeleteOutlined />
+                                    </IconButton>
+                                </Tooltip></>):(<><Tooltip title="Edit Draft">
                             <IconButton
                                 aria-label="expand row"
                                 size="small"
@@ -296,14 +298,18 @@ export default function TableSite() {
                                 <EditOutlined />
 
                             </IconButton>
-                        </Tooltip><IconButton
-                            aria-label="expand row"
-                            size="small"
-                            color="error"
-                            onClick={() => handleDelete(record.orderDetailId)}
-                        >
-                            <DeleteOutlined />
-                        </IconButton></>)}
+                        </Tooltip>
+                        <Tooltip title="Remove Draft">
+                            <IconButton
+                                aria-label="expand row"
+                                size="small"
+                                color="error"
+                                onClick={() => handleDelete(record.orderDetailId)}
+                            >
+                                <DeleteOutlined />
+                            </IconButton>
+                        </Tooltip>
+                        </>)}
                     </>
                 )
             },
@@ -344,6 +350,7 @@ export default function TableSite() {
                         //rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
                         dataSource={orderRequestDraft}
                         columns={columnsOrderRequestDraft}
+                        rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
                         key='siteConditionId'
                         scroll={{ x: '200%' }}
                         // eslint-disable-next-line react/jsx-boolean-value

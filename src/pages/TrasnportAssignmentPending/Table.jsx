@@ -322,7 +322,7 @@ export default function TableTransport() {
                                     onClick={() => handleAssign(record)}
                                     color="primary"
                                 >
-                                    <LocalShippingIcon style={{fontSize:24,color:"#06ac14"}}  />
+                                    <LocalShippingIcon style={{fontSize:24}}  />
                                 </IconButton>
                             </Tooltip> :
                                 <></>
@@ -608,7 +608,7 @@ export default function TableTransport() {
                 confirmLoading={cancelLoading}
                 destroyOnClose={true}
                 width={1000}
-                height={1000}
+                bodyStyle={{height: 1000}}
             >
                 <embed src={previewDoc}  style={{ width: '100%' ,height: '100%' }}></embed>
                 {/* <img alt="example" style={{ width: '100%' }} src={previewDoc} /> */}

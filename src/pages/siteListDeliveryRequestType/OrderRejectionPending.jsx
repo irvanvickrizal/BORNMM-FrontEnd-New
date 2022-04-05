@@ -137,6 +137,7 @@ export default function OrderRejectionPendingList() {
             title : "Options",
             dataIndex:'',
             align:'center',
+            width:80,
             render : (e)=>{
                 return <EditOutlined onClick={()=>handleEdit(e.orderDetailId)}/>
             }

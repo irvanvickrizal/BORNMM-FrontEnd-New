@@ -255,6 +255,11 @@ export default function TableSubconCancelation() {
             dataIndex: "taskCancelledBy",
             ...Search("taskCancelledBy")
         },
+        {
+            title: "Subcon Name",
+            dataIndex: "subconName",
+            ...Search("subconName")
+        },
   
         {
             title: "Rejected Date",
@@ -262,7 +267,7 @@ export default function TableSubconCancelation() {
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(dataTaskCancel.taskCancelledDate).format("YYYY-MM-DD")}</p>
+                        <p>{moment(dataTaskCancel.taskCancelledDate).format("YYYY-MM-DD hh:mm:ss")}</p>
                     </Space>
                 )
             },
@@ -282,13 +287,13 @@ export default function TableSubconCancelation() {
             title: "Action",
             align:'center',
             fixed:'right',
-           
+            width:90,
             render:(record)=>{
                 return (
                     <div style={{display:"flex",alignItems:'center',justifyContent:'center'}}>
                         <Space size={20}>
                             <Tooltip title="Re-Assign Task">
-                                <GroupIcon  style={{fontSize:20}} onClick={()=>showModal(record)}/>
+                                <GroupIcon  style={{fontSize:20,color:"#008de3"}} onClick={()=>showModal(record)}/>
                             </Tooltip>
                             <Tooltip title="View Detail">
                                 <EyeFilled  style={{fontSize:20,color:"#008de3"}} onClick={()=>showModalTab(record.orderDetailId)}/>
@@ -533,6 +538,8 @@ export default function TableSubconCancelation() {
                 <Table
                     columns={columns}
                     scroll={{ x: '200%' }}
+                    rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
+                    // expandable={{ expandedRowRender }}
                     dataSource={dataTaskCancel}
                     pagination={{
                         pageSizeOptions: ['5', '10', '20', '30', '40'],

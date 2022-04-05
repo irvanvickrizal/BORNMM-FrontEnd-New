@@ -95,7 +95,7 @@ export default function TableOrderRequestTracking() {
             ...Search('packetType'),
         },
         {
-            title :  "Location Adress",
+            title :  "Location Address",
             dataIndex:'locationAddress',
             ...Search('locationAddress'),
         },

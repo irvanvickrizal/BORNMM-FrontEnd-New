@@ -77,6 +77,9 @@ import OutboundStatusReport from "@app/pages/OutboundStatusReport/OutboundStatus
 // Site Location Map
 import siteLocation from "../../pages/ExampleTableLocation/index"
 
+// PickUp Reschedue
+import PicUpReschedule from "@app/pages/PickUoReschedule/PicUpReschedule"
+
 const Main = () => {
     const dispatch = useDispatch()
     const isSidebarMenuCollapsed = useSelector(
@@ -450,6 +453,12 @@ const Main = () => {
                                             exact
                                             path="/mm/sitelocation"
                                             component={siteLocation}
+                                            
+                                        />
+                                        <Route
+                                            exact
+                                            path="/schedule/reschedulepickup"
+                                            component={PicUpReschedule}
                                             
                                         />
                                     </Switch>
