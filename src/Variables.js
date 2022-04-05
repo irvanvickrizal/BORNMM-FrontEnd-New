@@ -4,5 +4,5 @@ export const variables = {
     PHOTO_URL: 'https://localhost:7118/photos/'
 };
 
-export const API = ' https://bornxl.nsnebast.com/'
-export const APIDemo = 'https://bornxldemo-api.nsnebast.com/'
+// export const API = ' https://bornxl.nsnebast.com/'
+// export const APIDemo = 'https://bornxldemo-api.nsnebast.com/'
