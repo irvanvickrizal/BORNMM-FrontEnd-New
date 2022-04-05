@@ -26,7 +26,7 @@ import { getDataDone, getDataOnProgress, getDataPending,getLsp,getOdi,getPud } f
 import moment from "moment"
 import Search from '@app/components/searchcolumn/SearchColumn'
 import API from "../../utils/apiServices"
-import { CloseSquareTwoTone ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined, EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined ,UserSwitchOutlined } from '@ant-design/icons'
+import { CloseSquareTwoTone,CalendarFilled ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined, EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined ,UserSwitchOutlined } from '@ant-design/icons'
 import { toast } from 'react-toastify';
 import {IconButton, TextField}  from '@mui/material/';
 
@@ -403,12 +403,12 @@ export default function TableTaskSummary(props) {
                                 {!record.requestReschedule?
                                     null
                                     :
-                                    record.dayToGo <= -2 ?
+                                    record.dayToGo < -2 ?
                                         <Tooltip title="Request Reschedule">
                                             <CalendarTwoTone onClick={() => showModalReschedule(record)} style={{fontSize:18}}/>
                                         </Tooltip> :
                                         <Tooltip color='#f50' title="Cannot request reschedule,Max. day to go h-1">
-                                            <CalendarTwoTone style={{color:"#0000"}}/>
+                                            <CalendarFilled  style={{color:"red",fontSize:18}} />
                                         </Tooltip>
                                 }
                                 <Tooltip title="Cancel Task">
@@ -877,7 +877,7 @@ export default function TableTaskSummary(props) {
             
             
                         <Button disabled key="back" type="danger" >
-            Cancel
+            Confirm
                         </Button>,
                         <Button key="submit"  onClick={hideModalCancel} >
             Close
@@ -887,7 +887,7 @@ export default function TableTaskSummary(props) {
             
             
                         <Button key="back" type="danger" onClick={cancelTaskConfirm}>
-            Cancel
+            Confirm
                         </Button>,
                         <Button key="submit" onClick={hideModalCancel} >
             Close
