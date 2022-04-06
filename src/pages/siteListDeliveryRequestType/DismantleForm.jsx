@@ -302,7 +302,7 @@ const DismantleForm = (props) => {
     function disabledDate(current) {
         // Can not select days before today and today
         if(!express){
-            return current < moment().add(2,'d');
+            return current < moment().add(1,'d');
         }
         return (current < moment().endOf('day'))
     }
@@ -426,7 +426,7 @@ const DismantleForm = (props) => {
                                     'isExpressDelivery':false,
                                     'inventoryCode':1,
                                     'ctName':1,
-                                    'deliveryDate': moment(date2, "YYYY-MM-DD").add(3,'d'),
+                                    'deliveryDate': moment(date2, "YYYY-MM-DD").add(2,'d'),
                                     
                                 }}
                                 fields={[
