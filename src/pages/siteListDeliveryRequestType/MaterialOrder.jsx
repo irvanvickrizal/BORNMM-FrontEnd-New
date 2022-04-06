@@ -175,7 +175,7 @@ export default function MaterialOrder() {
     function disabledDate(currents) {
         // Can not select days before today and today
         //if(!isExpress){
-        return currents < moment().add(2,'d');
+        return currents < moment().add(1,'d');
         //}
         //return (current < moment().endOf('day'))
     }
