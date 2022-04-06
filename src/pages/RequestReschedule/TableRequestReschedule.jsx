@@ -402,7 +402,7 @@ export default function TablePickUpReschedule() {
                                         Confirm
                                             </Button>
                                             <Button
-                                                // onClick={hideModalIndirect}
+                                                onClick={hideModalFee}
                                                 htmlType="submit"
                                        
                                             >
