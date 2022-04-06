@@ -701,6 +701,11 @@ const getScheduleAssignment = (uid) => GETParam("scheduleassignment/openPickupRe
 const postRescheduleDirect = (body) => POST("scheduleassignment/directChangePickupSchedule",body);
 const postRescheduleIndirect = (body) => POST("scheduleassignment/indirectChangePickupSchedule",body);
 
+// Request Reschedule
+const getRequstRescheduleList = (uid) => GETParam("scheduleassignment/requestPickupRescheduleList",uid);
+const postApproveReschedule = (body) => POST("scheduleassignment/directApprovedReschedule",body);
+
+
 
 const API ={
     changePassword,
@@ -713,11 +718,13 @@ const API ={
     postRescheduleDirect,
     postRescheduleIndirect,
     getAddress,
+    postApproveReschedule,
     deleteOutboundFile2,
     postOutboundFile2,
     postReviseOutboundFile2,
     deleteInboundFile2,
     postInboundFile2,
+    getRequstRescheduleList,
     postReviseInboundFile2,
     postSconTaskCancel,
     checkAddButtonOrderList,

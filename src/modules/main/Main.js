@@ -80,6 +80,9 @@ import siteLocation from "../../pages/ExampleTableLocation/index"
 // PickUp Reschedue
 import PicUpReschedule from "@app/pages/PickUoReschedule/PicUpReschedule"
 
+// RequestReschedule
+import RequestReschedule from "@app/pages/RequestReschedule/RequestReschedule"
+
 const Main = () => {
     const dispatch = useDispatch()
     const isSidebarMenuCollapsed = useSelector(
@@ -459,6 +462,12 @@ const Main = () => {
                                             exact
                                             path="/schedule/reschedulepickup"
                                             component={PicUpReschedule}
+                                            
+                                        />
+                                        <Route
+                                            exact
+                                            path="/schedule/requestreschedulepickup"
+                                            component={RequestReschedule}
                                             
                                         />
                                     </Switch>
