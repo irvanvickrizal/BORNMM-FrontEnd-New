@@ -364,8 +364,8 @@ export default function TableSite() {
                         size='small'
                         bordered />
                     <Modal 
-                        visible={isModalRescheduleVisible} o
-                        nCancel={hideModalReschedule}
+                        visible={isModalRescheduleVisible} 
+                        onCancel={hideModalReschedule}
                         footer={null}
                     >
                         <div> 

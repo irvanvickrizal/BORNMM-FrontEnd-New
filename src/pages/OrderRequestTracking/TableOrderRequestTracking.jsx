@@ -106,7 +106,7 @@ export default function TableOrderRequestTracking() {
         },
         {
             title :  "Subcon Name",
-            dataIndex:'recipientOrDismantledBy',
+            dataIndex:'subconName',
             ...Search('recipientOrDismantledBy'),
         },
         {

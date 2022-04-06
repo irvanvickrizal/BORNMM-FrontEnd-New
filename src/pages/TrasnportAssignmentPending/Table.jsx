@@ -482,8 +482,7 @@ export default function TableTransport() {
                     >
                         <Input disabled/>
                     </Form.Item>
-                    <Form.Item name="uploadFile" label="DN Upload" 
-                    >
+                    <Form.Item name="uploadFile" label="DN Upload">
                         <Upload {...props}>
                             <Button icon={<UploadOutlined />}>Select File</Button>
                         </Upload>

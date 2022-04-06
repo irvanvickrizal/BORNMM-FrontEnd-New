@@ -25,7 +25,7 @@ import {Table, Row, Col,Card, Typography, Input, Space, Form,
     Tabs,
     Tooltip,
     Modal } from 'antd'
-import { CalendarOutlined,DownloadOutlined,PlusOutlined,FileExcelOutlined,CloseOutlined, EditOutlined,DeleteOutlined,CheckOutlined  } from '@ant-design/icons';
+import { PlusCircleOutlined,CalendarOutlined,DownloadOutlined,PlusOutlined,FileExcelOutlined,CloseOutlined, EditOutlined,DeleteOutlined,CheckOutlined  } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import HeaderChanger from '@app/components/cardheader/HeaderChanger'
@@ -618,7 +618,7 @@ export default function MaterialOrder() {
                 return (
                     <Space>
                         <IconButton size="small" color="primary"  onClick={(e) => handleAddMaterial(record)}>
-                            <PlusOutlined  />
+                            <PlusCircleOutlined />
                         </IconButton>
                     </Space>
                 )
@@ -666,7 +666,7 @@ export default function MaterialOrder() {
                 return (
                     <Space>
                         <IconButton size="small" color="primary" onClick={(e) => handleAddMaterial(record)}>
-                            <PlusOutlined   />
+                            <PlusCircleOutlined />
                         </IconButton>
                     </Space>
                 )
@@ -920,7 +920,7 @@ export default function MaterialOrder() {
                                             <div className='float-right'>
                                                 <Tooltip title="Add Material">
                                                     <IconButton size="small" color="primary" onClick={showModalAddMaterial}>
-                                                        <PlusOutlined />
+                                                        <PlusCircleOutlined />
                                                     </IconButton>
                                                 </Tooltip>
                                                 <Tooltip title="Download BOQ Ref">

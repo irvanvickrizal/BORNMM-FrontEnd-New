@@ -84,7 +84,7 @@ export default function TablePickUpReschedule() {
                 try{
                     if(result.status=="success"){
                         setIsLoading(false)
-                    
+                        getPickUpCompletion()
                         toast.success(result.message)
                      
                     }
@@ -97,6 +97,7 @@ export default function TablePickUpReschedule() {
                 }
             }
         )
+        setIsModalVisible(false)
     }
 
     const postInDirect  = () => {
@@ -114,7 +115,7 @@ export default function TablePickUpReschedule() {
                 try{
                     if(result.status=="success"){
                         setIsLoading(false)
-                    
+                        getPickUpCompletion()
                         toast.success(result.message)
                      
                     }
@@ -127,6 +128,7 @@ export default function TablePickUpReschedule() {
                 }
             }
         )
+        setIsModalIndirectVisible(false)
     }
 
     const columns = [
@@ -190,6 +192,17 @@ export default function TablePickUpReschedule() {
       
 
         {
+            title : "Pickup Date",
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.pickupDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            },
+            ...Search('pickupDate'),
+        },
+        {
             title : "RFP Date",
             render:(record)=>{
                 return (
@@ -230,22 +243,25 @@ export default function TablePickUpReschedule() {
             title: "Action",
             align:'center',
             fixed:'right',
-            width:90,
+            width:130,
             render:(record)=>{
                 return (
                     <div style={{display:"flex",alignItems:'center',justifyContent:'center'}}>
-                        {record.dayToGo > 1 ?  <Space size={20}>
+                        
+                        {record.scheduleStatus == "newpropose" ? <Typography style={{color:"Red",fontWeight:"600"}}>New Propose Reschedule on Approval</Typography>
+                            :
+                            record.dayToGo > 1 ?  <Space size={20}>
                          
-                            <Tooltip title="Reschedule Pick up Date">
-                                <CalendarFilled  style={{fontSize:20,color:"#008de3"}} onClick={()=>showModal(record)} />
-                            </Tooltip>
-                        </Space>:
-                            record.dayToGo <= 0 ? <Space size={20}>
                                 <Tooltip title="Reschedule Pick up Date">
-                                    <CalendarFilled  style={{fontSize:20,color:'red'}}  onClick={()=>showModalIndirect(record)} />
+                                    <CalendarFilled  style={{fontSize:20,color:"#008de3"}} onClick={()=>showModal(record)} />
                                 </Tooltip>
+                            </Space>:
+                                record.dayToGo <= 0 ? <Space size={20}>
+                                    <Tooltip title="Reschedule Pick up Date (Potential Additional Cost Due To H < -1)">
+                                        <CalendarFilled  style={{fontSize:20,color:'red'}}  onClick={()=>showModalIndirect(record)} />
+                                    </Tooltip>
                                 
-                            </Space> : null }
+                                </Space> : null }
                        
                     </div>
                 )
