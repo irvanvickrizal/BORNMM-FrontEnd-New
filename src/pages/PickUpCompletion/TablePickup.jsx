@@ -866,7 +866,9 @@ export default function TablePickup() {
                 footer={[
           
                 ]} 
-                style={{ width: (80 * width / 100), minWidth: (80 * width / 100) }}>
+                style={{ width: (80 * width / 100), minWidth: (80 * width / 100) }}
+                zIndex={9999}
+            >
                 <Tabs defaultActiveKey="1" centered={false}  onChange={callback}>
                     <TabPane tab="Order Request Detail" key="1">
                         <Card >

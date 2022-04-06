@@ -33,7 +33,7 @@ export default function TablePickUpReschedule() {
     )
     function disabledDate(current) {
         // Can not select days before today and today
-        return current < moment().add(2,'d');
+        return current < moment().add(1,'d');
     }
 
     function getPickUpCompletion() {

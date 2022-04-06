@@ -149,8 +149,9 @@ export default function LogisticTaskRejectionForm() {
                         history.push('/mm/tasklogisticreject')
                         toast.success(result.message)
                         
-                       
-                     
+                    }
+                    else{
+                        toast.error(result.message)
                     }
               
                 }
@@ -570,7 +571,7 @@ export default function LogisticTaskRejectionForm() {
                     </Card>
                 </Col>
                 <Col span={12}>
-                    <Card hoverable title={CardTitle("Logistic Rejection Form")}>
+                    <Card hoverable title={CardTitle("Logistic Rejection Form TES")}>
                         {dataOrderLogistik.length === 0 ? (<></>):
                             (<Form
                                 labelCol={{span: 9}}
@@ -675,8 +676,8 @@ export default function LogisticTaskRejectionForm() {
                                 >
                                     <TextArea rows={4} onChange={(e) => setNote(e.target.value)}/>
                                 </Form.Item>
-                                <Form.Item wrapperCol={{ offset: 5, span: 19 }} style={{marginTop:6,marginLeft:128}}>
-                                    <Col span={24} md={24} sm={24}>
+                                <Form.Item wrapperCol={{ offset: 0, span: 24 }} style={{marginTop:6,marginLeft:128}}>
+                                    <Col span={4} md={8} sm={24} >
                                         <Space direction="horizontal">
                                             <Button
                                                 type="danger"

@@ -157,15 +157,12 @@ export default function TableOrderRejection() {
                 return (
                     <div>
                        
-                        <Space size={20}>
+                        <Space size={2}>
                             <Tooltip title="Material Order Form ">
                                 <IconButton size="small" color="primary" onClick={()=>navigateTo(record.orderDetailId)}>
                                     <EditOutlined style={{fontSize:20}} />
                                 </IconButton>
                             </Tooltip>
-                             
-                    
-                                                         
                             <Tooltip title=" Delete Order Request">
                                 <IconButton size="small" color="error" onClick={()=>showModalDelete(record.orderDetailId)}>
                                     <DeleteFilled style={{fontSize:20,color:'red'}} />
