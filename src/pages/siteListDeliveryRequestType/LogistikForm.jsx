@@ -134,9 +134,9 @@ export default function LogisticForm() {
                         setIsLoading(false)
                         history.push('/mm/taskasglogistic')
                         toast.success(result.message)
-                    
-                       
-                     
+                    }
+                    else{
+                        toast.error(result.message)
                     }
                 }
                 catch(e){
@@ -199,7 +199,8 @@ export default function LogisticForm() {
         console.log(isModalVisible);
     };
     const handleChangeWHTeam = (data) => {
-        setWh(33)
+        setWh(data)
+        setDeliveryTransport(data)
         console.log(data,"whChange",wh,"wh")
     };
     const columns = [
@@ -330,6 +331,7 @@ export default function LogisticForm() {
         }
     ]
 
+    
     
     const CardTitle = (title) => <Title level={5}>{title}</Title>
 
@@ -548,13 +550,18 @@ export default function LogisticForm() {
                             initialValues={{
                                 "modeTransport":dataSite[0]?.proposeDeliveryModeId,
                             }}
-                         
+                            fields={[
+                                {
+                                    name: ["transportTeam"],
+                                    value: deliveryTransport,
+                                },
+                            ]}
                         >
                             <Form.Item label="WH Team" name="whTeam" 
                               rules={[{ required: true, message: 'Please Select WH Team!' }]}
                             >
                                 <Select
-                                    onChange={(e) => setWh(e)}
+                                    onChange={(e) => handleChangeWHTeam(e)}
                                     placeholder="Select an option"
                                 >
                                     {lsp?.map((inv) => (
