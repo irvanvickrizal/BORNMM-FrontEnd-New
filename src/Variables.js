@@ -5,4 +5,4 @@ export const variables = {
 };
 
 export const API = ' https://bornxl.nsnebast.com/'
-export const APIDemo = 'https://bornxldemo-api.nsnebast.com/'
+// export const APIDemo = 'https://bornxldemo-api.nsnebast.com/'
