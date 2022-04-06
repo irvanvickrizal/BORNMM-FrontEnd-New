@@ -32,7 +32,7 @@ const LanguagesDropdown = () => {
         m = checkTime(m);
         s = checkTime(s);
         
-
+        
         document.getElementById('txt').innerHTML = h + ":" + m + ":" + s;
         setTimeout(startTime, 1000);
     }
