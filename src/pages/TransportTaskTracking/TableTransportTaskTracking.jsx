@@ -1,21 +1,28 @@
+/* eslint-disable react/jsx-boolean-value */
 /* eslint-disable react/no-unstable-nested-components */
 import React,{useEffect,useState} from 'react'
 import API from '@app/utils/apiServices'
 import { useSelector } from 'react-redux';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
-import {Table,InputNumber ,Space,Row,Col,Spin,Tooltip,Modal,Upload,Button,Form,Input,Typography,Card,DatePicker} from "antd"
+import {Image,Table,InputNumber ,Space,Row,Col,Spin,Tooltip,Modal,Upload,Button,Form,Input,Typography,Card,DatePicker} from "antd"
 import moment from "moment"
 import Search from '@app/components/searchcolumn/SearchColumn';
 import { EyeFilled,DeleteOutlined ,UploadOutlined } from '@ant-design/icons'
 import { toast } from 'react-toastify';
+import {IconButton, TextField}  from '@mui/material/';
 
 export default function TableTransportTaskTracking() {
     const [dataTransportTask,setDataTransportTask] = useState([])
     const [isLoading, setIsLoading] = useState(true);
     const [isModalVisible,setIsModalVisible] = useState(false)
-    const [odi,setOdi] = useState(false)
+    const [odiParam,setOdiParam] = useState(false)
     const userId = useSelector(state=>state.auth.user.uid)
+    const[dataPhotoSender,setDataPhotoSender] = useState([])
+    const[dataPhotoRecipient,setDataPhotoRecipient] = useState([])
+    const[selectedDN,setSelectedDN] = useState('')
+    const[showDN,setShowDN] = useState(false)
+    const[dataDeliveryNote,setDataDeliveryNote] = useState([])
 
 
     const { Title } = Typography;
@@ -24,7 +31,6 @@ export default function TableTransportTaskTracking() {
             {title}
         </Title>
     )
-
 
     function getTransportTask() {
         setIsLoading(true);
@@ -37,15 +43,123 @@ export default function TableTransportTaskTracking() {
         )
     }
 
+    
+    const BuildPhotoSender = ({data}) =>{
+        console.log("senderphoto",data)
+        //const dataPhotoSenders = data.map((rs)=>
+        //) 
+        return (
+            data?.map((dt)=>
+                <Col className="gutter-row" style={{ 'margin-top': '10px' }} span={8}>
+                    <Image
+                        alt={dt.evidenceFilename}
+                        src={dt.evidencePath}
+                    />
+                </Col>
+            )
+
+        )
+
+    }
+
+    const BuildPhotoRecipient = ({data}) =>{
+        console.log("recipientphoto",data)
+        return (
+            data?.map((dt)=>
+                <Col className="gutter-row" style={{ 'margin-top': '10px' }} span={8}>
+                    <Image
+                        alt={dt.evidenceFilename}
+                        src={dt.evidencePath}
+                    />
+                </Col>
+            )
+
+        )
+    }
+
+
+    function getPhotoSender(odi) {
+        API.getPhotoSender(odi).then(
+            result=>{
+                setDataPhotoSender(result);
+                // buildSenderPhotoCard(result)
+                console.log("senderss",result);
+            }
+        )
+    }
+    function getPhotoRecipient(odi) {
+        API.getPhotoRecipient(odi).then(
+            result=>{
+                setDataPhotoRecipient(result);
+                console.log("recipient",result);
+            }
+        )
+    }
+    function getDeliveryNote(odi) {
+        API.getDeliveryNote(odi).then(
+            result=>{
+                setDataDeliveryNote(result);
+                console.log("dn",result);
+            }
+        )
+    }
+
     const showModal= (data) => {
         setIsModalVisible(true)
-        setOdi(data.orderDetailId)
+        setOdiParam(data.orderDetailId)
+        getPhotoRecipient(data.orderDetailId)
+        getPhotoSender(data.orderDetailId)
+        getDeliveryNote(data.orderDetailId)
     }
 
     const hideModal = () => {
         setIsModalVisible(false)
     }
 
+    const handleShowDN = (record) => {
+        setShowDN(true)
+        console.log(record,"showdeen")
+        setSelectedDN(record.evidencePath)
+    }
+    const handleCancelView = () => {
+        setShowDN(false)
+    }
+
+    const columnsDN = [
+        {
+            title : "No",
+            width : 50,
+            render: (value, item, index) => 1 + index
+        },
+        {
+            title : "File Name",
+            dataIndex:'evidenceFilename',
+            ...Search('evidenceFilename'),
+        },
+        {
+            title:"Action",
+            align:'center',
+            fixed: 'right',
+            width: 80,
+            render:(record)=>{
+                return (
+                    <Space>
+                        <Tooltip title="Download Item Ordered List">
+                            <IconButton
+                                size='small'
+                                color="primary"
+                                aria-label="upload file"
+                                component="span"
+                                onClick={() => handleShowDN(record)}>
+                                <EyeFilled />
+                            </IconButton>
+                        </Tooltip>
+                    </Space>
+                )
+            }
+        }
+   
+    ]
     
     const columns = [
         {
@@ -97,6 +211,7 @@ export default function TableTransportTaskTracking() {
         {
             title : "Region",
             dataIndex:'region',
+            width:150,
             ...Search('region'),
         },
         {
@@ -108,6 +223,7 @@ export default function TableTransportTaskTracking() {
         {
             title : "location Address",
             dataIndex:'locationAddress',
+            width:350,
             ...Search('locationAddress'),
         },
     
@@ -233,13 +349,7 @@ export default function TableTransportTaskTracking() {
                 )
             },
         }
-
-
     ]
-
-
-
-
 
     useEffect(() => {
         getTransportTask();
@@ -257,7 +367,7 @@ export default function TableTransportTaskTracking() {
                 </Row>  
                 :
                 <Table
-                    scroll={{ x: '200%' }}
+                    scroll={{ x: '400%' }}
                     rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
                     // expandable={{ expandedRowRender }}
                     columns={columns}
@@ -276,16 +386,71 @@ export default function TableTransportTaskTracking() {
                 onCancel={hideModal}
                 footer={null}
                 destroyOnClose
-                zIndex={1000}
+                zIndex={9999}
+                width={1000}
             >
                 <Col span={24}>
                     <Card title={CardTitle("HO Document")}>
 
-                        <Typography>
-                            ee
-                        </Typography>
+                        <Row gutter={16}>
+                            <Col className="gutter-row" span={12}>
+                                <Card title={<Title level={5}>Photo Documentation</Title>}>
+                                        
+                                    <Space direction="vertical" style={{ width: '100%' }}>
+                                            
+                                        <Card title={<Title level={5}>Photo Sender</Title>}>
+                                            <div>
+                                                <Row  gutter={16}>
+                                                    <Image.PreviewGroup>
+                                                        <BuildPhotoSender data={dataPhotoSender}/> 
+                                                    </Image.PreviewGroup>
+                                                </Row>
+                                            </div>
+                                        </Card>
+                                        <Card title={<Title level={5}>Photo Recipient</Title>}>
+                                            <Row  gutter={16}>
+                                                <Image.PreviewGroup>
+                                                    <BuildPhotoRecipient data={dataPhotoRecipient}/> 
+                                                </Image.PreviewGroup>
+                                            </Row>
+                                        </Card>
+                                    </Space>
+                                </Card>
+                            </Col>
+                            <Col className="gutter-row" span={12}>
+                                <Card
+                                    title={<Title level={5}>Delivery Note</Title>}
+                                >
+                                    <Table
+                                        scroll={{ x: '100%' }}
+                                        columns={columnsDN}
+                                        dataSource={dataDeliveryNote}
+                                        pagination={{
+                                            pageSizeOptions: ['5', '10', '20', '30', '40'],
+                                            showSizeChanger: true,
+                                            position: ["bottomLeft"],
+                                        }}
+                                        bordered />
+                                        
+                                </Card>
+                            </Col>
+                        </Row>
+
                     </Card>
                 </Col>
+            </Modal>
+
+            <Modal title="View Doc"
+                visible={showDN}
+                onCancel={handleCancelView}
+                footer={null}
+                destroyOnClose={true}
+                width={1000}
+                zIndex={9999}
+                bodyStyle={{height: 1000}}
+            >
+                <embed src={selectedDN}  style={{ width: '100%' ,height: '100%' }}></embed>
+                {/* <img alt="example" style={{ width: '100%' }} src={previewDoc} /> */}
             </Modal>
         
         </div>
