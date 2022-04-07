@@ -15,6 +15,7 @@ export default function TablePickUpReschedule() {
     const [dataSchedule,setDataSchedule] = useState([])
     const [pickUpDate,setPickUpDate] = useState("")
     const [taskId,setTaskId] = useState("")
+    const [assignId,setAssignId] = useState("")
     const [rfpDate,setRfpDate] = useState("")
     const [requestNo,setRequestNo] = useState("")
     const [proposeRescheduleDate,setProposeRescheduleDate] = useState("")
@@ -32,7 +33,7 @@ export default function TablePickUpReschedule() {
 
     function getRequestRescheduleList() {
         setIsLoading(true);
-        API.getScheduleAssignment(userId).then(
+        API.getRequstRescheduleList(userId).then(
             result=>{
                 setDataSchedule(result);
                 setIsLoading(false);
@@ -43,9 +44,10 @@ export default function TablePickUpReschedule() {
 
     const showModalApprove = (data) => {
         setIsModalApproveVisible(true)
-        setProposeRescheduleDate(data.rfpDate)
+        setProposeRescheduleDate(data.proposeScheduleDate)
         setPickUpDate(data.pickupDate)
         setTaskId(data.taskScheduleId)
+        setAssignId(data.assignToId)
     }
 
     const hideModalApprove = (data) => {
@@ -102,8 +104,8 @@ export default function TablePickUpReschedule() {
             render: (value, item, index) => 1 + index
         },
         {
-            title : "Request No",
-            dataIndex:'requestNo',
+            title : " Order Request No",
+            dataIndex:'orderRequestNo',
             ...Search('requestNo'),
         },
         {
@@ -153,19 +155,6 @@ export default function TablePickUpReschedule() {
             ...Search('lspName'),
         },
     
-      
-
-        {
-            title : "Pickup Date",
-            render:(record)=>{
-                return (
-                    <Space>
-                        <p>{moment(record.pickupDate).format("YYYY-MM-DD")}</p>
-                    </Space>
-                )
-            },
-            ...Search('pickupDate'),
-        },
         {
             title : "RFP Date",
             render:(record)=>{
@@ -181,6 +170,58 @@ export default function TablePickUpReschedule() {
             },
             ...Search('rfpDate'),
         },
+    
+        {
+            title : " Current Pickup Date",
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.pickupDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            },
+            ...Search('pickupDate'),
+        },
+        {
+            title : " Propose New Pickup Date",
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.proposeScheduleDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            },
+            ...Search('proposeRequestDate'),
+        },
+        {
+            title : " Proposed By",
+            dataIndex:"proposedBy",
+            ...Search('proposedBy'),
+        },
+
+        {
+            title : "Propose Request Date",
+            render:(record)=>{
+                return (
+                  
+                    <div>
+                        {record.proposeRequestDate !== null ? (<> <Space>
+                            <p>{moment(record.proposeRequestDate).format("YYYY-MM-DD hh:mm:ss")}</p>
+                        </Space></>):(<>
+                        </>)}
+                    </div>
+                )
+            },
+            ...Search('proposeRequestDate'),
+        },
+
+
+        {
+            title : " Propose Reason",
+            dataIndex:"proposeReason",
+            ...Search('proposeReason'),
+        },
+
         {
             title : "Assign Date",
             render:(record)=>{
@@ -199,12 +240,14 @@ export default function TablePickUpReschedule() {
         },
         {
             title : "Asign To",
-            dataIndex:'assignTo',
+            width:240,
+            dataIndex:"assignTo",
             ...Search('assignTo'),
         },
         {
             title : "Day To Go",
             dataIndex:'dayToGo',
+            width:100,
             ...Search('dayToGo'),
         },
         {
@@ -323,10 +366,15 @@ export default function TablePickUpReschedule() {
                 ]}
             >
                 <Col span={24}>
+                      
                     <Card title={CardTitle("Approve Reschedule Date")}>
-                        <Typography style={{fontSize:18,fontWeight:"500"}}>
-                            {`Are you sure you want to approve Reschedule Date from ${moment(pickUpDate).format("YYYY-MM-DD")} to ${moment(proposeRescheduleDate).format("YYYY-MM-DD")}` }
-                        </Typography>
+                        {assignId > 0 ? (<><Typography style={{ fontSize: 18, fontWeight: "500" }}>
+                            {`Are you sure you want to approve Reschedule Date from ${moment(pickUpDate).format("YYYY-MM-DD")} to ${moment(proposeRescheduleDate).format("YYYY-MM-DD")}?`}
+                        </Typography><p style={{ fontSize: 16, fontWeight: "600",color:"red"}}>Caution: You need to re-assign task to transport due to updated Pick up date</p></>)
+                            : (<Typography style={{ fontSize: 18, fontWeight: "500" }}>
+                                {`Are you sure you want to approve Reschedule Date from ${moment(pickUpDate).format("YYYY-MM-DD")} to ${moment(proposeRescheduleDate).format("YYYY-MM-DD")}?`}
+                            </Typography>) }
+                        
                     </Card>
                 </Col>
             </Modal>
@@ -358,6 +406,9 @@ export default function TablePickUpReschedule() {
                             </Form.Item>
                             <Form.Item  label="RFP Date" >
                                 <Input disabled value={rfpDate !== null ? moment(rfpDate).format("YYYY-MM-DD") : null} />
+                            </Form.Item>
+                            <Form.Item  label="Current Pickup" >
+                                <Input disabled value={pickUpDate !== null ? moment(pickUpDate).format("YYYY-MM-DD") : null} />
                             </Form.Item>
                             <Form.Item  label="Current Pickup" >
                                 <Input disabled value={pickUpDate !== null ? moment(pickUpDate).format("YYYY-MM-DD") : null} />
@@ -399,7 +450,7 @@ export default function TablePickUpReschedule() {
                                                 htmlType="submit"
                                        
                                             >
-                                        Confirm
+                                        Submit
                                             </Button>
                                             <Button
                                                 onClick={hideModalFee}
