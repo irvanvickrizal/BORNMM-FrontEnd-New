@@ -733,6 +733,9 @@ const postApproveReschedule = (body) => POST("scheduleassignment/directApprovedR
 const deleteUploadedFile = (id) => DELETE("scheduleassignment/rescheduleCancellationFeeDeleteAttachment",id);
 const postUploadEvidence = (taskscheduleid,orderdetailid,workpackageid,usersignedin,file) => POSTFileParam4("scheduleassignment/rescheduleCancellationFeeAddAttachment",taskscheduleid,orderdetailid,workpackageid,usersignedin,file);
 
+// Transport Task Tracking
+
+const getTransportTaskTracking = (uId) => GETParam("rpt/transportTaskTracking",uId);
 
 
 const API ={
@@ -745,6 +748,7 @@ const API ={
     postUploadEvidence,
     getScheduleAssignment,
     postRescheduleDirect,
+    getTransportTaskTracking,
     postRescheduleIndirect,
     getAddress,
     deleteUploadedFile,
