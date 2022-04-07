@@ -237,6 +237,31 @@ const POSTFileParam3 = (path,param1,param2,param3,file)  => {
     })
     return promise;
 }
+const POSTFileParam4 = (path,param1,param2,param3,param4,file)  => {
+    var formdata = new FormData();
+    formdata.append("fileupload",file);
+
+    const promise = new Promise((resolve, reject) => {
+        const token = localStorage.getItem('token'); 
+        axios.post(`${baseURL}${path}/${param1}/${param2}/${param3}/${param4}`
+            ,formdata
+            ,{
+                headers: { 
+                    'Content-Type' : 'application/json',
+                    Authorization: `Bearer ${token}` 
+                }
+            },
+        ).then((result)=> {
+            console.log('i am post :',result.data);
+            resolve(result.data);
+        },(err)=>{
+            console.log('config errer',err.response.status);
+            resolve(err.response.status);
+            
+        })
+    })
+    return promise;
+}
 const POSTFiled = (path,file)  => {
     var formdata = new FormData();
     formdata.append("fileupload",file);
@@ -703,7 +728,9 @@ const postRescheduleIndirect = (body) => POST("scheduleassignment/indirectChange
 
 // Request Reschedule
 const getRequstRescheduleList = (uid) => GETParam("scheduleassignment/requestPickupRescheduleList",uid);
+const getUploadedFile = (taskId) => GETParam("scheduleassignment/rescheduleCancellationFeeGetAttachmentList",taskId);
 const postApproveReschedule = (body) => POST("scheduleassignment/directApprovedReschedule",body);
+const postUploadEvidence = (taskscheduleid,orderdetailid,workpackageid,usersignedin,file) => POSTFileParam4("scheduleassignment/rescheduleCancellationFeeAddAttachment",taskscheduleid,orderdetailid,workpackageid,usersignedin,file);
 
 
 
@@ -714,10 +741,12 @@ const API ={
     getOutboundStatusReport,
     getItemBookedList,
     postmMaterial,
+    postUploadEvidence,
     getScheduleAssignment,
     postRescheduleDirect,
     postRescheduleIndirect,
     getAddress,
+    getUploadedFile,
     postApproveReschedule,
     deleteOutboundFile2,
     postOutboundFile2,

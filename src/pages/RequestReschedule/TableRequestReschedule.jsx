@@ -5,16 +5,18 @@ import API from '@app/utils/apiServices'
 import { useSelector } from 'react-redux';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
-import {Table,Space,Row,Col,Spin,Tooltip,Modal,Select,Button,Form,Input,Typography,Card,DatePicker} from "antd"
+import {Table,InputNumber ,Space,Row,Col,Spin,Tooltip,Modal,Upload,Button,Form,Input,Typography,Card,DatePicker} from "antd"
 import moment from "moment"
 import Search from '@app/components/searchcolumn/SearchColumn';
-import { EyeFilled,DeleteOutlined  } from '@ant-design/icons'
+import { EyeFilled,DeleteOutlined ,UploadOutlined } from '@ant-design/icons'
 import { toast } from 'react-toastify';
 
 export default function TablePickUpReschedule() {
     const [dataSchedule,setDataSchedule] = useState([])
     const [pickUpDate,setPickUpDate] = useState("")
     const [taskId,setTaskId] = useState("")
+    const [odi,setOdi] = useState("")
+    const [wpId,setWpId] = useState("")
     const [assignId,setAssignId] = useState("")
     const [rfpDate,setRfpDate] = useState("")
     const [requestNo,setRequestNo] = useState("")
@@ -24,6 +26,35 @@ export default function TablePickUpReschedule() {
     const [isModalApproveVisible,setIsModalApproveVisible] = useState(false)
     const [isModalFeeVisible,setIsModalFeeVisible] = useState(false)
     const { Title } = Typography;
+
+    const [fileUpload, setFileUpload] = useState(null);
+    const [uploading, setUploading] = useState(false);
+    const [uploadedFile, setUploadedFile] = useState([]);
+    const [isViewDoc, setIsViewDoc] = useState(false);
+    const [previewDoc,setPreviewDoc] = useState('')
+
+    const props = {
+        onRemove: () => {
+            setFileUpload(null);
+            return fileUpload
+        },
+        beforeUpload: file => {
+            console.log(file,"file");
+            const isJPEG = file.type === 'image/jpeg';
+            const isJPG = file.type === 'image/jpg';
+            const isPNG = file.type === 'image/png';
+            const isPDF = file.type === 'application/pdf';
+            if(isPDF||isPNG||isJPG||isJPEG){
+                setFileUpload(file);
+                return false;
+            }
+            toast.error(`${file.name} is not allowed file`)
+            return isPNG || isJPEG || isJPG || isPDF || Upload.LIST_IGNORE;
+        },
+        fileUpload,
+    };
+
+
 
     const CardTitle = (title) => (
         <Title level={5}>
@@ -38,6 +69,16 @@ export default function TablePickUpReschedule() {
                 setDataSchedule(result);
                 setIsLoading(false);
                 console.log("data Schedule Request =>",result);
+            }
+        )
+    }
+    function getUploadedFile(tid) {
+        setIsLoading(true);
+        API.getUploadedFile(tid).then(
+            result=>{
+                setUploadedFile(result);
+                setIsLoading(false);
+                console.log("Uploaded File List =>",result);
             }
         )
     }
@@ -59,11 +100,42 @@ export default function TablePickUpReschedule() {
         setRequestNo(data.requestNo)
         setRfpDate(data.rfpDate)
         setPickUpDate(data.pickupDate)
+        setOdi(data.orderDetailId)
+        setWpId(data.workpackageid)
+        setTaskId(data.taskScheduleId)
+        getUploadedFile(data.taskScheduleId)
     }
 
     const hideModalFee = (data) => {
         setIsModalFeeVisible(false)
     }
+
+    
+    const handleUpload = () => {
+        setUploading(true)
+        // const isPNG = file.type === 'image/png';
+        API.postUploadEvidence(taskId,odi,wpId,userId,fileUpload).then(
+            result=>{
+                if(result.status=="success"){
+                    setFileUpload(null);
+                    setUploading(false);
+                    getUploadedFile(taskId)
+                    props.onRemove();
+                    toast.success(result.message);
+                    // setIsHOConfirmation(false)
+                }
+                else{
+                    setFileUpload(null);
+                    setUploading(false);
+                    props.onRemove();
+                    // setIsHOConfirmation(false)
+                }
+
+                console.log('Evidence Download =>',result)
+            }
+        );
+    }
+
 
     const postApproveReschedule  = () => {
         
@@ -77,7 +149,7 @@ export default function TablePickUpReschedule() {
                 try{
                     if(result.status=="success"){
                         setIsLoading(false)
-                        getRequestRescheduleList()
+                        getRequestRescheduleList(userId)
                         toast.success(result.message)
                  
                     }else {
@@ -95,6 +167,8 @@ export default function TablePickUpReschedule() {
         )
         setIsModalApproveVisible(false)
     }
+
+    
 
     
     const columns = [
@@ -287,7 +361,7 @@ export default function TablePickUpReschedule() {
         },
         {
             title : "File Name",
-            dataIndex:'assignTo',
+            dataIndex:'evidenceFilename',
             width:280,
             ...Search('fileName'),
         },
@@ -394,7 +468,7 @@ export default function TablePickUpReschedule() {
                             labelCol={{span: 6}}
                             wrapperCol={{span: 16}}
                             layout="horizontal"
-                            // onFinish={postInDirect}
+                            onFinish={hideModalFee}
                     
                             initialValues={{
                                
@@ -413,29 +487,40 @@ export default function TablePickUpReschedule() {
                             <Form.Item  label="Current Pickup" >
                                 <Input disabled value={pickUpDate !== null ? moment(pickUpDate).format("YYYY-MM-DD") : null} />
                             </Form.Item>
-                        
-                            <Row gutter={24}>
-                                <Col span={16}>
-                                    <Form.Item label="Evidence:" name="remark" 
-                                        labelCol={{span: 9}}
-                                        wrapperCol={{span:19}}
-                                        rules={[{ required: true, message: 'Please Upload The Evidence' }]}
-                                    >
+                            <Form.Item  label="Cancelation Fee"
+                                rules={[{ required: true, message: 'Please input Assign To!' }]}
+                            >
+                                <InputNumber   style={{ width: 280 }}
+                                    defaultValue="1000000"
+                                    min="0"
+                                    max="10000000000"
+                                    step="0"
                                     
-                                        <Input
-                                          
-                                        />
-                                            
-                                     
-                                     
-                                    </Form.Item> 
+                       
+                                    stringMode placeHolder=""/>
+                            </Form.Item>
+                            <Form.Item name="uploadFile" label="Evidence">
+                                <Col Span={9}>
+                                    <Upload {...props}>
+                                        <Button icon={<UploadOutlined />}>Select File</Button>
+                                    </Upload>
+                                    <Button
+                                        type="primary"
+                                        onClick={handleUpload}
+                                        disabled={fileUpload == null}
+                                        loading={uploading}
+                                        style={{ marginTop: 16 }}
+                                    >
+                                        {uploading ? 'Uploading' : 'Start Upload'}
+                                    </Button>
                                 </Col>
-                                <Col span={8}>     
-                                    <Button style={{width:90}}>Upload</Button>
-                                </Col>
-                            </Row>  
+                                    
+                            </Form.Item> 
+                        
+                      
                             <Table
                                 columns={columnDataEvidence}
+                                dataSource={uploadedFile}
                             
                                
                             />               
