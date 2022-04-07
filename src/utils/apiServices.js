@@ -237,6 +237,31 @@ const POSTFileParam3 = (path,param1,param2,param3,file)  => {
     })
     return promise;
 }
+const POSTFileParam4 = (path,param1,param2,param3,param4,file)  => {
+    var formdata = new FormData();
+    formdata.append("fileupload",file);
+
+    const promise = new Promise((resolve, reject) => {
+        const token = localStorage.getItem('token'); 
+        axios.post(`${baseURL}${path}/${param1}/${param2}/${param3}/${param4}`
+            ,formdata
+            ,{
+                headers: { 
+                    'Content-Type' : 'application/json',
+                    Authorization: `Bearer ${token}` 
+                }
+            },
+        ).then((result)=> {
+            console.log('i am post :',result.data);
+            resolve(result.data);
+        },(err)=>{
+            console.log('config errer',err.response.status);
+            resolve(err.response.status);
+            
+        })
+    })
+    return promise;
+}
 const POSTFiled = (path,file)  => {
     var formdata = new FormData();
     formdata.append("fileupload",file);
@@ -666,6 +691,13 @@ const putDeleteMultiDeliveryRequest = (body) => PUT('multidelivery/multiDelivery
 const getOrderRequestTracking =(odi) => GETParam('rpt/orderRequestProgressTracking',odi);
 const getItemOrderedList =(odi) => GETParam('materialmanagement/orderRequestMaterialGetItemListBookedBasedId',odi);
 const getOutboundStatusReport =(userid) => GETParam('rpt/orderRequestOutboundStatus',userid);
+const getHODoneReport =(userid) => GETParam('rpt/orderRequestHODone',userid);
+const getHODoneReportDetail =(odi) => GETParam('materialmanagement/OrderDetailRequestGetCompleteDetail',odi);
+const getMaterialOrderHODetail =(odi) => GETParam('materialmanagement/orderRequestMaterialGetDetailBasedOnOrderRequest',odi);
+const getHODoneLog =(odi) => GETParam('audittrail/auditTrailOrderRequestGetList',odi);
+const getPhotoSender =(odi) => GETParam('logevidence/orderRequestEvidenceGetPhotoSender',odi);
+const getPhotoRecipient =(odi) => GETParam('logevidence/orderRequestEvidenceGetPhotoReceiver',odi);
+const getDeliveryNote =(odi) => GETParam('logevidence/orderRequestEvidenceGetDN',odi);
 const deleteWaitingRfp = (body) => PUT('materialmanagement/orderRequestLogisticTransportReject',body);
 
 // Logistic Task Rejection
@@ -703,21 +735,38 @@ const postRescheduleIndirect = (body) => POST("scheduleassignment/indirectChange
 
 // Request Reschedule
 const getRequstRescheduleList = (uid) => GETParam("scheduleassignment/requestPickupRescheduleList",uid);
+const getUploadedFile = (taskId) => GETParam("scheduleassignment/rescheduleCancellationFeeGetAttachmentList",taskId);
 const postApproveReschedule = (body) => POST("scheduleassignment/directApprovedReschedule",body);
+const deleteUploadedFile = (id) => DELETE("scheduleassignment/rescheduleCancellationFeeDeleteAttachment",id);
+const postUploadEvidence = (taskscheduleid,orderdetailid,workpackageid,usersignedin,file) => POSTFileParam4("scheduleassignment/rescheduleCancellationFeeAddAttachment",taskscheduleid,orderdetailid,workpackageid,usersignedin,file);
 
+// Transport Task Tracking
+
+const getTransportTaskTracking = (uId) => GETParam("rpt/transportTaskTracking",uId);
 
 
 const API ={
+    getDeliveryNote,
+    getPhotoRecipient,
+    getPhotoSender,
+    getHODoneLog,
+    getMaterialOrderHODetail,
+    getHODoneReportDetail,
+    getHODoneReport,
     changePassword,
     getItemBookedList2,
     getItemOrderedList,
     getOutboundStatusReport,
     getItemBookedList,
     postmMaterial,
+    postUploadEvidence,
     getScheduleAssignment,
     postRescheduleDirect,
+    getTransportTaskTracking,
     postRescheduleIndirect,
     getAddress,
+    deleteUploadedFile,
+    getUploadedFile,
     postApproveReschedule,
     deleteOutboundFile2,
     postOutboundFile2,
