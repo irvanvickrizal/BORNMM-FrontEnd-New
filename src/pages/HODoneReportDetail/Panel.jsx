@@ -132,6 +132,7 @@ export default function HODonePanel() {
             }
         )
     }
+
     function getMaterialOrderHODone(odi) {
         setIsLoading(true);
         API.getMaterialOrderHODetail(odi).then(
@@ -184,21 +185,7 @@ export default function HODonePanel() {
         )
     }
 
-    const handleDownloadItemOrdered = (odi) => {
-        API.getItemBookedList2(odi).then(
-            result=>{
-                setDownloadData(result);
-                console.log("data  Download :",result);
-               
-                const data = result;
-                //const data = result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
-                const exportType =  exportFromJSON.types.xls;
-                const fileName = `ItemBookedList_${moment().format("DD-MM-YYYY hh:mm:ss")}`;
-                exportFromJSON({ data, fileName, exportType });
-               
-            }
-        )
-    }
+    
     const handleShowDN = (record) => {
         setShowDN(true)
         console.log(record,"showdeen")
@@ -257,8 +244,8 @@ export default function HODonePanel() {
         {
             title:"Action",
             align:'center',
-            fixed: 'right',
-            width: 70,
+            fixed:'right',
+            width:70,
             render:(record)=>{
                 return (
                     <Space>
@@ -324,9 +311,8 @@ export default function HODonePanel() {
             dataIndex:'site',
             ...Search('site'),
         },
-        
-   
     ]
+    
     const columslog = [
         {
             title : "No",
@@ -335,12 +321,24 @@ export default function HODonePanel() {
         },
         {
             title : "Incoming Date",
-            dataIndex:'incomingDate',
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.incomingDate).format("YYYY-MM-DD HH:mm:ss")}</p>
+                    </Space>
+                )
+            },
             ...Search('incomingDate'),
         },
         {
             title : "Execute Date",
-            dataIndex:'executeDate',
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.executeDate).format("YYYY-MM-DD HH:mm:ss")}</p>
+                    </Space>
+                )
+            },
             ...Search('executeDate'),
         },
         {
