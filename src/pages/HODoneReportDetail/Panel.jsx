@@ -312,7 +312,7 @@ export default function HODonePanel() {
             ...Search('site'),
         },
     ]
-    
+
     const columslog = [
         {
             title : "No",
@@ -760,6 +760,7 @@ export default function HODonePanel() {
                 footer={null}
                 destroyOnClose={true}
                 width={1000}
+                zIndex={99999}
                 bodyStyle={{height: 1000}}
             >
                 <embed src={selectedDN}  style={{ width: '100%' ,height: '100%' }}></embed>
