@@ -730,6 +730,7 @@ const postRescheduleIndirect = (body) => POST("scheduleassignment/indirectChange
 const getRequstRescheduleList = (uid) => GETParam("scheduleassignment/requestPickupRescheduleList",uid);
 const getUploadedFile = (taskId) => GETParam("scheduleassignment/rescheduleCancellationFeeGetAttachmentList",taskId);
 const postApproveReschedule = (body) => POST("scheduleassignment/directApprovedReschedule",body);
+const deleteUploadedFile = (id) => DELETE("scheduleassignment/rescheduleCancellationFeeDeleteAttachment",id);
 const postUploadEvidence = (taskscheduleid,orderdetailid,workpackageid,usersignedin,file) => POSTFileParam4("scheduleassignment/rescheduleCancellationFeeAddAttachment",taskscheduleid,orderdetailid,workpackageid,usersignedin,file);
 
 
@@ -746,6 +747,7 @@ const API ={
     postRescheduleDirect,
     postRescheduleIndirect,
     getAddress,
+    deleteUploadedFile,
     getUploadedFile,
     postApproveReschedule,
     deleteOutboundFile2,

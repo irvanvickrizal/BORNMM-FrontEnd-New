@@ -26,6 +26,7 @@ export default function TablePickUpReschedule() {
     const [isModalApproveVisible,setIsModalApproveVisible] = useState(false)
     const [isModalFeeVisible,setIsModalFeeVisible] = useState(false)
     const { Title } = Typography;
+    const [cancelLoading,setCancelLoading] = useState(false);
 
     const [fileUpload, setFileUpload] = useState(null);
     const [uploading, setUploading] = useState(false);
@@ -109,6 +110,9 @@ export default function TablePickUpReschedule() {
     const hideModalFee = (data) => {
         setIsModalFeeVisible(false)
     }
+    const handleCancelView =() =>{
+        setIsViewDoc(false)
+    }   
 
     
     const handleUpload = () => {
@@ -168,6 +172,31 @@ export default function TablePickUpReschedule() {
         setIsModalApproveVisible(false)
     }
 
+    const handleViewDoc = (record) =>
+    {
+        setPreviewDoc(record.filePath)
+        setIsViewDoc(true)
+    }
+
+    const handleDeleteEvidence = (record) => {
+
+        if (window.confirm('Are you sure you want to delete this data ?')) {
+         
+            API.deleteUploadedFile(record.costEvidenceId).then(
+                result=>{
+                    console.log("handledelete",result)
+                    if(result.status=="success"){
+                        getUploadedFile(record.taskScheduleId);
+                        toast.success(result.message)
+                    }
+                    else{
+                        getUploadedFile(record.taskScheduleId);
+                        toast.error(result.message)
+                    }
+                }
+            )
+        }
+    }
     
 
     
@@ -361,7 +390,7 @@ export default function TablePickUpReschedule() {
         },
         {
             title : "File Name",
-            dataIndex:'evidenceFilename',
+            dataIndex:'fileName',
             width:280,
             ...Search('fileName'),
         },
@@ -372,10 +401,14 @@ export default function TablePickUpReschedule() {
                     <div style={{display:"flex",alignItems:'center',justifyContent:'center'}}>
                         <Space size={20}>
                             <Tooltip title="Review Document">
-                                <EyeFilled style={{fontSize:18}}/>
+                                <EyeFilled style={{fontSize:18}}
+                                    onClick={() => handleViewDoc(record)}
+                                />
                             </Tooltip>
                             <Tooltip title="Delete Document">
-                                <DeleteOutlined style={{fontSize:18,color:"red"}}/>
+                                <DeleteOutlined style={{fontSize:18,color:"red"}}
+                                    onClick={() => handleDeleteEvidence(record)}
+                                />
                             </Tooltip>
 
                         </Space>
@@ -554,6 +587,19 @@ export default function TablePickUpReschedule() {
                 </Col>
               
               
+            </Modal>
+
+            <Modal title="View Doc"
+                visible={isViewDoc}
+                onCancel={handleCancelView}
+                footer={null}
+                confirmLoading={cancelLoading}
+                destroyOnClose
+                width={1000}
+                bodyStyle={{height: 1000}}
+            >
+                <embed src={previewDoc}  style={{ width: '100%' ,height: '100%' }}></embed>
+                {/* <img alt="example" style={{ width: '100%' }} src={previewDoc} /> */}
             </Modal>
 
         </div>
