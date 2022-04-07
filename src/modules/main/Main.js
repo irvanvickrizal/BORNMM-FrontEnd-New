@@ -85,6 +85,9 @@ import PicUpReschedule from "@app/pages/PickUoReschedule/PicUpReschedule"
 // RequestReschedule
 import RequestReschedule from "@app/pages/RequestReschedule/RequestReschedule"
 
+// Transport Task Tracking
+import TransportTaskTracking from "@app/pages/TransportTaskTracking/TransportTaskTracking"
+
 const Main = () => {
     const dispatch = useDispatch()
     const isSidebarMenuCollapsed = useSelector(
@@ -482,6 +485,11 @@ const Main = () => {
                                             exact
                                             path="/rpt/orderrequestdetailview"
                                             component={HODoneReportDetail}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/rpt/transporttasktracking"
+                                            component={TransportTaskTracking}
                                             
                                         />
                                     </Switch>
