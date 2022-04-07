@@ -666,6 +666,13 @@ const putDeleteMultiDeliveryRequest = (body) => PUT('multidelivery/multiDelivery
 const getOrderRequestTracking =(odi) => GETParam('rpt/orderRequestProgressTracking',odi);
 const getItemOrderedList =(odi) => GETParam('materialmanagement/orderRequestMaterialGetItemListBookedBasedId',odi);
 const getOutboundStatusReport =(userid) => GETParam('rpt/orderRequestOutboundStatus',userid);
+const getHODoneReport =(userid) => GETParam('rpt/orderRequestHODone',userid);
+const getHODoneReportDetail =(odi) => GETParam('materialmanagement/OrderDetailRequestGetCompleteDetail',odi);
+const getMaterialOrderHODetail =(odi) => GETParam('materialmanagement/orderRequestMaterialGetDetailBasedOnOrderRequest',odi);
+const getHODoneLog =(odi) => GETParam('audittrail/auditTrailOrderRequestGetList',odi);
+const getPhotoSender =(odi) => GETParam('logevidence/orderRequestEvidenceGetPhotoSender',odi);
+const getPhotoRecipient =(odi) => GETParam('logevidence/orderRequestEvidenceGetPhotoReceiver',odi);
+const getDeliveryNote =(odi) => GETParam('logevidence/orderRequestEvidenceGetDN',odi);
 const deleteWaitingRfp = (body) => PUT('materialmanagement/orderRequestLogisticTransportReject',body);
 
 // Logistic Task Rejection
@@ -708,6 +715,13 @@ const postApproveReschedule = (body) => POST("scheduleassignment/directApprovedR
 
 
 const API ={
+    getDeliveryNote,
+    getPhotoRecipient,
+    getPhotoSender,
+    getHODoneLog,
+    getMaterialOrderHODetail,
+    getHODoneReportDetail,
+    getHODoneReport,
     changePassword,
     getItemBookedList2,
     getItemOrderedList,

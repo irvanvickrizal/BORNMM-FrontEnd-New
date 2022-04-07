@@ -73,6 +73,8 @@ import SconTaskCancel from "@app/pages/SconTaskCancel/SconTaskCancel"
 // import OutBoundStatusReport from "@app/pages/OutboundStatusReport/OutboundStatusReport"
 import index from "@app/pages/LtrForm/index"
 import OutboundStatusReport from "@app/pages/OutboundStatusReport/OutboundStatusReport"
+import HODoneReport from "@app/pages/HODoneReport/HODoneReport"
+import HODoneReportDetail from "@app/pages/HODoneReportDetail/HODoneReportDetail"
 
 // Site Location Map
 import siteLocation from "../../pages/ExampleTableLocation/index"
@@ -468,6 +470,18 @@ const Main = () => {
                                             exact
                                             path="/schedule/requestreschedulepickup"
                                             component={RequestReschedule}
+                                            
+                                        />
+                                        <Route
+                                            exact
+                                            path="/rpt/hodone"
+                                            component={HODoneReport}
+                                            
+                                        />
+                                        <Route
+                                            exact
+                                            path="/rpt/orderrequestdetailview"
+                                            component={HODoneReportDetail}
                                             
                                         />
                                     </Switch>
