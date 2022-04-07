@@ -401,7 +401,7 @@ export default function TablePickUpReschedule() {
                     <div style={{display:"flex",alignItems:'center',justifyContent:'center'}}>
                         <Space size={20}>
                             <Tooltip title="Review Document">
-                                <EyeFilled style={{fontSize:18}}
+                                <EyeFilled style={{fontSize:18,color:"#0c8ed3"}}
                                     onClick={() => handleViewDoc(record)}
                                 />
                             </Tooltip>
@@ -589,7 +589,7 @@ export default function TablePickUpReschedule() {
               
             </Modal>
 
-            <Modal title="View Doc"
+            <Modal 
                 visible={isViewDoc}
                 onCancel={handleCancelView}
                 footer={null}
@@ -598,7 +598,10 @@ export default function TablePickUpReschedule() {
                 width={1000}
                 bodyStyle={{height: 1000}}
             >
-                <embed src={previewDoc}  style={{ width: '100%' ,height: '100%' }}></embed>
+                <Card title={CardTitle("View Doc")}>
+                    <embed src={previewDoc}  style={{ width: '100%' ,height: '100%' }}></embed>
+                </Card>
+               
                 {/* <img alt="example" style={{ width: '100%' }} src={previewDoc} /> */}
             </Modal>
 
