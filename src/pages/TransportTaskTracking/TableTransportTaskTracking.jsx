@@ -144,7 +144,7 @@ export default function TableTransportTaskTracking() {
             render:(record)=>{
                 return (
                     <Space>
-                        <Tooltip title="Download Item Ordered List">
+                        <Tooltip title="View Doc">
                             <IconButton
                                 size='small'
                                 color="primary"
@@ -386,8 +386,8 @@ export default function TableTransportTaskTracking() {
                 onCancel={hideModal}
                 footer={null}
                 destroyOnClose
-                zIndex={9999}
-                width={1000}
+                // zIndex={9999}
+                width={750}
             >
                 <Col span={24}>
                     <Card title={CardTitle("HO Document")}>

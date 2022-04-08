@@ -26,14 +26,14 @@ const LanguagesDropdown = () => {
     }
     function startTime() {
         const today = new Date();
+        let date = today.getDate();
         let h = today.getHours();
         let m = today.getMinutes();
         let s = today.getSeconds();
         m = checkTime(m);
         s = checkTime(s);
         
-        
-        document.getElementById('txt').innerHTML = h + ":" + m + ":" + s;
+        document.getElementById('txt').innerHTML =  h + ":" + m + ":" + s;
         setTimeout(startTime, 1000);
     }
     
@@ -54,6 +54,11 @@ const LanguagesDropdown = () => {
         return greetings
     }
 
+    const GetDate = () =>{
+        const today = new Date();
+        return moment(today).format("DD-MM-YYYY")
+    }
+
     useEffect(() => {
         startTime()
     }, [])
@@ -65,9 +70,11 @@ const LanguagesDropdown = () => {
                     :curHr >= 18 && curHr <= 24 ? (<p style={{fontWeight:"500"}}>{`Good Evening ${dataUser}`}<div id="txt"></div></p>)
                         :(<><p style={{fontWeight:"500"}}>{`Good Evening ${dataUser}`}<div id="txt"></div></p></>)
             } */}
-            <div className='col-md-12'>
-                <Greeting hours={hr}/>
-                <div id="txt"></div>
+            <div className='row'>
+                <div className='col-md-12'>
+                    <Greeting hours={hr}/>
+                    <div id="txt"></div>
+                </div>
             </div>
         </div> 
     );
