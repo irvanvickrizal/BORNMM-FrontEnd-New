@@ -313,12 +313,10 @@ export default function TableTransportTaskTracking() {
 
                     <div>
                         {record.pickupDate !== null ? (<> <Space>
-                            <p>{moment(record.pickupDate).format("YYYY-MM-DD")}</p>
+                            <p>{moment(record.pickupDate).format("YYYY-MM-DD HH:mm:ss")}</p>
                         </Space></>):(<>
                         </>)}
                     </div>
-                    
-                    
                 )
             },
             ...Search('pickupDate'),
@@ -348,7 +346,7 @@ export default function TableTransportTaskTracking() {
             render:(record)=>{
                 return (
                     <div style={{display:"flex",alignItems:'center',justifyContent:'center'}}>
-                        {record.pickupDate == null ? (<></>):(<Space size={20}>
+                        {record.taskCompleteDate == null ? (<></>):(<Space size={20}>
                             <Tooltip title="View HO Document">
                                 <EyeFilled style={{fontSize:20,color:"#0332c3"}}
                                     onClick={()=>showModal(record)}
