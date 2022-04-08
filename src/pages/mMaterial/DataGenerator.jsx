@@ -1,6 +1,6 @@
 import React, {Component,useState,useEffect} from 'react';
 
-const MasterMaterial = (materialId,materialCode,materialName,uom,itemLevel,itemLevelId,subCategory,subCategoryId,category,isActive) => {
+const MasterMaterial = (materialId,materialCode,materialName,uom,itemLevel,itemLevelId,subCategory,subCategoryId,category,isActive,boqRefCheck,isCustomerMaterial) => {
     const datas = {
         materialId: materialId,
         materialCode: materialCode,
@@ -11,7 +11,9 @@ const MasterMaterial = (materialId,materialCode,materialName,uom,itemLevel,itemL
         category: category,
         isActive: isActive,
         itemLevelId: itemLevelId,
-        subCategoryId: subCategoryId
+        subCategoryId: subCategoryId,
+        boqRefCheck: boqRefCheck,
+        isCustomerMaterial: isCustomerMaterial
     }
     return datas;
 }

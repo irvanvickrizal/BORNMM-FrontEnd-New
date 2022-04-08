@@ -13,7 +13,7 @@ import Search from '@app/components/searchcolumn/SearchColumn';
 import moment from 'moment';
 import { useDispatch,useSelector } from 'react-redux'
 // import exportFromJSON from 'export-from-json'
-import {Switch ,Tabs,Tag,Typography,Popconfirm,Select,Upload,message,Form,Modal,Table, Input,Menu, Dropdown, Button, Space, Spin, Row, Col,Tooltip  } from 'antd'
+import {Checkbox,Switch ,Tabs,Tag,Typography,Popconfirm,Select,Upload,message,Form,Modal,Table, Input,Menu, Dropdown, Button, Space, Spin, Row, Col,Tooltip  } from 'antd'
 import {CheckOutlined,CloseOutlined,PlusOutlined, FileExcelOutlined,CloseSquareTwoTone ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined, EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined,DeleteTwoTone,UploadOutlined } from '@ant-design/icons'
 import {toast} from 'react-toastify';
 import DGMasterMaterial from './DataGenerator';
@@ -33,6 +33,8 @@ const TableMaterial = () => {
     const [selectedLevel, setSelectedLevel] = useState("");
     const [selectedCategory, setselectedCategory] = useState("");
     const [selectedSubCategory, setSelectedSubCategory] = useState("");
+    const [selectedBOQRef, setSelectedBOQRef] = useState(false);
+    const [selectedIsCustomerMaterial, setSelectedIsCustomerMaterial] = useState(false);
 
     const [materialCode, setMaterialCode] = useState("");
     const [materialName, setMaterialName] = useState("");
@@ -63,6 +65,8 @@ const TableMaterial = () => {
                     ,rs.subCategoryDetail.subCategoryId
                     ,rs.subCategoryDetail.categoryDetail.categoryName
                     ,rs.isActive
+                    ,rs.boqRefCheck
+                    ,rs.isCustomerMaterial
                 )) 
 
                 setIsLoading(false)
@@ -129,7 +133,7 @@ const TableMaterial = () => {
     }
 
     const handleOkAddForm = (data) => {
-        const body = (
+        const body = 
             {
                 "materialCode": data.materialCode,
                 "materialName": data.materialName,
@@ -140,9 +144,11 @@ const TableMaterial = () => {
                 "ItemLevelDetail":{
                     "ItemLevelId":data.itemLevel
                 },
+                "boqRefCheck": data.isBOQRef,
+                "isCustomerMaterial": data.isCustomerMaterial,
                 "lmby":user.uid 
             }
-        )
+        
         console.log(body,"body");
         console.log(data,"data");
         API.postmMaterial(body).then(
@@ -178,6 +184,8 @@ const TableMaterial = () => {
         setSelectedUoM(data.uom);
         setSelectedSubCategory(data.subCategoryId);
         setSelectedLevel(data.itemLevelId);
+        setSelectedIsCustomerMaterial(data.isCustomerMaterial)
+        setSelectedBOQRef(data.boqRefCheck)
     }
 
     const handleOkEditForm = (data) =>{
@@ -187,6 +195,8 @@ const TableMaterial = () => {
             "materialCode": data.materialCode,
             "materialName": data.materialName,
             "UnitOfMeasurement": data.uom,
+            "boqRefCheck": data.isBOQRef,
+            "isCustomerMaterial": data.isCustomerMaterial,
             "itemLevelDetail": {
                 "itemLevelId": data.itemLevel
             },
@@ -204,7 +214,7 @@ const TableMaterial = () => {
                     toast.success(result.message);
                     //mtr.isEditRow = null;
                     setIsEdit(false);
-                    refreshData();
+                    window.location.reload()
                 }
                 else{
                     toast.error(result.message);
@@ -283,6 +293,27 @@ const TableMaterial = () => {
             width: 100,
             dataIndex:'category',
             ...Search('category'),
+        },
+        {
+            title : "BOQ Ref Check",
+            width: 100,
+            render:(record)=>{
+                return (
+                    <><Checkbox defaultChecked={record.boqRefCheck} disabled /></>
+                )
+            },
+            ...Search('boqRefCheck'),
+        },
+        {
+            title : "Is Customer Material",
+            width: 100,
+            // dataIndex:'isCustomerMaterial',
+            render:(record)=>{
+                return (
+                    <><Checkbox defaultChecked={record.isCustomerMaterial} disabled /></>
+                )
+            },
+            ...Search('isCustomerMaterial'),
         },
         {
             title : "Is Active",
@@ -449,6 +480,26 @@ const TableMaterial = () => {
                                 }
                             </Select>
                         </Form.Item>
+                        <Form.Item label="Is BOQ Ref"
+                            name="isBOQRef"
+                            
+                        >
+                            <Switch
+                                checkedChildren={<CheckOutlined />}
+                                unCheckedChildren={<CloseOutlined />}
+                                // checked={record.isActive}
+                            />
+                        </Form.Item>
+                        <Form.Item label="Is Customer Material"
+                            name="isCustomerMaterial"
+                        
+                        >
+                            <Switch
+                                checkedChildren={<CheckOutlined />}
+                                unCheckedChildren={<CloseOutlined />}
+                                // checked={record.isActive}
+                            />
+                        </Form.Item>
                         <Form.Item wrapperCol={{ offset: 20, span: 4 }}>
                             <Space>
                                 <Button type="primary" htmlType="submit">
@@ -478,6 +529,8 @@ const TableMaterial = () => {
                             'uom': selectedUoM,
                             'itemLevel': selectedLevel,
                             'subCategory': selectedSubCategory,
+                            'isBOQRef':selectedBOQRef,
+                            'isCustomerMaterial':selectedIsCustomerMaterial
                         }}
                         onFinish={handleOkEditForm}
                         onFinishFailed={handleFailedAddForm}
@@ -549,6 +602,28 @@ const TableMaterial = () => {
                                         {inv.subCategoryName}</Select.Option>)
                                 }
                             </Select>
+                        </Form.Item>
+                        <Form.Item label="Is BOQ Ref"
+                            name="isBOQRef"
+                            
+                        >
+                            <Switch
+                                checkedChildren={<CheckOutlined />}
+                                unCheckedChildren={<CloseOutlined />}
+                                defaultChecked={selectedBOQRef}
+                                // checked={record.isActive}
+                            />
+                        </Form.Item>
+                        <Form.Item label="Is Customer Material"
+                            name="isCustomerMaterial"
+                        
+                        >
+                            <Switch
+                                checkedChildren={<CheckOutlined />}
+                                unCheckedChildren={<CloseOutlined />}
+                                defaultChecked={selectedIsCustomerMaterial}
+                                // checked={record.isActive}
+                            />
                         </Form.Item>
                         <Form.Item wrapperCol={{ offset: 20, span: 4 }}>
                             <Space>

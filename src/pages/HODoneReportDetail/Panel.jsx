@@ -40,6 +40,7 @@ export default function HODonePanel() {
     const [showDN,setShowDN] = useState(false)
     const [mapLocation,setMapLocation] = useState([])
     const [isModalLocationVisible,setIsModalLocationVisible] = useState(false)
+    const [isPickup,setIsPickup] = useState(false)
 
     const [zoom, setZoom] = useState("");
     
@@ -127,6 +128,7 @@ export default function HODonePanel() {
         API.getHODoneReportDetail(odi).then(
             result=>{
                 setDataHODone(result);
+                setIsPickup(result.isPickupRequest)
                 setIsLoading(false);
                 console.log("HO Done order =>",result);
             }
@@ -287,24 +289,9 @@ export default function HODonePanel() {
             ...Search('uom'),
         },
         {
-            title : "Ref QTY",
-            dataIndex:'refQTY',
-            ...Search('refQTY'),
-        },
-        {
             title : "Req QTY",
             dataIndex:'reqQTY',
             ...Search('reqQTY'),
-        },
-        {
-            title : "Total Req QTY",
-            dataIndex:'totalReqQTY',
-            ...Search('totalReqQTY'),
-        },
-        {
-            title : "Delta BOQ Ref QTY",
-            dataIndex:'deltaBOQrefQTY',
-            ...Search('deltaBOQrefQTY'),
         },
         {
             title : "Site",
@@ -342,6 +329,11 @@ export default function HODonePanel() {
             ...Search('executeDate'),
         },
         {
+            title : "Execute By",
+            dataIndex:'executedBy',
+            ...Search('executedBy'),
+        },
+        {
             title : "Event Desc",
             dataIndex:'taskEventDesc',
             ...Search('taskEventDesc'),
@@ -376,7 +368,7 @@ export default function HODonePanel() {
             render:(record)=>{
                 return (
                     <Space>
-                        <Tooltip title="Download Item Ordered List">
+                        <Tooltip title="View Doc">
                             <IconButton
                                 size='small'
                                 color="primary"
@@ -472,9 +464,9 @@ export default function HODonePanel() {
                                                         ,"destinationName"        :dataHODone[0]?.destinationName        
                                                         ,"recipientOrDismantledBy":dataHODone[0]?.recipientOrDismantledBy
                                                         ,"requesterName"          :dataHODone[0]?.requesterName          
-                                                        ,"requestDate"            :dataHODone[0]?.requestDate            
+                                                        ,"requestDate"            :moment(dataHODone[0]?.requestDate).format("YYYY-MM-DD hh:mm:ss")                      
                                                         ,"orderRequestApprovedBy" :dataHODone[0]?.orderRequestApprovedBy 
-                                                        ,"approveDate"            :dataHODone[0]?.approveDate            
+                                                        ,"approveDate"            :moment(dataHODone[0]?.approveDate).format("YYYY-MM-DD hh:mm:ss")               
                                                         ,"proposeDeliveryMode"    :dataHODone[0]?.proposeDeliveryMode    
 
                                                     }}
@@ -547,13 +539,13 @@ export default function HODonePanel() {
                                                         <Input disabled/>
                                                     </Form.Item>
                                                     <Form.Item
-                                                        label="requesterName"
+                                                        label="Requester Name"
                                                         name="requesterName"
                                                     >
                                                         <Input disabled/>
                                                     </Form.Item>
                                                     <Form.Item
-                                                        label="requestDate"
+                                                        label="Request Date"
                                                         name="requestDate"
                                                     >
                                                         <Input disabled/>
@@ -589,14 +581,14 @@ export default function HODonePanel() {
                                                     wrapperCol={{ span: 14 }}
                                                     initialValues={{
                                                         "logisticCompletedBy"    : dataHODone[0]?.logisticCompletedBy
-                                                        ,"logisticCompleteDate"  : dataHODone[0]?.logisticCompleteDate
-                                                        ,"expectedDeliveryDate"  : dataHODone[0]?.expectedDeliveryDate
+                                                        ,"logisticCompleteDate"  : moment(dataHODone[0]?.logisticCompleteDate).format("YYYY-MM-DD hh:mm:ss")  
+                                                        ,"expectedDeliveryDate"  : moment(dataHODone[0]?.expectedDeliveryDate).format("YYYY-MM-DD")  
                                                         ,"whTeam"                : dataHODone[0]?.whTeam      
-                                                        ,"rfpDate"               : dataHODone[0]?.rfpDate            
+                                                        ,"rfpDate"               : moment(dataHODone[0]?.rfpDate).format("YYYY-MM-DD hh:mm:ss")            
                                                         ,"totalCollies"          : dataHODone[0]?.totalCollies       
-                                                        ,"totalVolumn"           : dataHODone[0]?.totalVolumn        
-                                                        ,"pickupDate"            : dataHODone[0]?.pickupDate         
-                                                        ,"orderCompleteDate"     : dataHODone[0]?.orderCompleteDate  
+                                                        ,"totalVolume"           : dataHODone[0]?.totalVolumn        
+                                                        ,"pickupDate"            : moment(dataHODone[0]?.pickupDate).format("YYYY-MM-DD hh:mm:ss")     
+                                                        ,"orderCompleteDate"     : moment(dataHODone[0]?.orderCompleteDate).format("YYYY-MM-DD hh:mm:ss") 
                                                     }}
                                                     autoComplete="off"
                                                 >
@@ -612,12 +604,22 @@ export default function HODonePanel() {
                                                     >
                                                         <Input disabled/>
                                                     </Form.Item>
-                                                    <Form.Item
-                                                        label="Expected Delivery Date"
-                                                        name="expectedDeliveryDate"
-                                                    >
-                                                        <Input disabled/>
-                                                    </Form.Item>
+                                                    {isPickup ? 
+                                                        <Form.Item
+                                                            label="Expected Pickup Date"
+                                                            name="expectedDeliveryDate"
+                                                        >
+                                                            <Input disabled/>
+                                                        </Form.Item>
+                                                        : 
+                                                        <Form.Item
+                                                            label="Expected Delivery Date"
+                                                            name="expectedDeliveryDate"
+                                                        >
+                                                            <Input disabled/>
+                                                        </Form.Item>
+                                                    }
+                                                    
                                                     <Form.Item
                                                         label="WH Team"
                                                         name="whTeam"
@@ -637,8 +639,8 @@ export default function HODonePanel() {
                                                         <Input disabled/>
                                                     </Form.Item>
                                                     <Form.Item
-                                                        label="Total Volumn"
-                                                        name="totalVolumn"
+                                                        label="Total Volume (CBM)"
+                                                        name="totalVolume"
                                                     >
                                                         <Input disabled/>
                                                     </Form.Item>
