@@ -744,15 +744,22 @@ const postUploadEvidence = (taskscheduleid,orderdetailid,workpackageid,usersigne
 
 const getTransportTaskTracking = (uId) => GETParam("rpt/transportTaskTracking",uId);
 
+// Dismantle Act Pending
+
+const getDismantleActPending = (uId) => GETParam("taskassignment/dismantleACKPendingGetList",uId);
+const getDismantleSiteInfo = (odi) => GETParam("positelist/getSiteInfoBasedOnOrderRequest",odi);
+
 
 const API ={
     getDeliveryNote,
     getPhotoRecipient,
     getPhotoSender,
     getHODoneLog,
+    getDismantleActPending,
     getMaterialOrderHODetail,
     getHODoneReportDetail,
     getHODoneReport,
+    getDismantleSiteInfo,
     changePassword,
     getItemBookedList2,
     getItemOrderedList,
