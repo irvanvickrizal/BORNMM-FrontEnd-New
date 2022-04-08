@@ -330,8 +330,8 @@ export default function HODonePanel() {
         },
         {
             title : "Execute By",
-            dataIndex:'executeBy',
-            ...Search('executeBy'),
+            dataIndex:'executedBy',
+            ...Search('executedBy'),
         },
         {
             title : "Event Desc",
@@ -464,7 +464,7 @@ export default function HODonePanel() {
                                                         ,"destinationName"        :dataHODone[0]?.destinationName        
                                                         ,"recipientOrDismantledBy":dataHODone[0]?.recipientOrDismantledBy
                                                         ,"requesterName"          :dataHODone[0]?.requesterName          
-                                                        ,"requestDate"            :dataHODone[0]?.requestDate            
+                                                        ,"requestDate"            :moment(dataHODone[0]?.requestDate).format("YYYY-MM-DD hh:mm:ss")                      
                                                         ,"orderRequestApprovedBy" :dataHODone[0]?.orderRequestApprovedBy 
                                                         ,"approveDate"            :moment(dataHODone[0]?.approveDate).format("YYYY-MM-DD hh:mm:ss")               
                                                         ,"proposeDeliveryMode"    :dataHODone[0]?.proposeDeliveryMode    
@@ -539,13 +539,13 @@ export default function HODonePanel() {
                                                         <Input disabled/>
                                                     </Form.Item>
                                                     <Form.Item
-                                                        label="requesterName"
+                                                        label="Requester Name"
                                                         name="requesterName"
                                                     >
                                                         <Input disabled/>
                                                     </Form.Item>
                                                     <Form.Item
-                                                        label="requestDate"
+                                                        label="Request Date"
                                                         name="requestDate"
                                                     >
                                                         <Input disabled/>
