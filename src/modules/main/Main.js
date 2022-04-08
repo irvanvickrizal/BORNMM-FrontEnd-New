@@ -88,6 +88,12 @@ import RequestReschedule from "@app/pages/RequestReschedule/RequestReschedule"
 // Transport Task Tracking
 import TransportTaskTracking from "@app/pages/TransportTaskTracking/TransportTaskTracking"
 
+// Dismantle Acknowledge Pending
+import DismantleAcknowledgePending from "@app/pages/DismantleAcknowledegePending/DismantleAcknowledgePending"
+
+// Dismantle Acknowledge Form
+import DismantleAcknowledgeForm from "@app/pages/DismantleAcknowledgeForm/DismantleAcknowledgeForm"
+
 const Main = () => {
     const dispatch = useDispatch()
     const isSidebarMenuCollapsed = useSelector(
@@ -490,6 +496,18 @@ const Main = () => {
                                             exact
                                             path="/rpt/transporttasktracking"
                                             component={TransportTaskTracking}
+                                            
+                                        />
+                                        <Route
+                                            exact
+                                            path="/task/ackdismantlepending"
+                                            component={DismantleAcknowledgePending}
+                                            
+                                        />
+                                        <Route
+                                            exact
+                                            path="/task/ackdismantleform"
+                                            component={DismantleAcknowledgeForm}
                                             
                                         />
                                     </Switch>
