@@ -528,6 +528,7 @@ export default function TablePickUpReschedule() {
                                     min="0"
                                     max="10000000000"
                                     step="0"
+                                    formatter={value => ` ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                     
                        
                                     stringMode placeHolder=""/>
@@ -597,10 +598,11 @@ export default function TablePickUpReschedule() {
                 destroyOnClose
                 width={1000}
                 bodyStyle={{height: 1000}}
+                zIndex={1000}
             >
-                <Card title={CardTitle("View Doc")}>
-                    <embed src={previewDoc}  style={{ width: '100%' ,height: '100%' }}></embed>
-                </Card>
+           
+                <embed src={previewDoc}  style={{ width: '100%' ,height: '100%' }}></embed>
+             
                
                 {/* <img alt="example" style={{ width: '100%' }} src={previewDoc} /> */}
             </Modal>
