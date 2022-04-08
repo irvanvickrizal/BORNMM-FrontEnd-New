@@ -130,7 +130,7 @@ const MenuSidebar = () => {
                     </div>
                     <div className="info">
                         <Link to="/profile" className="d-block">
-                            {user.email}
+                            {user.name}
                         </Link>
                     </div>
                 </div>
