@@ -18,6 +18,8 @@ import {CheckOutlined,CloseOutlined,PlusOutlined, FileExcelOutlined,CloseSquareT
 import {toast} from 'react-toastify';
 import DGMasterMaterial from './DataGenerator';
 
+import exportFromJSON from 'export-from-json'
+
 const TableMaterial = () => {
     // const { TabPane } = Tabs;
     const [isLoading, setIsLoading] = useState(false);
@@ -80,6 +82,34 @@ const TableMaterial = () => {
             }
         )
     } 
+
+    const getDownloadDataDetail = () =>{
+        API.getmMaterialList().then(
+            result=>{
+                const data = result.map((rs)=>DGMasterMaterial.MasterMaterial(
+                    rs.materialId
+                    ,rs.materialCode
+                    ,rs.materialName
+                    ,rs.unitOfMeasurement
+                    ,rs.itemLevelDetail.itemLevelName
+                    ,rs.itemLevelDetail.itemLevelId
+                    ,rs.subCategoryDetail.subCategoryName
+                    ,rs.subCategoryDetail.subCategoryId
+                    ,rs.subCategoryDetail.categoryDetail.categoryName
+                    ,rs.isActive
+                    ,rs.boqRefCheck
+                    ,rs.isCustomerMaterial
+                    ,rs.isReusable
+                    ,rs.customerCode
+                )) 
+                //const data = result//result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
+                const exportType =  exportFromJSON.types.xls;
+                const fileName = `MaterialList_${moment().format("DD-MM-YYYY hh:mm:ss")}`;
+                exportFromJSON({ data, fileName, exportType });
+            }
+        )
+    }
+
     function getDdlUoM(){
         API.getUOM().then(
             result=>{
@@ -405,12 +435,20 @@ const TableMaterial = () => {
                 </Row>  
                 :
                 <><div className='float-right'>
+                    <Tooltip title="Download As Excell File">
+                        <IconButton size="small" color="success" onClick={getDownloadDataDetail}>
+                            <FileExcelOutlined />
+                        </IconButton>
+                        {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
+                    </Tooltip>
                     <Tooltip title="Upload File">
                         <IconButton size="small" color="primary" onClick={handleShowAdd}>
                             <PlusOutlined />
                         </IconButton>
                     </Tooltip>
-                </div><Table
+                    
+                </div>
+                <Table
                     scroll={{ x: '150%' }}
                     size="small"
                     // expandable={{ expandedRowRender }}

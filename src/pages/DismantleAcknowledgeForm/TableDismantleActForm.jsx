@@ -198,6 +198,17 @@ export default function TableDismantleActForm() {
         )
     }
 
+    const handleDownloadData = () =>{
+        API.getDismantleList(tdg).then(
+            result=>{
+                const data = result//result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
+                const exportType =  exportFromJSON.types.xls;
+                const fileName = `DismantleList_ItemBookedList_${moment().format("DD-MM-YYYY hh:mm:ss")}`;
+                exportFromJSON({ data, fileName, exportType });
+            }
+        )
+    }
+
     const handleConfirm = () =>
     {
         API.postDismantleAck("",odi,user.uid).then(
@@ -403,7 +414,7 @@ export default function TableDismantleActForm() {
                                 <Col md={24} sm={24}>
                                     <div className='float-right'>
                                         <Tooltip title="Download Data">
-                                            <IconButton size="small" color="secBondary">
+                                            <IconButton size="small" color="success" onClick={handleDownloadData}>
                                                 <FileExcelOutlined />
                                             </IconButton>
                                             {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
