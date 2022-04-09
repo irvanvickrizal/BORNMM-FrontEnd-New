@@ -748,12 +748,18 @@ const getTransportTaskTracking = (uId) => GETParam("rpt/transportTaskTracking",u
 
 const getDismantleActPending = (uId) => GETParam("taskassignment/dismantleACKPendingGetList",uId);
 const getDismantleSiteInfo = (odi) => GETParam("positelist/getSiteInfoBasedOnOrderRequest",odi);
+const getDismantleList = (tdg) => GETParam("boqref/boqAsBuiltMMResult",tdg);
+const getDismantlePhotoList = (tdg) => GETParam("boqref/boqAsBuiltMMResultIncludeImage",tdg);
+const postDismantleAck = (body,odi,userid) => POSTParam2("taskassignment/logisticMilestoneACKConfirmed",body,odi,userid);
 
 // Dismantle Act Done
 
 const getDismantleActDone = (uId) => GETParam("rpt/dismantleACKDoneList",uId);
 
 const API ={
+    postDismantleAck,
+    getDismantlePhotoList,
+    getDismantleList,
     getDeliveryNote,
     getPhotoRecipient,
     getPhotoSender,

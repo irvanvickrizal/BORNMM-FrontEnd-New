@@ -55,8 +55,9 @@ const Login = () => {
             
             const user =  jwt(token);
             dispatch(loadUser(user));
-            // history.push('/');
-            
+            if(user.roleId==175){
+                history.push('/task/ackdismantlepending');
+            }
         } catch (error) {
             setAuthLoading(false);
             toast.error(error.message || 'Failed');

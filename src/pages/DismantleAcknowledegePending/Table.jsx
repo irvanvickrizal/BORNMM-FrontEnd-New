@@ -31,7 +31,7 @@ export default function TableDismantlePending() {
     }
 
     const handleNavigate = (data) => {
-        history.push(`/task/ackdismantleform?odi=${data.orderDetailId}&tdg=${data.transDelegateId}`)
+        history.push(`/task/ackdismantleform?odi=${data.orderDetailId}&tdg=${data.transDelegateId}&pg=pending`)
     }
 
     const columns = [

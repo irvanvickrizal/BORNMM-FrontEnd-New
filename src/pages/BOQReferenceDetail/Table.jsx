@@ -6,7 +6,7 @@ import { getDataSiteList,getWpId,getOrderType,getOrderTypeId } from '@app/store/
 import React,{useEffect,useState} from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import {Tabs,InputNumber, Select,Form,Modal,Table, Input,Menu, Dropdown, Button, Space, Spin, Row, Col,Tooltip  } from 'antd'
-import {FileExcelTwoTone,UploadOutlined, CheckCircleTwoTone,CloseSquareTwoTone ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined, EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined } from '@ant-design/icons'
+import {StepBackwardOutlined,FileExcelTwoTone,UploadOutlined, CheckCircleTwoTone,CloseSquareTwoTone ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined, EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined } from '@ant-design/icons'
 import {IconButton, TextField}  from '@mui/material/';
 import API from '@app/utils/apiServices';
 import Search from '@app/components/searchcolumn/SearchColumn';
@@ -178,7 +178,11 @@ const BOQReferenceDetail = () => {
             <>
                 <Row>
                     <Col md={16} sm={24} >
-                        <p></p>
+                        <Tooltip title="Back to BOQ Ref List">
+                            <IconButton size="small" color="primary" onClick={()=>history.push(`/boq/boqreference`)}>
+                                <StepBackwardOutlined />
+                            </IconButton>
+                        </Tooltip>
                     </Col>
                     <Col md={8} sm={24} >
                         <div className='float-right'>
