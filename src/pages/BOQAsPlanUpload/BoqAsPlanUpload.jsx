@@ -10,6 +10,7 @@ import exportFromJSON from 'export-from-json'
 import { toast } from 'react-toastify';
 import PanelUpload from '@app/pages/BOQAsPlanUpload/PanelUpload'
 import TableSummary from '@app/pages/BOQAsPlanUpload/TableSummary'
+import { useHistory } from 'react-router-dom'
 
 export default function BoqAsPlanUpload() {
     const [dataBoqSummary,setDataBoqSummary] = useState([])
@@ -18,6 +19,8 @@ export default function BoqAsPlanUpload() {
     const [dataDownloadPoBoqList,setDataDownloadPoBoqList] = useState([])
     const [dataDownloadPoBoqListDeleted,setDataDownloadPoBoqListDeleted] = useState([])
     const [flag,setFlag] = useState("")
+    
+    const history = useHistory()
 
     const {Title,Link} = Typography
 
@@ -233,6 +236,7 @@ export default function BoqAsPlanUpload() {
             </Row>
         )
     }
+    const size = 'small'
     return (
         <div>
             <HeaderChanger title="BOQ As Plan Bulk Upload" />
@@ -279,6 +283,16 @@ export default function BoqAsPlanUpload() {
                             <TableSummary/>
                         }
                     </Card>
+                    <div className='float-right'>
+                        <Button
+                            type="primary"
+                            onClick={()=>history.push(`/boq/boqrefdetail?bid=${bid}`)}
+                            style={{ marginTop: 10, marginBottom:5 }}
+                            size={size}
+                        >
+                    Back
+                        </Button>
+                    </div>
                 </Col>
             </Row>
             
