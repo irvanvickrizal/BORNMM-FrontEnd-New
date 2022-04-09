@@ -13,6 +13,7 @@ import {setWindowSize} from '@app/store/reducers/ui';
 
 import PublicRoute from './routes/PublicRoute';
 import PrivateRoute from './routes/PrivateRoute';
+import SetTime from '@app/components/set-timeOut/index';
 
 import './App.scss';
 
@@ -51,6 +52,7 @@ const App = () => {
                 </PublicRoute>
                 <PrivateRoute path="/">
                     <Main />
+                    <SetTime/>
                 </PrivateRoute>
             </Switch>
         </Router>
