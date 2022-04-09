@@ -749,6 +749,9 @@ const getTransportTaskTracking = (uId) => GETParam("rpt/transportTaskTracking",u
 const getDismantleActPending = (uId) => GETParam("taskassignment/dismantleACKPendingGetList",uId);
 const getDismantleSiteInfo = (odi) => GETParam("positelist/getSiteInfoBasedOnOrderRequest",odi);
 
+// Dismantle Act Done
+
+const getDismantleActDone = (uId) => GETParam("rpt/dismantleACKDoneList",uId);
 
 const API ={
     getDeliveryNote,
@@ -756,6 +759,7 @@ const API ={
     getPhotoSender,
     getHODoneLog,
     getDismantleActPending,
+    getDismantleActDone,
     getMaterialOrderHODetail,
     getHODoneReportDetail,
     getHODoneReport,
