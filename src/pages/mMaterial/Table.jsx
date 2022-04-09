@@ -334,12 +334,14 @@ const TableMaterial = () => {
         {
             title : "Is Reusable",
             width: 100,
+        
             render:(record)=>{
                 return (
+                    // eslint-disable-next-line no-unneeded-ternary
                     <><Checkbox defaultChecked={record.isReusable} disabled /></>
                 )
             },
-            ...Search('boqRefCheck'),
+            ...Search('isReusable'),
         },
         {
             title : "Is Active",
@@ -413,7 +415,8 @@ const TableMaterial = () => {
                     size="small"
                     // expandable={{ expandedRowRender }}
                     columns={columns}
-                    dataSource={materialData}
+                    dataSource={[...materialData]}
+                    rowKey={record => record.materialId}
                     pagination={{
                         pageSizeOptions: ['5', '10', '20', '30', '40'],
                         showSizeChanger: true,
