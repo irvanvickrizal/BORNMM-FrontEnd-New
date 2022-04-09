@@ -752,6 +752,9 @@ const getDismantleList = (tdg) => GETParam("boqref/boqAsBuiltMMResult",tdg);
 const getDismantlePhotoList = (tdg) => GETParam("boqref/boqAsBuiltMMResultIncludeImage",tdg);
 const postDismantleAck = (body,odi,userid) => POSTParam2("taskassignment/logisticMilestoneACKConfirmed",body,odi,userid);
 
+// Dismantle Act Done
+
+const getDismantleActDone = (uId) => GETParam("rpt/dismantleACKDoneList",uId);
 
 const API ={
     postDismantleAck,
@@ -762,6 +765,7 @@ const API ={
     getPhotoSender,
     getHODoneLog,
     getDismantleActPending,
+    getDismantleActDone,
     getMaterialOrderHODetail,
     getHODoneReportDetail,
     getHODoneReport,

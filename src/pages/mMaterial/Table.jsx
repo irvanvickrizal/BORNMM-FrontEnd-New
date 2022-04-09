@@ -34,11 +34,13 @@ const TableMaterial = () => {
     const [selectedCategory, setselectedCategory] = useState("");
     const [selectedSubCategory, setSelectedSubCategory] = useState("");
     const [selectedBOQRef, setSelectedBOQRef] = useState(false);
+    const [selectedIsReusable, setSelectedIsReusable] = useState(false);
     const [selectedIsCustomerMaterial, setSelectedIsCustomerMaterial] = useState(false);
 
     const [materialCode, setMaterialCode] = useState("");
     const [materialName, setMaterialName] = useState("");
     const [materialId, setMaterialId] = useState("");
+    const [customerCode, setCustomerCode] = useState("");
 
     // const [isActive,setIsActive] = useState("");
 
@@ -67,6 +69,8 @@ const TableMaterial = () => {
                     ,rs.isActive
                     ,rs.boqRefCheck
                     ,rs.isCustomerMaterial
+                    ,rs.isReusable
+                    ,rs.customerCode
                 )) 
 
                 setIsLoading(false)
@@ -138,6 +142,7 @@ const TableMaterial = () => {
                 "materialCode": data.materialCode,
                 "materialName": data.materialName,
                 "UnitOfMeasurement": data.uom,
+                "customerCode":data.customerCode,
                 "SubCategoryDetail":{
                     "SubCategoryId":data.subCategory
                 },
@@ -146,6 +151,7 @@ const TableMaterial = () => {
                 },
                 "boqRefCheck": data.isBOQRef,
                 "isCustomerMaterial": data.isCustomerMaterial,
+                "isReusable":data.isReusable,
                 "lmby":user.uid 
             }
         
@@ -186,6 +192,8 @@ const TableMaterial = () => {
         setSelectedLevel(data.itemLevelId);
         setSelectedIsCustomerMaterial(data.isCustomerMaterial)
         setSelectedBOQRef(data.boqRefCheck)
+        setSelectedIsReusable(data.isReusable)
+        setCustomerCode(data.customerCode)
     }
 
     const handleOkEditForm = (data) =>{
@@ -194,9 +202,11 @@ const TableMaterial = () => {
             "materialId": data.materialId,
             "materialCode": data.materialCode,
             "materialName": data.materialName,
+            "customerCode":data.customerCode,
             "UnitOfMeasurement": data.uom,
             "boqRefCheck": data.isBOQRef,
             "isCustomerMaterial": data.isCustomerMaterial,
+            "isReusable" : data.isReusable,
             "itemLevelDetail": {
                 "itemLevelId": data.itemLevel
             },
@@ -271,6 +281,12 @@ const TableMaterial = () => {
             ...Search('materialName'),
         },
         {
+            title : "Customer Code ",
+            width: 250,
+            dataIndex:'customerCode',
+            ...Search('customerCode'),
+        },
+        {
             title : "UoM",
             width: 80,
             dataIndex:'uom',
@@ -314,6 +330,18 @@ const TableMaterial = () => {
                 )
             },
             ...Search('isCustomerMaterial'),
+        },
+        {
+            title : "Is Reusable",
+            width: 100,
+        
+            render:(record)=>{
+                return (
+                    // eslint-disable-next-line no-unneeded-ternary
+                    <><Checkbox defaultChecked={record.isReusable} disabled /></>
+                )
+            },
+            ...Search('isReusable'),
         },
         {
             title : "Is Active",
@@ -387,7 +415,8 @@ const TableMaterial = () => {
                     size="small"
                     // expandable={{ expandedRowRender }}
                     columns={columns}
-                    dataSource={materialData}
+                    dataSource={[...materialData]}
+                    rowKey={record => record.materialId}
                     pagination={{
                         pageSizeOptions: ['5', '10', '20', '30', '40'],
                         showSizeChanger: true,
@@ -432,6 +461,13 @@ const TableMaterial = () => {
                             label="Material Name"
                             name="materialName"
                             rules={[{ required: true, message: 'Please input your Material Name!' }]}
+                        >
+                            <Input />
+                        </Form.Item>
+                        <Form.Item
+                            label="Customer Code"
+                            name="customerCode"
+                            rules={[{ required: true, message: 'Please input your Customer Code!' }]}
                         >
                             <Input />
                         </Form.Item>
@@ -500,6 +536,18 @@ const TableMaterial = () => {
                                 // checked={record.isActive}
                             />
                         </Form.Item>
+                   
+                        <Form.Item label="Is Reusable"
+                            name="isReusable"
+                        
+                        >
+                            <Switch
+                                checkedChildren={<CheckOutlined />}
+                                unCheckedChildren={<CloseOutlined />}
+                             
+                                // checked={record.isActive}
+                            />
+                        </Form.Item>
                         <Form.Item wrapperCol={{ offset: 20, span: 4 }}>
                             <Space>
                                 <Button type="primary" htmlType="submit">
@@ -526,6 +574,7 @@ const TableMaterial = () => {
                             'materialId': materialId,
                             'materialCode': materialCode,
                             'materialName': materialName,
+                            'customerCode': customerCode,
                             'uom': selectedUoM,
                             'itemLevel': selectedLevel,
                             'subCategory': selectedSubCategory,
@@ -555,6 +604,13 @@ const TableMaterial = () => {
                             label="Material Name"
                             name="materialName"
                             rules={[{ required: true, message: 'Please input your Material Name!' }]}
+                        >
+                            <Input />
+                        </Form.Item>
+                        <Form.Item
+                            label="Customer Code"
+                            name="customerCode"
+                            rules={[{ required: true, message: 'Please input your Customer Code!' }]}
                         >
                             <Input />
                         </Form.Item>
@@ -622,6 +678,17 @@ const TableMaterial = () => {
                                 checkedChildren={<CheckOutlined />}
                                 unCheckedChildren={<CloseOutlined />}
                                 defaultChecked={selectedIsCustomerMaterial}
+                                // checked={record.isActive}
+                            />
+                        </Form.Item>
+                        <Form.Item label="Is Reusable"
+                            name="isReusable"
+                        
+                        >
+                            <Switch
+                                checkedChildren={<CheckOutlined />}
+                                unCheckedChildren={<CloseOutlined />}
+                                defaultChecked={selectedIsReusable}
                                 // checked={record.isActive}
                             />
                         </Form.Item>
