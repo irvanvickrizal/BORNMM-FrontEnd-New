@@ -73,6 +73,7 @@ const POScopeListAnt = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [poScopeIdUpload, setPOScopeIdUpload] = useState(0);
     const [poSitelistIdUpload, setPOSitelistId] = useState(0);
+    const [tablePage,setTablePage] = useState(0)
 
     function getPOScopeListANT(){
         API.getPOScopeList().then(
@@ -93,7 +94,7 @@ const POScopeListAnt = () => {
 
                 setPoScopeData(data);
             }
-        )
+        ) 
     } 
 
     function refreshPage(){
@@ -295,10 +296,9 @@ const POScopeListAnt = () => {
 
     const columns = [
         {
-            title: 'Id',
-            dataIndex: 'poScopeId',
-            key: 'poScopeId',
-            // render: text => <a>{text}</a>,
+            title : "No",
+            width : 50,
+            render: (value, item, index) => 1 + index
         },
         {
             title: 'CPO No',
