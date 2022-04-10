@@ -140,7 +140,7 @@ export default function TableDismantleActForm() {
                 bodyStyle={{'margin-top':'5px','padding-top':'5px'}}>
                 <Row  gutter={16}>
                     <Image.PreviewGroup>
-                        {data.photoList.map((pht)=>
+                        {data.getDismantleImages?.map((pht)=>
                             <Col className="gutter-row" style={{ 'margin-top': '10px' }} span={4}>
                                 <Image
                                     width={100}
@@ -355,18 +355,18 @@ export default function TableDismantleActForm() {
    
         {
             title : "Item Code",
-            dataIndex:'itemCode',
-            ...Search('itemCode'),
+            dataIndex:'materialCode',
+            ...Search('materialCode'),
         },
         {
             title : "Item Description",
-            dataIndex:'itemDescription',
-            ...Search('itemDescription'),
+            dataIndex:'materialDesc',
+            ...Search('materialDesc'),
         },
         {
             title : "QTY",
-            dataIndex:'qty',
-            ...Search('qty'),
+            dataIndex:'itemQty',
+            ...Search('itemQty'),
         },
         {
             title : "Serial No",
@@ -432,7 +432,7 @@ export default function TableDismantleActForm() {
                                 bordered />
                         </TabPane>
                         <TabPane tab="Dismantle Photo List" key="2">
-                            {dummiesData?.map((dt)=>
+                            {dataDismantlePhotoList?.map((dt)=>
                                 <DismantlePhotoList data={dt}/>
                             )}
                         </TabPane>
