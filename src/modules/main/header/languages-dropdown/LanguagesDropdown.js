@@ -42,13 +42,13 @@ const LanguagesDropdown = () => {
         let greetings = "default" 
 
         if(hours>=0 && hours<12){
-            greetings = `Good Morning ${dataUser},`
+            greetings = `Good Morning ${dataUser}, `
         }
         else if(hours>=12 && hours<18){
-            greetings = `Good afternoon ${dataUser},`
+            greetings = `Good afternoon ${dataUser}, `
         }
         else if(hours>=18 && hours<=23){
-            greetings = `Good evening ${dataUser},`
+            greetings = `Good evening ${dataUser}, `
         }
 
         return greetings
