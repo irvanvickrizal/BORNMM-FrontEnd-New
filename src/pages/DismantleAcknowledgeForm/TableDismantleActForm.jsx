@@ -126,14 +126,13 @@ export default function TableDismantleActForm() {
     ]
     const CardTitleDismantlePhotolist = (data) => (
         <Title level={5}>
-            {data.materialCode} ( {data.materialDesc} ) QTY: {data.confirmQTY}
+            {data.materialCode} ( {data.materialDesc} ) QTY: {data.itemQty}
         </Title>
     )
 
     const DismantlePhotoList = ({data}) =>{
         console.log("photolost",data)
         return(
-            
             <Card 
                 title={CardTitleDismantlePhotolist(data)}
                 hoverable
@@ -177,22 +176,18 @@ export default function TableDismantleActForm() {
     }
     
     function getDismantlePhotoList() {
-        setIsLoading(true);
         API.getDismantlePhotoList(tdg).then(
             result=>{
                 setDataDismantlePhotoList(result);
-                setIsLoading(false);
                 console.log("dismantle photo list =>",result);
             }
         )
     }
 
     function getDismantleList() {
-        setIsLoading(true);
         API.getDismantleList(tdg).then(
             result=>{
                 setDataDismantleList(result);
-                setIsLoading(false);
                 console.log("tdg =>",result);
             }
         )
@@ -323,16 +318,27 @@ export default function TableDismantleActForm() {
             render:(record)=>{
                 return (
                     <Space>
-                        <Tooltip title="View Map">
-                            <IconButton
-                                size='small'
-                                color="primary"
-                                aria-label="upload file"
-                                component="span"
-                                onClick={()=>{showLocation(record)}}>
-                                <RoomIcon style={{color:"red"}}  />
-                            </IconButton>
-                        </Tooltip>
+                        {record.longitude == null || record.latitude == null ?
+                            <Tooltip title="Location data not available" color="red">
+                                <IconButton
+                                    size='small'
+                                    aria-label="upload file"
+                                    component="span">
+                                    <RoomIcon style={{color:"grey"}} disabled />
+                                </IconButton>
+                            </Tooltip>
+                            :
+                            <Tooltip title="View Map">
+                                <IconButton
+                                    size='small'
+                                    color="primary"
+                                    aria-label="upload file"
+                                    component="span"
+                                    onClick={()=>{showLocation(record)}}>
+                                    <RoomIcon style={{color:"red"}}  />
+                                </IconButton>
+                            </Tooltip>
+                        }
                     </Space>
                 )
             }
