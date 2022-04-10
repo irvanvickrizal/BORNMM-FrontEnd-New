@@ -17,7 +17,6 @@ export default function TableDismantlePending() {
     const [isLoading, setIsLoading] = useState(true);
 
     const userId = useSelector(state=>state.auth.user.uid)
- 
 
     function getDataDismantleActPending() {
         setIsLoading(true);
@@ -31,7 +30,7 @@ export default function TableDismantlePending() {
     }
 
     const handleNavigate = (data) => {
-        history.push(`/task/ackdismantleform?odi=${data.orderDetailId}&tdg=${data.transDelegateId}&pg=pending`)
+        history.push(`/task/ackdismantleform?odi=${data.orderDetailId}&tdg=${data.transDelegateId}&pg=pending&requestedby=${data.requestedById}`)
     }
 
     const columns = [

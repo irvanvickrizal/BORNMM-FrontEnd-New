@@ -5,7 +5,7 @@ import TableDismantleActDone from '@app/pages/DismantleActknowledgeDone/TableDis
 export default function DismantleActDone() {
     return (
         <div>
-            <HeaderChanger title="Dismantle Actknwoledgement Done"/>
+            <HeaderChanger title="Dismantle Acknwoledgement Done"/>
             <TableDismantleActDone/>
         </div>
     )

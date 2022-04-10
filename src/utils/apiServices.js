@@ -719,7 +719,6 @@ const postRejectAproval = (body) => POST("wftransaction/orderRequestReject",body
 const getAddress = (siteNo,ddlDestination) => GETParam2('materialmanagement/orderRequestGetDestinationAddress',siteNo,ddlDestination)
 const orderRequestDraft = (body) => PUT("materialManagement/orderRequestChangeExpectedDeliveryDate",body)
 
-
 // scon Task Summary cancel
 
 const postSconTaskCancel = (body) => POST("taskassignment/taskOrderRequestAssignmentCancelled",body);
@@ -750,7 +749,7 @@ const getDismantleActPending = (uId) => GETParam("taskassignment/dismantleACKPen
 const getDismantleSiteInfo = (odi) => GETParam("positelist/getSiteInfoBasedOnOrderRequest",odi);
 const getDismantleList = (tdg) => GETParam("boqref/boqAsBuiltMMResult",tdg);
 const getDismantlePhotoList = (tdg) => GETParam("boqref/boqAsBuiltMMResultIncludeImage",tdg);
-const postDismantleAck = (body,odi,userid) => POSTParam2("taskassignment/logisticMilestoneACKConfirmed",body,odi,userid);
+const postDismantleAck = (body) => POST("taskassignment/logisticMilestoneACKConfirmed",body);
 
 // Dismantle Act Done
 

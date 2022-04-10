@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React,{useState, useEffect} from 'react';
 import {useSelector} from 'react-redux';
 import {Link} from 'react-router-dom';
@@ -104,21 +105,36 @@ const MenuSidebar = () => {
 
     useEffect(() => {
         menuapi(user.roleId);
-    },[token])
+    },[user,token])
 
     return (
         <aside className="main-sidebar sidebar-nokia-primary elevation-4">
-            <Link to="/" className="brand-link">
-                <img
-                    src="/img/bicon.png"
-                    alt="BORN Logo"
-                    className="brand-image img-circle elevation-3"
-                    style={{opacity: '1'}}
-                />
-                <span className="brand-text font-weight-light">
-                    <h2 className='pr-4' align="center" style={{ color:'white' }}>BORN</h2>
-                </span>
-            </Link>
+            {user.roleId == 175 ? 
+                <Link to="#" className="brand-link">
+                    <img
+                        src="/img/bicon.png"
+                        alt="BORN Logo"
+                        className="brand-image img-circle elevation-3"
+                        style={{opacity: '1'}}
+                    />
+                    <span className="brand-text font-weight-light">
+                        <h2 className='pr-4' align="center" style={{ color:'white' }}>BORN</h2>
+                    </span>
+                </Link>
+                :
+                <Link to="/" className="brand-link">
+                    <img
+                        src="/img/bicon.png"
+                        alt="BORN Logo"
+                        className="brand-image img-circle elevation-3"
+                        style={{opacity: '1'}}
+                    />
+                    <span className="brand-text font-weight-light">
+                        <h2 className='pr-4' align="center" style={{ color:'white' }}>BORN</h2>
+                    </span>
+                </Link>
+            }
+            
             <div className="sidebar">
                 <div className="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div className="image">

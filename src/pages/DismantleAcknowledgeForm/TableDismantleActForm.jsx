@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/jsx-boolean-value */
 /* eslint-disable react/jsx-no-bind */
@@ -38,6 +39,7 @@ export default function TableDismantleActForm() {
     const odi = params.get('odi');
     const tdg = params.get('tdg');
     const pg = params.get('pg');
+    const rbid = params.get('requestedby');
 
     const getWindowDimensions = () => {
         const { innerWidth: width, innerHeight: height } = window
@@ -124,6 +126,7 @@ export default function TableDismantleActForm() {
             ]  
         },
     ]
+    
     const CardTitleDismantlePhotolist = (data) => (
         <Title level={5}>
             {data.materialCode} ( {data.materialDesc} ) QTY: {data.itemQty}
@@ -131,6 +134,7 @@ export default function TableDismantleActForm() {
     )
 
     const DismantlePhotoList = ({data}) =>{
+
         console.log("photolost",data)
         return(
             <Card 
@@ -206,11 +210,24 @@ export default function TableDismantleActForm() {
 
     const handleConfirm = () =>
     {
-        API.postDismantleAck("",odi,user.uid).then(
-            result=>{
-                console.log("post dismantle", result)
+        if (window.confirm('Are you sure you want to confirm ?')) {
+            
+            const body = {
+                'orderDetailId':odi,
+                'transDelegateId' :tdg,
+                'confirmedBy':user.uid,
+                'requestedBy':rbid
             }
-        )
+
+            API.postDismantleAck(body).then(
+                result=>{
+                    toast.success("Confirm Successfull")
+                    history.push("/task/ackdismantlepending")
+                    console.log("post dismantle", result)
+                }
+            )
+
+        }
     }
     const handleBack = () =>
     {
@@ -235,7 +252,6 @@ export default function TableDismantleActForm() {
         else if(key==2){
             getDismantlePhotoList()
         }
-     
         console.log("keytabs",key);
     }
 
@@ -334,8 +350,9 @@ export default function TableDismantleActForm() {
                                     color="primary"
                                     aria-label="upload file"
                                     component="span"
-                                    onClick={()=>{showLocation(record)}}>
-                                    <RoomIcon style={{color:"red"}}  />
+                                    onClick={()=>{showLocation(record)}}
+                                >
+                                    <RoomIcon style={{color:"red"}}/>
                                 </IconButton>
                             </Tooltip>
                         }
@@ -397,20 +414,44 @@ export default function TableDismantleActForm() {
                         </Col>
                     </Row>  
                     :
-                    <Card hoverable title={CardTitle("Site Info")}>
+                    <><Row>
+                        <Col span={24}>
+                            <div className='float-right'>
+                                <Space direction="horizhontal">
+                                    {pg == "pending" ?
+                                        <Button
+                                            type="primary"
+                                            onClick={() => handleConfirm()}
+                                        >
+                                            Accept
+                                        </Button>
+                                        :
+                                        <></>}
+                                    <div>
+
+                                        <Button
+                                            type="secondary"
+                                            onClick={() => handleBack()}
+                                        >
+                                            Back
+                                        </Button>
+                                    </div>
+                                </Space>
+                            </div>
+                        </Col>
+                    </Row><Card hoverable
+                        title={CardTitle("Site Info")}
+                        headStyle={{ 'color': 'blue' }}
+                    >
                         <Table
-                            scroll={{ x: '120%' }}
-                            rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
+                            scroll={{ x: '130%' }}
+                            rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' : 'table-row-dark'}
                             // expandable={{ expandedRowRender }}
                             columns={columnSiteInfo}
                             dataSource={dataTableAtas}
-                            pagination={{
-                                pageSizeOptions: ['5', '10', '20', '30', '40'],
-                                showSizeChanger: true,
-                                position: ["bottomLeft"],
-                            }}
+                            pagination={false}
                             bordered />
-                    </Card>
+                    </Card></>
                 }
 
                 <Col span={24}>
@@ -444,41 +485,6 @@ export default function TableDismantleActForm() {
                         </TabPane>
                     </Tabs>
                 </Col>
-                <Row>
-                    <Col span={24}>
-                        <div className='float-right'>
-                            <Space direction="horizhontal">
-                                {pg=="pending"?
-                                    <Button
-                                        type="primary"
-                                        onClick={()=>handleConfirm()}
-                                    >
-                                    Confirm
-                                    </Button>
-                                    :
-                                    <Button
-                                        type="primary"
-                                        onClick={()=>handleConfirm()}
-                                        disabled
-                                    >
-                                    Accept
-                                    </Button>
-                                }
-                                <div>
-
-                                    <Button
-                                        type="danger"
-                                        onClick={()=>handleBack()}
-                                    >
-                                   Back
-                                    </Button>
-                                </div>
-                            </Space>
-                            
-                                
-                        </div>
-                    </Col>
-                </Row>
             </Space>
 
             <Modal visible={isModalLocationVisible} onCancel={hideModal}

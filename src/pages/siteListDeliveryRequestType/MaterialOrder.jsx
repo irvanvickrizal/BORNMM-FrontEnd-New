@@ -934,7 +934,6 @@ export default function MaterialOrder() {
                                     </Row>
                                     <Space direction="vertical" style={{ width: '100%' }} >
                                         <Table 
-                                            // className="components-table-demo-nested"
                                             columns={columnsMaterialOrder} 
                                             scroll={{ x: '100%' }} 
                                             dataSource={orderDetailMaterial} 
