@@ -23,7 +23,7 @@ export default function SetTime() {
    
     return (
         <div>
-            <IdleTimer ref={idleTimerRef} timeout={5*1000} onIdle={onIdle}></IdleTimer>
+            <IdleTimer ref={idleTimerRef} timeout={1800*1000} onIdle={onIdle}></IdleTimer>
         </div>
     )
 }
