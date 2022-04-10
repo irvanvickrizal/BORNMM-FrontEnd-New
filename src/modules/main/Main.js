@@ -88,6 +88,14 @@ import RequestReschedule from "@app/pages/RequestReschedule/RequestReschedule"
 // Transport Task Tracking
 import TransportTaskTracking from "@app/pages/TransportTaskTracking/TransportTaskTracking"
 
+// Dismantle Acknowledge Pending
+import DismantleAcknowledgePending from "@app/pages/DismantleAcknowledegePending/DismantleAcknowledgePending"
+
+// Dismantle Acknowledge Form
+import DismantleAcknowledgeForm from "@app/pages/DismantleAcknowledgeForm/DismantleAcknowledgeForm"
+import DismantleActDone from "@app/pages/DismantleActknowledgeDone/DismantleActDone"
+
+
 const Main = () => {
     const dispatch = useDispatch()
     const isSidebarMenuCollapsed = useSelector(
@@ -491,6 +499,23 @@ const Main = () => {
                                             path="/rpt/transporttasktracking"
                                             component={TransportTaskTracking}
                                             
+                                        />
+                                        <Route
+                                            exact
+                                            path="/task/ackdismantlepending"
+                                            component={DismantleAcknowledgePending}
+                                            
+                                        />
+                                        <Route
+                                            exact
+                                            path="/task/ackdismantleform"
+                                            component={DismantleAcknowledgeForm}
+                                            
+                                        />
+                                        <Route
+                                            exact
+                                            path="/rpt/ackdismantledone"
+                                            component={DismantleActDone}
                                         />
                                     </Switch>
                                 </div>
