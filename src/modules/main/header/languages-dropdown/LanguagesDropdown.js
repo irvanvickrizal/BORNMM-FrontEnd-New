@@ -17,7 +17,7 @@ const LanguagesDropdown = () => {
 //    const user = useSelector(state => state)
     var todays = new Date()
     var hr = todays.getHours()
-    const dataUser = useSelector(state=>state.auth.user.name)
+    const dataUser = useSelector(state=>state.auth.user?.name)
     // const time = moment().format("hh:mm")
     function checkTime(i) {
         // eslint-disable-next-line prefer-template

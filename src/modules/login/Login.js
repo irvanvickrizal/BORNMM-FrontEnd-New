@@ -49,14 +49,17 @@ const Login = () => {
             
             console.log('login : ',token);
             toast.success('Login is succeed!');
-            setAuthLoading(false);
-            
             dispatch(loginUser(token));
             
             const user =  jwt(token);
             dispatch(loadUser(user));
             if(user.roleId==175){
                 history.push('/task/ackdismantlepending');
+                setAuthLoading(false);
+            }
+            else{
+                history.push('/');
+                setAuthLoading(false);
             }
         } catch (error) {
             setAuthLoading(false);
