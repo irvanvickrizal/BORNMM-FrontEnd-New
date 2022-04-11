@@ -755,14 +755,35 @@ const postDismantleAck = (body) => POST("taskassignment/logisticMilestoneACKConf
 
 const getDismantleActDone = (uId) => GETParam("rpt/dismantleACKDoneList",uId);
 
+// item Transfer Limit
+
+
+const getItemTransferMarketList = () => GET("transferasset/getWHList");
+const getItemTransferMarketWh = (dopId) => GETParam("transferasset/getSummaryItemLimitBasedOnWH",dopId);
+const getItemTransferMarketWhList = (dopId) => GETParam("transferasset/getListItemLimitBasedOnWH",dopId);
+
+const getCekTrueOrFalse = (dopId,body) => POSTParam("transferasset/boqUploadDataCheckHasCleared",dopId,body);
+const postBoqProceed = (dopId,body) => POSTParam("transferasset/boqAssetUploadProceed",dopId,body);
+const deleteBoqProceed = (dopId) => DELETEParam("transferasset/boqAssetCleanupData",dopId);
+const uploadBoqAsset = (dopId,File) => POSTFile("transferasset/boqAssetUpload",dopId,File);
+const getSummaryAsPO = (dopId) => GETParam("transferasset/boqAssetUploadResult",dopId);
+
 const API ={
     postDismantleAck,
     getDismantlePhotoList,
     getDismantleList,
+    uploadBoqAsset,
     getDeliveryNote,
+    postBoqProceed,
+    deleteBoqProceed,
     getPhotoRecipient,
     getPhotoSender,
     getHODoneLog,
+    getCekTrueOrFalse,
+    getSummaryAsPO,
+    getItemTransferMarketList,
+    getItemTransferMarketWh,
+    getItemTransferMarketWhList,
     getDismantleActPending,
     getDismantleActDone,
     getMaterialOrderHODetail,
