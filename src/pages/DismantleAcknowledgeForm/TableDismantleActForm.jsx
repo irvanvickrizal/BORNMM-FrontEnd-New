@@ -32,14 +32,16 @@ export default function TableDismantleActForm() {
     const { TabPane } = Tabs;
     const [mapLocation,setMapLocation] = useState([])
     const [isModalLocationVisible,setIsModalLocationVisible] = useState(false)
-
+    const [isModalReject,setIsModalReject] = useState(false)
+    const [remarks,setRemarks] = useState(false)
+    const { TextArea } = Input;
     const [zoom, setZoom] = useState("");
     const user = useSelector((state) => state.auth.user);
     const history = useHistory();
     const odi = params.get('odi');
     const tdg = params.get('tdg');
     const pg = params.get('pg');
-    const rbid = params.get('requestedby');
+    const rbid = params.get('rbid');
 
     const getWindowDimensions = () => {
         const { innerWidth: width, innerHeight: height } = window
@@ -229,6 +231,62 @@ export default function TableDismantleActForm() {
 
         }
     }
+    const handleReject = () =>
+    {
+        setIsModalReject(true)
+        // if (window.confirm('Are you sure you want to reject ?')) {
+            
+        //     const body = {
+        //         'orderDetailId':odi,
+        //         'transDelegateId' :tdg,
+        //         'confirmedBy':user.uid,
+        //         'requestedBy':rbid
+        //     }
+
+        //     API.postDismantleAck(body).then(
+        //         result=>{
+        //             toast.success("Confirm Successfull")
+        //             history.push("/task/ackdismantlepending")
+        //             console.log("post dismantle", result)
+        //         }
+        //     )
+
+        // }
+    }
+    const okReject = () =>
+    {
+        if (window.confirm('Are you sure you want to reject ?')) {
+            
+            const body = {
+                'orderDetailId':odi,
+                'confirmedBy':user.uid,
+                'transDelegateId' :tdg,
+                'reasonOfRejection': remarks,
+                'requestedBy':rbid
+            }
+
+            console.log(body,"body rejection ")
+            API.postRejectDismantleAck(body).then(
+                result=>{
+                    if(result.status=="success")
+                    {
+                        toast.success(result.message)
+                        history.push("/task/ackdismantlepending")
+                    }
+                    else if(result.status=="warning")
+                    {
+                        toast.warning(result.message)
+                        history.push("/task/ackdismantlepending")
+                    }
+                    else{
+                        toast.error(result.message)
+                    }
+                    console.log("post dismantle", result)
+                }
+            )
+
+        }
+    }
     const handleBack = () =>
     {
         if(pg == "pending"){
@@ -272,6 +330,9 @@ export default function TableDismantleActForm() {
     }
     const hideModal = () => {
         setIsModalLocationVisible(false)
+    }
+    const cancelModalReject = () => {
+        setIsModalReject(false)
     }
 
     const columnSiteInfo = [ 
@@ -427,15 +488,20 @@ export default function TableDismantleActForm() {
                                         </Button>
                                         :
                                         <></>}
-                                    <div>
-
-                                        <Button
-                                            type="secondary"
-                                            onClick={() => handleBack()}
-                                        >
+                                    
+                                    <Button
+                                        type="danger"
+                                        onClick={() => handleReject()}
+                                    >
+                                            Reject
+                                    </Button>
+                                    <Button
+                                        type="secondary"
+                                        onClick={() => handleBack()}
+                                    >
                                             Back
-                                        </Button>
-                                    </div>
+                                    </Button>
+                                    
                                 </Space>
                             </div>
                         </Col>
@@ -526,6 +592,36 @@ export default function TableDismantleActForm() {
                 </MapContainer>
             </Modal>           
                     
+            <Modal title="Reject Dismantle Permit" visible={isModalReject}  onCancel={cancelModalReject} 
+                footer={
+                    remarks.length <= 10 ? ( [
+                
+                
+                        <Button disabled key="back" type="danger" onClick={okReject}>
+                Reject
+                        </Button>,
+                        <Button key="submit"  onClick={cancelModalReject} >
+                Close
+                        </Button>,
+                    
+                    ]):( [
+                
+                
+                        <Button key="back" type="danger" onClick={okReject}>
+                Reject
+                        </Button>,
+                        <Button key="submit"  onClick={cancelModalReject} >
+                Close
+                        </Button>,
+                    
+                    ])
+                } >
+                <Typography>Reason Of Cancelation :
+                </Typography>
+                <TextArea rows={4} onChange={(e) => setRemarks(e.target.value)}/>
+      
+            </Modal>
+
         </div>
     )
 }

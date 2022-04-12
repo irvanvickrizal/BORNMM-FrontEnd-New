@@ -1,7 +1,8 @@
+/* eslint-disable react/jsx-no-bind */
 import {getAprovalPending, getSno,getOdi} from "@app/store/action/aprovalTaskPendingAction"
 import React, {useEffect, useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {Table} from "antd"
+import {Table,Row,Slider,Col,Statistic} from "antd"
 import {EditOutlined} from "@ant-design/icons"
 import {useHistory} from "react-router-dom"
 import HeaderChanger from "@app/components/cardheader/HeaderChanger"
@@ -10,12 +11,12 @@ import Search from "@app/components/searchcolumn/SearchColumn"
 
 export default function TableAproval() {
     const dispatch = useDispatch()
-
+    const { Countdown } = Statistic;
     const history = useHistory()
     const [page, setPage] = useState(1)
     const [odi, setOdi] = useState("")
     const [sno, setSno] = useState("")
-
+    const [sliderVal,setSliderVal] = useState(0)
     useEffect(() => {
         dispatch(getAprovalPending())
     }, [])
@@ -35,6 +36,24 @@ export default function TableAproval() {
     const dataAproval = useSelector(
         (state) => state.aprovalTaskPendingReducer.dataAprovalPending
     )
+
+    function onFinish() {
+        console.log('finished!');
+        
+    }
+  
+    function onChangeHandler(val) {
+        console.log(val/1000)
+        
+        setSliderVal(val)
+        if(val<=100){
+            dispatch(getAprovalPending())
+        }
+    }
+    function onChangeSlider(value) {
+        console.log(value,"slider")
+        
+    }
 
     const columns = [
         {
@@ -117,6 +136,18 @@ export default function TableAproval() {
         <div>
            
             <HeaderChanger title="Approval Task Pending"/>
+            <Row>
+                <Col span={12} hidden>
+                    <Countdown value={Date.now() + 10 * 10000} onChange={onChangeHandler} onFinish={onFinish} format="s"/>
+                </Col>
+                <Col span={5}>
+                    <p>data will be refreshed at : </p>
+                </Col>
+                <Col span={19}>
+                    <Slider min={0} max={100000} value={sliderVal} onChange={onChangeSlider}/>
+                </Col>
+
+            </Row>
             <Table
                 columns={columns}
                 dataSource={dataAproval}

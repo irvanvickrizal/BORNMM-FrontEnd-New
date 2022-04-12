@@ -686,7 +686,7 @@ const assignMultiDelivery = (body) => POST('multidelivery/multiDeliveryAssignTas
 const deleteMultiDeliveryRequest = (mdid) => DELETE('multidelivery/multiDeliveryDeleteOrderRequest',mdid)
 const putDeleteMultiDeliveryRequest = (body) => PUT('multidelivery/multiDeliveryDeleteGroup',body)
 
-
+const postMaterialArriveWH = (body) => POST('lspassignment/orderRequestPickupCompletedAtWH',body)
 
 const getOrderRequestTracking =(odi) => GETParam('rpt/orderRequestProgressTracking',odi);
 const getItemOrderedList =(odi) => GETParam('materialmanagement/orderRequestMaterialGetItemListBookedBasedId',odi);
@@ -750,12 +750,14 @@ const getDismantleSiteInfo = (odi) => GETParam("positelist/getSiteInfoBasedOnOrd
 const getDismantleList = (tdg) => GETParam("boqref/boqAsBuiltMMResult",tdg);
 const getDismantlePhotoList = (tdg) => GETParam("boqref/boqAsBuiltMMResultIncludeImage",tdg);
 const postDismantleAck = (body) => POST("taskassignment/logisticMilestoneACKConfirmed",body);
+const postRejectDismantleAck = (body) => POST("taskassignment/logisticMilestoneACKRejected",body);
 
 // Dismantle Act Done
-
 const getDismantleActDone = (uId) => GETParam("rpt/dismantleACKDoneList",uId);
 
 const API ={
+    postMaterialArriveWH,
+    postRejectDismantleAck,
     postDismantleAck,
     getDismantlePhotoList,
     getDismantleList,
