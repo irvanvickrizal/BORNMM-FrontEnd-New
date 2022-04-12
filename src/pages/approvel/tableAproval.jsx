@@ -2,7 +2,7 @@
 import {getAprovalPending, getSno,getOdi} from "@app/store/action/aprovalTaskPendingAction"
 import React, {useEffect, useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
-import {Table,Row,Slider,Col,Statistic} from "antd"
+import {Table,Spin,Row,Slider,Col,Statistic} from "antd"
 import {EditOutlined} from "@ant-design/icons"
 import {useHistory} from "react-router-dom"
 import HeaderChanger from "@app/components/cardheader/HeaderChanger"
@@ -16,7 +16,10 @@ export default function TableAproval() {
     const [page, setPage] = useState(1)
     const [odi, setOdi] = useState("")
     const [sno, setSno] = useState("")
+    const [defCounter, setDefCounter] = useState(Date.now() + 10 * 5000)
     const [sliderVal,setSliderVal] = useState(0)
+    
+    const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
         dispatch(getAprovalPending())
     }, [])
@@ -47,7 +50,10 @@ export default function TableAproval() {
         
         setSliderVal(val)
         if(val<=100){
+            setIsLoading(true)
             dispatch(getAprovalPending())
+            setIsLoading(false)
+            // setDefCounter(Date.now() + 10 * 10000)
         }
     }
     function onChangeSlider(value) {
@@ -136,31 +142,39 @@ export default function TableAproval() {
         <div>
            
             <HeaderChanger title="Approval Task Pending"/>
-            <Row>
-                <Col span={12} hidden>
-                    <Countdown value={Date.now() + 10 * 10000} onChange={onChangeHandler} onFinish={onFinish} format="s"/>
-                </Col>
-                <Col span={5}>
-                    <p>data will be refreshed at : </p>
-                </Col>
-                <Col span={19}>
-                    <Slider min={0} max={100000} value={sliderVal} onChange={onChangeSlider}/>
-                </Col>
+            {
+                isLoading ? 
+                    <Row justify="center">
+                        <Col span={1}>    
+                            <Spin />
+                        </Col>
+                    </Row>  
+                    :
+                    <><Row hidden>
+                        <Col span={12} hidden>
+                            <Countdown value={Date.now() + 10 * 10000} onChange={onChangeHandler} onFinish={onFinish} format="s" />
+                        </Col>
+                        <Col span={5}>
+                            <p>data will be refreshed at: </p>
+                        </Col>
+                        <Col span={19}>
+                            <Slider min={0} max={100000} value={sliderVal} onChange={onChangeSlider} />
+                        </Col>
 
-            </Row>
-            <Table
-                columns={columns}
-                dataSource={dataAproval}
-                scroll={{x: "100%"}}
-                pagination={{
-                    pageSizeOptions: ["5", "10", "20", "30", "40"],
-                    showSizeChanger: true,
-                    position: ["bottomLeft"]
-                }}
-                style={{marginTop: 36}}
-                size="small"
-                bordered
-            />
+                    </Row><Table
+                        columns={columns}
+                        dataSource={dataAproval}
+                        scroll={{ x: "100%" }}
+                        pagination={{
+                            pageSizeOptions: ["5", "10", "20", "30", "40"],
+                            showSizeChanger: true,
+                            position: ["bottomLeft"]
+                        }}
+                        style={{ marginTop: 36 }}
+                        size="small"
+                        bordered /></>
+            
+            }
             
         </div>
     )
