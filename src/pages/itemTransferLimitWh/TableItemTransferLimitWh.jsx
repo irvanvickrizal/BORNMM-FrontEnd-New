@@ -38,6 +38,7 @@ export default function TableItemTransferLimitWh() {
     const [uploading, setUploading] = useState("");
     const [isModalProceedVisible, setIsModalProceedVisible] = useState(false);
     const [isModalClearProceedVisible, setIsModalClearProceedVisible] = useState(false);
+    const uid = useSelector(state=>state.auth.user.uid)
   
     const { TabPane } = Tabs;
     const { Title } = Typography;
@@ -156,7 +157,7 @@ export default function TableItemTransferLimitWh() {
                 const data = result;
                 //const data = result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
                 const exportType =  exportFromJSON.types.xls;
-                const fileName = `BOQ_Assets_Upload_Summary_dopId=${dopId}`;
+                const fileName = `BOQ_Assets_Upload_Summary_dopId`;
                 exportFromJSON({ data, fileName, exportType });
                 console.log("SSDA")
                 
@@ -167,7 +168,7 @@ export default function TableItemTransferLimitWh() {
     const handleUpload = () => {
         setUploading(true)
         try{
-            API.uploadBoqAsset(dopId,fileUpload).then(
+            API.uploadBoqAsset(dopId,uid,fileUpload).then(
                 result=>{
                     try{
                         if(result.status=="success"){
@@ -266,7 +267,7 @@ export default function TableItemTransferLimitWh() {
                 const data = result;
                 //const data = result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
                 const exportType =  exportFromJSON.types.xls;
-                const fileName = `Item_Transfer_Limit_Detail_dopId=${dopId}`;
+                const fileName = `Item_Transfer_Limit_Detail`;
                 exportFromJSON({ data, fileName, exportType });
                 console.log("SSDA")
                 
@@ -494,34 +495,7 @@ export default function TableItemTransferLimitWh() {
                     <Card hoverable   title={CardTitle("Define Item transfer limit Upload ")}
                         headStyle={{ 'color': 'blue' }}>
                         <div>
-                            {stateCek ? (<>
-                                { isLoading ?   
-                                    <Row justify="center">
-                                        <Col span={1}>    
-                                            <Spin />
-                                        </Col>
-                                    </Row>  
-                                    :
-                                    <Table
-                                        scroll={{ x: '70%' }}
-                                        rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' : 'table-row-dark'}
-                                        // expandable={{ expandedRowRender }}
-                                        columns={columnPo}
-                                        dataSource={dataSummaryPo}
-                                        pagination={{
-                                            pageSizeOptions: ['5', '10', '20', '30', '40'],
-                                            showSizeChanger: true,
-                                            position: ["bottomLeft"],
-                                        }}
-                                        bordered />}
-                                <div className='float-right' style={{display:"flex",flexDirection:"row",marginTop:12}}>
-                                    <Space>
-                                        <Button type="primary" onClick={(record)=>showModalProceed(record)}>Procceed</Button>
-                                        <Button type="danger" onClick={(record)=>showModalClear(record)}>Reset</Button>
-                                        <Button onClick={getDownloadBoq} >Download Summary</Button>
-                                    </Space>
-                                
-                                </div></>):(        <Row>
+                            {stateCek ? (<Row>
                                 <Col span={12}>
                                     <Upload {...props}>
                                         <Button icon={<UploadOutlined />}>Select File</Button>
@@ -544,7 +518,37 @@ export default function TableItemTransferLimitWh() {
                                     </div>
                                  
                                 </Col>
-                            </Row>)}
+                            </Row>
+                            ):(        
+                            
+                                <>
+                                    { isLoading ?   
+                                        <Row justify="center">
+                                            <Col span={1}>    
+                                                <Spin />
+                                            </Col>
+                                        </Row>  
+                                        :
+                                        <Table
+                                            scroll={{ x: '70%' }}
+                                            rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' : 'table-row-dark'}
+                                            // expandable={{ expandedRowRender }}
+                                            columns={columnPo}
+                                            dataSource={dataSummaryPo}
+                                            pagination={{
+                                                pageSizeOptions: ['5', '10', '20', '30', '40'],
+                                                showSizeChanger: true,
+                                                position: ["bottomLeft"],
+                                            }}
+                                            bordered />}
+                                    <div className='float-right' style={{display:"flex",flexDirection:"row",marginTop:12}}>
+                                        <Space>
+                                            <Button type="primary" onClick={(record)=>showModalProceed(record)}>Procceed</Button>
+                                            <Button type="danger" onClick={(record)=>showModalClear(record)}>Reset</Button>
+                                            <Button onClick={getDownloadBoq} >Download Summary</Button>
+                                        </Space>
+                                
+                                    </div></>)}
                         </div>
                     </Card>
                     
