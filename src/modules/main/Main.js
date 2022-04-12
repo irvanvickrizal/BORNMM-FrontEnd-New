@@ -95,6 +95,10 @@ import DismantleAcknowledgePending from "@app/pages/DismantleAcknowledegePending
 import DismantleAcknowledgeForm from "@app/pages/DismantleAcknowledgeForm/DismantleAcknowledgeForm"
 import DismantleActDone from "@app/pages/DismantleActknowledgeDone/DismantleActDone"
 
+//Item Transfer Limit
+import itemTransferLimitList from "@app/pages/itemTransferLimitList/index"
+import itemTransferLimitWh from "@app/pages/itemTransferLimitWh/index"
+
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -516,6 +520,16 @@ const Main = () => {
                                             exact
                                             path="/rpt/ackdismantledone"
                                             component={DismantleActDone}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/ta/boqta"
+                                            component={itemTransferLimitList}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/ta/boqdetailwh"
+                                            component={itemTransferLimitWh}
                                         />
                                     </Switch>
                                 </div>
