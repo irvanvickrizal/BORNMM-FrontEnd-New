@@ -42,6 +42,7 @@ export default function TableTransferLimitList() {
         {
             title : "WH Name",
             dataIndex:'whName',
+            width:200,
             ...Search('whName'),
         },
         {
