@@ -4,12 +4,12 @@
 import React,{useState,useEffect} from 'react'
 import Search from '@app/components/searchcolumn/SearchColumn'
 import moment from "moment"
-import { EditOutlined,DeleteFilled,EyeFilled,DeleteOutlined   } from '@ant-design/icons'
+import {CheckCircleTwoTone, EditOutlined,DeleteFilled,EyeFilled,DeleteOutlined   } from '@ant-design/icons'
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import { toast } from 'react-toastify'
 
 import { useHistory } from 'react-router-dom';
-import {Table,Modal,Space,Col,Typography,Row,Spin,Tooltip,Button, Tabs,Card,Form,Select,Input} from "antd"
+import {Table,Modal,Space,Col,Typography,Row,Spin,Tooltip,Button, Tabs,Card,Form,Select,Input,InputNumber} from "antd"
 import API from '@app/utils/apiServices'
 import { useSelector } from 'react-redux'
 import {IconButton, TextField}  from '@mui/material/';
@@ -37,7 +37,8 @@ export default function TablePickup() {
     const [multiDeliveryList,setMultiDelivery] = useState([])
     const [multiDeliveryRequestPendingList,setMultiDeliveryRequestPendingList] = useState([])
     const [isManageMulti,setIsManageMulti] = useState(false);
-
+    const [isModalMaterialArrive, setIsModalMaterialArrive] = useState(false);
+    // const [requestNo, setRequestNo] = useState('');
 
     const [currentAssignTo,setCurrentAssignTo] = useState('')
     const history = useHistory()
@@ -46,7 +47,6 @@ export default function TablePickup() {
     const CardTitle = (title) => <Title level={5}>{title}</Title>
     const userId = useSelector(state=>state.auth.user.uid)
 
-    
     const getWindowDimensions = () => {
         const { innerWidth: width, innerHeight: height } = window
         return { width, height }
@@ -63,7 +63,6 @@ export default function TablePickup() {
             return () => window.removeEventListener('resize', handleResize)
  
         }, [])
- 
         return windowDimensions
     }
 
@@ -100,6 +99,46 @@ export default function TablePickup() {
         )
     }
 
+    const handleMaterialArrived =(data)=>{
+        setIsModalMaterialArrive(true)
+        setRequestNo(data.requestNo)
+        setOdi(data.orderDetailId)
+    }
+
+    const handleCancelMaterialArrive =(data)=>{
+        setIsModalMaterialArrive(false)
+    }
+
+    const handleFailedMaterialArrivedForm =()=>{
+       
+    }
+
+    const handleFinishMaterialArrivedForm =(data)=>{
+        console.log(data,"onfinsih material arrived")
+        const body = {
+            'OrderDetailId' : data.orderDetailId,
+            'totalCollies' : data.totalCollies,
+            'totalVolume': data.totalVolume,
+            'LMBY' : userId
+        }
+        API.postMaterialArriveWH(body).then(
+            result=>{
+                if(result.status=="success"){
+                    toast.success(result.message)
+                    getPickUpCompletion();
+                    setIsModalMaterialArrive(false)
+                }
+                else if(result.status=="warning"){
+                    toast.success(result.message)
+                }
+                else{
+                    toast.error(result.message)
+                }
+            }
+        )
+        console.log(body,"body material arrived")
+    }
+
     function getOrderDetail(odis) {
         setIsLoading(true);
         API.getOrderRequest(odis).then(
@@ -110,6 +149,7 @@ export default function TablePickup() {
             }
         )
     }
+
     function getMaterial(data) {
         setIsLoading(true);
         API.getMaterial(odi).then(
@@ -120,6 +160,7 @@ export default function TablePickup() {
             }
         )
     }
+
     function getLog(data) {
         setIsLoading(true);
         API.getLog(odi).then(
@@ -131,7 +172,6 @@ export default function TablePickup() {
         )
     }
 
-    
     const ddlTransporTeam = (transportTeamId,workpackageid) => {
         API.getDdlTransportTeam(transportTeamId,workpackageid).then(
             result=>{
@@ -156,6 +196,7 @@ export default function TablePickup() {
     const hideModal = () => {
         setIsModalVisibleReaasignment(false)
     }
+
     const showModalTab = (record) => {
         setIsModalTabVisible(true)
         console.log(record,"modaltab")
@@ -184,10 +225,9 @@ export default function TablePickup() {
                 else{
                     toast.error(result.message)
                 }
-            })
+            }
+        )
     }
-
-
 
     const columns = [
         {
@@ -257,7 +297,6 @@ export default function TablePickup() {
             },
             ...Search('incomingDate'),
         },
-
         {
             title : "Assigned By",
             dataIndex:'assignBy',
@@ -268,7 +307,6 @@ export default function TablePickup() {
             dataIndex:'assignTo',
             ...Search('assignTo'),
         },
-  
         {
             title : "Assign Date",
             render:(record)=>{
@@ -285,7 +323,6 @@ export default function TablePickup() {
             dataIndex:'assignStatus',
             ...Search('assignStatus'),
         },
-  
         {
             title:"Action",
             key:"orderMaterialId",
@@ -294,14 +331,24 @@ export default function TablePickup() {
             render:(record)=>{
                 return (
                     <div>
-                       
                         <Space size={20}>
-                      
-                            <Tooltip title="Re-Assign Transport team Form">
-                                <LocalShippingIcon style={{fontSize:24,color:'#008de3'}} onClick={()=>showModal(record)}/>  
-                            </Tooltip>
-
-
+                            {
+                                record.confirmTaskComplete=="yes" ?
+                                
+                                    <Tooltip title="Material Arrived at Warehouse">
+                                        <IconButton
+                                            size="small"
+                                            onClick={() => handleMaterialArrived(record)}
+                                        >
+                                            <CheckCircleTwoTone twoToneColor="#52c41a" />
+                                        </IconButton>
+                                    </Tooltip>
+                                    :
+                                    <Tooltip title="Re-Assign Transport team Form">
+                                        <LocalShippingIcon style={{fontSize:24,color:'#008de3'}} onClick={()=>showModal(record)}/>  
+                                    </Tooltip>
+                            }
+                           
                             <Tooltip title="View Detail">
                                 <EyeFilled style={{fontSize:20 ,color:'#008de3'}} onClick={()=>showModalTab(record.orderDetailId)}/>  
                             </Tooltip>
@@ -424,10 +471,7 @@ export default function TablePickup() {
                                 <EditOutlined style={{fontSize:20}} />  
                             </IconButton>
                         </Tooltip>
-                        
                     </div>
-                    
-                   
                 )
             }
             
@@ -486,7 +530,6 @@ export default function TablePickup() {
             dataIndex:'totalVolume',
             ...Search('totalVolume'),
         },
-        
         {
             title:"Action",
             // key:"orderDetailId",
@@ -506,7 +549,6 @@ export default function TablePickup() {
                     </div>
                 )
             }
-            
         },
     ]
 
@@ -569,10 +611,6 @@ export default function TablePickup() {
             dataIndex:'workpackageId',
       
         },
- 
-   
- 
-       
         {
             title : "Site Name",
             dataIndex:'siteName',
@@ -710,6 +748,7 @@ export default function TablePickup() {
     function callback(key) {
         if(key==1){
             
+            getOrderDetail(odi)
             // getPickUpCompletion();
         }
         else if(key==2){
@@ -760,7 +799,6 @@ export default function TablePickup() {
                                 position: ["bottomLeft"],
                             }}
                             bordered />
-                
                     }
                 </TabPane>
                 <TabPane tab="Multi Delivery Progress" key="2">
@@ -773,8 +811,6 @@ export default function TablePickup() {
                         :
                         <Table
                             scroll={{ x: '150%' }}
-
-                            // expandable={{ expandedRowRender }}
                             columns={columnsMulti}
                             dataSource={multiDeliveryList}
                             pagination={{
@@ -783,7 +819,6 @@ export default function TablePickup() {
                                 position: ["bottomLeft"],
                             }}
                             bordered />
-                
                     }
                 </TabPane>
             </Tabs>
@@ -887,7 +922,6 @@ export default function TablePickup() {
                                         scroll={{x: "200%"}}
                                         size="medium"
                                         pagination={false}
-                                        
                                     />
                                 }
                             </div>
@@ -895,7 +929,7 @@ export default function TablePickup() {
                     </TabPane>
                     <TabPane tab="Material Order" key="2">
                         <Card>
-                            <div >
+                            <div>
                                 { isLoading ?   
                                     <Row justify="center">
                                         <Col span={1}>    
@@ -937,14 +971,12 @@ export default function TablePickup() {
                                             position: ["bottomLeft"],
                                         }}
                                         dataSource={dataLog}
-                                
                                     />
                                 }
                             </div>
                         </Card>
                     </TabPane>
                 </Tabs>
-      
             </Modal>
 
             <Modal title="Manage Order Request Pending List"
@@ -952,7 +984,7 @@ export default function TablePickup() {
                 destroyOnClose={true}
                 footer={
                     <Button key="back" onClick={handleCloseManage}>
-                                close
+                        close
                     </Button>}
                 onCancel={handleCloseManage}
                 centered
@@ -973,6 +1005,85 @@ export default function TablePickup() {
                     bordered />
             </Modal>
 
+            <Modal title="Material Arrive at WH"
+                visible={isModalMaterialArrive}
+                destroyOnClose={true}
+                footer={null}
+                
+                onCancel={handleCancelMaterialArrive}
+            >
+                <Form
+                    name="basic"
+                    labelCol={{ span: 10 }}
+                    wrapperCol={{ span: 14 }}
+                    initialValues={{
+                        'requestNo' : selectedRequestNo,
+                        'orderDetailId': odi
+                    }}
+                    onFinish={handleFinishMaterialArrivedForm}
+                    onFinishFailed={handleFailedMaterialArrivedForm}
+                    autoComplete="off"
+                >
+                    <Form.Item
+                        // hidden
+                        label="Request No"
+                        name="requestNo"
+                        
+                    >
+                        <Input disabled/>
+                    </Form.Item>
+                    <Form.Item
+                        // hidden
+                        label="Order Detail Id"
+                        name="orderDetailId"
+                        
+                    >
+                        <Input disabled/>
+                    </Form.Item>
+                    
+                    <Form.Item
+                        // hidden
+                        label="Total Collies"
+                        name="totalCollies"
+                        rules={[{ required: true, message: 'Please input Total Collies!' }]}
+                    >
+                        <InputNumber
+                            style={{ width: 200 }}
+                            defaultValue="0"
+                            min="0"
+                            step="0.01"
+                            // onChange={onChange}
+                            stringMode
+                            
+                        />
+                    </Form.Item> 
+                    <Form.Item
+                        // hidden
+                        label="Total Volume (CBM)"
+                        name="totalVolume"
+                        rules={[{ required: true, message: 'Please input Total Volume!' }]}
+                    >
+                        <InputNumber
+                            style={{ width: 200 }}
+                            defaultValue="0"
+                            min="0"
+                            step="0.01"
+                            // onChange={onChange}
+                            stringMode
+                            
+                        />
+                    </Form.Item> 
+                        
+                    <Form.Item wrapperCol={{ offset: 10, span: 14 }}>
+                        <Space>
+                            <Button type="primary" htmlType="submit">
+                            Confirm
+                            </Button>
+                        </Space>
+                    </Form.Item>
+                </Form>
+            </Modal>
+            
         </div>
     )
 }

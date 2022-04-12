@@ -212,6 +212,31 @@ const POSTFile = (path,id,file)  => {
     })
     return promise;
 }
+// const POSTFileParam2 = (path,param1,param2,file)  => {
+//     var formdata = new FormData();
+//     formdata.append("fileupload",file);
+
+//     const promise = new Promise((resolve, reject) => {
+//         const token = localStorage.getItem('token'); 
+//         axios.post(`${baseURL}${path}/${id}`
+//             ,formdata
+//             ,{
+//                 headers: { 
+//                     'Content-Type' : 'application/json',
+//                     Authorization: `Bearer ${token}` 
+//                 }
+//             },
+//         ).then((result)=> {
+//             console.log('i am post :',result.data);
+//             resolve(result.data);
+//         },(err)=>{
+//             console.log('config errer',err.response.status);
+//             resolve(err.response.status);
+            
+//         })
+//     })
+//     return promise;
+// }
 const POSTFileParam3 = (path,param1,param2,param3,file)  => {
     var formdata = new FormData();
     formdata.append("fileupload",file);
@@ -686,7 +711,7 @@ const assignMultiDelivery = (body) => POST('multidelivery/multiDeliveryAssignTas
 const deleteMultiDeliveryRequest = (mdid) => DELETE('multidelivery/multiDeliveryDeleteOrderRequest',mdid)
 const putDeleteMultiDeliveryRequest = (body) => PUT('multidelivery/multiDeliveryDeleteGroup',body)
 
-
+const postMaterialArriveWH = (body) => POST('lspassignment/orderRequestPickupCompletedAtWH',body)
 
 const getOrderRequestTracking =(odi) => GETParam('rpt/orderRequestProgressTracking',odi);
 const getItemOrderedList =(odi) => GETParam('materialmanagement/orderRequestMaterialGetItemListBookedBasedId',odi);
@@ -750,19 +775,42 @@ const getDismantleSiteInfo = (odi) => GETParam("positelist/getSiteInfoBasedOnOrd
 const getDismantleList = (tdg) => GETParam("boqref/boqAsBuiltMMResult",tdg);
 const getDismantlePhotoList = (tdg) => GETParam("boqref/boqAsBuiltMMResultIncludeImage",tdg);
 const postDismantleAck = (body) => POST("taskassignment/logisticMilestoneACKConfirmed",body);
+const postRejectDismantleAck = (body) => POST("taskassignment/logisticMilestoneACKRejected",body);
 
 // Dismantle Act Done
-
 const getDismantleActDone = (uId) => GETParam("rpt/dismantleACKDoneList",uId);
 
+// item Transfer Limit
+
+
+const getItemTransferMarketList = () => GET("transferasset/getWHList");
+const getItemTransferMarketWh = (dopId) => GETParam("transferasset/getSummaryItemLimitBasedOnWH",dopId);
+const getItemTransferMarketWhList = (dopId) => GETParam("transferasset/getListItemLimitBasedOnWH",dopId);
+
+const getCekTrueOrFalse = (dopId,body) => POSTParam("transferasset/boqUploadDataCheckHasCleared",dopId,body);
+const postBoqProceed = (dopId,body) => POSTParam("transferasset/boqAssetUploadProceed",dopId,body);
+const deleteBoqProceed = (dopId) => DELETEParam("transferasset/boqAssetCleanupData",dopId);
+const uploadBoqAsset = (dopId,uid,File) => POSTFileParam2("transferasset/boqAssetUpload",dopId,uid,File);
+const getSummaryAsPO = (dopId) => GETParam("transferasset/boqAssetUploadResult",dopId);
+
 const API ={
+    postMaterialArriveWH,
+    postRejectDismantleAck,
     postDismantleAck,
     getDismantlePhotoList,
     getDismantleList,
+    uploadBoqAsset,
     getDeliveryNote,
+    postBoqProceed,
+    deleteBoqProceed,
     getPhotoRecipient,
     getPhotoSender,
     getHODoneLog,
+    getCekTrueOrFalse,
+    getSummaryAsPO,
+    getItemTransferMarketList,
+    getItemTransferMarketWh,
+    getItemTransferMarketWhList,
     getDismantleActPending,
     getDismantleActDone,
     getMaterialOrderHODetail,

@@ -115,7 +115,7 @@ export default function BoqAsPoUpload() {
         console.log(flag,"flag==")
     }
     const mapBoqList = dataBoqList.map((e)=>e.rollbackStatus)
-    const tai = mapBoqList.values()
+
 
     const columnsBoqSummary = [
         {

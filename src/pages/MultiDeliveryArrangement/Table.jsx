@@ -165,9 +165,16 @@ const MultiDeliveryArrangementPanel = () => {
         }
         API.postMultiDeliveryArrangement(body).then(
             result =>{
+                if(result.status=="success"){
+                    
+                    toast.success(result.message)
+                    getMultiDeliveryRequestPending()
+                }
+                else{
+                    toast.error(result.message)
+                    
+                }
                 console.log(result,"rst add")
-                toast.success(result.message)
-                getMultiDeliveryRequestPending()
                 // getMultiDeliveryDetail(mdid)
                 // getMultiDeliveryRequestList(mdid)
             }

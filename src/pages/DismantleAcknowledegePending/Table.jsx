@@ -1,9 +1,10 @@
+/* eslint-disable react/jsx-no-bind */
 /* eslint-disable react/no-unstable-nested-components */
 import React,{useEffect,useState} from 'react'
 import API from '@app/utils/apiServices'
 import { useSelector } from 'react-redux';
 
-import {Table ,Space,Row,Col,Spin,Tooltip} from "antd"
+import {Table ,Statistic,Slider,Space,Row,Col,Spin,Tooltip} from "antd"
 import moment from "moment"
 import Search from '@app/components/searchcolumn/SearchColumn';
 import { EditFilled  } from '@ant-design/icons'
@@ -13,8 +14,9 @@ import { useHistory } from 'react-router-dom';
 export default function TableDismantlePending() {
     const history = useHistory()
     const [dataDismatleAct,setDtaDismantleAct] = useState([])
- 
-    const [isLoading, setIsLoading] = useState(true);
+    const [sliderVal,setSliderVal] = useState(0)
+    const { Countdown } = Statistic;
+    const [isLoading, setIsLoading] = useState(false);
 
     const userId = useSelector(state=>state.auth.user.uid)
 
@@ -29,8 +31,28 @@ export default function TableDismantlePending() {
         )
     }
 
+    function onFinish() {
+        console.log('finished!');
+        
+    }
+  
+    function onChangeHandler(val) {
+        console.log(val/1000)
+        
+        setSliderVal(val)
+        if(val<=100){
+            getDataDismantleActPending()
+        }
+    }
+    function onChangeSlider(value) {
+        console.log(value,"slider")
+        
+    }
+
     const handleNavigate = (data) => {
-        history.push(`/task/ackdismantleform?odi=${data.orderDetailId}&tdg=${data.transDelegateId}&pg=pending&requestedby=${data.requestedById}`)
+        history.push(`/task/ackdismantleform?odi=${data.orderDetailId}&tdg=${data.transDelegateId}&pg=pending&rbid=${data.requestedById}`)
+        console.log(data,"navigate tp")
+    
     }
 
     const columns = [
@@ -146,9 +168,20 @@ export default function TableDismantlePending() {
                     </Col>
                 </Row>  
                 :
-                <Table
+                <><Row hidden>
+                    <Col span={12} hidden>
+                        <Countdown value={Date.now() + 10 * 10000} onChange={onChangeHandler} onFinish={onFinish} format="s" />
+                    </Col>
+                    <Col span={5}>
+                        <p>data will be refreshed at: </p>
+                    </Col>
+                    <Col span={19}>
+                        <Slider min={0} max={100000} value={sliderVal} onChange={onChangeSlider} />
+                    </Col>
+
+                </Row><Table
                     scroll={{ x: '150%' }}
-                    rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
+                    rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' : 'table-row-dark'}
                     // expandable={{ expandedRowRender }}
                     columns={columns}
                     dataSource={dataDismatleAct}
@@ -157,7 +190,7 @@ export default function TableDismantlePending() {
                         showSizeChanger: true,
                         position: ["bottomLeft"],
                     }}
-                    bordered />}
+                    bordered /></>}
         </div>
     )
 }
