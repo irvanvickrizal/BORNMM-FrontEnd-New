@@ -16,7 +16,7 @@ export default function TableDismantlePending() {
     const [dataDismatleAct,setDtaDismantleAct] = useState([])
     const [sliderVal,setSliderVal] = useState(0)
     const { Countdown } = Statistic;
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     const userId = useSelector(state=>state.auth.user.uid)
 
@@ -161,18 +161,6 @@ export default function TableDismantlePending() {
 
     return (
         <div>
-            <Row>
-                <Col span={12} hidden>
-                    <Countdown value={Date.now() + 10 * 10000} onChange={onChangeHandler} onFinish={onFinish} format="s"/>
-                </Col>
-                <Col span={5}>
-                    <p>data will be refreshed at : </p>
-                </Col>
-                <Col span={19}>
-                    <Slider min={0} max={100000} value={sliderVal} onChange={onChangeSlider}/>
-                </Col>
-
-            </Row>
             { isLoading ?   
                 <Row justify="center">
                     <Col span={1}>    
@@ -180,9 +168,20 @@ export default function TableDismantlePending() {
                     </Col>
                 </Row>  
                 :
-                <Table
+                <><Row hidden>
+                    <Col span={12} hidden>
+                        <Countdown value={Date.now() + 10 * 10000} onChange={onChangeHandler} onFinish={onFinish} format="s" />
+                    </Col>
+                    <Col span={5}>
+                        <p>data will be refreshed at: </p>
+                    </Col>
+                    <Col span={19}>
+                        <Slider min={0} max={100000} value={sliderVal} onChange={onChangeSlider} />
+                    </Col>
+
+                </Row><Table
                     scroll={{ x: '150%' }}
-                    rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
+                    rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' : 'table-row-dark'}
                     // expandable={{ expandedRowRender }}
                     columns={columns}
                     dataSource={dataDismatleAct}
@@ -191,7 +190,7 @@ export default function TableDismantlePending() {
                         showSizeChanger: true,
                         position: ["bottomLeft"],
                     }}
-                    bordered />}
+                    bordered /></>}
         </div>
     )
 }
