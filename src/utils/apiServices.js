@@ -781,6 +781,7 @@ const postRejectDismantleAck = (body) => POST("taskassignment/logisticMilestoneA
 // Dismantle Act Done
 const getDismantleActDone = (uId) => GETParam("rpt/dismantleACKDoneList",uId);
 
+
 // item Transfer Limit
 
 
@@ -794,6 +795,11 @@ const deleteBoqProceed = (dopId) => DELETEParam("transferasset/boqAssetCleanupDa
 const uploadBoqAsset = (dopId,uid,File) => POSTFileParam2("transferasset/boqAssetUpload",dopId,uid,File);
 const getSummaryAsPO = (dopId) => GETParam("transferasset/boqAssetUploadResult",dopId);
 
+
+// Transfer Asset Request
+const getTransfeAssetRequest = (uId) => GETParam("sitelist/transferAssetReq",uId);
+
+
 const API ={
     getIdentity,
     postMaterialArriveWH,
@@ -801,6 +807,7 @@ const API ={
     postDismantleAck,
     getDismantlePhotoList,
     getDismantleList,
+    getTransfeAssetRequest,
     uploadBoqAsset,
     getDeliveryNote,
     postBoqProceed,
