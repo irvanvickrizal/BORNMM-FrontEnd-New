@@ -80,7 +80,8 @@ const DismantleForm = (props) => {
     const [checked,setChecked] = useState(false);
     const [selectedDeliveryMode,setSelectedDeliveryMode] = useState('');
     const [form] = Form.useForm();
-
+    const [phoneNumber,setPhoneNumber] = useState('')
+    
     const [express,setExpress] = useState(false);
     const [siteNo,setSiteNo] = useState('')
     const navigateTo = (path) => {
@@ -88,6 +89,14 @@ const DismantleForm = (props) => {
     }
 
     const user = useSelector((state) => state.auth.user);
+    const getIdentity = () => {
+        API.getIdentity().then(
+            result=>{
+                console.log("data me:",result)
+                setPhoneNumber(result.data.phoneNo)
+            }
+        )
+    }
 
     const getSiteInfo = () => {
         API.getSiteInfo(wpid).then(
@@ -391,6 +400,7 @@ const DismantleForm = (props) => {
         getHasExpressDelivery();
         getCTNameDDL(selectedInvCode);
         getDeliveryModeDDL()
+        getIdentity()
         // getTeamCoordinator();
     },[wpid,orderTypeId,express,selectedInvCode])
 
@@ -660,7 +670,7 @@ const DismantleForm = (props) => {
                                         <Row>
                                             <Col span={3}>Phone No</Col>
                                             <Col span={1}>:</Col>
-                                            <Col span={15}>{user.name}</Col>
+                                            <Col span={15}>{phoneNumber}</Col>
                                         </Row>
                                     </Col>
                                     <Form.Item wrapperCol={{ offset: 8, span: 16 }} style={{marginTop:6}}>

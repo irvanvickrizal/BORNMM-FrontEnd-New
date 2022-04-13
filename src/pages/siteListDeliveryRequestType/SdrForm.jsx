@@ -93,7 +93,7 @@ const SdrForm = (props) => {
         history.push(path)
     }
     const user = useSelector((state) => state.auth.user);
-
+    const [phoneNumber,setPhoneNumber] = useState('')
     const getSiteInfo = () => {
         API.getSiteInfo(wpid).then(
             result=>{
@@ -117,6 +117,14 @@ const SdrForm = (props) => {
             result=>{
                 console.log("data team:",result)
                 setDdlTeam(result);
+            }
+        )
+    }
+    const getIdentity = () => {
+        API.getIdentity().then(
+            result=>{
+                console.log("data me:",result)
+                setPhoneNumber(result.data.phoneNo)
             }
         )
     }
@@ -375,6 +383,7 @@ const SdrForm = (props) => {
     }
 
     useEffect(() => {
+        getIdentity();
         console.log('wpid:',wpid,"ordertype:",orderTypeId)
         getSiteInfo();
         getInventoryDDL();
@@ -643,7 +652,7 @@ const SdrForm = (props) => {
                                 </Form.Item>
                                 <Divider orientation="center" />
                                 <Row>
-                                    <Col span={20}>
+                                    <Col span={18}>
                                         <Row>
                                             <Col span={3}>Requester</Col>
                                             <Col span={1}>:</Col>
@@ -657,26 +666,18 @@ const SdrForm = (props) => {
                                         <Row>
                                             <Col span={3}>Phone No</Col>
                                             <Col span={1}>:</Col>
-                                            <Col span={15}>{user.name}</Col>
+                                            <Col span={15}>{phoneNumber}</Col>
                                         </Row>
                                     </Col>
-                                    <div className="float-right">
-                                        <Form.Item wrapperCol={{ offset: 1, span: 16 }} style={{marginTop:6}}>
-                                            <Row>
-                                                <Col span={4}> 
-                                                    <Space direction="horizontal">
-                                                        <Button type="primary" htmlType="submit" >Confirm</Button>
-                               
-                                                        <Button type="danger" onClick={btnCancel}>Cancel</Button>
-                                                    </Space>
-                                                </Col>
-                                            </Row>
-                                        </Form.Item>
-                                    </div>
-                              
-                                  
+                                    <Form.Item wrapperCol={{ offset: 8, span: 16 }} style={{marginTop:6}}>
+                                        <Col span={4}> 
+                                            <Space direction="horizontal">
+                                                <Button type="primary" htmlType="submit" >Confirm</Button>
+                                                <Button type="danger" onClick={btnCancel}>Cancel</Button>
+                                            </Space>
+                                        </Col>
+                                    </Form.Item>
                                 </Row>
-                                
                                 
                             </Form>
                             
