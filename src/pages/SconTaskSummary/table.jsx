@@ -556,17 +556,25 @@ export default function TableTaskSummary(props) {
             render:(record)=>{
                 return (
                     <div style={{display:"flex",alignItems:'center',justifyContent:'center'}}>
-                        <Space size={16} >
-                            <Tooltip title="Re-Assign Task">
-                                <UserSwitchOutlined style={{fontSize:"18px"}} onClick={()=> showModalOnProgress(record)}  />
-                            </Tooltip>
+                        {
+                            record.ackOnProgress == "yes" ?
+                                <p style={{'color':'red'}}>
+                                Dismantle ACK on Progress
+                                </p>
+                                :
+                                <Space size={16} >
+                                    <Tooltip title="Re-Assign Task">
+                                        <UserSwitchOutlined style={{fontSize:"18px"}} onClick={()=> showModalOnProgress(record)}  />
+                                    </Tooltip>
                   
                           
                       
-                            <Tooltip title="Cancel Task">
-                                <CloseSquareTwoTone twoToneColor="#FF0000" style={{fontSize:"18px"}} onClick={()=>showModalCancel(record)}/>
-                            </Tooltip>
-                        </Space>
+                                    <Tooltip title="Cancel Task">
+                                        <CloseSquareTwoTone twoToneColor="#FF0000" style={{fontSize:"18px"}} onClick={()=>showModalCancel(record)}/>
+                                    </Tooltip>
+                                </Space>
+                        }
+                        
                     </div>
                    
                 )

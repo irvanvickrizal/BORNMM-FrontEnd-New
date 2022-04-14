@@ -493,6 +493,7 @@ const DELETEParam = (path,body,param)  => {
     return promise;
 }
 
+const getIdentity = () => GET('me');
 
 const getMenu = (id,tokens) => GetMenu('menu',id,tokens);
 const changePassword = (body) => PUT('user/userChangePassword',body);
@@ -800,6 +801,7 @@ const getTransfeAssetRequest = (uId) => GETParam("sitelist/transferAssetReq",uId
 
 
 const API ={
+    getIdentity,
     postMaterialArriveWH,
     postRejectDismantleAck,
     postDismantleAck,
