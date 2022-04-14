@@ -16,6 +16,7 @@ export default function TableTransferAsserRequest() {
     const [dataTransferRequest,setDataTransferRequest] = useState([])
     const [dataOrderTypeList,setDataOrderTypeList] = useState([])
     const [path,setPath] = useState("")
+    const [ddId,setddId] = useState("")
     const history = useHistory()
   
     const [isLoading, setIsLoading] = useState(true);
@@ -40,10 +41,11 @@ export default function TableTransferAsserRequest() {
     const selectedArray = (data) => {
         setDataOrderTypeList(data.orderTypeList[0].orderTypeName)
         setPath(data.orderTypeList[0].formPath)
+        setddId(data.destDOPId)
 
     }
     const handleSelectDropdown = () => {
-        history.push(`/${path}`)
+        history.push(`/${path}&ddid=${ddId}`)
     }
 
     
@@ -76,19 +78,19 @@ export default function TableTransferAsserRequest() {
             ...Search('siteName'),
         },
       
-        {
-            title : "CPO No",
-            render:(record)=>{
-                return (
-                    <div>
-                        <Typography>{record.poDetail.cpoNo}</Typography>
-                    </div>
+        // {
+        //     title : "CPO No",
+        //     render:(record)=>{
+        //         return (
+        //             <div>
+        //                 <Typography>{record.poDetail.cpoNo}</Typography>
+        //             </div>
                    
                    
-                )
-            },
-            ...Search('siteNo'),
-        },
+        //         )
+        //     },
+        //     ...Search('siteNo'),
+        // },
      
         {
             title : "Workpackage ID",
