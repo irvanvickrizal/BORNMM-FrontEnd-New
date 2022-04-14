@@ -32,12 +32,13 @@ import moment from 'moment';
 
 import { toast } from 'react-toastify';
 
-const DismantleForm = (props) => {
+const TARForm = (props) => {
     const customURL = window.location.href;
     const params = new URLSearchParams(customURL.split('?')[1])
     const { Title } = Typography;
     const wpid = params.get('wpid');
     const orderTypeId = params.get('ot');
+    const ddid = params.get('ddid');
     const [siteInfo, setSiteInfo] = useState([]);
     const [cpoNo,setCpoNo] = useState("");
     const [generalScope,setGeneralScope] = useState("");
@@ -59,12 +60,14 @@ const DismantleForm = (props) => {
     const [ddlSubcon,setDDLSubcon] = useState([]);
     const [ddlSiteCondition,setDDLSiteCondition] = useState([]);
     const [ddlIDeliveryMode,setDDLDeliveryMode] = useState([]);
+    const [ddlOrderType,setDDLOrderType] = useState([]);
     const current = new Date();
     const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
     const date2 = `${current.getFullYear()}-${current.getMonth()+1}-${current.getDate()}`;
     
     const history = useHistory();
     const [selectedInvCode,setSelectedInvCode] = useState('');
+    const [selectedOrderType,setSelectedOrderType] = useState('');
     const [selectedSiteLocation,setSelectedSiteLocation] = useState('');
     const [selectedRequestBase,setSelectedRequestBase] = useState('');
     const [selectedCTName,setSelectedCTName] = useState('');
@@ -126,12 +129,21 @@ const DismantleForm = (props) => {
         )
     }
 
+    const getOrderTypeDDL = () => {
+        API.getmOrderType().then(
+            result=>{
+                console.log("OrderType",result);
+                setDDLOrderType(result);
+                setSelectedOrderType(orderTypeId);
+            }
+        )
+    }
+
     const getDeliveryModeDDL = () => {
         API.getDdlDeliveryDate(orderTypeId).then(
             result=>{
                 console.log("propose",result);
                 setDDLDeliveryMode(result);
-                setSelectedDeliveryMode(result[0].deliveryModeId)
                 // setInitialValue(result[0].invCode)
             }
         )
@@ -142,7 +154,6 @@ const DismantleForm = (props) => {
             result=>{
                 console.log("rb",result);
                 setDDLRequestBase(result);
-                setSelectedRequestBase(result[0].requestTypeId)
             }
         )
     }
@@ -160,7 +171,6 @@ const DismantleForm = (props) => {
         API.getSiteLocation().then(
             result=>{
                 setDDLSiteLocation(result);
-                setSelectedSiteLocation(result[0].neTypeId)
                 console.log("netype",result);
             }
         )
@@ -179,7 +189,6 @@ const DismantleForm = (props) => {
         API.getOrigin(wpid,orderTypeId).then(
             result=>{
                 setDDLOrigin(result);
-                setSelectedOrigin(result[0].dopId)
                 console.log("ORIGIN",result);
             }
         )
@@ -198,7 +207,6 @@ const DismantleForm = (props) => {
         API.getPacketType(orderTypeId).then(
             result=>{
                 setDDLPacketType(result);
-                setSelectedPacketType(result[0].packetTypeId)
                 console.log("PacketType",result);
             }
         )
@@ -244,7 +252,6 @@ const DismantleForm = (props) => {
         )
     }
 
-
     const getTeamCoordinator = (sconid) => {
         console.log("sconid",sconid)
         API.getTeamCoordinator(sconid,wpid).then(
@@ -267,12 +274,12 @@ const DismantleForm = (props) => {
             key: 'scopeName',
         },
         {
-            title: 'Site No',
+            title: 'WH Code',
             dataIndex: 'siteNo',
             key: 'siteNo',
         },
         {
-            title: 'Site Name',
+            title: 'WH Name',
             dataIndex: 'siteName',
             key: 'siteName',
         },
@@ -338,10 +345,10 @@ const DismantleForm = (props) => {
                 "subconId":selectedSubcon,
                 "originId":selectedOrigin,        
                 "destinationId":selectedDestination,        
-                "siteConditionId":selectedSiteCondition,
+                "siteConditionId":0,
                 "CTId":data.ctName,
                 "packetTypeId":selectedPacketType,
-                "neTypeId" : selectedSiteLocation,
+                "neTypeId" : 1,
                 "siteAddress": siteAddress,
                 "proposeDeliveryModeId":data.proposeDelivery,
                 "expectedDeliveryDate":moment(data.deliveryDate).format("YYYY-MM-DD"),
@@ -349,8 +356,8 @@ const DismantleForm = (props) => {
                 "picOnSiteId":data.teamCoordinator
             }
         )
-        console.log("dismantle body",body);
-        API.postDismantleForm(body).then(
+        console.log("TAR body",body);
+        API.postTARForm(body).then(
             result=>{
                 if(result.status=="success")
                 {
@@ -406,6 +413,7 @@ const DismantleForm = (props) => {
         getCTNameDDL(selectedInvCode);
         getDeliveryModeDDL()
         getIdentity()
+        getOrderTypeDDL()
         // getTeamCoordinator();
     },[wpid,orderTypeId,express,selectedInvCode])
 
@@ -417,12 +425,11 @@ const DismantleForm = (props) => {
 
     return (
         <div>
-            <HeaderChanger title="Dismantle Form"/>
             <Row>
                 <Col span={24}>
                     <div className="card card-primary">
                         <div className="card-header align-middle">
-                            <h3 className="card-title">Site Info</h3>
+                            <h3 className="card-title">Warehouse Info</h3>
                         </div>
                         <div className="card-body">
                             <Table columns={columns} scroll={{ x: '100%' }} pagination={false} dataSource={siteInfo} />
@@ -442,44 +449,18 @@ const DismantleForm = (props) => {
                                     'inventoryCode':1,
                                     'ctName':1,
                                     'deliveryDate': moment(date2, "YYYY-MM-DD").add(2,'d'),
-                                    'requestBase':selectedRequestBase,
-                                    'siteLocation':selectedSiteLocation,
-                                    'origin': selectedOrigin,
-                                    'deliveryMode': selectedDeliveryMode,
-                                    'packetType':selectedPacketType 
+                                    'destination' : ddid
                                 }}
                                 fields={[
                                     {
                                         name: ["siteAddress"],
                                         value: siteAddress,
                                     },
-                                    {
-                                        name: ["requestBase"],
-                                        value: selectedRequestBase,
-                                    },
-                                    {
-                                        name: ["siteLocation"],
-                                        value: selectedSiteLocation,
-                                    },
-                                    {
-                                        name: ["origin"],
-                                        value: selectedOrigin,
-                                    },
-                                    {
-                                        name: ["deliveryMode"],
-                                        value: selectedDeliveryMode,
-                                    },
-                                    {
-                                        name: ["packetType"],
-                                        value: selectedPacketType,
-                                    },
                                 ]}
                                 onFinish={handleConfirm}
                                 onFinishFailed={onFinishFailedAddMaterial}
                             >
-                                <Form.Item label="Order Type" 
-                                  
-                                >
+                                <Form.Item label="Order Type" >
                                     <Input disabled value="PMR" />
                                 </Form.Item>
                                 <Form.Item label="Inventory Code"
@@ -503,7 +484,7 @@ const DismantleForm = (props) => {
                                 >
                                     <Select
                                         onChange={(e) => setSelectedRequestBase(e)} 
-                                    >
+                                        placeholder="Select an option">
                                         {
                                             ddlRequestBase.map(rbs =>  <Select.Option value={rbs.requestTypeId}> 
                                                 {rbs.requestTypeName}</Select.Option>)
@@ -599,7 +580,7 @@ const DismantleForm = (props) => {
                                     </Select>
                                 </Form.Item>
                                 
-                                <Form.Item label="Team Coordinator at Site" 
+                                <Form.Item label="WH Supervisor" 
                                     name="teamCoordinator"
                                     rules={[{ required: true, message: 'Please Select Team Coordinator!'}]}
                                 >
@@ -721,4 +702,4 @@ const DismantleForm = (props) => {
 
 }
 
-export default DismantleForm;
+export default TARForm;
