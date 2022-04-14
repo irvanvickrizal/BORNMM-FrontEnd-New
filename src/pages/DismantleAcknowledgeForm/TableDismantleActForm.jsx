@@ -289,10 +289,11 @@ export default function TableDismantleActForm() {
     }
     const handleBack = () =>
     {
-        if(pg == "pending"){
+        console.log(pg,"pg")
+        if(pg == 'pending'){
             history.push("/task/ackdismantlepending")
         }
-        if(pg == "done"){
+        else if(pg == 'done'){
             history.push("/rpt/ackdismantledone")
         }
     }
@@ -340,39 +341,45 @@ export default function TableDismantleActForm() {
         {
             title : "CPO No",
             dataIndex:'cpoNo',
+            width:100,
             ...Search('cpoNo'),
         },
    
         {
             title : "Site No",
             dataIndex:'siteNo',
+            width:150,
             ...Search('siteNo'),
         },
         {
             title : "Site Name",
             dataIndex:'siteName',
-      
+            width:150,
             ...Search('siteName'),
         },
         {
             title : "Region",
             dataIndex:'region',
+            width:150,
             ...Search('region'),
         },
         {
             title : "Zone",
             dataIndex:'zone',
+            width:150,
             ...Search('zone'),
         },
         {
             title : "Workpackage ID",
             dataIndex:'workpackageId',
+            width:150,
             ...Search('workpackageId'),
         },
    
         {
             title : "Site Address",
             dataIndex:'siteAddress',
+            width:150,
             ...Search('siteAddress'),
         },
         {
@@ -480,21 +487,19 @@ export default function TableDismantleActForm() {
                             <div className='float-right'>
                                 <Space direction="horizhontal">
                                     {pg == "pending" ?
-                                        <Button
+                                        <><Button
                                             type="primary"
                                             onClick={() => handleConfirm()}
                                         >
                                             Accept
-                                        </Button>
+                                        </Button><Button
+                                            type="danger"
+                                            onClick={() => handleReject()}
+                                        >
+                                                Reject
+                                        </Button></>
                                         :
                                         <></>}
-                                    
-                                    <Button
-                                        type="danger"
-                                        onClick={() => handleReject()}
-                                    >
-                                            Reject
-                                    </Button>
                                     <Button
                                         type="secondary"
                                         onClick={() => handleBack()}
