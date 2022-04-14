@@ -1,6 +1,5 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable no-undef */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React,{useEffect,useState} from 'react'
 import {Table,Input,Menu, Dropdown, Button, Space,Typography} from 'antd'
@@ -147,6 +146,7 @@ export default function TableTransferAsserRequest() {
         },
 
     ]
+
     useEffect(() => {
         getDataTransferAssetRequest();
         

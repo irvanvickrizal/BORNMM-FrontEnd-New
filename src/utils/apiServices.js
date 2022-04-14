@@ -529,6 +529,7 @@ const putmScope = (body) => PUT('poscope', body);
 const putmScopeActivation = (body) => PUT('poscope/SetActivationStatus', body);
 
 const getmOrderType = () => GET('masterordertype');
+const putActivationmOrderType = (body) => PUT('masterordertype/OrderTypeSetActivation',body);
 
 const getmSubcon = () => GET('subcon/getlsp');
 
@@ -818,6 +819,7 @@ const API ={
     getCekTrueOrFalse,
     getSummaryAsPO,
     getItemTransferMarketList,
+    putActivationmOrderType,
     getItemTransferMarketWh,
     getItemTransferMarketWhList,
     getDismantleActPending,
