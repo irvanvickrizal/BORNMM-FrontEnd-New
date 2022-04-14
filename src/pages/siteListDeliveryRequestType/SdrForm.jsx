@@ -120,6 +120,7 @@ const SdrForm = (props) => {
             }
         )
     }
+    
     const getIdentity = () => {
         API.getIdentity().then(
             result=>{

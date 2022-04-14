@@ -30,7 +30,7 @@ export default function TableDismantleActDone() {
     }
 
     const handleNavigate = (data) => {
-        history.push(`/task/ackdismantleform?odi=${data.orderDetailId}&tdg=${data.transDelegateId}&pg="done"`)
+        history.push(`/task/ackdismantleform?odi=${data.orderDetailId}&tdg=${data.transDelegateId}&pg=done`)
     }
 
     const columns = [
@@ -42,42 +42,50 @@ export default function TableDismantleActDone() {
         {
             title : "CPO No",
             dataIndex:'cpoNo',
+            width:100,
             ...Search('cpoNo'),
         },
         {
             title : "Project Name",
             dataIndex:'projectName',
+            width:150,
             ...Search('projectName'),
         },
         {
             title : "Site No",
             dataIndex:'siteNo',
+            width:100,
             ...Search('siteNo'),
         },
         {
             title : "Site Name",
             dataIndex:'siteName',
       
+            width:150,
             ...Search('siteName'),
         },
         {
             title : "Workpackage ID",
             dataIndex:'workpackageId',
+            width:100,
             ...Search('workpackageId'),
         },
         {
             title : "Region",
             dataIndex:'region',
+            width:150,
             ...Search('region'),
         },
         {
             title : "Zone",
             dataIndex:'zone',
+            width:150,
             ...Search('zone'),
         },
         {
             title : "Site Address",
             dataIndex:'siteAddress',
+            width:150,
             ...Search('siteAddress'),
         },
      
@@ -89,6 +97,7 @@ export default function TableDismantleActDone() {
         },
         {
             title : "Request Date",
+            width:100,
             render:(record)=>{
                 return (
                     <div>
@@ -105,11 +114,13 @@ export default function TableDismantleActDone() {
         },
         {
             title : "Actknowledge By",
+            width:100,
             dataIndex:'ackCompletedBy',
             ...Search('ackCompletedBy'),
         },
         {
             title : "Act Date",
+            width:100,
             render:(record)=>{
                 return (
                     <div>

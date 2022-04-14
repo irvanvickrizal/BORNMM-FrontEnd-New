@@ -63,43 +63,51 @@ export default function TableDismantlePending() {
         },
         {
             title : "CPO No",
+            
             dataIndex:'cpoNo',
+            width:100,
             ...Search('cpoNo'),
         },
         {
             title : "Project Name",
             dataIndex:'projectName',
+            width:150,
             ...Search('projectName'),
         },
         {
             title : "Site No",
             dataIndex:'siteNo',
+            width:100,
             ...Search('siteNo'),
         },
         {
             title : "Site Name",
             dataIndex:'siteName',
-      
+            width:150,
             ...Search('siteName'),
         },
         {
             title : "Workpackage ID",
             dataIndex:'workpackageId',
+            width:150,
             ...Search('workpackageId'),
         },
         {
             title : "Region",
             dataIndex:'region',
+            width:150,
             ...Search('region'),
         },
         {
             title : "Zone",
             dataIndex:'zone',
+            width:150,
             ...Search('zone'),
         },
         {
             title : "Site Address",
             dataIndex:'siteAddress',
+            width:150,
             ...Search('siteAddress'),
         },
         {
@@ -179,9 +187,31 @@ export default function TableDismantlePending() {
                         <Slider min={0} max={100000} value={sliderVal} onChange={onChangeSlider} />
                     </Col>
 
-                </Row><Table
+                </Row>
+                {/* <Table
+            // rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
+            rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
+            dataSource={dataSiteList}
+            columns={columns}
+            key='siteConditionId'
+            scroll={{ x: '100%' }}
+            // eslint-disable-next-line react/jsx-boolean-value
+            pagination={{
+                pageSizeOptions: ['5','10','20','30', '40'],
+                showSizeChanger: true,
+                position: ["bottomLeft"],
+            }}
+                    
+            style={{marginTop : 36}}
+            size='small'
+            bordered
+            // loading={loading ? (true):(false)}    
+                
+        /> */}
+                
+                <Table
                     scroll={{ x: '150%' }}
-                    rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' : 'table-row-dark'}
+                    size='small'
                     // expandable={{ expandedRowRender }}
                     columns={columns}
                     dataSource={dataDismatleAct}
