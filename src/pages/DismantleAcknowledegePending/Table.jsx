@@ -63,7 +63,6 @@ export default function TableDismantlePending() {
         },
         {
             title : "CPO No",
-            
             dataIndex:'cpoNo',
             width:100,
             ...Search('cpoNo'),

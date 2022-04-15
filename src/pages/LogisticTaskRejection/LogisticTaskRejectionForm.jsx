@@ -90,6 +90,7 @@ export default function LogisticTaskRejectionForm() {
     const dataSite = useSelector(
         (state) => state.logistikFormReducer.dataSiteInfo
     )
+
     const dataOrderLogistik = useSelector(
         (state) => state.logistikFormReducer.dataSiteInfoLogistik
     )
@@ -383,7 +384,7 @@ export default function LogisticTaskRejectionForm() {
       
         dispatch(getIdDelivery(dataTransportId))
         dispatch(getDeliveryTransport())
-    
+        setNote(dataOrderLogistik[0]?.note)
 
         // dispatch(getDataSiteInfoLogistik())
         // dispatch(getIdDelivery(data.deliveryRequest))
@@ -590,7 +591,7 @@ export default function LogisticTaskRejectionForm() {
                                 fields={[
                                     {
                                         name: ["note"],
-                                        value: dataOrderLogistik[0]?.note
+                                        value: note
                                     },
                                 ]}
                             >
@@ -672,7 +673,6 @@ export default function LogisticTaskRejectionForm() {
                                     </Select>
                                 </Form.Item>
                                 <Form.Item label="Note" name="note" 
-                        
                                 >
                                     <TextArea rows={4} onChange={(e) => setNote(e.target.value)}/>
                                 </Form.Item>

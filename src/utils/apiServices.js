@@ -532,6 +532,7 @@ const getmOrderType = () => GET('masterordertype');
 const putActivationmOrderType = (body) => PUT('masterordertype/OrderTypeSetActivation',body);
 
 const getmSubcon = () => GET('subcon/getlsp');
+const getWHSPV = (lspteamid,wpid) => GETParam2('subcon/GetLSPWHTeam',lspteamid,wpid);
 
 const getPOList = () => GET('customerpo');
 const postPOData = (body) => POST('customerpo', body);
@@ -569,6 +570,7 @@ const getOrderRequestDraft = (uid) => GETParam('mmReport/OrderRequestGetListDraf
 const getOrderDetailForm = (odi) => GETParam('materialmanagement/OrderDetailRequestGetDetail',odi);
 const getMaterialOrderLog = (odi) => GETParam('audittrail/auditTrailOrderRequestGetList',odi);
 const getOrderDetailMaterial = (odi) => GETParam('materialmanagement/orderRequestMaterialGetDetail',odi);
+const getOrderDetailMaterialTAR = (odi,userid) => GETParam2('materialmanagement/orderRequestMaterialTransferAssetGetDetail',odi,userid);
 const getBOQRefGetList = (odi) => GETParam('materialmanagement/boqRefGetList',odi);
 const getMaterialListExcludeOrdered = (odi) => GETParam('materialmanagement/masterMaterialGetListExcludeOrdered',odi);
 const postMaterialOrderDirectSubmit = (body,odi) => POSTParam('materialmanagement/materialOrderDirectSubmit',body,odi);
@@ -804,6 +806,8 @@ const getTARWarehouseInfor = (uId) => GETParam("sitelist/transferAssetReq",uId);
 
 
 const API ={
+    getOrderDetailMaterialTAR,
+    getWHSPV,
     postTARForm,
     getTARWarehouseInfor,
     getIdentity,

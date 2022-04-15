@@ -180,7 +180,7 @@ export default function TableLogisticRejectionTask() {
                 </Row>  
                 :
                 <>
-                    <Row>
+                    <Row hidden>
                         <Col span={12} hidden>
                             <Countdown value={Date.now() + 10 * 10000} onChange={onChangeHandler} onFinish={onFinish} format="s"/>
                         </Col>

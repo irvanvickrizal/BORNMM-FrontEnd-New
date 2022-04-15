@@ -67,12 +67,12 @@ export default function TableTransferAsserRequest() {
             render: (value, item, index) => 1 + index
         },
         {
-            title : "Site No",
+            title : "WH Code",
             dataIndex:'siteNo',
             ...Search('siteNo'),
         },
         {
-            title : "Site Name",
+            title : "WH Name",
             dataIndex:'siteName',
             ...Search('siteName'),
         },
