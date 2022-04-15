@@ -12,128 +12,61 @@
 /* eslint-disable import/extensions */
 /* eslint-disable react/no-unused-state */
 /* eslint-disable react/prefer-stateless-function */
-import React, {Component,useState,useEffect} from 'react';
-import Modal from 'react-bootstrap/Modal';
-import axios from 'axios';
-
-import {variables} from '../../Variables';
-import {ContentHeader} from '@components';
-//Bootstrap and jQuery libraries
-// import 'bootstrap/dist/css/bootstrap.min.css';
-import 'jquery/dist/jquery.min.js';
-//Datatable Modules
-import "datatables.net-dt/js/dataTables.dataTables";
-import "datatables.net-dt/css/jquery.dataTables.min.css";
-import "datatables.net-bs4/js/dataTables.bootstrap4"
-import "datatables.net-buttons/js/dataTables.buttons"
-import "datatables.net-fixedcolumns/js/dataTables.fixedColumns.min.js";
-
-import $ from 'jquery'; 
+import React, {useState,useEffect} from 'react';
 import API  from '../../utils/apiServices';
-import ScopePanel from './mScopePanel';
-import {useDispatch,useSelector} from 'react-redux';
-import { setIsEdit, setIsNew } from '@app/store/reducers/scope';
+import {useSelector} from 'react-redux';
 import {toast} from 'react-toastify';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSave, faPowerOff } from '@fortawesome/free-solid-svg-icons'
-import { BsPencilFill } from 'react-icons/bs';
+import Search from '@app/components/searchcolumn/SearchColumn';
+import {Switch ,Form,Modal,Table, Input, Button, Space, Spin, Row, Col,Tooltip  } from 'antd'
+import {CheckOutlined,CloseOutlined,PlusOutlined, EditOutlined } from '@ant-design/icons'
+import {IconButton}  from '@mui/material/';
 
-import Form from 'react-bootstrap/Form';
 
 
 const mScopeList = () => {
-    // const isNew = useSelector((state) => state.scope.isNew);
-    const [isEdit,setIsEdit] = useState(false);
-    const [isNew,setIsNew] = useState(false);
+
+    const [isLoading, setIsLoading] = useState(false);
+
     
     const [scopeName,setScopeName] = useState("");
     const [scopeDesc,setScopeDesc] = useState("");
-    const [isActive,setIsActive] = useState("");
 
-    const [show, setShow] = useState(false);
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isModalEditVisible, setIsModalEditVisible] = useState(false);
     const [scopeData,setScopeData] = useState([]);
-    const [isActiveRow,setIsActiveRow] = useState(false);
+    const [idScope,setIdScope] = useState("");
 
-    const handleClose = () => 
-    {
-        setShow(false) 
-        setIsNew(false);
-        setIsEdit(false);
-    }
+    const user = useSelector((state) => state.auth.user);
 
-    const handleShowAdd = () => {
-        setShow(true);
-        setIsNew(true);
-    };
-
-    const handleShowEdit = (scp) => {
-        //setShow(true);
-        scp.isEditRow = true;
-        console.log("edit :",scp);
-        setIsEdit(true);
-    };
-
-    const handleCancelEdit = (scp) => {
-        //setShow(true);
-        scp.isEditRow = null;
-        console.log("edit cancel:",scp)
-        setIsEdit(false);
-    };
 
     function getScope(){
+        setIsLoading(true)
         API.getmScope().then(
             result=>{
                 setScopeData(result);
+                setIsLoading(false)
             }
         )
     } 
 
-    function refreshData(){
-        getScope();
-        //getOrderType();
-        //getSubcon();
-    }
-
-    function saveClick(scopeId){
-        const body ={
-            "ScopeId":scopeId,
-            "ScopeName": scopeName,
-            "ScopeDesc": scopeDesc,
-            "CMINFO": {
-                "LMBY": 0          
-            }
-        }
-        console.log("saveclick",body);
-        API.putmScope(body).then(
-            result=>{
-                console.log(result);
-                if(result.status=="success")
-                {
-                    toast.success(result.message);
-                    refreshData();
-                }
-                else{
-                    toast.error(result.message);
-                }
-            }
-        )
-    }
-
-    function handleIsActiveClick(scopeId, e ){
+    const handleIsActive = (status,data) =>{
+        console.log(data,"data pass")
+        console.log(status,data,"isActive")
         if (window.confirm('Are you sure you want to process this action ?')) {
             const body={
-                "Id":scopeId,
-                "ActStatus":e.target.checked,
-                "LMBY":0  
+                "id" : data.scopeId,
+                "actStatus" : status,
+                "lmby" : user.uid
             }
-            console.log(body);
+            console.log("activa:",body);
             API.putmScopeActivation(body).then(
                 result=>{
-                    console.log("put scope: ", result);
+                    console.log("put material: ", result);
                     if(result.status=="success")
                     {
                         toast.success(result.message);
-                        refreshData();
+                        //refreshData();
                         //window.location.reload();
                     }
                     else{
@@ -144,138 +77,291 @@ const mScopeList = () => {
         }
     }
 
-    const handleSaveFromPanel = () =>{
-        setShow(false);
-        refreshData();
+    const showModal = () => {
+        setIsModalVisible(true)
+    }
+    const hideModal = () => {
+        setIsModalVisible(false)
     }
 
+    const showModalEdit = (data) => {
+        setIsModalEditVisible(true)
+        setScopeName(data.scopeName)
+        setScopeDesc(data.scopeDesc) 
+        setIdScope(data.scopeId)
+
+
+    }
+    const hideModalEdit = () => {
+        setIsModalEditVisible(false)
+    }
+
+    const handleEditAddForm = (data) => {
+        const body = 
+            {
+                "scopeId":idScope,
+                "scopeName":data.scopeName,
+                "scopeDesc":data.scopeDesc,
+                "CMINFO":{
+                    "LMBY":user.uid
+                }
+            }
+        
+        console.log(body,"body");
+        console.log(data,"data");
+        API.putmScope(body).then(
+            result=>{
+                console.log(result,"result")
+                if(result.status=="success")
+                {
+                    toast.success(result.message);
+                    getScope()
+           
+                    setIsModalEditVisible(false)
+              
+                    // window.location.reload();
+                }
+                else{
+                    toast.error(result.message);
+                }
+            }
+        )              
+    }
+
+    const handleOkAddForm = (data) => {
+        const body = 
+            {
+                "scopeName":data.scopeName,
+                "scopeDesc":data.scopeDesc,
+                "CMINFO":{
+                    "LMBY":user.uid
+                }
+            }
+        
+        console.log(body,"body");
+        console.log(data,"data");
+        API.postmScope(body).then(
+            result=>{
+                console.log(result,"result")
+                if(result.status=="success")
+                {
+                    toast.success(result.message);
+                    getScope()
+                    getScope()
+                    setIsModalVisible(false)
+              
+                    // window.location.reload();
+                }
+                else{
+                    toast.error(result.message);
+                }
+            }
+        )              
+    }
+
+    const column = [
+        {
+            title : "No",
+            width : 10,
+            render: (value, item, index) => 1 + index
+        },
+        {
+            title : "Scope Name",
+            width: 100,
+            dataIndex:'scopeName',
+            ...Search('scopeName'),
+        },
+    
+        {
+            title : "Desc",
+            width: 100,
+            dataIndex:'scopeDesc',
+            ...Search('scopeDesc'),
+        },
+        {
+            title : "isActive",
+            width: 30,
+            align:'center',
+            fixed: 'right',
+            render:(record)=>{
+                return (
+                    <Switch
+                        checkedChildren={<CheckOutlined />}
+                        unCheckedChildren={<CloseOutlined />}
+                        defaultChecked={record.cminfo.isActive}
+                        onClick={(e)=>handleIsActive(e,record)}
+                        // checked={record.isActive}
+                    />
+                )
+            },
+  
+        },
+        {
+            title : "Options",
+            width: 30,
+            key:"orderMaterialId",
+            align:'center',
+            fixed: 'right',
+
+            render:(record)=>{
+                return (
+                    <Space>
+                        <Tooltip title="Edit Material">
+                            <IconButton
+                                size='small'
+                                color="primary"
+                                aria-label="upload file"
+                                component="span" 
+                                // onClick={() => handleEdit(record)}
+                            >
+                                <EditOutlined onClick={()=>showModalEdit(record)}/>
+                            </IconButton>
+                        </Tooltip>
+                    </Space>
+                )
+  
+            },}
+
+    ]
+        
+
     useEffect(() => {
-        refreshData();
-        setTimeout(()=>{                        
-
-            var t = $('#tblScope').DataTable( {
-                "columnDefs": [ 
-                    {width: '9%', targets: 4}
-                    
-                ],
-                "order": [[ 1, 'asc' ]],
-                "scrollX": false,
-                orderCellsTop: true,
-                responsive:true,
-                autoWidth: false,
-                search:true
-            } );
-
-            t.on( 'order.dt search.dt', function () {
-                t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-                    cell.innerHTML = i+1;
-                } );
-            } ).draw();
-
-        }, 2000);
+        getScope()
+    
     },[])
     
     return (
-        <><div className="card card-primary">
-            <div className="card-header align-middle">
-                <h3 className="card-title">Scope List</h3>
-                <a href='javascript:void(0)' onClick={handleShowAdd} class="btn btn-success float-right">
-                    <i class="fas fa-plus"></i>
-                </a>
-            </div>
-            <div className="card-body">
-                <table id="tblScope" className="display table table-striped table-bordered table-sm row-border hover mb-5 responsive" aria-labelledby="tabelLabel">
-                    <thead>
-                        <tr>
-                            <th>NO</th>
-                            <th>Scope Name</th>
-                            <th>Desc</th>
-                            <th>IsActive</th>
-                            <th>Option</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {scopeData.map(scp => <tr key={scp.scopeId}>
-                            <td></td>
-                            <td>
-                                {scp.isEditRow == null ? scp.scopeName :
-                                    <input placeholder={scp.scopeName} onChange={(e) => setScopeName(e.target.value)} type="text" class="form-control col-md-9" aria-label="Username" aria-describedby="basic-addon1" />}
-                            </td>
-                            <td>
-                                {scp.isEditRow == null ? scp.scopeDesc :
-                                    <input placeholder={scp.scopeDesc} onChange={(e) => setScopeDesc(e.target.value)} type="text" class="form-control col-md-9" aria-label="Username" aria-describedby="basic-addon1" />}
-                            </td>
-                            <td>
-                                <Form.Check
-                                    type="switch"
-                                    id={scp.scopeId}
-                                    checked={scp.cminfo.isActive}
-                                    onChange={(e) => handleIsActiveClick(scp.scopeId, e)} />
-                            </td>
-                            <td>
-                                {scp.isEditRow == false || scp.isEditRow == null ?
-                                    <button type="button"
-                                        className="btn btn-light mr-1"
-                                        onClick={() => handleShowEdit(scp)}
-                                        title="edit">
-                                        <BsPencilFill/>
-                                    </button>
-                                    :
-                                    <button type="button"
-                                        className="btn btn-success mr-1"
-                                        onClick={() => saveClick(scp.scopeId)}>
-                                        <FontAwesomeIcon icon={faSave} />
-                                    </button>
-                                    // <a href='javascript:void(0)' onClick={()=>handleSaveEdit(scp)} class="btn btn-success float-right">
-                                    //     <i class="fas fa-save"></i>
-                                    // </a>
-                                }
-                                {scp.isEditRow == true ?
-                                    <a href='javascript:void(0)' onClick={() => handleCancelEdit(scp)} class="btn btn-danger float-right">
-                                        <i class="fas fa-light fa-times"></i>
-                                    </a> : null}
-                                {scp.datainused == 0 ?
-                                    <button type="button"
-                                        className="btn btn-light mr-1"
-                                        onClick={() => this.deleteClick(scp.scopeId, scp.scopeName)}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16">
-                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
-                                        </svg>
-                                    </button> : null}
-                            </td>
-                        </tr>
-                        )}
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>NO</th>
-                            <th>Scope Name</th>
-                            <th>Desc</th>
-                            <th>IsActive</th>
-                            <th>Option</th>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div><Modal
-            size="lg"
-            show={show}
-            onHide={handleClose}
-            backdrop="static"
-            keyboard={false}
-        >
-            <Modal.Header closeButton>
-                <Modal.Title>"Add New Scope"</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <ScopePanel/>
-            </Modal.Body>
-            {/* <Modal.Footer>
-                    <Button variant="primary" onClick={saveClick}>Save</Button>
-                </Modal.Footer> */}
-        </Modal>
-        </>
+        <div>
+            
+            {isLoading ? 
+                <Row justify="center">
+                    <Col span={1}>    
+                        <Spin />
+                    </Col>
+                </Row>  
+                :
+                <><div className='float-right'>
+                
+                    <Tooltip title="Add New Scope">
+                        <IconButton  color="primary" onClick={()=>showModal()}>
+                            <PlusOutlined style={{fontSize:24}} />
+                        </IconButton>
+                    </Tooltip>
+
+                </div><Table
+                    scroll={{ x: '100%' }}
+                    size="small"
+                    // expandable={{ expandedRowRender }}
+                    columns={column}
+                    dataSource={[...scopeData]}
+                    rowKey={record => record.materialId}
+                    pagination={{
+                        pageSizeOptions: ['5', '10', '20', '30', '40'],
+                        showSizeChanger: true,
+                        position: ["bottomLeft"],
+                    }}
+                    bordered /></>}
+
+            {/* Modal add */}
+            <Modal title="Add New Scope"
+                visible={isModalVisible}
+                destroyOnClose
+                onCancel={hideModal}
+                centered
+                maskClosable={false}
+                closable
+                footer={null}
+            >
+                <Form
+                    name="basic"
+                    labelCol={{ span: 7 }}
+                    wrapperCol={{ span: 17 }}
+                    initialValues={{
+             
+                    }}
+                    onFinish={handleOkAddForm}
+                    // onFinishFailed={handleFailedAddForm}
+                    autoComplete="off"
+                >
+           
+            
+                    <Form.Item
+                        label="Scope Name"
+                        name="scopeName"
+                        rules={[{ required: true, message: 'Please input Scope Name Field!' }]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        label="Scope Desc"
+                        name="scopeDesc"
+                        rules={[{ required: true, message: 'Please input Scope Desc Field!' }]}
+                    >
+                        <Input />
+                    </Form.Item>
+                 
+                    <Form.Item wrapperCol={{ offset: 20, span: 4 }}>
+                        <Space>
+                            <Button type="primary" htmlType="submit">
+                                Confirm
+                            </Button>
+                        </Space>
+                    </Form.Item>
+                </Form>
+            </Modal>    
+
+            {/* Modal Edit */}
+            <Modal title="Edit New Scope"
+                visible={isModalEditVisible}
+                destroyOnClose
+                onCancel={hideModalEdit}
+                centered
+                maskClosable={false}
+                closable
+                footer={null}
+            >
+                <Form
+                    name="basic"
+                    labelCol={{ span: 7 }}
+                    wrapperCol={{ span: 17 }}
+              
+                    onFinish={handleEditAddForm}
+                    // onFinishFailed={handleFailedAddForm}
+                    autoComplete="off"
+                    initialValues={{
+                        'scopeName': scopeName,
+                        'scopeDesc': scopeDesc,
+                       
+                    }}
+                >
+           
+            
+                    <Form.Item
+                        label="Scope Name"
+                        name="scopeName"
+                        rules={[{ required: true, message: 'Please input Scope Name Field!' }]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        label="Scope Desc"
+                        name="scopeDesc"
+                        rules={[{ required: true, message: 'Please input Scope Desc Field!' }]}
+                    >
+                        <Input />
+                    </Form.Item>
+                 
+                    <Form.Item wrapperCol={{ offset: 20, span: 4 }}>
+                        <Space>
+                            <Button type="primary" htmlType="submit">
+                                Confirm
+                            </Button>
+                        </Space>
+                    </Form.Item>
+                </Form>
+            </Modal>    
+        </div>
+    
     );
 };
 

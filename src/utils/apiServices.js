@@ -493,6 +493,7 @@ const DELETEParam = (path,body,param)  => {
     return promise;
 }
 
+const getIdentity = () => GET('me');
 
 const getMenu = (id,tokens) => GetMenu('menu',id,tokens);
 const changePassword = (body) => PUT('user/userChangePassword',body);
@@ -528,8 +529,10 @@ const putmScope = (body) => PUT('poscope', body);
 const putmScopeActivation = (body) => PUT('poscope/SetActivationStatus', body);
 
 const getmOrderType = () => GET('masterordertype');
+const putActivationmOrderType = (body) => PUT('masterordertype/OrderTypeSetActivation',body);
 
 const getmSubcon = () => GET('subcon/getlsp');
+const getWHSPV = (lspteamid,wpid) => GETParam2('subcon/GetLSPWHTeam',lspteamid,wpid);
 
 const getPOList = () => GET('customerpo');
 const postPOData = (body) => POST('customerpo', body);
@@ -558,6 +561,7 @@ const getDismantledBy = () => GET('subcon/GetFieldSubcontractor');
 const getSiteCondition = () => GET('sitecondition');
 const getSubcon = () => GET('subcon/GetFieldSubcontractor');
 const postDismantleForm = (body) => POST('materialmanagement/OrderDetailAdd',body);
+const postTARForm = (body) => POST('materialmanagement/OrderDetailAdd',body);
 const getTeamCoordinator= (subconid,workpackageid) => GETParam2('subcon/getCoordinatorSubcontractorEngineer',subconid,workpackageid);
 const getHasExpressDelivery= (ordertypeid) => GETParam('masterordertype/orderTypeHasExpressDelivery',ordertypeid);
 
@@ -780,6 +784,7 @@ const postRejectDismantleAck = (body) => POST("taskassignment/logisticMilestoneA
 // Dismantle Act Done
 const getDismantleActDone = (uId) => GETParam("rpt/dismantleACKDoneList",uId);
 
+
 // item Transfer Limit
 
 
@@ -793,12 +798,23 @@ const deleteBoqProceed = (dopId) => DELETEParam("transferasset/boqAssetCleanupDa
 const uploadBoqAsset = (dopId,uid,File) => POSTFileParam2("transferasset/boqAssetUpload",dopId,uid,File);
 const getSummaryAsPO = (dopId) => GETParam("transferasset/boqAssetUploadResult",dopId);
 
+
+// Transfer Asset Request
+const getTransfeAssetRequest = (uId) => GETParam("sitelist/transferAssetReq",uId);
+const getTARWarehouseInfor = (uId) => GETParam("sitelist/transferAssetReq",uId);
+
+
 const API ={
+    getWHSPV,
+    postTARForm,
+    getTARWarehouseInfor,
+    getIdentity,
     postMaterialArriveWH,
     postRejectDismantleAck,
     postDismantleAck,
     getDismantlePhotoList,
     getDismantleList,
+    getTransfeAssetRequest,
     uploadBoqAsset,
     getDeliveryNote,
     postBoqProceed,
@@ -809,6 +825,7 @@ const API ={
     getCekTrueOrFalse,
     getSummaryAsPO,
     getItemTransferMarketList,
+    putActivationmOrderType,
     getItemTransferMarketWh,
     getItemTransferMarketWhList,
     getDismantleActPending,

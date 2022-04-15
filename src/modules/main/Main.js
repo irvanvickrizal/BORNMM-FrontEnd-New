@@ -98,6 +98,8 @@ import DismantleActDone from "@app/pages/DismantleActknowledgeDone/DismantleActD
 //Item Transfer Limit
 import itemTransferLimitList from "@app/pages/itemTransferLimitList/index"
 import itemTransferLimitWh from "@app/pages/itemTransferLimitWh/index"
+import TransferAsserRequest from "@app/pages/TransferAssetRequest/index"
+import TarIndex from "@app/pages/TransferAssetRequestForm/index"
 
 
 const Main = () => {
@@ -530,6 +532,16 @@ const Main = () => {
                                             exact
                                             path="/ta/boqdetailwh"
                                             component={itemTransferLimitWh}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/mm/transferAssetReq"
+                                            component={TransferAsserRequest}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/MM/TAR"
+                                            component={TarIndex}
                                         />
                                     </Switch>
                                 </div>
