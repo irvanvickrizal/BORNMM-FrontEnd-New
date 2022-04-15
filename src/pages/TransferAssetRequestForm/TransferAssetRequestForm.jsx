@@ -352,7 +352,7 @@ const TARForm = (props) => {
                 "requestTypeId":selectedRequestBase,
                 "subconId":selectedSubcon,
                 "originId":selectedOrigin,        
-                "destinationId":selectedDestination,        
+                "destinationId":ddid,        
                 "siteConditionId":0,
                 "CTId":data.ctName,
                 "packetTypeId":selectedPacketType,

@@ -114,7 +114,7 @@ export default function TARMaterialOrder() {
 
     const getOrderDetailMaterial=(odi)=>{
         setIsOutOfStock(0);
-        API.getOrderDetailMaterial(odi).then(
+        API.getOrderDetailMaterialTAR(odi,user.uid).then(
             result=>{
                 result.map((rst)=>checkoutofstock(rst.balanceQTY)) 
                 setOrderDetailMaterial(result);
@@ -865,7 +865,6 @@ export default function TARMaterialOrder() {
 
     return (
         <div>
-            <HeaderChanger title="Material Order Form"/>
             <Space direction="vertical" style={{ width: '100%' }}>
                 <Card hoverable>
                     <Row>
