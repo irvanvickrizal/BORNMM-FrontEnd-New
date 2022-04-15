@@ -1,3 +1,4 @@
+/* eslint-disable radix */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable react/jsx-no-bind */
@@ -194,9 +195,28 @@ const TARForm = (props) => {
         )
     }
 
-    const getDestination = () => {
-        API.getDestination(wpid,orderTypeId).then(
+    const getAddress = (value) =>{
+        API.getAddress(siteNo,value).then(
             result=>{
+                setSiteAddress(result[0].endPointAddress)  
+                console.log("teslog",result[0].endPointAddress);    
+                // form.setFieldsValue({
+                //     siteAddress: "result[0].endPointAddress"
+                // });
+                console.log(siteAddress,"siteAddress");  
+            }
+        )
+    }
+
+    useEffect(() => {
+        getAddress(ddid)
+    },[siteNo])
+
+
+    const getDestination = () => {
+        API.getmDOPList().then(
+            result=>{
+                
                 setDDLDestination(result);
                 console.log("Destination",result);
             }
@@ -211,8 +231,9 @@ const TARForm = (props) => {
             }
         )
     }
+
     const getSubcon = () => {
-        API.getSubcon(orderTypeId).then(
+        API.getmSubcon().then(
             result=>{
                 setDDLSubcon(result);
                 console.log("PacketType",result);
@@ -225,19 +246,6 @@ const TARForm = (props) => {
         console.log("v",value)
     }
 
-    const handleDestinationChange = (value) =>{
-        setSelectedDestination(value);
-        API.getAddress(siteNo,value).then(
-            result=>{
-                setSiteAddress(result[0].endPointAddress)  
-                console.log("teslog",result[0].endPointAddress);    
-                // form.setFieldsValue({
-                //     siteAddress: "result[0].endPointAddress"
-                // });
-                console.log(siteAddress,"siteAddress");  
-            }
-        )
-    }
 
     const handleCTNameChange = (value)=> {
         console.log("ctchange",value)
@@ -254,7 +262,7 @@ const TARForm = (props) => {
 
     const getTeamCoordinator = (sconid) => {
         console.log("sconid",sconid)
-        API.getTeamCoordinator(sconid,wpid).then(
+        API.getWHSPV(sconid,wpid).then(
             result=>{
                 console.log("data team:",result)
                 setDDLTeamCoordinator(result);
@@ -449,19 +457,36 @@ const TARForm = (props) => {
                                     'inventoryCode':1,
                                     'ctName':1,
                                     'deliveryDate': moment(date2, "YYYY-MM-DD").add(2,'d'),
-                                    'destination' : ddid
+                                    'destination' : parseInt(ddid),
+                                    'orderType' : selectedOrderType
                                 }}
                                 fields={[
                                     {
                                         name: ["siteAddress"],
                                         value: siteAddress,
                                     },
+                                    {
+                                        name: ["orderType"],
+                                        value: parseInt(selectedOrderType),
+                                    },
                                 ]}
                                 onFinish={handleConfirm}
                                 onFinishFailed={onFinishFailedAddMaterial}
                             >
-                                <Form.Item label="Order Type" >
-                                    <Input disabled value="PMR" />
+                                <Form.Item label="Order Type"
+                                    name="orderType"
+                                    
+                                >
+                                    <Select 
+                                        placeholder="Select an option"
+                                        disabled
+                                    >
+                                        {/* <Select.Option value={0}>-- SELECT --</Select.Option> */}
+                                        {
+                                            ddlOrderType.map(ot =>  <Select.Option value={ot.orderTypeId}> 
+                                                {ot.orderTypeName}</Select.Option>)
+                                        }
+                                    </Select>
                                 </Form.Item>
                                 <Form.Item label="Inventory Code"
                                     name="inventoryCode"
@@ -491,19 +516,6 @@ const TARForm = (props) => {
                                         }
                                     </Select>
                                 </Form.Item>
-                                <Form.Item label="Site A/NE - Site B/FE"
-                                    name="site"
-                                    rules={[{ required: true, message: 'Please Select Site!'}]}
-                                >
-                                    <Select
-                                        onChange={(e) => setSelectedSiteLocation(e)}  
-                                        placeholder="Select an option">
-                                        {
-                                            ddlSiteLocation.map(slc =>  <Select.Option value={slc.neTypeId}> 
-                                                {slc.neType}</Select.Option>)
-                                        }
-                                    </Select>
-                                </Form.Item>
                                 <Form.Item label="CT Name" name="ctName"
                                     rules={[{ required: true, message: 'Please Select CT Name!' }]}
                                 >
@@ -520,19 +532,6 @@ const TARForm = (props) => {
                                                 }
                                             </Select>
                                     }
-                                </Form.Item>
-                                <Form.Item label="Site Condition"
-                                    name="siteCondition"
-                                    rules={[{ required: true, message: 'Please Select Site Condition!'}]}
-                                >
-                                    <Select
-                                        onChange={(e) => setSelectedSiteCondition(e)}  
-                                        placeholder="Select an option">
-                                        {
-                                            ddlSiteCondition.map(slc =>  <Select.Option value={slc.siteConditionId}> 
-                                                {slc.condition}</Select.Option>)
-                                        }
-                                    </Select>
                                 </Form.Item>
                                 <Form.Item label="Origin"
                                     name="origin"
@@ -552,7 +551,7 @@ const TARForm = (props) => {
                                     rules={[{ required: true, message: 'Please Select Destination!'}]}
                                 >
                                     <Select 
-                                        onChange={(e) => handleDestinationChange(e)} 
+                                        disabled
                                         placeholder="Select an option">
                                         {
                                             ddlDestination.map(dst =>  <Select.Option value={dst.dopId}> 
@@ -560,9 +559,9 @@ const TARForm = (props) => {
                                         }
                                     </Select>
                                 </Form.Item>
-                                <Form.Item label="SubCon"
+                                <Form.Item label="LSP Team"
                                     name="subCon"
-                                    rules={[{ required: true, message: 'Please Select subCon Name!'}]}
+                                    rules={[{ required: true, message: 'Please Select LSP Name!'}]}
                                 >
                                     <Select 
                                         onChange={(e) => handleSelectedSubcon(e)} 

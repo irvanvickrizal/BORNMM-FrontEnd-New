@@ -532,6 +532,7 @@ const getmOrderType = () => GET('masterordertype');
 const putActivationmOrderType = (body) => PUT('masterordertype/OrderTypeSetActivation',body);
 
 const getmSubcon = () => GET('subcon/getlsp');
+const getWHSPV = (lspteamid,wpid) => GETParam2('subcon/GetLSPWHTeam',lspteamid,wpid);
 
 const getPOList = () => GET('customerpo');
 const postPOData = (body) => POST('customerpo', body);
@@ -804,6 +805,7 @@ const getTARWarehouseInfor = (uId) => GETParam("sitelist/transferAssetReq",uId);
 
 
 const API ={
+    getWHSPV,
     postTARForm,
     getTARWarehouseInfor,
     getIdentity,
