@@ -57,12 +57,12 @@ export default function TableOrderRequestTracking() {
         {
             title : "Order Type",
             dataIndex:'orderType',
-            ...Search('requestNo'),
+            ...Search('orderType'),
         },
         {
             title : "Request Type Name",
             dataIndex:'requestTypeName',
-            ...Search('requestrequestTypeNameNo'),
+            ...Search('requestTypeName'),
         },
         {
             title : "CT Name",
@@ -77,7 +77,7 @@ export default function TableOrderRequestTracking() {
         {
             title : "Origin",
             dataIndex:'originName',
-            ...Search(''),
+            ...Search('originName'),
         },
         {
             title : "Destination",
@@ -107,7 +107,7 @@ export default function TableOrderRequestTracking() {
         {
             title :  "Subcon Name",
             dataIndex:'subconName',
-            ...Search('recipientOrDismantledBy'),
+            ...Search('subconName'),
         },
         {
             title : "Requester",

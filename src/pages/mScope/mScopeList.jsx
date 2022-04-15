@@ -250,7 +250,7 @@ const mScopeList = () => {
 
                 </div><Table
                     scroll={{ x: '100%' }}
-                    size="small"
+                    size="medium"
                     // expandable={{ expandedRowRender }}
                     columns={column}
                     dataSource={[...scopeData]}
