@@ -369,8 +369,9 @@ const TARForm = (props) => {
             result=>{
                 if(result.status=="success")
                 {
+                    console.log(result,'result tarmo')
                     toast.success(result.message);
-                    navigateTo(`/mm/materialorder?odi=${result.returnVal}`)
+                    navigateTo(`/mm/materialOrderTAR?odi=${result.returnVal}`)
                 }
                 else{
                     toast.error(result.message)

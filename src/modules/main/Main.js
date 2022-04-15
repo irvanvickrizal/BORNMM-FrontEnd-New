@@ -100,6 +100,7 @@ import itemTransferLimitList from "@app/pages/itemTransferLimitList/index"
 import itemTransferLimitWh from "@app/pages/itemTransferLimitWh/index"
 import TransferAsserRequest from "@app/pages/TransferAssetRequest/index"
 import TarIndex from "@app/pages/TransferAssetRequestForm/index"
+import indexTARMO from "@app/pages/TransferAssetRequestMaterialOrder/TARMaterialOrder"
 
 
 const Main = () => {
@@ -542,6 +543,11 @@ const Main = () => {
                                             exact
                                             path="/MM/TAR"
                                             component={TarIndex}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/MM/materialOrderTAR"
+                                            component={indexTARMO}
                                         />
                                     </Switch>
                                 </div>
