@@ -80,45 +80,54 @@ export default function TableLogisticRejectionTask() {
         {
             title:'Order Type',
             dataIndex:'orderType',
+            width:100,
             ...Search('orderType'),
         },
         {
             title:'Origin',
             dataIndex:'originName',
+            width:100,
             ...Search('originName'),
         },
         {
             title:'Destination',
             dataIndex:'destinationName',
+            width:120,
             ...Search('destinationName'),
         },
         {
             title:'Delivery Mode',
+            width:100,
             dataIndex:'deliveryMode',
             ...Search('deliveryMode'),
         },
         {
             title:'Delivery Type',
+            width:100,
             dataIndex:'deliveryType',
             ...Search('deliveryDate'),
         },
         {
             title:'Reason of Rejection',
+            width:100,
             dataIndex:'reasonOfRejection',
             ...Search('reasonOfRejection'),
         },
         {
             title:'Transport Rejected By',
+            width:100,
             dataIndex:'transportRejectedBy',
             ...Search('transportRejectedBy'),
         },
         {
-            title:'Work Package Id',
+            title:'Workpackage Id',
+            width:100,
             dataIndex:'workpackageid',
             ...Search('orderType'),
         },
         {
             title:'Site No',
+            width:100,
             dataIndex:'siteNo',
             ...Search('siteNo'),
         },
@@ -132,16 +141,19 @@ export default function TableLogisticRejectionTask() {
         },
         {
             title:'Region',
+            width:130,
             dataIndex:'region',
             ...Search('region'),
         },
         {
             title:'Scope Name',
+            width:140,
             dataIndex:'scopeName',
             ...Search('scopeName'),
         },
         {
             title:'Scope Detail',
+            width:100,
             dataIndex:'scopeDetail',
             ...Search('scopeDetail'),
         },
@@ -149,6 +161,7 @@ export default function TableLogisticRejectionTask() {
     
         {
             title:'Incoming Date',
+            width:150,
             render:(record)=>{
                 return (
                     <Space>
