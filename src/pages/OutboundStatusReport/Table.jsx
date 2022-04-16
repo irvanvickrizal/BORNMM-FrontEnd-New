@@ -184,7 +184,7 @@ export default function TableOutboundStatusReport() {
                 </Row>  
                 :
                 <><div className='float-right'>
-                    <Tooltip title="Download As Excell File">
+                    <Tooltip title="Download Outbound Status Report">
                         <IconButton size="small" color="success" onClick={getDownloadDataDetail}>
                             <FileExcelOutlined />
                         </IconButton>

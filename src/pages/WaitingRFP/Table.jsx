@@ -444,7 +444,7 @@ const WaitingRFPTable = () => {
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(record.requestDate).format("YYYY-MM-DD")}</p>
+                        <Typography>{moment(record.requestDate).format("YYYY-MM-DD hh:mm:ss")}</Typography>
                     </Space>
                 )
             },
@@ -456,7 +456,7 @@ const WaitingRFPTable = () => {
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(record.incomingDate).format("YYYY-MM-DD")}</p>
+                        <Typography>{moment(record.incomingDate).format("YYYY-MM-DD")}</Typography>
                     </Space>
                 )
             },
@@ -468,7 +468,7 @@ const WaitingRFPTable = () => {
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(record.expectedDeliveryDate).format("YYYY-MM-DD")}</p>
+                        <Typography>{moment(record.expectedDeliveryDate).format("YYYY-MM-DD")}</Typography>
                     </Space>
                 )
             },
@@ -501,12 +501,20 @@ const WaitingRFPTable = () => {
             ...Search("materialDesc")
         },
         {
+            title: "BOQ Req QTY",
+            dataIndex: "reqQTY"
+        },
+        {
             title: "BOQ Ref QTY",
             dataIndex: "refQTY"
         },
         {
+            title: "Total Req QTY",
+            dataIndex: "totalReqQTY"
+        },
+        {
             title: "Delta QTY",
-            dataIndex: "reqQTY"
+            dataIndex: "deltaBOQRefQTY"
         }
     ]
 
