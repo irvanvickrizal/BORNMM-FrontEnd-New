@@ -501,12 +501,20 @@ const WaitingRFPTable = () => {
             ...Search("materialDesc")
         },
         {
+            title: "BOQ Req QTY",
+            dataIndex: "reqQTY"
+        },
+        {
             title: "BOQ Ref QTY",
             dataIndex: "refQTY"
         },
         {
+            title: "Total Req QTY",
+            dataIndex: "totalReqQTY"
+        },
+        {
             title: "Delta QTY",
-            dataIndex: "reqQTY"
+            dataIndex: "deltaBOQRefQTY"
         }
     ]
 
