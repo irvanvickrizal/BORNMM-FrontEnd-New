@@ -399,21 +399,18 @@ export default function LogisticTaskRejectionForm() {
         <div>
             <HeaderChanger title="Logistic Task Rejection Form"/>
             <Col span={24}>
-                <div className="card card-primary">
-                    <Card hoverable title={CardTitle("Site Info")}>
+                <Card hoverable title={CardTitle("Site Info")}>
                        
-                        <div className="card-body">
-                            <Table
-                                columns={columns}
-                                pagination={false}
-                                dataSource={dataSite}
-                            />
-                        </div>
-                    </Card>
-                </div>
+                    <Table
+                        columns={columns}
+                        pagination={false}
+                        dataSource={dataSite}
+                        scroll={{ x: '100%' }} 
+                    />
+                </Card>
             </Col>
             <Row>
-                <Col span={12}>
+                <Col sm={12} xs={24}>
                     <Card hoverable title={CardTitle("Order Request Detail")}>
                         <Tabs defaultActiveKey="1" centered={false}>
                             <TabPane tab="Order Request Detail" key="1">
@@ -571,7 +568,7 @@ export default function LogisticTaskRejectionForm() {
                         </Tabs>
                     </Card>
                 </Col>
-                <Col span={12}>
+                <Col sm={12} xs={24}>
                     <Card hoverable title={CardTitle("Logistic Rejection Form TES")}>
                         {dataOrderLogistik.length === 0 ? (<></>):
                             (<Form
@@ -677,34 +674,55 @@ export default function LogisticTaskRejectionForm() {
                                     <TextArea rows={4} onChange={(e) => setNote(e.target.value)}/>
                                 </Form.Item>
                                 <Form.Item wrapperCol={{ offset: 0, span: 24 }} style={{marginTop:6,marginLeft:128}}>
-                                    <Col span={4} md={8} sm={24} >
-                                        <Space direction="horizontal">
-                                            <Button
-                                                type="danger"
-                                                onClick={() =>
-                                                    showModalCancel()
-                                                }
-                                            >
-                                Order Request Cancel
-                                            </Button>
-                                            <Button
-                                                type="primary"
-                                                htmlType="submit"
+                                    <Space direction="vertical"  style={{ width: '100%' }} >
+                                        <div className="float-right">
+                                            <Row> 
+                                                <Space direction="horizontal">
+                                                    <Col sm={24} xs={24}>
+                                        
+                                                        <Button
+                                                            type="primary"
+                                                            htmlType="submit"
                                    
-                                            >
-                                Confirm
-                                            </Button>
-                                            <Button
+                                                        >
+                                                        Confirm
+                                                        </Button>
+                                            
+                                                    </Col>
+                                                    <Col sm={24} xs={24}>
+                                        
+                                                        <Button
                                    
-                                                htmlType="submit"
-                                                onClick={() =>
-                                                    cancelNavigate()
-                                                }
-                                            >
-                                Back
-                                            </Button>
-                                        </Space>
-                                    </Col>
+                                                            htmlType="submit"
+                                                            onClick={() =>
+                                                                cancelNavigate()
+                                                            }
+                                                        >
+                                                        Back
+                                                        </Button>
+                                                    </Col>
+                                    
+                                                </Space>
+                                            </Row>
+                                            
+                                        </div>
+                                        <div className="float-right">                                            
+                                            <Row>
+                                                <Col sm={24} xs={24}>
+                                        
+                                                    <Button
+                                                        type="danger"
+                                                        onClick={() =>
+                                                            showModalCancel()
+                                                        }
+                                                    >
+                                                    Order Request Cancel
+                                                    </Button>
+                                                </Col>
+                                            </Row>
+                                        </div>
+                                    </Space>
+
                                 </Form.Item>
                             </Form>)}
                     </Card>

@@ -178,41 +178,49 @@ export default function TableOrderList() {
         {
             title : "Order Type",
             dataIndex:'orderType',
+            width : 150,
             ...Search('orderType'),
         },
         {
             title : "Request No",
             dataIndex:'requestNo',
+            width : 150,
             ...Search('requestNo'),
         },
         {
             title : "Origin",
+            width : 150,
             dataIndex:'originName',
             ...Search(''),
         },
         {
             title : "Destination",
+            width : 150,
             dataIndex:'destinationName',
             ...Search(''),
         },
         {
             title : "Site No",
+            width : 150,
             dataIndex:'siteNo',
             ...Search('siteNo'),
         },
         {
             title : "Zone",
+            width : 150,
             dataIndex:'zone',
             ...Search('zone'),
         },
         {
             title : "Region",
+            width : 150,
             dataIndex:'region',
             ...Search('region'),
         },
            
         {
             title : "Workpackage Id",
+            width : 150,
             dataIndex:'workpackageid',
             ...Search('workpackageid'),
         },
@@ -221,16 +229,19 @@ export default function TableOrderList() {
  
         {
             title : "Scope Name",
+            width : 150,
             dataIndex:'scopeName',
             ...Search('scopeName'),
         },
         {
             title : "Scope Detail",
+            width : 150,
             dataIndex:'scopeDetail',
             ...Search('scopeDetail'),
         },
         {
             title : "Site Name",
+            width : 150,
             dataIndex:'siteName',
             responsive: ['md'],
             ...Search('siteName'),
@@ -239,6 +250,7 @@ export default function TableOrderList() {
  
         {
             title : "Request Date",
+            width : 150,
             render:(record)=>{
                 return (
                     <div>
@@ -255,6 +267,7 @@ export default function TableOrderList() {
         },
         {
             title : "Order Status",
+            width : 100,
             dataIndex:'orderStatus',
             responsive: ['md'],
             ...Search('orderStatus'),
@@ -263,6 +276,7 @@ export default function TableOrderList() {
             title:"Action",
             // key:"orderDetailId",
             align:'center',
+            width : 70,
             fixed:'right',
             render:(record)=>{
                 return (
