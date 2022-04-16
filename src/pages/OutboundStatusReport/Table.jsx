@@ -60,41 +60,49 @@ export default function TableOutboundStatusReport() {
         },
         {
             title : "Site No",
+            width:150,
             dataIndex:'siteNo',
             ...Search('siteNo'),
         },
         {
             title : "Region",
+            width:150,
             dataIndex:'region',
             ...Search('region'),
         },
         {
             title : "Zone",
+            width:150,
             dataIndex:'zone',
             ...Search('zone'),
         },
         {
             title : "WorkpackageId",
+            width:150,
             dataIndex:'workpackageId',
             ...Search('workpackageId'),
         },
         {
             title : "CDMR Type",
+            width:150,
             dataIndex:'cdmrType',
             ...Search('cdmrType'),
         },
         {
             title : "Delivery Type",
+            width:150,
             dataIndex:'deliveryType',
             ...Search('deliveryType'),
         },
         {
             title : "Delivery Mode",
+            width:150,
             dataIndex:'deliveryMode',
             ...Search('deliveryMode'),
         },
         {
             title :  "RFP Date",
+            width:150,
             ...Search('rdpDate'),
             render:(record)=>{
                 return (
@@ -106,26 +114,31 @@ export default function TableOutboundStatusReport() {
         },
         {
             title :  "Order Request No",
+            width:150,
             dataIndex:'orderReqNo',
             ...Search('orderReqNo'),
         },
         {
             title : "Total Request QTY",
+            width:150,
             dataIndex:'totalReqQTY',
             ...Search('totalReqQTY'),
         },
         {
             title : "Total Booked QTY",
+            width:150,
             dataIndex:'bookedQTY',
             ...Search('bookedQTY'),
         },
         {
             title : "Total Outbound QTY",
+            width:150,
             dataIndex:'outQTY',
             ...Search('outQTY'),
         },
         {
             title : "Outbound Status",
+            width:150,
             dataIndex:'outboundStatus',
             ...Search('outboundStatus'),
         },
