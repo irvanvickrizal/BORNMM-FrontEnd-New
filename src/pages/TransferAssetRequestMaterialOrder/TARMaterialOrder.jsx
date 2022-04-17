@@ -725,11 +725,11 @@ export default function TARMaterialOrder() {
     const expandedRowRender = () => {
         const columnsSiteInfo =[
             {
-                title:"Site No",
+                title:"WH Code",
                 dataIndex:"siteNo",
             },
             {
-                title:"Site Name",
+                title:"WH Name",
                 dataIndex:"siteName",
             },
             {
@@ -759,7 +759,7 @@ export default function TARMaterialOrder() {
         ]
     
         return (
-            <Card title="Site Info"  hoverable>
+            <Card title="WH Info"  hoverable>
                 <Table 
                     columns={columnsSiteInfo} 
                     dataSource={orderDetailData} 
