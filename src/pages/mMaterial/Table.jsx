@@ -32,6 +32,7 @@ const TableMaterial = () => {
     const [ddlCategory,setDdlCategory] = useState([]);
     const [ddlSubCategory,setDdlSubCategory] = useState([]);
     const [selectedUoM, setSelectedUoM] = useState("");
+    const [fileDate, setFileDate] = useState("");
     const [selectedLevel, setSelectedLevel] = useState("");
     const [selectedCategory, setselectedCategory] = useState("");
     const [selectedSubCategory, setSelectedSubCategory] = useState("");
@@ -105,6 +106,33 @@ const TableMaterial = () => {
                 //const data = result//result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
                 const exportType =  exportFromJSON.types.xls;
                 const fileName = `MaterialList_${moment().format("DD-MM-YYYY hh:mm:ss")}`;
+                exportFromJSON({ data, fileName, exportType });
+            }
+        )
+    }
+
+    const downloadMaterial = () =>{
+        API.downloadMMaterial().then(
+            result=>{
+                const data = result.map((rs)=>DGMasterMaterial.MasterMaterial(
+                    rs.materialId
+                    ,rs.materialCode
+                    ,rs.materialName
+                    ,rs.unitOfMeasurement
+                    ,rs.itemLevelDetail.itemLevelName
+                    ,rs.itemLevelDetail.itemLevelId
+                    ,rs.subCategoryDetail.subCategoryName
+                    ,rs.subCategoryDetail.subCategoryId
+                    ,rs.subCategoryDetail.categoryDetail.categoryName
+                    ,rs.isActive
+                    ,rs.boqRefCheck
+                    ,rs.isCustomerMaterial
+                    ,rs.isReusable
+                    ,rs.customerCode
+                )) 
+                //const data = result//result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
+                const exportType =  exportFromJSON.types.xls;
+                const fileName = `BORN_MasterMaterial_${moment(fileDate).format("YYYY-MM-DD")}`;
                 exportFromJSON({ data, fileName, exportType });
             }
         )
