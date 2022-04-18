@@ -65,6 +65,8 @@ const SdrForm = (props) => {
     const [ddlPacketType,setDDLPacketType] = useState([]);
     const [ddlSubcon,setDDLSubcon] = useState([]);
     const [ddlTeam,setDdlTeam] = useState([]);
+    const [ddlWHTeam,setDdlWHTeam] = useState([]);
+    const [ddlWHSPV,setDdlWHSPV] = useState([]);
     const [ddlSiteCondition,setDDLSiteCondition] = useState([]);
     const current = new Date();
     const [checked,setChecked] = useState(false)
@@ -87,6 +89,7 @@ const SdrForm = (props) => {
     const [selectedTeamCoordinator,setSelectedTeamCoordinator] = useState("")
     const [initialValue,setInitialValue]= useState("")
     const [selectedINVCode,setSelectedINVCode]= useState("")
+    const [isSite,setIsSite]= useState(true)
 
     const [siteNo,setSiteNo] = useState('')
     const navigateTo = (path) => {
@@ -207,11 +210,21 @@ const SdrForm = (props) => {
             }
         )
     }
+
     const getSubcon = () => {
         API.getSubcon(orderTypeId).then(
             result=>{
                 setDDLSubcon(result);
                 console.log("PacketType",result);
+            }
+        )
+    }
+
+    const getDDLWHTeam = (destinationId) => {
+        API.getWHTeam(destinationId).then(
+            result=>{
+                setDdlWHTeam(result);
+                console.log("WH team",result);
             }
         )
     }
@@ -245,8 +258,18 @@ const SdrForm = (props) => {
         console.log("v",value)
     }
 
+    const getDDLWHSPV=(destinationid)=>{
+        API.getWHSupervisor(destinationid,wpid,selectedDestination).then(
+            result=>{
+                setDdlWHSPV(result);
+                console.log("wh spv",result);
+            }
+        )
+    }
+
     const handleDestinationChange = (value) =>{
         setSelectedDestination(value);
+        
         API.getAddress(siteNo,value).then(
             result=>{
                 setSiteAddress(result[0].endPointAddress)  
@@ -257,6 +280,20 @@ const SdrForm = (props) => {
                 console.log(siteAddress,"siteAddress");  
             }
         )
+
+        API.checkIsSite(value).then(
+            result=>{
+                console.log("issite",result)
+                setIsSite(result)
+                if(!result)
+                { 
+                    getDDLWHTeam(value)
+                }
+            }
+        )
+        
+
+
     }
     
     const columns = [
@@ -416,6 +453,11 @@ const SdrForm = (props) => {
         setSelectedTeamCoordinator('')
         console.log(selectedTeamCoordinator);
     }
+    const handleWHTeamChange = (e)=>{
+        console.log(e,"selected WH Team");
+        setSelectedSubcon(e)
+        getDDLWHSPV(e)
+    }
 
     return (
         <div>
@@ -548,47 +590,77 @@ const SdrForm = (props) => {
                                         }
                                     </Select>
                                 </Form.Item>
-                                <Form.Item label="SubCon" name="subCon"
-                                    rules={[{ required: true, message: 'Please Select Subcon Name!' }]}
-                                >
-                                    <Select 
-                                        
-                                        onChange={(e) => handleSubcon(e)} 
-                                        optionFilterProp="children"
-                                        placeholder="Select an option"
-                                        //onChange={onChange}
-                                        onSearch={onSearch}
-                                        showSearch
-                                        filterOption={(input, option) =>
-                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                        }
-                                    >
-                                        {
-                                            ddlSubcon.map(dst =>  <Select.Option value={dst.subconId}> 
-                                                {dst.subconName}</Select.Option>)
-                                        }
-                                    </Select>
-                                </Form.Item>
-                                <Form.Item label="Team Coordinator at Site" name="teamCoordinator"
-                                    rules={[{ required: true, message: 'Please Select Team Coordinator!' }]}
-                                >
-                            
-                                    {ddlTeam.length == null ? (<></>):(
-                                        <Select 
-                                            showSearch
-                                            filterOption={(input, option) =>
-                                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                            }
-                                            onChange={(e) => setSelectedTeamCoordinator(e)} 
-                                            placeholder="Select an option"
-                                            allowClear='true'
+                                {
+                                    isSite ? 
+                                        <><Form.Item label="SubCon" name="subCon"
+                                            rules={[{ required: true, message: 'Please Select Subcon Name!' }]}
                                         >
-                                            {
-                                                ddlTeam.map(dst =>  <Select.Option allowClear value={dst.userId}> 
-                                                    {dst.fullname}</Select.Option>)
-                                            }
-                                        </Select>)}
-                                </Form.Item>
+                                            <Select
+
+                                                onChange={(e) => handleSubcon(e)}
+                                                optionFilterProp="children"
+                                                placeholder="Select an option"
+                                                //onChange={onChange}
+                                                onSearch={onSearch}
+                                                showSearch
+                                                filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                                            >
+                                                {ddlSubcon.map(dst => <Select.Option value={dst.subconId}>
+                                                    {dst.subconName}</Select.Option>)}
+                                            </Select>
+                                        </Form.Item><Form.Item label="Team Coordinator at Site" name="teamCoordinator"
+                                            rules={[{ required: true, message: 'Please Select Team Coordinator!' }]}
+                                        >
+
+                                            {ddlTeam.length == null ? (<></>) : (
+                                                <Select
+                                                    showSearch
+                                                    filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                                                    onChange={(e) => setSelectedTeamCoordinator(e)}
+                                                    placeholder="Select an option"
+                                                    allowClear='true'
+                                                >
+                                                    {ddlTeam.map(dst => <Select.Option allowClear value={dst.userId}>
+                                                        {dst.fullname}</Select.Option>)}
+                                                </Select>)}
+                                        </Form.Item></>
+                                        :
+                                        <>
+                                            <Form.Item label="WHTeam" name="subCon"
+                                                rules={[{ required: true, message: 'Please Select Subcon Name!' }]}
+                                            >
+                                                <Select
+
+                                                    onChange={(e) => handleWHTeamChange(e)}
+                                                    optionFilterProp="children"
+                                                    placeholder="Select an option"
+                                                    //onChange={onChange}
+                                                    onSearch={onSearch}
+                                                    showSearch
+                                                    filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                                                >
+                                                    {ddlWHTeam.map(dst => <Select.Option value={dst.scon_id}>
+                                                        {dst.scon_name}</Select.Option>)}
+                                                </Select>
+                                            </Form.Item><Form.Item label="WH Supervisor" name="teamCoordinator"
+                                                rules={[{ required: true, message: 'Please Select Team Coordinator!' }]}
+                                            >
+
+                                                {ddlWHSPV.length == null ? (<></>) : (
+                                                    <Select
+                                                        showSearch
+                                                        filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                                                        onChange={(e) => setSelectedTeamCoordinator(e)}
+                                                        placeholder="Select an option"
+                                                        allowClear='true'
+                                                    >
+                                                        {ddlWHSPV.map(dst => <Select.Option allowClear value={dst.userId}>
+                                                            {dst.fullname}</Select.Option>)}
+                                                    </Select>)}
+                                            </Form.Item>
+                                        </>
+                                }
+                                
                                 
                                 <Form.Item label="Express Delivery" valuePropName="checked" name="isExpressDelivery">  
                                     {express ? (<Checkbox onChange={(e)=>togleCheckbox(e.target.checked)}/>):(
