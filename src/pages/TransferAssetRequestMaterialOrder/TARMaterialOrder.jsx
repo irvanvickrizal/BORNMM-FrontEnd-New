@@ -53,7 +53,7 @@ export default function TARMaterialOrder() {
     const [orderDetailMaterialExcluded,setOrderDetailMaterialExcluded] = useState([]);
     const [materialChoosed,setMaterialChoosed] = useState([]);
     const [materialChoosedEdit,setMaterialChoosedEdit] = useState([]);
-    const [reqQTY, setReqQTY] = useState('');
+    const [reqQTY, setReqQTY] = useState(0);
 
     const { TabPane } = Tabs;
 
@@ -73,7 +73,7 @@ export default function TARMaterialOrder() {
     const [selectedMaterialDesc,setSelectedMaterialDesc] = useState('');
     const [selectedUOM,setSelectedUOM] = useState('');
     const [selectedQTYReq,setSelectedQTYReq] = useState('');
-    const [selectedQTYRef,setSelectedQTYRef] = useState('');
+    const [selectedQTYRef,setSelectedQTYRef] = useState();
     const [selectedBalance,setSelectedBalance] = useState('');
     const [selectedSite,setSelectedSite] = useState('');
     const [selectedOrderStatus,setSelectedOrderStatus] = useState('');
@@ -85,14 +85,20 @@ export default function TARMaterialOrder() {
     const [checkExpress,setCheckExpress] = useState(false)
     const [deliveryDate,setDeliveryDate] = useState('')
     const [newDeliveryDate,setNewDeliveryDate] = useState('')
+    const [isExceedRef,setIsExceedRef] = useState(null);
 
     const navigateTo = (path) => {
         history.push(path)
     }
 
     function checkoutofstock(balanceQTY){
-        if(balanceQTY<0){
+        if(balanceQTY<0 ){
             setIsOutOfStock(1);
+        }
+    }
+    function checkBoqReq(deltaBOQRef){
+        if(deltaBOQRef < 0 ){
+            setIsExceedRef(1);
         }
     }
 
@@ -117,6 +123,7 @@ export default function TARMaterialOrder() {
         API.getOrderDetailMaterialTAR(odi,user.uid).then(
             result=>{
                 result.map((rst)=>checkoutofstock(rst.balanceQTY)) 
+                result.map((rst)=>checkBoqReq(rst.deltaBOQRefQTY)) 
                 setOrderDetailMaterial(result);
             }
         )
@@ -139,6 +146,7 @@ export default function TARMaterialOrder() {
         setSelectedBalance(data.availableQTY);
         setSelectedOrderStatus(data.orderStatus);
         setIsModalEditMaterial(true);
+        setReqQTY(data.reqQTY)
         console.log("edit data", data);
     }
 
@@ -709,14 +717,15 @@ export default function TARMaterialOrder() {
     
    
     const handleDownloadBtn=()=>{
-        API.getBOQRefGetList(odiParam).then(
+        API.getMaterialOrderTARItem(siteNo).then(
             result=>{
-                const data = result.map((rs)=>DataGenerator.boqRef(
-                    rs.workpackageId 
-                    , rs.materialCode
-                    , rs.materialDesc
-                    , rs.refQTY))
-                const fileName = `boqactref_${siteNo}_${wpid}`;
+                const data= result;
+                // const data = result.map((rs)=>DataGenerator.boqRef(
+                //     rs.workpackageId 
+                //     , rs.materialCode
+                //     , rs.materialDesc
+                //     , rs.refQTY))
+                const fileName = `BORN_BOQAssetRef_[${siteNo}]_[${moment().format("DD-MM-YYYY hh:mm:ss")}]`;
                 exportFromJSON({ data, fileName, exportType });
             }
         )
@@ -916,11 +925,11 @@ export default function TARMaterialOrder() {
                                             <b>Total Material Item(s) : {orderDetailMaterial.length}</b>
                                             <div className='float-right'>
                                                 <Tooltip title="Add Material">
-                                                    <IconButton size="small" color="primary" onClick={showModalAddMaterial}>
+                                                    <IconButton hidden size="small" color="primary" onClick={showModalAddMaterial}>
                                                         <PlusCircleOutlined />
                                                     </IconButton>
                                                 </Tooltip>
-                                                <Tooltip title="Download BOQ Ref">
+                                                <Tooltip title="Download BOQ Asset Ref">
                                                     <IconButton size="small" color="success" onClick={handleDownloadBtn} >
                                                         <FileExcelOutlined />
                                                     </IconButton>
@@ -949,7 +958,7 @@ export default function TARMaterialOrder() {
                                                             isOutOfStock>0 ? 
                                                                 <Tooltip color='red' title="Certain item has out of stock status">
                                                                     <Button type="primary" danger disabled htmlType="submit" onClick={handleBookSubmit}>
-                                                        Book and Submit
+                                                                    Book and Submit
                                                                     </Button> 
                                                                 </Tooltip>
                                                                 :
@@ -957,7 +966,7 @@ export default function TARMaterialOrder() {
 
                                                                     <Tooltip color='red' title="Material not ordered yet">
                                                                         <Button type="primary" danger disabled htmlType="submit" onClick={handleBookSubmit}>
-                                                                Book and Submit
+                                                                    Book and Submit
                                                                         </Button> 
                                                                     </Tooltip>
 
@@ -1198,19 +1207,30 @@ export default function TARMaterialOrder() {
                         name="reqQTY"
                         rules={[{ required: true, message: 'Please input req qty!' }]}
                     >
-                        <InputNumber />
+                        <InputNumber onChange={(e)=>setReqQTY(e)} />
                     </Form.Item>
 
                     <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                        <Space>
+                        {reqQTY > selectedQTYRef ?
+                            <Space>
+                                <Tooltip color='#f50' title="req qty exceed boq ref qty">
+                                    
+                                    <Button disabled type="primary" htmlType="submit">
+                                    Submit
+                                    </Button>
+                                </Tooltip>
+                            </Space>
+                            :
+                            <Space>
                                 
-                            <Button type="primary" htmlType="submit">
+                                <Button type="primary" htmlType="submit">
                             Submit
-                            </Button>
-                        </Space>
+                                </Button>
+                            </Space>
+                        }
+                        
                     </Form.Item>
                 </Form>
-
             </Modal>
             <Modal 
                 title={isPickupRequest?"Change Pickup Date" : "Change Delivery Date"} 

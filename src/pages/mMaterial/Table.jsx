@@ -667,7 +667,7 @@ const TableMaterial = () => {
                         <Form.Item
                             label="Customer Code"
                             name="customerCode"
-                            rules={[{ required: true, message: 'Please input your Customer Code!' }]}
+                            // rules={[{ required: true, message: 'Please input your Customer Code!' }]}
                         >
                             <Input />
                         </Form.Item>

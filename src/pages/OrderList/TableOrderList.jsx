@@ -137,7 +137,7 @@ export default function TableOrderList() {
     }
 
     const navigateToMaterialOrderForm = (record) => {
-        history.push(`materialorder?odi=${record}`)
+        history.push(record.materialOrderFormPath)
     }
     const navigateTo = (path) => {
         history.push(path)
@@ -276,7 +276,6 @@ export default function TableOrderList() {
         },
         {
             title:"Action",
-            // key:"orderDetailId",
             align:'center',
             width : 70,
             fixed:'right',
@@ -289,38 +288,26 @@ export default function TableOrderList() {
                             </Tooltip>
                             {record.allowToDelete=="true" ?  <>
                                 <Tooltip title="Edit Order Request ">
-                                    <EditOutlined style={{ fontSize: 20 }} onClick={()=>navigateToMaterialOrderForm(record.orderDetailId)}/>
+                                    <EditOutlined style={{ fontSize: 20 }} onClick={()=>navigateToMaterialOrderForm(record)}/>
                                 </Tooltip><Tooltip title=" Delete Order Request">
                                     <DeleteFilled style={{ fontSize: 20, color: 'red' }} onClick={()=>showModalDelete(record.orderDetailId)} />
                                 </Tooltip>
                             </> : null }
-                        
-               
                         </Space>
                             :
                             <><Space size={20}>
-
                                 {record.allowToDelete == "true" ? <Tooltip title=" Delete Order Request">
                                     <DeleteFilled style={{ fontSize: 20, color: 'red' }} onClick={() => showModalDelete(record.orderDetailId)} />
                                 </Tooltip> : null}
-
-
-
-
                             </Space>
                             <Space size={20}>
 
                                 {record.allowToEdit == "true" ? <Tooltip title="Edit Order Request ">
-                                    <EditOutlined style={{ fontSize: 20 }} onClick={() => navigateToMaterialOrderForm(record.orderDetailId)} />
+                                    <EditOutlined style={{ fontSize: 20 }} onClick={() => navigateToMaterialOrderForm(record)} />
                                 </Tooltip> : null}
                             </Space></>
                         }
                     </div>
-                 
-                   
-        
-                    
-                   
                 )
             }
             
