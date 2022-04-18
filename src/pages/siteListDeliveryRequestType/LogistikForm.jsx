@@ -380,9 +380,11 @@ export default function LogisticForm() {
                                             <Form.Item label="Order Type">
                                                 <Input
                                                     disabled
+                                                    
                                                     value={
                                                         dataSite[0].orderType
                                                     }
+                                                    style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}
                                                 />
                                             </Form.Item>
                                             <Form.Item label="Request No">
@@ -392,6 +394,7 @@ export default function LogisticForm() {
                                                         dataSite[0]
                                                             .requestNo
                                                     }
+                                                    style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}
                                                 />
                                             </Form.Item>
                                             <Form.Item label="Request Base">
@@ -401,6 +404,7 @@ export default function LogisticForm() {
                                                         dataSite[0]
                                                             .requestTypeName
                                                     }
+                                                    style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}
                                                 />
                                             </Form.Item>
                                             {dataSite[0]?.isPickupRequest ? (<> <Form.Item
@@ -410,12 +414,14 @@ export default function LogisticForm() {
                                                         required: true
                                                     }
                                                 ]}
+                                                style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}
                                             >
                                                 <Input
                                                     disabled
                                                     value={
                                                         dataSite[0].proposeDeliveryMode
                                                     }
+                                                    style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}
                                                 />
                                             </Form.Item></>):(<> <Form.Item
                                                 label="Proposed Delivery Mode"
@@ -424,12 +430,14 @@ export default function LogisticForm() {
                                                         required: true
                                                     }
                                                 ]}
+                                                style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}
                                             >
                                                 <Input
                                                     disabled
                                                     value={
                                                         dataSite[0].proposeDeliveryMode
                                                     }
+                                                    style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}
                                                 />
                                             </Form.Item></>)}
                                            
@@ -442,12 +450,14 @@ export default function LogisticForm() {
                                                             "Missing Inventory Code"
                                                     }
                                                 ]}
+                                                style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}
                                             >
                                                 <Input disabled value={
                                                     moment( dataSite[0]
                                                         .expectedDeliveryDate).format("YYYY-MM-DD")
                                                        
-                                                } />
+                                                } 
+                                                style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}/>
                                             </Form.Item>
                                             <Form.Item label="Site Location">
                                                 <Input
@@ -456,6 +466,7 @@ export default function LogisticForm() {
                                                         dataSite[0]
                                                             .siteCondition
                                                     }
+                                                    style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}
                                                 />
                                             </Form.Item>
                                             <Form.Item label="CT Name">
@@ -464,14 +475,15 @@ export default function LogisticForm() {
                                                     value={
                                                         dataSite[0].ctName
                                                     }
-                                                  
+                                                    style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}
                                                 />
                                             </Form.Item>
                                             <Form.Item label="Origin">
                                                 <Input disabled 
                                                     value={
                                                         dataSite[0].originName
-                                                    } />
+                                                    } 
+                                                    style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}/>
                                             </Form.Item>
                                             <Form.Item label="Destination">
                                                 <Input
@@ -479,6 +491,7 @@ export default function LogisticForm() {
                                                     value={
                                                         dataSite[0].destinationName 
                                                     }
+                                                    style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}
                                                 />
                                             </Form.Item>
                                             <Form.Item
@@ -488,12 +501,14 @@ export default function LogisticForm() {
                                                         required: true
                                                     }
                                                 ]}
+                                                style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}
                                             >
                                                 <Input
                                                     disabled
                                                     value={
                                                         dataSite[0].packageName
                                                     }
+                                                    style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}
                                                 />
                                             </Form.Item>
                                            

@@ -116,6 +116,22 @@ const GETParam2 = (path,param1,param2)  => {
     })
     return promise;
 }
+const GETParam3 = (path,param1,param2,param3)  => {
+    const promise = new Promise((resolve, reject) => {
+        const token = localStorage.getItem('token'); 
+        axios.get(`${baseURL}${path}/${param1}/${param2}/${param3}`
+            ,{headers: { Authorization: `Bearer ${token}` }},
+        )
+            .then((result)=> {
+                console.log('i am get :',result.data);
+                resolve(result.data);
+            },(err)=>{
+                console.log(err);
+                reject(err);
+            })
+    })
+    return promise;
+}
 
 const POST = (path,body)  => {
     const promise = new Promise((resolve, reject) => {
@@ -550,6 +566,7 @@ const postRevisePOFile = (id,file) => POSTFile('positelist/UploadReviseSiteList'
 
 
 const getSiteInfo = (wpid) => GETParam('sitelist/siteDetail',wpid);
+const getWHSupervisor = (subconid,wpid,destinationid) => GETParam3('subcon/getPICBasedOnDestination',subconid,wpid,destinationid);
 const getInventoryActiveList = () => GET('minventory/inventoryCodeGetActiveList');
 const getSiteLocation = () => GET('netype/netypegetlist');
 const getRequestBase = (ordertypeid) => GETParam('deliveryreqtype/RequestTypeGetListBasedOnOrderType',ordertypeid);
@@ -561,6 +578,7 @@ const getPacketType = (ordertypeid) => GETParam('materialmanagement/GetPacketTyp
 const getDismantledBy = () => GET('subcon/GetFieldSubcontractor');
 const getSiteCondition = () => GET('sitecondition');
 const getSubcon = () => GET('subcon/GetFieldSubcontractor');
+const getWHTeam = (destinationId) => GETParam('subcon/getSubconListBasedOnDestination',destinationId);
 const postDismantleForm = (body) => POST('materialmanagement/OrderDetailAdd',body);
 const postTARForm = (body) => POST('materialmanagement/OrderDetailAdd',body);
 const getTeamCoordinator= (subconid,workpackageid) => GETParam2('subcon/getCoordinatorSubcontractorEngineer',subconid,workpackageid);
@@ -684,7 +702,8 @@ const getOrderRejectionPendigList = () => GET('wftransaction/orderRequestGetReje
 const getOrderList = (wpid,ordertypeid) => GETParam2('materialmanagement/orderRequestGetOrderedList',wpid,ordertypeid);
 const postDeleteOrderList = (body,odi) => PUTParam('materialmanagement/OrderDetailDeleteTemp',body,odi)
 const getOrderRequest = (odi) => GETParam('materialmanagement/OrderDetailRequestGetDetail',odi)
-const getMaterial = (odi) => GETParam('materialmanagement/orderRequestMaterialGetDetail',odi)
+// const getMaterial = (odi) => GETParam('materialmanagement/orderRequestMaterialGetDetail',odi)
+const getMaterial = (odi) => GETParam('materialmanagement/orderRequestMaterialGetDetailBasedOnOrderRequest',odi)
 const getLog = (odi) => GETParam('audittrail/auditTrailOrderRequestGetList',odi)
 
 const getEvidence = (odi) => GETParam('logevidence/orderRequestEvidenceGetAllList',odi)
@@ -749,6 +768,7 @@ const postRejectAproval = (body) => POST("wftransaction/orderRequestReject",body
 
 const getAddress = (siteNo,ddlDestination) => GETParam2('materialmanagement/orderRequestGetDestinationAddress',siteNo,ddlDestination)
 const orderRequestDraft = (body) => PUT("materialManagement/orderRequestChangeExpectedDeliveryDate",body)
+const checkIsSite = (destinationId) => GETParam("mastermaterial/checkDestinationIsSite",destinationId)
 
 // scon Task Summary cancel
 const postSconTaskCancel = (body) => POST("taskassignment/taskOrderRequestAssignmentCancelled",body);
@@ -802,6 +822,9 @@ const getMaterialOrderTARItem = (siteno) => GETParam("transferasset/getSummaryIt
 
 
 const API ={
+    getWHTeam,
+    checkIsSite,
+    getWHSupervisor,
     getMaterialOrderTARItem,
     getOrderDetailMaterialTAR,
     getWHSPV,
