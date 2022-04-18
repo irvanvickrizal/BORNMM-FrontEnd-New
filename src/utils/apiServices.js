@@ -832,6 +832,7 @@ const API ={
     getItemTransferMarketWh,
     getItemTransferMarketWhList,
     getDismantleActPending,
+    downloadMMaterial,
     getDismantleActDone,
     getMaterialOrderHODetail,
     getHODoneReportDetail,

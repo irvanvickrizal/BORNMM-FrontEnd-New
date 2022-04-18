@@ -17,6 +17,7 @@ import {Checkbox,Switch ,Tabs,Tag,Typography,Popconfirm,Select,Upload,message,Fo
 import {CheckOutlined,CloseOutlined,PlusOutlined, FileExcelOutlined,CloseSquareTwoTone ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined, EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined,DeleteTwoTone,UploadOutlined } from '@ant-design/icons'
 import {toast} from 'react-toastify';
 import DGMasterMaterial from './DataGenerator';
+import DGMasterMaterialDownload from '@app/pages/mMaterial/DataGeneratorDownload';
 
 import exportFromJSON from 'export-from-json'
 
@@ -41,6 +42,7 @@ const TableMaterial = () => {
     const [selectedIsCustomerMaterial, setSelectedIsCustomerMaterial] = useState(false);
 
     const [materialCode, setMaterialCode] = useState("");
+    const [download,setDownload] = useState([])
     const [materialName, setMaterialName] = useState("");
     const [materialId, setMaterialId] = useState("");
     const [customerCode, setCustomerCode] = useState("");
@@ -85,27 +87,16 @@ const TableMaterial = () => {
     } 
 
     const getDownloadDataDetail = () =>{
-        API.getmMaterialList().then(
+        API.downloadMMaterial().then(
             result=>{
-                const data = result.map((rs)=>DGMasterMaterial.MasterMaterial(
-                    rs.materialId
-                    ,rs.materialCode
-                    ,rs.materialName
-                    ,rs.unitOfMeasurement
-                    ,rs.itemLevelDetail.itemLevelName
-                    ,rs.itemLevelDetail.itemLevelId
-                    ,rs.subCategoryDetail.subCategoryName
-                    ,rs.subCategoryDetail.subCategoryId
-                    ,rs.subCategoryDetail.categoryDetail.categoryName
-                    ,rs.isActive
-                    ,rs.boqRefCheck
-                    ,rs.isCustomerMaterial
-                    ,rs.isReusable
-                    ,rs.customerCode
-                )) 
+                console.log(result,"ini resul")
+                const data = result
+
+              
+                
                 //const data = result//result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
                 const exportType =  exportFromJSON.types.xls;
-                const fileName = `MaterialList_${moment().format("DD-MM-YYYY hh:mm:ss")}`;
+                const fileName =`BORN_MasterMaterial_${moment().format("DD-MM-YYYY")}`;
                 exportFromJSON({ data, fileName, exportType });
             }
         )
@@ -132,7 +123,7 @@ const TableMaterial = () => {
                 )) 
                 //const data = result//result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
                 const exportType =  exportFromJSON.types.xls;
-                const fileName = `BORN_MasterMaterial_${moment(fileDate).format("YYYY-MM-DD")}`;
+                const fileName = `BORN_MasterMaterial_${moment(fileDate).format("DD-MM-YYYY")}`;
                 exportFromJSON({ data, fileName, exportType });
             }
         )

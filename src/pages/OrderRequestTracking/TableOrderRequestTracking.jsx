@@ -832,13 +832,15 @@ export default function TableOrderRequestTracking() {
                                     :
                                     <Table
                                         columns={columnsMaterial}
-                                        pagination={{
-                                            pageSizeOptions: ['5', '10', '20', '30', '40'],
-                                            showSizeChanger: true,
-                                            position: ["bottomLeft"],
-                                        }}
+                                        pagination={false}
+                                        // pagination={{
+                                        //     pageSizeOptions: ['5', '10', '20', '30', '40'],
+                                        //     showSizeChanger: true,
+                                        //     position: ["bottomLeft"],
+                                        // }}
                                         dataSource={dataMaterial}
-                                        scroll={{x: "100%"}}
+                                        scroll={{ x: '100%' ,y: 240  }} 
+                                        footer={null}
                                         size="medium"
                                     />
                                 }
