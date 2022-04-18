@@ -925,7 +925,7 @@ export default function TARMaterialOrder() {
                                             <b>Total Material Item(s) : {orderDetailMaterial.length}</b>
                                             <div className='float-right'>
                                                 <Tooltip title="Add Material">
-                                                    <IconButton size="small" color="primary" onClick={showModalAddMaterial}>
+                                                    <IconButton hidden size="small" color="primary" onClick={showModalAddMaterial}>
                                                         <PlusCircleOutlined />
                                                     </IconButton>
                                                 </Tooltip>
