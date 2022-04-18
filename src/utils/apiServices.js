@@ -750,10 +750,8 @@ const getAddress = (siteNo,ddlDestination) => GETParam2('materialmanagement/orde
 const orderRequestDraft = (body) => PUT("materialManagement/orderRequestChangeExpectedDeliveryDate",body)
 
 // scon Task Summary cancel
-
 const postSconTaskCancel = (body) => POST("taskassignment/taskOrderRequestAssignmentCancelled",body);
 const postSconTaskReassignment = (body) => POST("taskassignment/taskOrderRequestReAssignmentToSubcon",body);
-
 
 const getSconTaskCancel = (uid) => GETParam("materialmanagement/orderRequestSubconTaskAssignmentCancelled",uid);
 
@@ -770,11 +768,9 @@ const deleteUploadedFile = (id) => DELETE("scheduleassignment/rescheduleCancella
 const postUploadEvidence = (taskscheduleid,orderdetailid,workpackageid,usersignedin,file) => POSTFileParam4("scheduleassignment/rescheduleCancellationFeeAddAttachment",taskscheduleid,orderdetailid,workpackageid,usersignedin,file);
 
 // Transport Task Tracking
-
 const getTransportTaskTracking = (uId) => GETParam("rpt/transportTaskTracking",uId);
 
 // Dismantle Act Pending
-
 const getDismantleActPending = (uId) => GETParam("taskassignment/dismantleACKPendingGetList",uId);
 const getDismantleSiteInfo = (odi) => GETParam("positelist/getSiteInfoBasedOnOrderRequest",odi);
 const getDismantleList = (tdg) => GETParam("boqref/boqAsBuiltMMResult",tdg);
@@ -787,8 +783,6 @@ const getDismantleActDone = (uId) => GETParam("rpt/dismantleACKDoneList",uId);
 
 
 // item Transfer Limit
-
-
 const getItemTransferMarketList = () => GET("transferasset/getWHList");
 const getItemTransferMarketWh = (dopId) => GETParam("transferasset/getSummaryItemLimitBasedOnWH",dopId);
 const getItemTransferMarketWhList = (dopId) => GETParam("transferasset/getListItemLimitBasedOnWH",dopId);
@@ -803,9 +797,11 @@ const getSummaryAsPO = (dopId) => GETParam("transferasset/boqAssetUploadResult",
 // Transfer Asset Request
 const getTransfeAssetRequest = (uId) => GETParam("sitelist/transferAssetReq",uId);
 const getTARWarehouseInfor = (uId) => GETParam("sitelist/transferAssetReq",uId);
+const getMaterialOrderTARItem = (siteno) => GETParam("transferasset/getSummaryItemLimitBasedOnWHCode",siteno);
 
 
 const API ={
+    getMaterialOrderTARItem,
     getOrderDetailMaterialTAR,
     getWHSPV,
     postTARForm,

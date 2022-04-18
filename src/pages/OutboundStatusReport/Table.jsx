@@ -26,18 +26,16 @@ export default function TableOutboundStatusReport() {
         )
     }
 
-    const handleDownloadItemOrdered = (odi) => {
-        API.getItemBookedList2(odi).then(
+    const handleDownloadItemOrdered = (record) => {
+        API.getItemBookedList2(record.orderDetailId).then(
             result=>{
                 setDownloadData(result);
                 console.log("data  Download :",result);
-               
                 const data = result;
                 //const data = result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
                 const exportType =  exportFromJSON.types.xls;
-                const fileName = `ItemBookedList_${moment().format("DD-MM-YYYY hh:mm:ss")}`;
+                const fileName = `${record.orderReqNo}_ItemOrderedList_${moment().format("DDMMYYYY hhmmss")}`;
                 exportFromJSON({ data, fileName, exportType });
-               
             }
         )
     }
@@ -157,7 +155,7 @@ export default function TableOutboundStatusReport() {
                                 color="primary"
                                 aria-label="upload file"
                                 component="span"
-                                onClick={() => handleDownloadItemOrdered(record.orderDetailId)}>
+                                onClick={() => handleDownloadItemOrdered(record)}>
                                 <FileExcelOutlined />
                             </IconButton>
                         </Tooltip>
