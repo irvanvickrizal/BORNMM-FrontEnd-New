@@ -518,6 +518,7 @@ const putDOPData = (body)=> PUT('masterdop',body)
 const getmDeliveryType = () => GET('masterdeliverytype');
 
 const getmMaterialList = () => GET('mastermaterial');
+const downloadMMaterial = () => GET('mastermaterial/getMaterialListActiveforDownload');
 const putMaterial = (body) => PUT('mastermaterial',body);
 const putMaterialActivation = (body) => PUT('mastermaterial/setactivationstatus',body);
 const getUomList = () => GET('mastermaterial/UomGetList');
@@ -827,6 +828,7 @@ const API ={
     getItemTransferMarketWh,
     getItemTransferMarketWhList,
     getDismantleActPending,
+    downloadMMaterial,
     getDismantleActDone,
     getMaterialOrderHODetail,
     getHODoneReportDetail,
