@@ -1,11 +1,13 @@
 import React,{useEffect,useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {Table} from 'antd'
+import {Table,Typography} from 'antd'
 import { getIdTaskPending, getLogisticPending, getOdi } from '@app/store/action/logistikFormAction'
 import {EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled} from '@ant-design/icons'
 import { useHistory } from 'react-router-dom'
 import HeaderChanger from '@app/components/cardheader/HeaderChanger'
 import Search from '@app/components/searchcolumn/SearchColumn';
+
+import moment from 'moment'
 
 export default function Logistic() {
     const dispatch = useDispatch()
@@ -109,12 +111,22 @@ export default function Logistic() {
             ...Search('deliveryDate'),
         },
         {
+            title:'Incoming Date',
+            width:130,
+            render:(record)=>{
+                return <Typography>{moment(record.incomingDate).format("YYYY-MM-DD,hh:mm:ss")}</Typography>
+            },
+      
+            ...Search('deliveryDate'),
+        },
+        {
             title:'Action',
             fixed:'right',
             width: 70,
             render:(record)=>{
                 return <EditOutlined onClick={() => handleEdit(record)}/>
             }
+           
         },
     ]
     return (
