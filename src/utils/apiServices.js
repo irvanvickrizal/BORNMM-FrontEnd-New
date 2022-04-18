@@ -684,7 +684,8 @@ const getOrderRejectionPendigList = () => GET('wftransaction/orderRequestGetReje
 const getOrderList = (wpid,ordertypeid) => GETParam2('materialmanagement/orderRequestGetOrderedList',wpid,ordertypeid);
 const postDeleteOrderList = (body,odi) => PUTParam('materialmanagement/OrderDetailDeleteTemp',body,odi)
 const getOrderRequest = (odi) => GETParam('materialmanagement/OrderDetailRequestGetDetail',odi)
-const getMaterial = (odi) => GETParam('materialmanagement/orderRequestMaterialGetDetail',odi)
+// const getMaterial = (odi) => GETParam('materialmanagement/orderRequestMaterialGetDetail',odi)
+const getMaterial = (odi) => GETParam('materialmanagement/orderRequestMaterialGetDetailBasedOnOrderRequest',odi)
 const getLog = (odi) => GETParam('audittrail/auditTrailOrderRequestGetList',odi)
 
 const getEvidence = (odi) => GETParam('logevidence/orderRequestEvidenceGetAllList',odi)

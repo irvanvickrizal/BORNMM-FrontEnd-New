@@ -89,6 +89,7 @@ export default function TableOrderRequestTracking() {
 
     function getOrderDetail(data) {
         //setIsLoading(true);
+        console.log(data,"data")
         API.getOrderRequest(data).then(
             result=>{
                 setDataOrderDetail(result);
@@ -126,6 +127,7 @@ export default function TableOrderRequestTracking() {
 
     const hideModalDetail = () => {
         setModalDetailVisible(false)
+        setDataOrderDetail([])
     }
 
 
@@ -662,11 +664,13 @@ export default function TableOrderRequestTracking() {
                     }}
                     bordered /></>}
             <Modal visible={modalDetailVisible}  onCancel={hideModalDetail} 
+             
                 footer={[
           
                 ]} 
                 style={{ width: (90 * width / 100), minWidth: (90 * width / 100) }}
-                zIndex={9999}    
+                zIndex={9999}
+                destroyOnClose    
             >
                 <Tabs defaultActiveKey="1" centered={false}  onChange={callback}>
                     <TabPane tab="Order Request Detail" key="1">
@@ -681,54 +685,54 @@ export default function TableOrderRequestTracking() {
                                             layout="horizontal"
                                             initialValues={{
                                                 "orderType":dataOrderDetail[0].orderType,
-                                                "cpoNo":dataOrderDetail[0].cpoNo,
+                                        
                                                 "ctName":dataOrderDetail[0].ctName,
                                                 "invCode":dataOrderDetail[0].inventoryCode,
                                                 "requestNo":dataOrderDetail[0].requestNo,
                                                 "packageName":dataOrderDetail[0].packageName,
                                                 "projectName":dataOrderDetail[0].projectName,
-                                                "siteNo":dataOrderDetail[0].siteNo,
-                                                "zone":dataOrderDetail[0].zone,
+                                            
+                                                "requesterName":dataOrderDetail[0].requesterName,
 
                                             }}
                                     
                                         >
-                                            <Form.Item label="CPO No" name="cpoNo"
-                                             
-                                            >
+                                            <Form.Item label="Package Name" name="packageName">
                                                 <Input
-                                                    disabled />
-                                            </Form.Item><Form.Item label="CT Name"  name="ctName"
+                                                    disabled style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}/>
+                                            </Form.Item>
+
+                                            <Form.Item label="CT Name"  name="ctName"
                                                 value={
                                                     dataOrderDetail[0]?.ctName 
                                                 }
                                             >
                                                 <Input
-                                                    disabled />
+                                                    disabled  style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}/>
                                             </Form.Item><Form.Item label="Inventory Code" name="invCode">
                                                 <Input
-                                                    disabled />
+                                                    disabled  style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}/>
                                             </Form.Item><Form.Item
                                                 label="Order Type"
                                                 name="orderType"
     
                                             >
-                                                <Input disabled />
+                                                <Input disabled style={{backgroundColor:"white",color:"#000",fontWeight:"500"}} />
                                             </Form.Item><Form.Item label="Request No" name="requestNo">
                                                 <Input
-                                                    disabled />
-                                            </Form.Item><Form.Item label="Package Name" name="packageName">
-                                                <Input
-                                                    disabled />
-                                            </Form.Item><Form.Item label="Project Name" name="projectName">
-                                                <Input disabled />
-                                            </Form.Item><Form.Item label="Site No" name="siteNo">
-                                                <Input
-                                                    disabled />
-                                            </Form.Item><Form.Item label="Zone" name="zone">
-                                                <Input
-                                                    disabled />
+                                                    disabled  style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}/>
                                             </Form.Item>
+                                       
+                                            <Form.Item label="Project Name" name="projectName">
+                                                <Input disabled  style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}/>
+                                            </Form.Item>
+                                            <Form.Item label="Requester" name="requesterName">
+                                                <Input
+                                                    disabled
+                                                    style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}
+                                                />
+                                            </Form.Item>
+                                           
                                             
                                          
                                         </Form>
@@ -744,7 +748,8 @@ export default function TableOrderRequestTracking() {
                                                 "wpId":dataOrderDetail[0].workpackageId,
                                                 "region":dataOrderDetail[0].region,
                                                 "siteName":dataOrderDetail[0].siteName,
-                                                "requesterName":dataOrderDetail[0].requesterName,
+                                                "siteNo":dataOrderDetail[0].siteNo,
+                                                "cpoNo":dataOrderDetail[0].cpoNo,
                                                 "recipientOrDismantledBy":dataOrderDetail[0].recipientOrDismantledBy,
                                                 "requestDate":moment(dataOrderDetail[0].requestDate).format("YYYY-MM-DD,hh:mm:ss"),
                                                 "incomingDate":moment(dataOrderDetail[0].incomingDate).format("YYYY-MM-DD,hh:mm:ss"),
@@ -753,53 +758,63 @@ export default function TableOrderRequestTracking() {
 
                                             }}
                                         >
+                                            <Form.Item label="CPO No" name="cpoNo"
+                                             
+                                            >
+                                                <Input
+                                                    disabled  style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}/>
+                                            </Form.Item>
+
+                                            <Form.Item label="Site No" name="siteNo">
+                                                <Input
+                                                    disabled  style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}/>
+                                            </Form.Item>
+                                            <Form.Item label="Zone" name="zone">
+                                                <Input
+                                                    disabled style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}/>
+                                            </Form.Item>
                                            
                                             <Form.Item label="Region" name="region">
                                                 <Input
                                                     disabled
-                                                  
+                                                    style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}
                                                 />
                                             </Form.Item>
                                             <Form.Item label="WorkPackage ID" name="wpId">
                                                 <Input
                                                     disabled
-                                                  
+                                                    style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}
                                                 />
                                             </Form.Item>
                                             <Form.Item label="Site Name" name="siteName">
                                                 <Input
                                                     disabled
-                                                  
+                                                    style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}
                                                 />
                                             </Form.Item>
-                                            <Form.Item label="Requester" name="requesterName">
-                                                <Input
-                                                    disabled
-                                                  
-                                                />
-                                            </Form.Item>
+                                      
                                             <Form.Item label="Dismantle By" name="recipientOrDismantledBy">
                                                 <Input
                                                     disabled
-                                                  
+                                                    style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}
                                                 />
                                             </Form.Item>
                                             <Form.Item label="Request Date" name="requestDate">
                                                 <Input
                                                     disabled
-                                                  
+                                                    style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}
                                                 />
                                             </Form.Item>
                                             <Form.Item label="Incoming Date" name="incomingDate">
                                                 <Input
                                                     disabled
-                                                  
+                                                    style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}
                                                 />
                                             </Form.Item>
                                             <Form.Item label="Expected Delivery Date" name="expectedDate">
                                                 <Input
                                                     disabled
-                                                  
+                                                    style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}
                                                 />
                                             </Form.Item>
                                       
