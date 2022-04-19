@@ -120,6 +120,7 @@ export default function TARMaterialOrder() {
 
     const getOrderDetailMaterial=(odi)=>{
         setIsOutOfStock(0);
+        setIsExceedRef(0)
         API.getOrderDetailMaterialTAR(odi,user.uid).then(
             result=>{
                 result.map((rst)=>checkoutofstock(rst.balanceQTY)) 
@@ -318,7 +319,7 @@ export default function TARMaterialOrder() {
             key:"orderMaterialId",
             render:(record)=>{
                 return (<div>
-                    {record.balanceQTY < 0 ? <p style={{ color:'red' }}>{record.orderStatus}</p>:
+                    {(record.balanceQTY < 0) || (record.deltaBOQRefQTY<0) ? <p style={{ color:'red' }}>{record.orderStatus}</p>:
                         <div>
                             {record.orderStatus}
                         </div>
@@ -955,7 +956,7 @@ export default function TARMaterialOrder() {
                                                     Save as Draft
                                                         </Button>
                                                         {stockCheck ?
-                                                            isOutOfStock>0 ? 
+                                                            (isOutOfStock>0 || isExceedRef>0) ? 
                                                                 <Tooltip color='red' title="Certain item has out of stock status">
                                                                     <Button type="primary" danger disabled htmlType="submit" onClick={handleBookSubmit}>
                                                                     Book and Submit
@@ -963,7 +964,6 @@ export default function TARMaterialOrder() {
                                                                 </Tooltip>
                                                                 :
                                                                 orderDetailMaterial.length == 0 ?
-
                                                                     <Tooltip color='red' title="Material not ordered yet">
                                                                         <Button type="primary" danger disabled htmlType="submit" onClick={handleBookSubmit}>
                                                                     Book and Submit
