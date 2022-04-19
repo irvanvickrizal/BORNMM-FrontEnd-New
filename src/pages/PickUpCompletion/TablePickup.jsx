@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/jsx-boolean-value */
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable react/no-unstable-nested-components */
@@ -206,6 +207,7 @@ export default function TablePickup() {
 
     const hideModalTab = () => {
         setIsModalTabVisible(false)
+        setDataOrderDetail([])
     }
     const handlePost = () => {
         const body = {
@@ -697,8 +699,29 @@ export default function TablePickup() {
             dataIndex: "refQTY"
         },
         {
-            title: "Delta QTY",
+            title: "Current Req QTY",
             dataIndex: "reqQTY"
+        },
+   
+        {
+            title: "Total BOQ Req QTY",
+            dataIndex: "totalReqQTY"
+        },
+        {
+            title: "Delta QTY",
+   
+            render:(record)=>{
+                return (
+                    <div>
+                        {record?.deltaBOQRefQTY < 0 ? ( <Typography style={{color:"red"}}>
+                            {record.deltaBOQRefQTY}
+                        </Typography>):( <Typography >
+                            {record.deltaBOQRefQTY}
+                        </Typography>)}
+                       
+                    </div>
+                )
+            },
         }
     ]
 
@@ -904,9 +927,169 @@ export default function TablePickup() {
                 style={{ width: (80 * width / 100), minWidth: (80 * width / 100) }}
                 zIndex={9999}
             >
-                <Tabs defaultActiveKey="1" centered={false}  onChange={callback}>
+                <Tabs defaultActiveKey="1" centered={false}  onChange={callback} destroyOnClose>
                     <TabPane tab="Order Request Detail" key="1">
-                        <Card >
+                        {dataOrderDetail?.length == 0 ? (<></>):(
+                            <Card title={CardTitle("Order Request Detail")}>
+                                <div style={{display:"flex",flexDirection:"row"}}>
+                                    <Col span={12}>
+                              
+                                        <Form
+                                            labelCol={{span: 8}}
+                                            wrapperCol={{span: 14}}
+                                            layout="horizontal"
+                                            initialValues={{
+                                                "orderType":dataOrderDetail[0].orderType,
+                                        
+                                                "ctName":dataOrderDetail[0].ctName,
+                                                "invCode":dataOrderDetail[0].inventoryCode,
+                                                "requestNo":dataOrderDetail[0].requestNo,
+                                                "packageName":dataOrderDetail[0].packageName,
+                                                "projectName":dataOrderDetail[0].projectName,
+                                            
+                                                "requesterName":dataOrderDetail[0].requesterName,
+
+                                            }}
+                                    
+                                        >
+                                            <Form.Item label="Package Name" name="packageName">
+                                                <Input
+                                                    disabled style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}/>
+                                            </Form.Item>
+
+                                            <Form.Item label="CT Name"  name="ctName"
+                                                value={
+                                                    dataOrderDetail[0]?.ctName 
+                                                }
+                                            >
+                                                <Input
+                                                    disabled  style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}/>
+                                            </Form.Item><Form.Item label="Inventory Code" name="invCode">
+                                                <Input
+                                                    disabled  style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}/>
+                                            </Form.Item><Form.Item
+                                                label="Order Type"
+                                                name="orderType"
+    
+                                            >
+                                                <Input disabled style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}/>
+                                            </Form.Item><Form.Item label="Request No" name="requestNo">
+                                                <Input
+                                                    disabled  style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}/>
+                                            </Form.Item>
+                                       
+                                            <Form.Item label="Project Name" name="projectName">
+                                                <Input disabled  style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}/>
+                                            </Form.Item>
+                                            <Form.Item label="Requester" name="requesterName">
+                                                <Input
+                                                    disabled
+                                                    style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}
+                                                />
+                                            </Form.Item>
+                                           
+                                            
+                                         
+                                        </Form>
+                              
+                                    </Col>
+                                    <Col span={12}>
+                           
+                                        <Form
+                                            labelCol={{span: 8}}
+                                            wrapperCol={{span: 14}}
+                                            layout="horizontal"
+                                            initialValues={{
+                                                "wpId":dataOrderDetail[0].workpackageId,
+                                                "region":dataOrderDetail[0].region,
+                                                "siteName":dataOrderDetail[0].siteName,
+                                                "siteNo":dataOrderDetail[0].siteNo,
+                                                "cpoNo":dataOrderDetail[0].cpoNo,
+                                                "recipientOrDismantledBy":dataOrderDetail[0].recipientOrDismantledBy,
+                                                "requestDate":moment(dataOrderDetail[0].requestDate).format("YYYY-MM-DD,hh:mm:ss"),
+                                                "incomingDate":moment(dataOrderDetail[0].incomingDate).format("YYYY-MM-DD,hh:mm:ss"),
+                                                "expectedDate":moment(dataOrderDetail[0].expectedDeliveryDate).format("YYYY-MM-DD"),
+                                                "zone":dataOrderDetail[0].zone,
+
+                                            }}
+                                        >
+                                            <Form.Item label="CPO No" name="cpoNo"
+                                             
+                                            >
+                                                <Input
+                                                    disabled  style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}/>
+                                            </Form.Item>
+
+                                            <Form.Item label="Site No" name="siteNo">
+                                                <Input
+                                                    disabled  style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}/>
+                                            </Form.Item>
+                                            <Form.Item label="Zone" name="zone">
+                                                <Input
+                                                    disabled style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}/>
+                                            </Form.Item>
+                                           
+                                            <Form.Item label="Region" name="region">
+                                                <Input
+                                                    disabled
+                                                    style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}
+                                                />
+                                            </Form.Item>
+                                            <Form.Item label="WorkPackage ID" name="wpId">
+                                                <Input
+                                                    disabled
+                                                    style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}
+                                                />
+                                            </Form.Item>
+                                            <Form.Item label="Site Name" name="siteName">
+                                                <Input
+                                                    disabled
+                                                    style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}
+                                                />
+                                            </Form.Item>
+                                      
+                                            <Form.Item label="Dismantle By" name="recipientOrDismantledBy">
+                                                <Input
+                                                    disabled
+                                                    style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}
+                                                />
+                                            </Form.Item>
+                                            <Form.Item label="Request Date" name="requestDate">
+                                                <Input
+                                                    disabled
+                                                    style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}
+                                                />
+                                            </Form.Item>
+                                            <Form.Item label="Incoming Date" name="incomingDate">
+                                                <Input
+                                                    disabled
+                                                    style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}
+                                                />
+                                            </Form.Item>
+                                            <Form.Item label="Expected Delivery Date" name="expectedDate">
+                                                <Input
+                                                    disabled
+                                                    style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}
+                                                />
+                                            </Form.Item>
+                                      
+                          
+                                               
+                                            {/* <Form.Item>
+                                        <Button type="primary" htmlType="submit">Confirm</Button>
+                                        <Button type="danger">Cancel</Button>
+                                    </Form.Item> */}
+                                        </Form>
+                             
+                                    </Col>
+                             
+                                </div>
+                            </Card>
+                           
+                        )}
+                    </TabPane>
+                    <TabPane tab="Material Order" key="2">
+                        <Card>
                             <div >
                                 { isLoading ?   
                                     <Row justify="center">
@@ -916,36 +1099,16 @@ export default function TablePickup() {
                                     </Row>  
                                     :
                                     <Table
-                                        columns={columnsOrder}
-                           
-                                        dataSource={dataOrderDetail}
-                                        scroll={{x: "200%"}}
-                                        size="medium"
-                                        pagination={false}
-                                    />
-                                }
-                            </div>
-                        </Card>
-                    </TabPane>
-                    <TabPane tab="Material Order" key="2">
-                        <Card>
-                            <div>
-                                { isLoading ?   
-                                    <Row justify="center">
-                                        <Col span={1}>    
-                                            <Spin />
-                                        </Col>
-                                    </Row>  
-                                    :
-                                    <Table
                                         columns={columnsMaterial}
-                                        pagination={{
-                                            pageSizeOptions: ['5', '10', '20', '30', '40'],
-                                            showSizeChanger: true,
-                                            position: ["bottomLeft"],
-                                        }}
+                                        pagination={false}
+                                        // pagination={{
+                                        //     pageSizeOptions: ['5', '10', '20', '30', '40'],
+                                        //     showSizeChanger: true,
+                                        //     position: ["bottomLeft"],
+                                        // }}
                                         dataSource={dataMaterial}
-                                        scroll={{x: "100%"}}
+                                        scroll={{ x: '100%' ,y: 240  }} 
+                                        footer={null}
                                         size="medium"
                                     />
                                 }
