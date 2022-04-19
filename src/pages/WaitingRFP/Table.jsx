@@ -513,20 +513,33 @@ const WaitingRFPTable = () => {
             ...Search("materialDesc")
         },
         {
-            title: "BOQ Req QTY",
-            dataIndex: "reqQTY"
-        },
-        {
             title: "BOQ Ref QTY",
             dataIndex: "refQTY"
         },
         {
-            title: "Total Req QTY",
+            title: "Current Req QTY",
+            dataIndex: "reqQTY"
+        },
+   
+        {
+            title: "Total BOQ Req QTY",
             dataIndex: "totalReqQTY"
         },
         {
             title: "Delta QTY",
-            dataIndex: "deltaBOQRefQTY"
+   
+            render:(record)=>{
+                return (
+                    <div>
+                        {record?.deltaBOQRefQTY < 0 ? ( <Typography style={{color:"red"}}>
+                            {record.deltaBOQRefQTY}
+                        </Typography>):( <Typography >
+                            {record.deltaBOQRefQTY}
+                        </Typography>)}
+                       
+                    </div>
+                )
+            },
         }
     ]
 
