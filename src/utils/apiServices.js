@@ -669,8 +669,6 @@ const getLatestCheckPoint = (bid) => GETParam('boqref/boqUploadDataCheckHasClear
 const postBOQASPOFile = (id,file) => POSTFile('boqref/boqAsPOUploadBulk',id,file);
 const getInventoryDetail = () => GET("inventory/getInventoryDetail");
 
-
-
 const getBoqSummaryAsPlanBoq = (bid) => GETParam('boqref/boqGetSummaryAsPlanBOQCompletion',bid)
 const getListBoqAsPlan = (boqid) => GETParam('boqref/boqGetListAsPlanBOQ',boqid)
 const getDownloadPlanBoqCompletion = (boqid,poscopeid) => GETParam2('boqref/boqGetListAsPlanBOQCompletion',boqid,poscopeid)
@@ -813,15 +811,15 @@ const postBoqProceed = (dopId,body) => POSTParam("transferasset/boqAssetUploadPr
 const deleteBoqProceed = (dopId) => DELETEParam("transferasset/boqAssetCleanupData",dopId);
 const uploadBoqAsset = (dopId,uid,File) => POSTFileParam2("transferasset/boqAssetUpload",dopId,uid,File);
 const getSummaryAsPO = (dopId) => GETParam("transferasset/boqAssetUploadResult",dopId);
-
-
 // Transfer Asset Request
 const getTransfeAssetRequest = (uId) => GETParam("sitelist/transferAssetReq",uId);
 const getTARWarehouseInfor = (uId) => GETParam("sitelist/transferAssetReq",uId);
 const getMaterialOrderTARItem = (siteno) => GETParam("transferasset/getSummaryItemLimitBasedOnWHCode",siteno);
+const getSDRLTRDDL = (odi) => GETParam("materialmanagement/orderRequestDetailOriginal",odi);
 
 
 const API ={
+    getSDRLTRDDL,
     getWHTeam,
     checkIsSite,
     getWHSupervisor,

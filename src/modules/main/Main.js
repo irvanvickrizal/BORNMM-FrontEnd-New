@@ -101,6 +101,7 @@ import itemTransferLimitWh from "@app/pages/itemTransferLimitWh/index"
 import TransferAsserRequest from "@app/pages/TransferAssetRequest/index"
 import TarIndex from "@app/pages/TransferAssetRequestForm/index"
 import indexTARMO from "@app/pages/TransferAssetRequestMaterialOrder/index"
+import indexSDRLTR from "@app/pages/SDRLTRForm/index"
 
 
 const Main = () => {
@@ -548,6 +549,11 @@ const Main = () => {
                                             exact
                                             path="/mm/materialordertar"
                                             component={indexTARMO}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/mm/sdrltr"
+                                            component={indexSDRLTR}
                                         />
                                     </Switch>
                                 </div>

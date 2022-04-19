@@ -199,6 +199,12 @@ export default function TableOrderList() {
             ...Search('requestNo'),
         },
         {
+            title : "Parent Request No",
+            dataIndex:'parentRequestNo',
+            width : 150,
+            ...Search('parentRequestNo'),
+        },
+        {
             title : "Origin",
             width : 150,
             dataIndex:'originName',
