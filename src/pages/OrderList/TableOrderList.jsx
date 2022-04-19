@@ -614,11 +614,12 @@ export default function TableOrderList() {
             dataIndex: "refQTY"
         },
         {
-            title: "BOQ Req QTY",
+            title: "Current Req QTY",
             dataIndex: "reqQTY"
         },
+   
         {
-            title: "Total Req QTY",
+            title: "Total BOQ Req QTY",
             dataIndex: "totalReqQTY"
         },
         {
