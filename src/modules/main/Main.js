@@ -103,6 +103,7 @@ import TarIndex from "@app/pages/TransferAssetRequestForm/index"
 import indexTARMO from "@app/pages/TransferAssetRequestMaterialOrder/index"
 import indexSDRLTR from "@app/pages/SDRLTRForm/index"
 import indexMOSDRLTR from "@app/pages/SDRLTRMaterialOrder/index"
+import BoqRefAccuracy from "@app/pages/BoqRefAccuracy/index"
 
 
 const Main = () => {
@@ -560,6 +561,11 @@ const Main = () => {
                                             exact
                                             path="/mm/materialordersdrltr"
                                             component={indexMOSDRLTR}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/boq/boqrefaccuracy"
+                                            component={BoqRefAccuracy}
                                         />
                                     </Switch>
                                 </div>
