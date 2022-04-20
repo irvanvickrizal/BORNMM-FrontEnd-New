@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/jsx-boolean-value */
 /* eslint-disable react/jsx-no-bind */
@@ -25,6 +26,8 @@ export default function TablePickup() {
     const [selectedRFPDate,setSelectedRFPDate] = useState('');
     const [selectedTransportTeam,setSelectedTransportTeam] = useState('');
     const [selectedWpid,setSelectedWpid] = useState('');
+    const[parentOdi,setParentOdi] = useState("")
+    const[parentRequestNo,setParentRequestNo] = useState("")
     const [ddl,setDdl] = useState([])
     const [selectedAssignTo,setSelectedAssignTo] = useState('');
     const [page,setPage] = useState(1)
@@ -146,20 +149,34 @@ export default function TablePickup() {
             result=>{
                 setDataOrderDetail(result);
                 setIsLoading(false);
+                setParentOdi(result[0]?.parentOrderDetailId)
+                setParentRequestNo(result[0]?.parentRequestNo)
                 console.log("data order detail =>",result);
             }
         )
     }
 
     function getMaterial(data) {
-        setIsLoading(true);
-        API.getMaterial(odi).then(
-            result=>{
-                setDataMaterial(result);
-                setIsLoading(false);
-                console.log("data order Material =>",result);
-            }
-        )
+        // setIsLoading(true);
+        console.log(parentOdi,"parent Odi")
+        console.log(parentRequestNo,"parent request")
+        if(parentOdi>0){
+            API.getMaterial(parentOdi).then(
+                result=>{
+                    setDataMaterial(result);
+                    //setIsLoading(false);
+                    console.log("data order Material parent odi =>",result);
+                }
+            )
+        } else {
+            API.getMaterial(orderDetailId).then(
+                result=>{
+                    setDataMaterial(result);
+                    //setIsLoading(false);
+                    console.log("data order Material =>",result);
+                }
+            )
+        }
     }
 
     function getLog(data) {
@@ -1090,6 +1107,12 @@ export default function TablePickup() {
                     </TabPane>
                     <TabPane tab="Material Order" key="2">
                         <Card>
+                            {parentOdi ? parentOdi>0 ? 
+                                <b>Parent Request No : {parentRequestNo}</b>
+                                : null
+                                :
+                                null
+                            }
                             <div >
                                 { isLoading ?   
                                     <Row justify="center">

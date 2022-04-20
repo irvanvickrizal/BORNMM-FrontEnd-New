@@ -60,9 +60,6 @@ export default function TableLogisticRejectionTask() {
         
     }
     
-    useEffect(() => {
-        getLogisticRejectionList();
-    },[])
 
     const columns = [
         {
@@ -181,6 +178,10 @@ export default function TableLogisticRejectionTask() {
         },
     ]
  
+    useEffect(() => {
+        getLogisticRejectionList();
+    },[])
+
 
 
     return (

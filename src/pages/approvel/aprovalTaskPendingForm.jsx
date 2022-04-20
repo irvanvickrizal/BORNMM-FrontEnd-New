@@ -44,8 +44,8 @@ export default function AprovalTaskPendingForm() {
     }, [])
 
     const dataOrderDetail = useSelector(state=>state.aprovalTaskPendingReducer.dataOrderRequestDetail)
-    const parentOrderDetailId = useSelector(state=>state.aprovalTaskPendingReducer.dataOrderRequestDetail[0].parentOrderDetailId)
-    const perentReqNo = useSelector(state=>state.aprovalTaskPendingReducer.dataOrderRequestDetail[0].parentRequestNo)
+    const parentOrderDetailId = useSelector(state=>state.aprovalTaskPendingReducer?.dataOrderRequestDetail[0]?.parentOrderDetailId)
+    const perentReqNo = useSelector(state=>state.aprovalTaskPendingReducer?.dataOrderRequestDetail[0]?.parentRequestNo)
     const dataMaterialOrder = useSelector(state=>state.aprovalTaskPendingReducer.dataMaterial)
     const dataLogOrder = useSelector(state=>state.aprovalTaskPendingReducer.dataLog)
     const dataSno = useSelector(state=>state.aprovalTaskPendingReducer.sno)

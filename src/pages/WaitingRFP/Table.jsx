@@ -35,6 +35,8 @@ const WaitingRFPTable = () => {
     const user = useSelector((state) => state.auth.user);
     const [logisticOrderDetailId,setLogisticOrderDetailId] = useState("")
     const { TextArea } = Input;
+    const[parentOdi,setParentOdi] = useState("")
+    const[parentRequestNo,setParentRequestNo] = useState("")
     const [dataOrderDetail,setDataOrderDetail] = useState([])
     const [dataMaterial,setDataMaterial] = useState([])
     const [dataLog,setDataLog] = useState([])
@@ -91,20 +93,33 @@ const WaitingRFPTable = () => {
         API.getOrderRequest(data).then(
             result=>{
                 setDataOrderDetail(result);
+                setParentOdi(result[0]?.parentOrderDetailId)
+                setParentRequestNo(result[0]?.parentRequestNo)
                 //setIsLoading(false);
                 console.log("data order detail =>",result);
             }
         )
     }
     function getMaterial(data) {
-        //setIsLoading(true);
-        API.getMaterial(orderDetailId).then(
-            result=>{
-                setDataMaterial(result);
-                //setIsLoading(false);
-                console.log("data order Material =>",result);
-            }
-        )
+        console.log(parentOdi,"parent Odi")
+        console.log(parentRequestNo,"parent request")
+        if(parentOdi>0){
+            API.getMaterial(parentOdi).then(
+                result=>{
+                    setDataMaterial(result);
+                    //setIsLoading(false);
+                    console.log("data order Material parent odi =>",result);
+                }
+            )
+        } else {
+            API.getMaterial(orderDetailId).then(
+                result=>{
+                    setDataMaterial(result);
+                    //setIsLoading(false);
+                    console.log("data order Material =>",result);
+                }
+            )
+        }
     }
     function getLog(data) {
         //setIsLoading(true);
@@ -956,6 +971,12 @@ const WaitingRFPTable = () => {
                         </TabPane>
                         <TabPane tab="Material Order" key="2">
                             <Card>
+                                {parentOdi ? parentOdi>0 ? 
+                                    <b>Parent Request No : {parentRequestNo}</b>
+                                    : null
+                                    :
+                                    null
+                                }
                                 <div >
                                     { isLoading ?   
                                         <Row justify="center">

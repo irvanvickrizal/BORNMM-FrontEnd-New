@@ -96,10 +96,10 @@ export default function LogisticForm() {
         (state) => state.logistikFormReducer.dataSiteInfo
     )
     const parentOrderDetailId = useSelector(
-        (state) => state.logistikFormReducer.dataSiteInfo[0].parentOrderDetailId
+        (state) => state.logistikFormReducer?.dataSiteInfo[0]?.parentOrderDetailId
     )
     const parentReqNo = useSelector(
-        (state) => state.logistikFormReducer.dataSiteInfo[0].parentRequestNo
+        (state) => state.logistikFormReducer?.dataSiteInfo[0]?.parentRequestNo
     )
     const DataDeliveryTransport = useSelector(state=> state.logistikFormReducer.detaDeliveryTransport)
     const dataOdi = useSelector(state=> state.logistikFormReducer.odi)
@@ -347,7 +347,7 @@ export default function LogisticForm() {
         dispatch(getDeliveryList())
         dispatch(getDeliveryMode())
         getLogLogistic()
-    }, [dispatch,wh])
+    }, [dispatch,wh,parentOrderDetailId,parentReqNo])
 
     return (
         <div>
