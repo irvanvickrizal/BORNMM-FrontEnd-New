@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable no-undef */
 import React, { useState,useEffect } from 'react'
@@ -153,7 +154,8 @@ export default function TableBoqAccuracy() {
                 return (
                     <div style={{display:"flex",alignItems:'center',justifyContent:'center'}}>
                         <Space size={20}>
-                            <Typography>{`${record.boqAccuracy} %`}</Typography>
+                            {record.boqAccuracy <= 50 ? (<><Typography style={{color:"red"}}>{`${record.boqAccuracy} %`}</Typography></>):( <><Typography>{`${record.boqAccuracy} %`}</Typography></>)}
+                         
 
                         </Space>
                        
