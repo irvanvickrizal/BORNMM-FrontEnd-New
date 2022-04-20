@@ -656,7 +656,9 @@ const postAssitgnTransportTeam2 = (body) => POST('lspassignment/lspAssignmentToT
 const getBoqSummaryAsPoBoq = (boqid) => GETParam('boqref/boqGetSummaryAsPOBOQCompletion',boqid)
 const getListBoqAsPo = (boqid) => GETParam('boqref/boqGetListAsPOBOQ',boqid)
 const getDownloadPoBoqCompletion = (boqid,poscopeid) => GETParam2('boqref/boqGetListAsPOBOQCompletion',boqid,poscopeid)
-
+const getListBoqAccuracy = (uid) => GETParam('rpt/boqAccuracyGetBOQList',uid)
+   
+const getListBoqAccuracyDetail = (boqId) => GETParam('rpt/boqAccuracyGetDetail',boqId)
    
 const getDownloadPoBoqList = (workpackageid,boqRefCode) => GETParam2('boqref/boqAsPOSitebasedGetList',workpackageid,boqRefCode)
 const getDownloadPoBoqListDeleted = (workpackageid) => DELETE('boqref/boqAsPOBOQSiteBasedDeleted',workpackageid)
@@ -836,6 +838,8 @@ const API ={
     getDismantleList,
     getTransfeAssetRequest,
     uploadBoqAsset,
+    getListBoqAccuracyDetail,
+    getListBoqAccuracy,
     getDeliveryNote,
     postBoqProceed,
     deleteBoqProceed,
