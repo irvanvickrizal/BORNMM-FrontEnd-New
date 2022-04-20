@@ -100,7 +100,7 @@ export default function TableOrderList() {
                 }
             )
         } else {
-            API.getMaterial(orderDetailId).then(
+            API.getMaterial(odi).then(
                 result=>{
                     setDataMaterial(result);
                     //setIsLoading(false);
