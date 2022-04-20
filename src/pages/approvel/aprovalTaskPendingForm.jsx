@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-unstable-nested-components */
 import React, {useEffect, useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
@@ -43,6 +44,8 @@ export default function AprovalTaskPendingForm() {
     }, [])
 
     const dataOrderDetail = useSelector(state=>state.aprovalTaskPendingReducer.dataOrderRequestDetail)
+    const parentOrderDetailId = useSelector(state=>state.aprovalTaskPendingReducer.dataOrderRequestDetail[0].parentOrderDetailId)
+    const perentReqNo = useSelector(state=>state.aprovalTaskPendingReducer.dataOrderRequestDetail[0].parentRequestNo)
     const dataMaterialOrder = useSelector(state=>state.aprovalTaskPendingReducer.dataMaterial)
     const dataLogOrder = useSelector(state=>state.aprovalTaskPendingReducer.dataLog)
     const dataSno = useSelector(state=>state.aprovalTaskPendingReducer.sno)
@@ -185,12 +188,11 @@ export default function AprovalTaskPendingForm() {
         },
     
         {
-            title: "Total Req QTY",
+            title: "Current Req QTY",
             dataIndex: "totalReqQTY"
         },
         {
             title: "Delta BOQ Ref QTY",
-         
             render:(record)=>{
                 return (
                     <div>
@@ -203,10 +205,6 @@ export default function AprovalTaskPendingForm() {
                     </div>
                 )
             },
-        },
-        {
-            title: "Total Req QTY",
-            dataIndex: "totalReqQTY"
         },
     ]
     const columnsLog = [
@@ -334,14 +332,19 @@ export default function AprovalTaskPendingForm() {
                             </Card>
                         </TabPane>
                         <TabPane tab="Material Order" key="2">
+                            
                             <Card title={CardTitle("Material Order")}>
-                                <div className="card-body">
-                                    <Table
-                                        columns={columnsMaterial}
-                                        pagination={false}
-                                        dataSource={dataMaterialOrder}
-                                    />
-                                </div>
+                                {parentOrderDetailId ? parentOrderDetailId>0 ? 
+                                    <b>Parent Request No : {perentReqNo}</b>
+                                    : null
+                                    :
+                                    null
+                                }
+                                <Table
+                                    columns={columnsMaterial}
+                                    pagination={false}
+                                    dataSource={dataMaterialOrder}
+                                />
                             </Card>
                         </TabPane>
                         <TabPane tab="Log" key="3">

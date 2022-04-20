@@ -38,12 +38,32 @@ function* sagaGetSiteInfoLogistik(action) {
 function* sagaGetMaterialOrder(action) {
     const token = yield select(state=>state.auth.token)
     const dataOdi = yield select(state=>state.logistikFormReducer.odi)
+    const parentOrderDetailId = yield select(
+        (state) => state.logistikFormReducer.dataSiteInfo[0].parentOrderDetailId
+    )
     try {
-        const res = yield axios.get(`${API}materialmanagement/orderRequestMaterialGetDetailBasedOnOrderRequest/${dataOdi}`,{headers: {
-            Authorization: `Bearer ${token}` 
-        }});
-        console.log(res,"result get site condition")
-        yield put (setMaterialOrderDetail(res.data))
+
+        if(parentOrderDetailId>0)
+        {
+            const res = yield axios.get(`${API}materialmanagement/orderRequestMaterialGetDetailBasedOnOrderRequest/${parentOrderDetailId}`,{headers: {
+                Authorization: `Bearer ${token}` 
+            }});
+            console.log(res,"result get site condition")
+            yield put (setMaterialOrderDetail(res.data))
+        }
+        else{
+            const res = yield axios.get(`${API}materialmanagement/orderRequestMaterialGetDetailBasedOnOrderRequest/${dataOdi}`,{headers: {
+                Authorization: `Bearer ${token}` 
+            }});
+            console.log(res,"result get site condition")
+            yield put (setMaterialOrderDetail(res.data))
+        }
+
+        // const res = yield axios.get(`${API}materialmanagement/orderRequestMaterialGetDetailBasedOnOrderRequest/${dataOdi}`,{headers: {
+        //     Authorization: `Bearer ${token}` 
+        // }});
+        // console.log(res,"result get site condition")
+        // yield put (setMaterialOrderDetail(res.data))
     } catch (error) {
         console.log(error,'error get data site condition')
     }
