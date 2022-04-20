@@ -39,7 +39,7 @@ function* sagaGetMaterialOrder(action) {
     const token = yield select(state=>state.auth.token)
     const dataOdi = yield select(state=>state.logistikFormReducer.odi)
     const parentOrderDetailId = yield select(
-        (state) => state.logistikFormReducer.dataSiteInfo[0].parentOrderDetailId
+        (state) => state.logistikFormReducer.dataSiteInfo[0]?.parentOrderDetailId
     )
     try {
 
