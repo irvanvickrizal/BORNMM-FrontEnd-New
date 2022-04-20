@@ -581,6 +581,7 @@ const getSubcon = () => GET('subcon/GetFieldSubcontractor');
 const getWHTeam = (destinationId) => GETParam('subcon/getSubconListBasedOnDestination',destinationId);
 const postDismantleForm = (body) => POST('materialmanagement/OrderDetailAdd',body);
 const postTARForm = (body) => POST('materialmanagement/OrderDetailAdd',body);
+const putSDRLTRForm = (body) => PUT('materialmanagement/OrderDetailUpdate',body);
 const getTeamCoordinator= (subconid,workpackageid) => GETParam2('subcon/getCoordinatorSubcontractorEngineer',subconid,workpackageid);
 const getHasExpressDelivery= (ordertypeid) => GETParam('masterordertype/orderTypeHasExpressDelivery',ordertypeid);
 
@@ -602,6 +603,7 @@ const putMaterialOrderDraft = (body) => PUT('materialmanagement/materialOrderReq
 const deleteMaterialOrderRequest = (param) => DELETE('materialmanagement/orderRequestMaterialDelItem',param);
 
 const getOrderDetailEdit =  (odi) => GETParam('materialmanagement/OrderDetailRequestGetDetail',odi);
+const getMaterialOrderSDRLTR =  (podi) => GETParam('materialmanagement/orderRequestMaterialGetDetailBasedOnOrderRequest',podi);
 
 const getSconTaskPending = (uid) => GETParam('taskassignment/taskAssignmentSubconPending',uid);
 const getSconEngineer = (sconid,wpid) => GETParam2('subcon/getFieldSubcontractorEngineer',sconid,wpid)
@@ -819,6 +821,8 @@ const getSDRLTRDDL = (odi) => GETParam("materialmanagement/orderRequestDetailOri
 
 
 const API ={
+    getMaterialOrderSDRLTR,
+    putSDRLTRForm,
     getSDRLTRDDL,
     getWHTeam,
     checkIsSite,

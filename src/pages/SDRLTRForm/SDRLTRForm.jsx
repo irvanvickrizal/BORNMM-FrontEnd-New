@@ -61,6 +61,10 @@ const SDRLTRForm = (props) => {
     const [ddlPacketType,setDDLPacketType] = useState([]);
     const [ddlSubcon,setDDLSubcon] = useState([]);
     const [ddlSiteCondition,setDDLSiteCondition] = useState([]);
+    const [ddlTeam,setDdlTeam] = useState([]);
+    const [ddlWHTeam,setDdlWHTeam] = useState([]);
+    const [ddlWHSPV,setDdlWHSPV] = useState([]);
+
     const [ddlIDeliveryMode,setDDLDeliveryMode] = useState([]);
     const [ddlOrderType,setDDLOrderType] = useState([]);
     const [siteInfoDetail,setSiteInfoDetail] = useState([]);
@@ -87,7 +91,7 @@ const SDRLTRForm = (props) => {
     const [selectedDeliveryMode,setSelectedDeliveryMode] = useState('');
     const [form] = Form.useForm();
     const [phoneNumber,setPhoneNumber] = useState('')
-    
+    const [isSite,setIsSite]= useState(true)
     const [express,setExpress] = useState(false);
     const [siteNo,setSiteNo] = useState('')
     const navigateTo = (path) => {
@@ -100,6 +104,71 @@ const SDRLTRForm = (props) => {
             result=>{
                 console.log("data me:",result)
                 setPhoneNumber(result.data.phoneNo)
+            }
+        )
+    }
+    const getDDLWHSPV=(destinationid)=>{
+        API.getWHSupervisor(destinationid,wpid,selectedDestination).then(
+            result=>{
+                setDdlWHSPV(result);
+                console.log("wh spv",result);
+            }
+        )
+    }
+
+    const getTeamCoordinator = (selectedSubcons) => {
+        API.getTeamCoordinator(selectedSubcons,wpid).then(
+            result=>{
+                console.log("data team:",result)
+                setDdlTeam(result);
+            }
+        )
+    }
+    const getDDLWHTeam = (destinationId) => {
+        API.getWHTeam(destinationId).then(
+            result=>{
+                setDdlWHTeam(result);
+                console.log("WH team",result);
+            }
+        )
+    }
+
+    const handleWHTeamChange = (e)=>{
+        console.log(e,"selected WH Team");
+        setSelectedSubcon(e)
+        getDDLWHSPV(e)
+    }
+    
+
+    const handleSubcon = (e)=>{
+        setSelectedSubcon(e)
+        getTeamCoordinator(e)
+        setSelectedTeamCoordinator('')
+        console.log(selectedTeamCoordinator);
+    }
+
+    const handleDestinationChange = (value) =>{
+        setSelectedDestination(value);
+        API.getAddress(siteNo,value).then(
+            result=>{
+                setSiteAddress(result[0].endPointAddress)  
+                console.log("teslog",result[0].endPointAddress);    
+                // form.setFieldsValue({
+                //     siteAddress: "result[0].endPointAddress"
+                // });
+                console.log(siteAddress,"siteAddress");  
+            }
+        )
+
+        API.checkIsSite(value).then(
+            result=>{
+                console.log("issite",result)
+                setIsSite(result)
+                if(!result)
+                { 
+                    getDDLWHTeam(value)
+                }
+
             }
         )
     }
@@ -221,9 +290,8 @@ const SDRLTRForm = (props) => {
     }
 
     const getDestination = () => {
-        API.getmDOPList().then(
+        API.getDestination(wpid,orderTypeId).then(
             result=>{
-                
                 setDDLDestination(result);
                 console.log("Destination",result);
             }
@@ -240,7 +308,7 @@ const SDRLTRForm = (props) => {
     }
 
     const getSubcon = () => {
-        API.getmSubcon().then(
+        API.getSubcon(orderTypeId).then(
             result=>{
                 setDDLSubcon(result);
                 console.log("PacketType",result);
@@ -267,15 +335,7 @@ const SDRLTRForm = (props) => {
         )
     }
 
-    const getTeamCoordinator = (sconid) => {
-        console.log("sconid",sconid)
-        API.getWHSPV(sconid,wpid).then(
-            result=>{
-                console.log("data team:",result)
-                setDDLTeamCoordinator(result);
-            }
-        )
-    }
+    
 
     const columns = [
         {
@@ -348,37 +408,38 @@ const SDRLTRForm = (props) => {
         return  moment(current).add(1,'d') < moment().endOf('day')
     }
 
-    
-
-    const postDismantleForm = (data) => {
+    const postDismantleForm = (values) => {
         const body = (
             {
+
+                "orderDetailId":odi,
                 "workpackageid":wpid,            
-                "InvCodeId":selectedInvCode,
+                "InvCodeId":values.inventoryCode,
                 "orderTypeId":orderTypeId,
-                "requestTypeId":selectedRequestBase,
+                "requestTypeId":values.requestBase,
                 "subconId":selectedSubcon,
-                "originId":selectedOrigin,        
-                "destinationId":ddid,        
-                "siteConditionId":0,
-                "CTId":data.ctName,
-                "packetTypeId":selectedPacketType,
-                "neTypeId" : 1,
+                "picOnSiteId":selectedTeamCoordinator,
+                "originId":values.origin,        
+                "destinationId":selectedDestination,        
+                "siteConditionId":values.siteLocation,
+                "CTId":values.ctName,
+                "packetTypeId":values.packetType,
+                "neTypeId" : values.siteLocation,
                 "siteAddress": siteAddress,
-                "proposeDeliveryModeId":data.proposeDelivery,
-                "expectedDeliveryDate":moment(data.deliveryDate).format("YYYY-MM-DD"),
-                "requestBy": user.uid,
-                "picOnSiteId":data.teamCoordinator
+                "isExpressDelivery":express,
+                "expectedDeliveryDate":moment(deliveryDate).format("YYYY-MM-DD"),
+                "proposeDeliveryModeId":values.proposeDelivery,
+                "requestBy": user.uid
             }
         )
-        console.log("TAR body",body);
-        API.postTARForm(body).then(
+        console.log("TAR body",values);
+        API.putSDRLTRForm(body).then(
             result=>{
                 if(result.status=="success")
                 {
                     console.log(result,'result tarmo')
                     toast.success(result.message);
-                    navigateTo(`/mm/materialOrderTAR?odi=${result.returnVal}`)
+                    navigateTo(`/mm/materialordersdrltr?odi=${result.returnVal}`)
                 }
                 else{
                     toast.error(result.message)
@@ -480,7 +541,6 @@ const SDRLTRForm = (props) => {
                                 initialValues={{
                                     'isExpressDelivery':false,
                                     'deliveryDate': moment(date2, "YYYY-MM-DD").add(2,'d'),
-                                    'destination' : parseInt(ddid),
                                     'orderType' : selectedOrderType
                                 }}
                                 fields={[
@@ -536,11 +596,13 @@ const SDRLTRForm = (props) => {
                                 </Form.Item>
                                 <Form.Item label="Inventory Code"
                                     name="inventoryCode"
+                                    disabled
                                     rules={[{ required: true, message: 'Please Select Inventory Code!'}]}
                                 >
                                     <Select 
                                         onChange={(e) => handleInvDDLChange(e)}
                                         placeholder="Select an option"
+                                        disabled
                                     >
                                         {
                                             ddlInventoryCode.map(inv =>  <Select.Option value={inv.invCodeId}> 
@@ -550,11 +612,13 @@ const SDRLTRForm = (props) => {
                                 </Form.Item>
                                 <Form.Item label="Request Base"
                                     name="requestBase"
+                                    
                                     rules={[{ required: true, message: 'Please Select Request Base!'}]}
                                 >
                                     <Select
                                         onChange={(e) => setSelectedRequestBase(e)} 
-                                        placeholder="Select an option">
+                                        placeholder="Select an option"
+                                        disabled>
                                         {
                                             ddlRequestBase.map(rbs =>  <Select.Option value={rbs.requestTypeId}> 
                                                 {rbs.requestTypeName}</Select.Option>)
@@ -566,7 +630,8 @@ const SDRLTRForm = (props) => {
                                 >
                                     <Select
                                         onChange={(e) => setSelectedSiteLocation(e)}  
-                                        placeholder="Select an option">
+                                        placeholder="Select an option"
+                                        disabled>
                                         {
                                             ddlSiteLocation.map(slc =>  <Select.Option value={slc.neTypeId}> 
                                                 {slc.neType}</Select.Option>)
@@ -582,7 +647,8 @@ const SDRLTRForm = (props) => {
                                             :
                                             <Select 
                                                 onChange={(e) => handleCTNameChange(e)} 
-                                                placeholder="Select an option">
+                                                placeholder="Select an option"
+                                                disabled>
                                                 {
                                                     ddlCTName.map(slc =>  <Select.Option value={slc.ctId}> 
                                                         {slc.ctName}</Select.Option>)
@@ -596,27 +662,97 @@ const SDRLTRForm = (props) => {
                                 >
                                     <Select 
                                         onChange={(e) => setSelectedOrigin(e)} 
-                                        placeholder="Select an option">
+                                        placeholder="Select an option"
+                                        disabled>
                                         {
                                             ddlOrigin.map(org =>  <Select.Option value={org.dopId}> 
                                                 {org.dopName}</Select.Option>)
                                         }
                                     </Select>
                                 </Form.Item>
-                                {/* <Form.Item label="Destination"
-                                    name="destination"
-                                    rules={[{ required: true, message: 'Please Select Destination!'}]}
+                                <Form.Item label="Destination" name="destination"
+                                    rules={[{ required: true, message: 'Please Select Destination!' }]}
                                 >
                                     <Select 
-                                        disabled
+                                        onChange={(e) => handleDestinationChange(e)} 
                                         placeholder="Select an option">
                                         {
                                             ddlDestination.map(dst =>  <Select.Option value={dst.dopId}> 
                                                 {dst.dopName}</Select.Option>)
                                         }
                                     </Select>
-                                </Form.Item> */}
-                                <Form.Item label="LSP Team"
+                                </Form.Item>
+                                {
+                                    isSite ? 
+                                        <><Form.Item label="SubCon" name="subCon"
+                                            rules={[{ required: true, message: 'Please Select Subcon Name!' }]}
+                                        >
+                                            <Select
+                                                onChange={(e) => handleSubcon(e)}
+                                                optionFilterProp="children"
+                                                placeholder="Select an option"
+                                                //onChange={onChange}
+                                                onSearch={onSearch}
+                                                showSearch
+                                                filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                                            >
+                                                {ddlSubcon.map(dst => <Select.Option value={dst.subconId}>
+                                                    {dst.subconName}</Select.Option>)}
+                                            </Select>
+                                        </Form.Item><Form.Item label="Team Coordinator at Site" name="teamCoordinator"
+                                            rules={[{ required: true, message: 'Please Select Team Coordinator!' }]}
+                                        >
+
+                                            {ddlTeam.length == null ? (<></>) : (
+                                                <Select
+                                                    showSearch
+                                                    filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                                                    onChange={(e) => setSelectedTeamCoordinator(e)}
+                                                    placeholder="Select an option"
+                                                    allowClear='true'
+                                                >
+                                                    {ddlTeam.map(dst => <Select.Option allowClear value={dst.userId}>
+                                                        {dst.fullname}</Select.Option>)}
+                                                </Select>)}
+                                        </Form.Item></>
+                                        :
+                                        <>
+                                            <Form.Item label="WHTeam" name="subCon"
+                                                rules={[{ required: true, message: 'Please Select Subcon Name!' }]}
+                                            >
+                                                <Select
+
+                                                    onChange={(e) => handleWHTeamChange(e)}
+                                                    optionFilterProp="children"
+                                                    placeholder="Select an option"
+                                                    //onChange={onChange}
+                                                    onSearch={onSearch}
+                                                    showSearch
+                                                    filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                                                >
+                                                    {ddlWHTeam.map(dst => <Select.Option value={dst.scon_id}>
+                                                        {dst.scon_name}</Select.Option>)}
+                                                </Select>
+                                            </Form.Item><Form.Item label="WH Supervisor" name="teamCoordinator"
+                                                rules={[{ required: true, message: 'Please Select Team Coordinator!' }]}
+                                            >
+
+                                                {ddlWHSPV.length == null ? (<></>) : (
+                                                    <Select
+                                                        showSearch
+                                                        filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                                                        onChange={(e) => setSelectedTeamCoordinator(e)}
+                                                        placeholder="Select an option"
+                                                        allowClear='true'
+                                                    >
+                                                        {ddlWHSPV.map(dst => <Select.Option allowClear value={dst.userId}>
+                                                            {dst.fullname}</Select.Option>)}
+                                                    </Select>)}
+                                            </Form.Item>
+                                        </>
+                                }
+
+                                {/* <Form.Item label="LSP Team"
                                     name="subCon"
                                     rules={[{ required: true, message: 'Please Select LSP Name!'}]}
                                 >
@@ -655,7 +791,9 @@ const SDRLTRForm = (props) => {
                                             }
                                         </Select>)}
                                     
-                                </Form.Item>
+                                </Form.Item> */}
+
+
                                 <Form.Item label="Express Pickup" valuePropName="checked" name="isExpressDelivery">  
                                     {express ? (<Checkbox onChange={(e)=>handleIsExpress(e.target.checked)}/>):(
                                         <Tooltip color='#f50' title="Cannot request Express Delivery"><Checkbox disabled /></Tooltip>
@@ -667,7 +805,8 @@ const SDRLTRForm = (props) => {
                                 >
                                     <Select 
                                         onChange={(e) => setSelectedPacketType(e)} 
-                                        placeholder="Select an option">
+                                        placeholder="Select an option"
+                                        disabled>
                                         {
                                             ddlPacketType.map(dst =>  <Select.Option value={dst.packetTypeId}> 
                                                 {dst.packetType}</Select.Option>)

@@ -115,6 +115,7 @@ const SdrForm = (props) => {
             }
         )
     }
+    
     const getTeamCoordinator = (selectedSubcons) => {
         API.getTeamCoordinator(selectedSubcons,wpid).then(
             result=>{
@@ -660,8 +661,6 @@ const SdrForm = (props) => {
                                             </Form.Item>
                                         </>
                                 }
-                                
-                                
                                 <Form.Item label="Express Delivery" valuePropName="checked" name="isExpressDelivery">  
                                     {express ? (<Checkbox onChange={(e)=>togleCheckbox(e.target.checked)}/>):(
                                         <Tooltip color='#f50' title="Cannot request Express Delivery"><Checkbox disabled  onChange={(e)=>togleCheckbox(e.target.checked)}/></Tooltip>
