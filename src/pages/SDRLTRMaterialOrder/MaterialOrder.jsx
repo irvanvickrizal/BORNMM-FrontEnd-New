@@ -661,8 +661,6 @@ export default function MaterialOrder() {
         setIsModalEditMaterial(false);
     };
 
-    
-   
     const handleDownloadBtn=()=>{
         API.getBOQRefGetList(odiParam).then(
             result=>{

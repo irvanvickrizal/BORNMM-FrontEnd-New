@@ -40,12 +40,25 @@ function* sagaGetOrderRequesDetail(action) {
 function* sagaGetMaterial(action) {
     const token = yield select(state=>state.auth.token)
     const dataOdi = yield select(state=>state.aprovalTaskPendingReducer.odi)
+    const parenOrderDetailId = yield select(state=>state.aprovalTaskPendingReducer.dataOrderRequestDetail[0].parentOrderDetailId)
     try {
-        const res = yield axios.get(`${API}materialmanagement/orderRequestMaterialGetDetailBasedOnOrderRequest/${dataOdi}`,{headers: {
-            Authorization: `Bearer ${token}` 
-        }});
-        console.log(res,"result get site condition")
-        yield put (setMaterial(res.data))
+        if(parenOrderDetailId>0)
+        {
+            const res = yield axios.get(`${API}materialmanagement/orderRequestMaterialGetDetailBasedOnOrderRequest/${parenOrderDetailId}`,{headers: {
+                Authorization: `Bearer ${token}` 
+            }});
+            console.log(res,"result get site condition")
+            yield put (setMaterial(res.data))
+        }
+        else{
+            const res = yield axios.get(`${API}materialmanagement/orderRequestMaterialGetDetailBasedOnOrderRequest/${dataOdi}`,{headers: {
+                Authorization: `Bearer ${token}` 
+            }});
+            console.log(res,"result get site condition")
+            yield put (setMaterial(res.data))
+        }
+
+        
     } catch (error) {
         console.log(error,'error get data site condition')
     }
