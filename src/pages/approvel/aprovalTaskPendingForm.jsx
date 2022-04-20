@@ -44,8 +44,8 @@ export default function AprovalTaskPendingForm() {
     }, [])
 
     const dataOrderDetail = useSelector(state=>state.aprovalTaskPendingReducer.dataOrderRequestDetail)
-    const parentOrderDetailId = useSelector(state=>state.aprovalTaskPendingReducer?.dataOrderRequestDetail[0]?.parentOrderDetailId)
-    const perentReqNo = useSelector(state=>state.aprovalTaskPendingReducer?.dataOrderRequestDetail[0]?.parentRequestNo)
+    const parentOrderDetailId = useSelector(state=>state.aprovalTaskPendingReducer.dataOrderRequestDetail[0]?.parentOrderDetailId)
+    const perentReqNo = useSelector(state=>state.aprovalTaskPendingReducer.dataOrderRequestDetail[0]?.parentRequestNo)
     const dataMaterialOrder = useSelector(state=>state.aprovalTaskPendingReducer.dataMaterial)
     const dataLogOrder = useSelector(state=>state.aprovalTaskPendingReducer.dataLog)
     const dataSno = useSelector(state=>state.aprovalTaskPendingReducer.sno)
@@ -334,12 +334,10 @@ export default function AprovalTaskPendingForm() {
                         <TabPane tab="Material Order" key="2">
                             
                             <Card title={CardTitle("Material Order")}>
-                                {parentOrderDetailId ? parentOrderDetailId>0 ? 
+                                {/* { parentOrderDetailId > 0 ? 
                                     <b>Parent Request No : {perentReqNo}</b>
                                     : null
-                                    :
-                                    null
-                                }
+                                } */}
                                 <Table
                                     columns={columnsMaterial}
                                     pagination={false}

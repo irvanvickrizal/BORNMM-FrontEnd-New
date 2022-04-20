@@ -40,7 +40,7 @@ function* sagaGetOrderRequesDetail(action) {
 function* sagaGetMaterial(action) {
     const token = yield select(state=>state.auth.token)
     const dataOdi = yield select(state=>state.aprovalTaskPendingReducer.odi)
-    const parenOrderDetailId = yield select(state=>state.aprovalTaskPendingReducer?.dataOrderRequestDetail[0]?.parentOrderDetailId)
+    const parenOrderDetailId = yield select(state=>state.aprovalTaskPendingReducer.dataOrderRequestDetail[0]?.parentOrderDetailId)
     try {
         if(parenOrderDetailId>0)
         {
