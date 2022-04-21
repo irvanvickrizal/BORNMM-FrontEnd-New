@@ -183,12 +183,12 @@ export default function AprovalTaskPendingForm() {
             dataIndex: "refQTY"
         },
         {
-            title: "BOQ Req QTY",
+            title: "Current Req QTY",
             dataIndex: "reqQTY"
         },
     
         {
-            title: "Current Req QTY",
+            title: "Total Req QTY",
             dataIndex: "totalReqQTY"
         },
         {
