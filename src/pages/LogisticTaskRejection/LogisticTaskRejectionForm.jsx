@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable no-undef */
 /* eslint-disable react/no-unstable-nested-components */
@@ -98,6 +99,9 @@ export default function LogisticTaskRejectionForm() {
     const dataTransportId = useSelector(
         (state) => state?.logistikFormReducer?.dataSiteInfoLogistik[0]?.cdmrId
     )
+
+    const parentOrderDetailId = useSelector(state=>state.logistikFormReducer?.dataSiteInfo[0]?.parentOrderDetailId)
+    const parentRequestNo = useSelector(state=>state.logistikFormReducer?.dataSiteInfo[0]?.parentRequestNo)
     
     const dataUser = useSelector(state=>state.auth.user.uid)
     
@@ -540,6 +544,12 @@ export default function LogisticTaskRejectionForm() {
                                 )}
                             </TabPane>
                             <TabPane tab="Material Order" key="2">
+                                {parentOrderDetailId ? parentOrderDetailId>0 ? 
+                                    <b>Parent Request No : {perentReqNo}</b>
+                                    : null
+                                    :
+                                    null
+                                }
                           
                                 <Table
                                     scroll={{x: "150%"}}

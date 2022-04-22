@@ -581,6 +581,7 @@ const getSubcon = () => GET('subcon/GetFieldSubcontractor');
 const getWHTeam = (destinationId) => GETParam('subcon/getSubconListBasedOnDestination',destinationId);
 const postDismantleForm = (body) => POST('materialmanagement/OrderDetailAdd',body);
 const postTARForm = (body) => POST('materialmanagement/OrderDetailAdd',body);
+const putSDRLTRForm = (body) => PUT('materialmanagement/OrderDetailUpdate',body);
 const getTeamCoordinator= (subconid,workpackageid) => GETParam2('subcon/getCoordinatorSubcontractorEngineer',subconid,workpackageid);
 const getHasExpressDelivery= (ordertypeid) => GETParam('masterordertype/orderTypeHasExpressDelivery',ordertypeid);
 
@@ -602,6 +603,7 @@ const putMaterialOrderDraft = (body) => PUT('materialmanagement/materialOrderReq
 const deleteMaterialOrderRequest = (param) => DELETE('materialmanagement/orderRequestMaterialDelItem',param);
 
 const getOrderDetailEdit =  (odi) => GETParam('materialmanagement/OrderDetailRequestGetDetail',odi);
+const getMaterialOrderSDRLTR =  (podi) => GETParam('materialmanagement/orderRequestMaterialGetDetailBasedOnOrderRequest',podi);
 
 const getSconTaskPending = (uid) => GETParam('taskassignment/taskAssignmentSubconPending',uid);
 const getSconEngineer = (sconid,wpid) => GETParam2('subcon/getFieldSubcontractorEngineer',sconid,wpid)
@@ -656,7 +658,9 @@ const postAssitgnTransportTeam2 = (body) => POST('lspassignment/lspAssignmentToT
 const getBoqSummaryAsPoBoq = (boqid) => GETParam('boqref/boqGetSummaryAsPOBOQCompletion',boqid)
 const getListBoqAsPo = (boqid) => GETParam('boqref/boqGetListAsPOBOQ',boqid)
 const getDownloadPoBoqCompletion = (boqid,poscopeid) => GETParam2('boqref/boqGetListAsPOBOQCompletion',boqid,poscopeid)
-
+const getListBoqAccuracy = (uid) => GETParam('rpt/boqAccuracyGetBOQList',uid)
+   
+const getListBoqAccuracyDetail = (boqId) => GETParam('rpt/boqAccuracyGetDetail',boqId)
    
 const getDownloadPoBoqList = (workpackageid,boqRefCode) => GETParam2('boqref/boqAsPOSitebasedGetList',workpackageid,boqRefCode)
 const getDownloadPoBoqListDeleted = (workpackageid) => DELETE('boqref/boqAsPOBOQSiteBasedDeleted',workpackageid)
@@ -668,8 +672,6 @@ const getLatestCheckPoint = (bid) => GETParam('boqref/boqUploadDataCheckHasClear
 
 const postBOQASPOFile = (id,file) => POSTFile('boqref/boqAsPOUploadBulk',id,file);
 const getInventoryDetail = () => GET("inventory/getInventoryDetail");
-
-
 
 const getBoqSummaryAsPlanBoq = (bid) => GETParam('boqref/boqGetSummaryAsPlanBOQCompletion',bid)
 const getListBoqAsPlan = (boqid) => GETParam('boqref/boqGetListAsPlanBOQ',boqid)
@@ -813,15 +815,17 @@ const postBoqProceed = (dopId,body) => POSTParam("transferasset/boqAssetUploadPr
 const deleteBoqProceed = (dopId) => DELETEParam("transferasset/boqAssetCleanupData",dopId);
 const uploadBoqAsset = (dopId,uid,File) => POSTFileParam2("transferasset/boqAssetUpload",dopId,uid,File);
 const getSummaryAsPO = (dopId) => GETParam("transferasset/boqAssetUploadResult",dopId);
-
-
 // Transfer Asset Request
 const getTransfeAssetRequest = (uId) => GETParam("sitelist/transferAssetReq",uId);
 const getTARWarehouseInfor = (uId) => GETParam("sitelist/transferAssetReq",uId);
 const getMaterialOrderTARItem = (siteno) => GETParam("transferasset/getSummaryItemLimitBasedOnWHCode",siteno);
+const getSDRLTRDDL = (odi) => GETParam("materialmanagement/orderRequestDetailOriginal",odi);
 
 
 const API ={
+    getMaterialOrderSDRLTR,
+    putSDRLTRForm,
+    getSDRLTRDDL,
     getWHTeam,
     checkIsSite,
     getWHSupervisor,
@@ -838,6 +842,8 @@ const API ={
     getDismantleList,
     getTransfeAssetRequest,
     uploadBoqAsset,
+    getListBoqAccuracyDetail,
+    getListBoqAccuracy,
     getDeliveryNote,
     postBoqProceed,
     deleteBoqProceed,

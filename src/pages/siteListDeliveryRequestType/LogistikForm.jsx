@@ -95,6 +95,12 @@ export default function LogisticForm() {
     const dataSite = useSelector(
         (state) => state.logistikFormReducer.dataSiteInfo
     )
+    const parentOrderDetailId = useSelector(
+        (state) => state.logistikFormReducer?.dataSiteInfo[0]?.parentOrderDetailId
+    )
+    const parentReqNo = useSelector(
+        (state) => state.logistikFormReducer?.dataSiteInfo[0]?.parentRequestNo
+    )
     const DataDeliveryTransport = useSelector(state=> state.logistikFormReducer.detaDeliveryTransport)
     const dataOdi = useSelector(state=> state.logistikFormReducer.odi)
     const dataStats = useSelector(state=>state.logistikFormReducer.stats.status)
@@ -341,7 +347,7 @@ export default function LogisticForm() {
         dispatch(getDeliveryList())
         dispatch(getDeliveryMode())
         getLogLogistic()
-    }, [dispatch,wh])
+    }, [dispatch,wh,parentOrderDetailId,parentReqNo])
 
     return (
         <div>
@@ -373,7 +379,7 @@ export default function LogisticForm() {
                                         title={CardTitle("Order Request Detail")}
                                     >
                                         <Form
-                                            labelCol={{span: 8}}
+                                            labelCol={{span: 10}}
                                             wrapperCol={{span: 14}}
                                             layout="horizontal"
                                         >
@@ -521,7 +527,12 @@ export default function LogisticForm() {
                                 )}
                             </TabPane>
                             <TabPane tab="Material Order" key="2">
-                          
+                                {parentOrderDetailId ? parentOrderDetailId>0 ? 
+                                    <b>Parent Request No : {parentReqNo}</b>
+                                    : null
+                                    :
+                                    null
+                                }
                                 <Table
                                     scroll={{x: "150%"}}
                                     bordered

@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable react/no-unstable-nested-components */
@@ -25,6 +26,8 @@ export default function TableOrderList() {
     const [isAddButton,setIsAddButton] = useState(false)
     const [formPath,setFormPath] = useState('')
     const [odi,setOdi] = useState("")
+    const[parentOdi,setParentOdi] = useState("")
+    const[parentRequestNo,setParentRequestNo] = useState("")
     const [isTransferAsset,setIsTransferAsset] = useState('')
     const [isModalVisible,setIsModalVisible] = useState(false)
     const {Title} = Typography
@@ -79,19 +82,32 @@ export default function TableOrderList() {
             result=>{
                 setDataOrderDetail(result);
                 setIsLoading(false);
+                setParentOdi(result[0]?.parentOrderDetailId)
+                setParentRequestNo(result[0]?.parentRequestNo)
                 console.log("data order detail =>",result);
             }
         )
     }
     function getMaterial(data) {
-        setIsLoading(true);
-        API.getMaterial(odi).then(
-            result=>{
-                setDataMaterial(result);
-                setIsLoading(false);
-                console.log("data order Material =>",result);
-            }
-        )
+        console.log(parentOdi,"parent Odi")
+        console.log(parentRequestNo,"parent request")
+        if(parentOdi>0){
+            API.getMaterial(parentOdi).then(
+                result=>{
+                    setDataMaterial(result);
+                    //setIsLoading(false);
+                    console.log("data order Material parent odi =>",result);
+                }
+            )
+        } else {
+            API.getMaterial(odi).then(
+                result=>{
+                    setDataMaterial(result);
+                    //setIsLoading(false);
+                    console.log("data order Material =>",result);
+                }
+            )
+        }
     }
     function getLog(data) {
         setIsLoading(true);
@@ -197,6 +213,12 @@ export default function TableOrderList() {
             dataIndex:'requestNo',
             width : 150,
             ...Search('requestNo'),
+        },
+        {
+            title : "Parent Request No",
+            dataIndex:'parentRequestNo',
+            width : 150,
+            ...Search('parentRequestNo'),
         },
         {
             title : "Origin",
@@ -608,11 +630,12 @@ export default function TableOrderList() {
             dataIndex: "refQTY"
         },
         {
-            title: "BOQ Req QTY",
+            title: "Current Req QTY",
             dataIndex: "reqQTY"
         },
+   
         {
-            title: "Total Req QTY",
+            title: "Total BOQ Req QTY",
             dataIndex: "totalReqQTY"
         },
         {
@@ -919,6 +942,12 @@ export default function TableOrderList() {
                     </TabPane>
                     <TabPane tab="Material Order" key="2">
                         <Card>
+                            {parentOdi ? parentOdi>0 ? 
+                                <b>Parent Request No : {parentRequestNo}</b>
+                                : null
+                                :
+                                null
+                            }
                             <div >
                                 { isLoading ?   
                                     <Row justify="center">

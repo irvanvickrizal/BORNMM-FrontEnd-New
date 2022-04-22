@@ -6,8 +6,11 @@ import {toast} from 'react-toastify';
 import {useFormik} from 'formik';
 import {useTranslation} from 'react-i18next';
 import {loadUser, loginUser} from '@store/reducers/auth';
+import {setMenu} from '@store/reducers/menu';
 import {Checkbox, Button, Input} from '@components';
 import {faEnvelope, faLock, faUser} from '@fortawesome/free-solid-svg-icons';
+
+import API  from '../../utils/apiServices'
 
 import jwt from 'jwt-decode';
 import * as Yup from 'yup';
@@ -28,6 +31,21 @@ const Login = () => {
         const user =  jwt(token);
         console.log("jwt user: ",user);
     }
+
+    const menuapi=(id,tokens)=> {
+        try{
+            API.getMenu(id,tokens).then(
+                result=>{
+                    console.log('i menu',result)
+                    
+                    dispatch(setMenu(result));
+                }
+            );
+        }catch(e){
+            console.log(e,"menu error")
+        }
+       
+    } 
 
     const loginori = async (email, password) => {
         try {
@@ -50,8 +68,10 @@ const Login = () => {
             console.log('login : ',token);
             toast.success('Login is succeed!');
             dispatch(loginUser(token));
-            
             const user =  jwt(token);
+
+            menuapi(user.roleId,token)
+
             dispatch(loadUser(user));
             if(user.roleId==175){
                 history.push('/task/ackdismantlepending');

@@ -84,28 +84,31 @@ export const MENU = [
     }
 ];
 
+
+
 const MenuSidebar = () => {
     const user = useSelector((state) => state.auth.user);
+    const menu = useSelector((state) => state.menu.menu);
 
-    const [menu, setMenu] = useState([]);
+    //const [menu, setMenu] = useState([]);
     const token = localStorage.getItem('token'); 
-    const menuapi=(id)=> {
-        try{
-            API.getMenu(id,token).then(
-                result=>{
-                    console.log('i menu',result)
-                    setMenu(result);
-                }
-            );
-        }catch(e){
-            console.log(e,"menu error")
-        }
+    // const menuapi=(id)=> {
+    //     try{
+    //         API.getMenu(id,token).then(
+    //             result=>{
+    //                 console.log('i menu',result)
+    //                 setMenu(result);
+    //             }
+    //         );
+    //     }catch(e){
+    //         console.log(e,"menu error")
+    //     }
        
-    } 
+    // } 
 
-    useEffect(() => {
-        menuapi(user.roleId);
-    },[user,token])
+    // useEffect(() => {
+    //     menuapi(user.roleId);
+    // },[user,token])
 
     return (
         <aside className="main-sidebar sidebar-nokia-primary elevation-4">

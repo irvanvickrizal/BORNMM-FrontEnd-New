@@ -1,5 +1,4 @@
-/* eslint-disable react/jsx-no-duplicate-props */
-/* eslint-disable no-self-compare */
+/* eslint-disable radix */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable react/jsx-no-bind */
@@ -17,8 +16,9 @@ import { Table, Row, Col,Card, Typography, Input, Space,
     DatePicker,
     InputNumber,
     TreeSelect,
+    Switch,
     Tooltip,
-    Checkbox ,
+    Checkbox,
     message } from 'antd';
 import HeaderChanger from '@app/components/cardheader/HeaderChanger';
 import Divider from '@mui/material/Divider';
@@ -31,18 +31,16 @@ import API from '@app/utils/apiServices';
 import CreateDataDismantle from './DataGenerator';
 import moment from 'moment';
 
-
-
 import { toast } from 'react-toastify';
 
-const SdrForm = (props) => {
+const SDRLTRForm = (props) => {
     const customURL = window.location.href;
     const params = new URLSearchParams(customURL.split('?')[1])
     const { Title } = Typography;
     const wpid = params.get('wpid');
-    const ot = params.get('ot');
-    const subconid= 22
     const orderTypeId = params.get('ot');
+    const ddid = params.get('ddid');
+    const odi = params.get('odi');
     const [siteInfo, setSiteInfo] = useState([]);
     const [cpoNo,setCpoNo] = useState("");
     const [generalScope,setGeneralScope] = useState("");
@@ -54,9 +52,7 @@ const SdrForm = (props) => {
     const [wBS,setWBS] = useState("");
     const [projectContract,setProjectContract] = useState("");
     const [region,setRegion] = useState("");
-    const [express,setExpress] = useState("");
     const [ddlInventoryCode,setDDLInventoryCode] = useState([]);
-    const [ddlIDeliveryDate,setDDLDeliveryDate] = useState([]);
     const [ddlRequestBase,setDDLRequestBase] = useState([]);
     const [ddlSiteLocation,setDDLSiteLocation] = useState([]);
     const [ddlCTName,setDDLCTName] = useState([]);
@@ -64,17 +60,21 @@ const SdrForm = (props) => {
     const [ddlDestination,setDDLDestination] = useState([]);
     const [ddlPacketType,setDDLPacketType] = useState([]);
     const [ddlSubcon,setDDLSubcon] = useState([]);
+    const [ddlSiteCondition,setDDLSiteCondition] = useState([]);
     const [ddlTeam,setDdlTeam] = useState([]);
     const [ddlWHTeam,setDdlWHTeam] = useState([]);
     const [ddlWHSPV,setDdlWHSPV] = useState([]);
-    const [ddlSiteCondition,setDDLSiteCondition] = useState([]);
+
+    const [ddlIDeliveryMode,setDDLDeliveryMode] = useState([]);
+    const [ddlOrderType,setDDLOrderType] = useState([]);
+    const [siteInfoDetail,setSiteInfoDetail] = useState([]);
     const current = new Date();
-    const [checked,setChecked] = useState(false)
     const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
-    
     const date2 = `${current.getFullYear()}-${current.getMonth()+1}-${current.getDate()}`;
+    
     const history = useHistory();
-    const [selectedInvCode,setSelectedInvCode] = useState(1);
+    const [selectedInvCode,setSelectedInvCode] = useState('');
+    const [selectedOrderType,setSelectedOrderType] = useState('');
     const [selectedSiteLocation,setSelectedSiteLocation] = useState('');
     const [selectedRequestBase,setSelectedRequestBase] = useState('');
     const [selectedCTName,setSelectedCTName] = useState('');
@@ -82,49 +82,23 @@ const SdrForm = (props) => {
     const [selectedDestination,setSelectedDestination] = useState('');
     const [selectedPacketType,setSelectedPacketType] = useState('');
     const [selectedSubcon,setSelectedSubcon] = useState('');
-    const [selectedDeliveryMode,setSelectedDeliveryMode] = useState('');
     const [selectedSiteCondition,setSelectedSiteCondition] = useState('');
     const [deliveryDate,setDeliveryDate] = useState(moment(date2, "YYYY-MM-DD").add(3,'d'));
     const [siteAddress,setSiteAddress] = useState('');
-    const [selectedTeamCoordinator,setSelectedTeamCoordinator] = useState("")
-    const [initialValue,setInitialValue]= useState("")
-    const [selectedINVCode,setSelectedINVCode]= useState("")
+    const [selectedTeamCoordinator,setSelectedTeamCoordinator] = useState('');
+    const [ddlTeamCoordinator,setDDLTeamCoordinator] = useState([]);
+    const [checked,setChecked] = useState(false);
+    const [selectedDeliveryMode,setSelectedDeliveryMode] = useState('');
+    const [form] = Form.useForm();
+    const [phoneNumber,setPhoneNumber] = useState('')
     const [isSite,setIsSite]= useState(true)
-
+    const [express,setExpress] = useState(false);
     const [siteNo,setSiteNo] = useState('')
     const navigateTo = (path) => {
         history.push(path)
     }
+
     const user = useSelector((state) => state.auth.user);
-    const [phoneNumber,setPhoneNumber] = useState('')
-    const getSiteInfo = () => {
-        API.getSiteInfo(wpid).then(
-            result=>{
-                console.log(result,"data")
-                const data = [CreateDataDismantle.siteInfo(
-                    result.poDetail.cpoNo
-                    ,result.scopeDetail.scopeName
-                    ,result.siteNo
-                    ,result.siteName
-                    ,result.packageName
-                    ,result.packageName
-                    ,result.region
-                    ,result.workpackageID)]
-                setSiteInfo(data);
-                setSiteNo(result.siteNo)
-            }
-        )
-    }
-    
-    const getTeamCoordinator = (selectedSubcons) => {
-        API.getTeamCoordinator(selectedSubcons,wpid).then(
-            result=>{
-                console.log("data team:",result)
-                setDdlTeam(result);
-            }
-        )
-    }
-    
     const getIdentity = () => {
         API.getIdentity().then(
             result=>{
@@ -133,132 +107,6 @@ const SdrForm = (props) => {
             }
         )
     }
-
-    const getInventoryDDL = () => {
-        API.getInventoryActiveList().then(
-            result=>{
-                console.log("inventory",result);
-                setDDLInventoryCode(result);
-                setInitialValue(result[0].invCodeId)
-                setSelectedINVCode(result[0].invCodeId)
-            }
-        )
-    }
-    const getDeliveryDateDDL = () => {
-        API.getDdlDeliveryDate(ot).then(
-            result=>{
-                console.log("propose",result);
-                setDDLDeliveryDate(result);
-                setInitialValue(result[0].invCode)
-            }
-        )
-    }
-    
-    const getRequestBaseDDL = () => {
-        API.getRequestBase2(orderTypeId,wpid).then(
-            result=>{
-                console.log("rb",result);
-                setDDLRequestBase(result);
-            }
-        )
-    }
-
-    const getSiteLocationDDL = () => {
-        API.getSiteLocation().then(
-            result=>{
-                setDDLSiteLocation(result);
-                console.log("netype",result);
-            }
-        )
-    }
-    
-    const getCTNameDDL = (invcodeid) => {
-        console.log(invcodeid,"ddlctnameinv")
-        API.getCTName(invcodeid).then(
-            result=>{
-                setDDLCTName(result);
-                if(result.length>0){
-                    setSelectedCTName(1)
-                }
-                console.log("CTNAMeDDL",result);
-            }
-        )
-    }
-
-    const getOriginDDL = () => {
-        API.getOrigin(wpid,orderTypeId).then(
-            result=>{
-                setDDLOrigin(result);
-                console.log("ORIGIN",result);
-            }
-        )
-    }
-
-    const getDestination = () => {
-        API.getDestination(wpid,orderTypeId).then(
-            result=>{
-                setDDLDestination(result);
-                console.log("Destination",result);
-            }
-        )
-    }
-    
-    const getPacketType = () => {
-        API.getPacketType(orderTypeId).then(
-            result=>{
-                setDDLPacketType(result);
-                console.log("PacketType",result);
-            }
-        )
-    }
-
-    const getSubcon = () => {
-        API.getSubcon(orderTypeId).then(
-            result=>{
-                setDDLSubcon(result);
-                console.log("PacketType",result);
-            }
-        )
-    }
-
-    const getDDLWHTeam = (destinationId) => {
-        API.getWHTeam(destinationId).then(
-            result=>{
-                setDdlWHTeam(result);
-                console.log("WH team",result);
-            }
-        )
-    }
-    
-    const getSiteCondition = () => {
-        API.getSiteCondition(orderTypeId).then(
-            result=>{
-                setDDLSiteCondition(result);
-                console.log("PacketType",result);
-            }
-        )
-    }
-    const getHasExpressDelivery = () => {
-        API.getHasExpressDelivery(orderTypeId).then(
-            result=>{
-                setExpress(result);
-                console.log("express",result);
-            }
-        )
-    }
-    function onChange(value) {
-        console.log(`selected ${value}`);
-    }
-      
-    function onSearch(val) {
-        console.log('search:', val);
-    }
-    
-    const togleCheckbox = (value)=> {
-        setChecked(value)
-        console.log("v",value)
-    }
-
     const getDDLWHSPV=(destinationid)=>{
         API.getWHSupervisor(destinationid,wpid,selectedDestination).then(
             result=>{
@@ -268,9 +116,39 @@ const SdrForm = (props) => {
         )
     }
 
+    const getTeamCoordinator = (selectedSubcons) => {
+        API.getTeamCoordinator(selectedSubcons,wpid).then(
+            result=>{
+                console.log("data team:",result)
+                setDdlTeam(result);
+            }
+        )
+    }
+    const getDDLWHTeam = (destinationId) => {
+        API.getWHTeam(destinationId).then(
+            result=>{
+                setDdlWHTeam(result);
+                console.log("WH team",result);
+            }
+        )
+    }
+
+    const handleWHTeamChange = (e)=>{
+        console.log(e,"selected WH Team");
+        setSelectedSubcon(e)
+        getDDLWHSPV(e)
+    }
+    
+
+    const handleSubcon = (e)=>{
+        setSelectedSubcon(e)
+        getTeamCoordinator(e)
+        setSelectedTeamCoordinator('')
+        console.log(selectedTeamCoordinator);
+    }
+
     const handleDestinationChange = (value) =>{
         setSelectedDestination(value);
-        
         API.getAddress(siteNo,value).then(
             result=>{
                 setSiteAddress(result[0].endPointAddress)  
@@ -290,13 +168,175 @@ const SdrForm = (props) => {
                 { 
                     getDDLWHTeam(value)
                 }
+
             }
         )
-        
+    }
 
+    const getSiteInfo = (wpidparam) => {
+        API.getSiteInfo(wpidparam).then(
+            result=>{
+                const data = [CreateDataDismantle.siteInfo(
+                    result.poDetail.cpoNo
+                    ,result.scopeDetail.scopeName
+                    ,result.siteNo
+                    ,result.siteName
+                    ,result.packageName
+                    ,result.packageName
+                    ,result.region)]
+                setSiteInfo(data);
+                setSiteNo(result.siteNo)
+                console.log("site info",data)
+            }
+        )
+    }
 
+    const getSiteInfoDetail = (orderDetailId) => {
+        API.getSDRLTRDDL(orderDetailId).then(
+            result=>{
+                setSiteInfoDetail(result[0]);
+                console.log("site info detail",result[0])
+            }
+        )
+    }
+
+    const getCTNameDDL = (invcodeid) => {
+        API.getCTName(invcodeid).then(
+            result=>{
+                setDDLCTName(result);
+                console.log("CTNAMeDDL",result);
+            }
+        )
+    }
+
+    const getInventoryDDL = () => {
+        API.getInventoryActiveList().then(
+            result=>{
+                console.log("inventory",result);
+                setDDLInventoryCode(result);
+                setSelectedInvCode(result[0].invCodeId)
+                getCTNameDDL(result[0].invCodeId);
+            }
+        )
+    }
+
+    const getOrderTypeDDL = (orderTypeParam) => {
+        API.getmOrderType().then(
+            result=>{
+                console.log("OrderType",result);
+                setDDLOrderType(result);
+                setSelectedOrderType(orderTypeParam);
+            }
+        )
+    }
+
+    const getDeliveryModeDDL = (orderTypeIdParam) => {
+        API.getDdlDeliveryDate(orderTypeIdParam).then(
+            result=>{
+                console.log("propose",result);
+                setDDLDeliveryMode(result);
+                // setInitialValue(result[0].invCode)
+            }
+        )
     }
     
+    const getRequestBaseDDL = (orderTypeIdParam,wpidParam) => {
+        API.getRequestBase2(orderTypeIdParam,wpidParam).then(
+            result=>{
+                console.log("rb",result);
+                setDDLRequestBase(result);
+            }
+        )
+    }
+
+    const getHasExpressDelivery = (orderTypeIdParam) => {
+        API.getHasExpressDelivery(orderTypeIdParam).then(
+            result=>{
+                setExpress(result);
+                console.log("express",result);
+            }
+        )
+    }
+
+    const getSiteLocationDDL = () => {
+        API.getSiteLocation().then(
+            result=>{
+                setDDLSiteLocation(result);
+                console.log("netype",result);
+            }
+        )
+    }
+
+    const getOriginDDL = (wpidParam,orderTypeIdParam) => {
+        API.getOrigin(wpidParam,orderTypeIdParam).then(
+            result=>{
+                setDDLOrigin(result);
+                console.log("ORIGIN",result);
+            }
+        )
+    }
+
+    const getAddress = (value) =>{
+        API.getAddress(siteNo,value).then(
+            result=>{
+                setSiteAddress(result[0].endPointAddress)  
+                console.log("teslog",result[0].endPointAddress);    
+                // form.setFieldsValue({
+                //     siteAddress: "result[0].endPointAddress"
+                // });
+                console.log(siteAddress,"siteAddress");  
+            }
+        )
+    }
+
+    const getDestination = () => {
+        API.getDestination(wpid,orderTypeId).then(
+            result=>{
+                setDDLDestination(result);
+                console.log("Destination",result);
+            }
+        )
+    }
+    
+    const getPacketType = (orderTypeIdParam) => {
+        API.getPacketType(orderTypeIdParam).then(
+            result=>{
+                setDDLPacketType(result);
+                console.log("PacketType",result);
+            }
+        )
+    }
+
+    const getSubcon = () => {
+        API.getSubcon(orderTypeId).then(
+            result=>{
+                setDDLSubcon(result);
+                console.log("PacketType",result);
+            }
+        )
+    }
+
+    const handleIsExpress = (value)=> {
+        setChecked(value)
+        console.log("v",value)
+    }
+
+
+    const handleCTNameChange = (value)=> {
+        console.log("ctchange",value)
+    }
+    
+    const getSiteCondition = (orderTypeIdParam) => {
+        API.getSiteCondition(orderTypeIdParam).then(
+            result=>{
+                setDDLSiteCondition(result);
+                console.log("PacketType",result);
+            }
+        )
+    }
+
+    
+
     const columns = [
         {
             title: 'PO NO/ RO No',
@@ -304,22 +344,17 @@ const SdrForm = (props) => {
             key: 'cpoNo',
         },
         {
-            title: 'WorkpackageID',
-            dataIndex: 'workpackageId',
-            key: 'workpackageId',
-        },
-        {
             title: 'General Scope',
             dataIndex: 'scopeName',
             key: 'scopeName',
         },
         {
-            title: 'Site No',
+            title: 'WH Code',
             dataIndex: 'siteNo',
             key: 'siteNo',
         },
         {
-            title: 'Site Name',
+            title: 'WH Name',
             dataIndex: 'siteName',
             key: 'siteName',
         },
@@ -346,6 +381,12 @@ const SdrForm = (props) => {
         getCTNameDDL(e);
     }
 
+    function handleSelectedSubcon(e){
+        console.log("handlesconchange",e); 
+        setSelectedSubcon(e);
+        getTeamCoordinator(e);
+    }
+
     function range(start, end) {
         const result = [];
         for (let i = start; i < end; i++) {
@@ -354,48 +395,51 @@ const SdrForm = (props) => {
         return result;
     }
 
-    function disabledDateExpressTrue(current) {
-        // Can not select days before today and today
-        return moment(current).add(1,'d') < moment().endOf('day')
-    }
     function disabledDate(current) {
         // Can not select days before today and today
-        return current < moment().add(1,'d');
+        if(!express){
+            return current < moment().add(1,'d');
+        }
+        return (current < moment().endOf('day'))
     }
 
-    function consoleTeam() {
-        console.log("dataTeam:",selectedSubcon)
+    function disabledDateExpress(current) {
+        // Can not select days before today and today
+        return  moment(current).add(1,'d') < moment().endOf('day')
     }
 
     const postDismantleForm = (values) => {
         const body = (
             {
+
+                "orderDetailId":odi,
                 "workpackageid":wpid,            
-                "InvCodeId":selectedInvCode,
+                "InvCodeId":values.inventoryCode,
                 "orderTypeId":orderTypeId,
                 "requestTypeId":values.requestBase,
                 "subconId":selectedSubcon,
                 "picOnSiteId":selectedTeamCoordinator,
-                "originId":selectedOrigin,        
+                "originId":values.origin,        
                 "destinationId":selectedDestination,        
-                "siteConditionId":selectedSiteCondition,
+                "siteConditionId":values.siteLocation,
                 "CTId":values.ctName,
-                "packetTypeId":selectedPacketType,
-                "proposeDeliveryModeId":values.proposeDelivery,
-                "neTypeId" : selectedSiteLocation,
+                "packetTypeId":values.packetType,
+                "neTypeId" : values.siteLocation,
                 "siteAddress": siteAddress,
                 "isExpressDelivery":express,
                 "expectedDeliveryDate":moment(deliveryDate).format("YYYY-MM-DD"),
+                "proposeDeliveryModeId":values.proposeDelivery,
                 "requestBy": user.uid
             }
         )
-        console.log("dismantle body",body);
-        API.postDismantleForm(body).then(
+        console.log("TAR body",values);
+        API.putSDRLTRForm(body).then(
             result=>{
                 if(result.status=="success")
                 {
+                    console.log(result,'result tarmo')
                     toast.success(result.message);
-                    navigateTo(`/mm/materialorder?odi=${result.returnVal}`)
+                    navigateTo(`/mm/materialordersdrltr?odi=${result.returnVal}`)
                 }
                 else{
                     toast.error(result.message)
@@ -404,65 +448,72 @@ const SdrForm = (props) => {
         )
     }
 
-    function btnConfirm(values){
-        postDismantleForm(values);
-        console.log("values:",values)
+    function btnConfirm(data){
+        console.log("confirmbutton",data)
+        postDismantleForm(data);
+    
     }
+
+    const handleConfirm=(data)=>{
+        console.log("confirmbutton",data)
+        postDismantleForm(data);
+    }
+
     const onFinishFailedAddMaterial = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
-
-    const consoleCoba = ()=>{
-        console.log(initialValue,"initial")
-        console.log(selectedTeamCoordinator,"initial")
-    }
 
     function btnCancel(){
         navigateTo("/mm/sitelistdr");
     }
 
+    function onChange(value) {
+        console.log(`selected ${value}`);
+    }
+      
+    function onSearch(val) {
+        console.log('search:', val);
+    }
+
     useEffect(() => {
-        getIdentity();
         console.log('wpid:',wpid,"ordertype:",orderTypeId)
-        getSiteInfo();
         getInventoryDDL();
-        getRequestBaseDDL();
         getSiteLocationDDL();
-        getOriginDDL();
         getDestination();
-        getPacketType();
         getSubcon();
-        getSiteCondition();
-        getTeamCoordinator()
-        getHasExpressDelivery()
-        getCTNameDDL(selectedINVCode);
-        getDeliveryDateDDL()
-    },[wpid,orderTypeId,selectedINVCode])
+        getIdentity()
+        // getTeamCoordinator();
+    },[])
+
+    useEffect(() => {
+        getSiteInfoDetail(odi)
+    },[odi])
+    useEffect(() => {
+        getOrderTypeDDL(orderTypeId);
+        getDeliveryModeDDL(orderTypeId)
+        getSiteCondition(orderTypeId);
+        getHasExpressDelivery(orderTypeId);
+        getPacketType(orderTypeId);
+    },[orderTypeId])
+
+    useEffect(() => {
+        getSiteInfo(wpid)
+        getOriginDDL(wpid,orderTypeId);
+        getRequestBaseDDL(orderTypeId,wpid);
+    },[wpid,orderTypeId])
+
+    // useEffect(() => {
+    //     getAddress(ddid)
+    // },[siteNo])
 
     const CardTitle = (title) => (
         <Title level={5}>
             {title}
         </Title>
     )
-    const False = false
-    const [form] = Form.useForm();
-
-
-    const handleSubcon = (e)=>{
-        setSelectedSubcon(e)
-        getTeamCoordinator(e)
-        setSelectedTeamCoordinator('')
-        console.log(selectedTeamCoordinator);
-    }
-    const handleWHTeamChange = (e)=>{
-        console.log(e,"selected WH Team");
-        setSelectedSubcon(e)
-        getDDLWHSPV(e)
-    }
 
     return (
         <div>
-            <HeaderChanger title="SDR Form"/>
             <Row>
                 <Col span={24}>
                     <div className="card card-primary">
@@ -470,7 +521,12 @@ const SdrForm = (props) => {
                             <h3 className="card-title">Site Info</h3>
                         </div>
                         <div className="card-body">
-                            <Table columns={columns} scroll={{ x: '100%' }} pagination={false} dataSource={siteInfo} />
+                            <Table 
+                                columns={columns} 
+                                scroll={{x:'100%'}} 
+                                pagination={false} 
+                                dataSource={siteInfo} 
+                            />
                         </div>
                     </div>
                 </Col>
@@ -478,59 +534,104 @@ const SdrForm = (props) => {
                     <Card hoverable title={CardTitle("Order Detail")}>
                         <Space direction="vertical" style={{ width: '100%' }}>
                             <Form
+                                form={form}
                                 labelCol={{ span: 5 }}
                                 wrapperCol={{ span: 18 }}
                                 layout="horizontal"
                                 initialValues={{
                                     'isExpressDelivery':false,
-                                    'ctName':1,
-                                    'invName':1,
-                                    'deliveryDates': moment(date2, "YYYY-MM-DD").add(2,'d')
+                                    'deliveryDate': moment(date2, "YYYY-MM-DD").add(2,'d'),
+                                    'orderType' : selectedOrderType
                                 }}
                                 fields={[
                                     {
                                         name: ["siteAddress"],
                                         value: siteAddress,
                                     },
+                                    {
+                                        name: ["orderType"],
+                                        value: parseInt(selectedOrderType),
+                                    },
+                                    {
+                                        name: ["requestBase"],
+                                        value: parseInt(siteInfoDetail.requestTypeId),
+                                    },
+                                    {
+                                        name: ["inventoryCode"],
+                                        value: parseInt(siteInfoDetail.inventoryCodeId),
+                                    },
+                                    {
+                                        name: ["origin"],
+                                        value: parseInt(siteInfoDetail.originId),
+                                    },
+                                    {
+                                        name: ["ctName"],
+                                        value: parseInt(siteInfoDetail.ctId),
+                                    },
+                                    {
+                                        name: ["siteLocation"],
+                                        value: parseInt(siteInfoDetail.neTypeId),
+                                    },
+                                    {
+                                        name: ["packetType"],
+                                        value: parseInt(siteInfoDetail.packetTypeId),
+                                    },
                                 ]}
-                                onFinish={btnConfirm}
+                                onFinish={handleConfirm}
                                 onFinishFailed={onFinishFailedAddMaterial}
                             >
-                                <Form.Item label="Order Type">
-                                    <Input disabled value="SDR" />
+                                <Form.Item label="Order Type"
+                                    name="orderType"
+                                    
+                                >
+                                    <Select 
+                                        placeholder="Select an option"
+                                        disabled
+                                    >
+                                        {
+                                            ddlOrderType.map(ot =>  <Select.Option value={ot.orderTypeId}> 
+                                                {ot.orderTypeName}</Select.Option>)
+                                        }
+                                    </Select>
                                 </Form.Item>
-                                <Form.Item name="invName" label="Inventory Code"
-                                   
-                                    rules={[{ required: true, message: 'Please Select Inventory Code!' }]}
+                                <Form.Item label="Inventory Code"
+                                    name="inventoryCode"
+                                    disabled
+                                    rules={[{ required: true, message: 'Please Select Inventory Code!'}]}
                                 >
                                     <Select 
                                         onChange={(e) => handleInvDDLChange(e)}
+                                        placeholder="Select an option"
+                                        disabled
                                     >
                                         {
-                                            ddlInventoryCode.map(inv =>  <Select.Option  value={inv.invCodeId}> 
+                                            ddlInventoryCode.map(inv =>  <Select.Option value={inv.invCodeId}> 
                                                 {inv.invCode}</Select.Option>)
                                         }
                                     </Select>
                                 </Form.Item>
-                                <Form.Item label="Request Base" 
+                                <Form.Item label="Request Base"
                                     name="requestBase"
-                                    rules={[{ required: true, message: 'Please Select Request Base!' }]}
+                                    
+                                    rules={[{ required: true, message: 'Please Select Request Base!'}]}
                                 >
                                     <Select
                                         onChange={(e) => setSelectedRequestBase(e)} 
-                                        placeholder="Select an option">
+                                        placeholder="Select an option"
+                                        disabled>
                                         {
                                             ddlRequestBase.map(rbs =>  <Select.Option value={rbs.requestTypeId}> 
                                                 {rbs.requestTypeName}</Select.Option>)
                                         }
                                     </Select>
                                 </Form.Item>
-                                <Form.Item label="Site A/NE - Site B/FE" name="site"
+                                <Form.Item label="Site A/NE - Site B/FE" name="siteLocation"
                                     rules={[{ required: true, message: 'Please Select Site Condition!' }]}
                                 >
                                     <Select
                                         onChange={(e) => setSelectedSiteLocation(e)}  
-                                        placeholder="Select an option">
+                                        placeholder="Select an option"
+                                        disabled>
                                         {
                                             ddlSiteLocation.map(slc =>  <Select.Option value={slc.neTypeId}> 
                                                 {slc.neType}</Select.Option>)
@@ -545,8 +646,9 @@ const SdrForm = (props) => {
                                         </Select>
                                             :
                                             <Select 
-                                                onChange={(e) => setSelectedCTName(e)} 
-                                                placeholder="Select an option">
+                                                onChange={(e) => handleCTNameChange(e)} 
+                                                placeholder="Select an option"
+                                                disabled>
                                                 {
                                                     ddlCTName.map(slc =>  <Select.Option value={slc.ctId}> 
                                                         {slc.ctName}</Select.Option>)
@@ -554,25 +656,14 @@ const SdrForm = (props) => {
                                             </Select>
                                     }
                                 </Form.Item>
-                                <Form.Item label="Site Condition" name="siteCondition"
-                                    rules={[{ required: true, message: 'Please Select Site Condition!' }]}
-                                >
-                                
-                                    <Select
-                                        onChange={(e) => setSelectedSiteCondition(e)}  
-                                        placeholder="Select an option">
-                                        {
-                                            ddlSiteCondition.map(slc =>  <Select.Option value={slc.siteConditionId}> 
-                                                {slc.condition}</Select.Option>)
-                                        }
-                                    </Select>
-                                </Form.Item>
-                                <Form.Item label="Origin" name="origin"
-                                    rules={[{ required: true, message: 'Please Select Origin!' }]}
+                                <Form.Item label="Origin"
+                                    name="origin"
+                                    rules={[{ required: true, message: 'Please Origin!'}]}
                                 >
                                     <Select 
                                         onChange={(e) => setSelectedOrigin(e)} 
-                                        placeholder="Select an option">
+                                        placeholder="Select an option"
+                                        disabled>
                                         {
                                             ddlOrigin.map(org =>  <Select.Option value={org.dopId}> 
                                                 {org.dopName}</Select.Option>)
@@ -597,7 +688,6 @@ const SdrForm = (props) => {
                                             rules={[{ required: true, message: 'Please Select Subcon Name!' }]}
                                         >
                                             <Select
-
                                                 onChange={(e) => handleSubcon(e)}
                                                 optionFilterProp="children"
                                                 placeholder="Select an option"
@@ -661,27 +751,68 @@ const SdrForm = (props) => {
                                             </Form.Item>
                                         </>
                                 }
-                                <Form.Item label="Express Delivery" valuePropName="checked" name="isExpressDelivery">  
-                                    {express ? (<Checkbox onChange={(e)=>togleCheckbox(e.target.checked)}/>):(
-                                        <Tooltip color='#f50' title="Cannot request Express Delivery"><Checkbox disabled  onChange={(e)=>togleCheckbox(e.target.checked)}/></Tooltip>
-                                    )}
+
+                                {/* <Form.Item label="LSP Team"
+                                    name="subCon"
+                                    rules={[{ required: true, message: 'Please Select LSP Name!'}]}
+                                >
+                                    <Select 
+                                        onChange={(e) => handleSelectedSubcon(e)} 
+                                        placeholder="Select an option"
+                                        // onSearch={onSearch}
+                                        showSearch
+                                        filterOption={(input, option) =>
+                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                        }
+                                    >
+                                        {
+                                            ddlSubcon.map(dst =>  <Select.Option value={dst.subconId}> 
+                                                {dst.subconName}</Select.Option>)
+                                        }
+                                    </Select>
                                 </Form.Item>
                                 
-                                <Form.Item label="Packet Type" name="packetType"
-                                    rules={[{ required: true, message: 'Please Select Packet Type!' }]}
+                                <Form.Item label="WH Supervisor" 
+                                    name="teamCoordinator"
+                                    rules={[{ required: true, message: 'Please Select Team Coordinator!'}]}
+                                >
+                                    {ddlTeamCoordinator.length == null ? (<></>):(
+                                        <Select 
+                                            showSearch
+                                            filterOption={(input, option) =>
+                                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                            }
+                                            onChange={(e) => setSelectedTeamCoordinator(e)} 
+                                            placeholder="Select an option">
+                                            
+                                            {
+                                                ddlTeamCoordinator.map(dst =>  <Select.Option value={dst.userId}> 
+                                                    {dst.fullname}</Select.Option>)
+                                            }
+                                        </Select>)}
+                                    
+                                </Form.Item> */}
+
+
+                                <Form.Item label="Express Pickup" valuePropName="checked" name="isExpressDelivery">  
+                                    {express ? (<Checkbox onChange={(e)=>handleIsExpress(e.target.checked)}/>):(
+                                        <Tooltip color='#f50' title="Cannot request Express Delivery"><Checkbox disabled /></Tooltip>
+                                    )}
+                                </Form.Item>
+                                <Form.Item label="Packet Type"
+                                    name="packetType"
+                                    rules={[{ required: true, message: 'Please Select Packet Type!'}]}
                                 >
                                     <Select 
                                         onChange={(e) => setSelectedPacketType(e)} 
                                         placeholder="Select an option"
-                                        name="packetType"
-                                    >
+                                        disabled>
                                         {
                                             ddlPacketType.map(dst =>  <Select.Option value={dst.packetTypeId}> 
                                                 {dst.packetType}</Select.Option>)
                                         }
                                     </Select>
                                 </Form.Item>
-                                
                                 <Form.Item label="Propose Delivery Mode" name="proposeDelivery"
                                     rules={[{ required: true, message: 'Please Select Packet Type!' }]}
                                 >
@@ -691,37 +822,43 @@ const SdrForm = (props) => {
                                        
                                     >
                                         {
-                                            ddlIDeliveryDate.map(dst =>  <Select.Option value={dst.deliveryModeId}> 
+                                            ddlIDeliveryMode.map(dst =>  <Select.Option value={dst.deliveryModeId}> 
                                                 {dst.deliveryMode}</Select.Option>)
                                         }
                                     </Select>
                                 </Form.Item>
-                                <Form.Item label="Delivery Date" 
-                                    name="deliveryDates"
-                                    rules={[{ required: true, message: 'Please Select Delivery Date' }]}>
-                                    {checked ? (<DatePicker 
+                                <Form.Item label="Pickup Date" name="deliveryDate" rules={[{ required: true, message: 'Please Select Delivery Date' }]}>
+                                    {checked ? <DatePicker
                                         format="YYYY-MM-DD"
-                                        disabledDate={disabledDateExpressTrue}
+                                        disabledDate={
+                                            disabledDateExpress
+                                        }
                                         onChange={(e) => setDeliveryDate(moment(e).format("YYYY-MM-DD"))} 
                                         // disabledDate={current && current < moment().endOf('day')}
                                         // showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
-                                    />):(<DatePicker 
-                                        format="YYYY-MM-DD"
-                                        disabledDate={disabledDate}
-                                        onChange={(e) => setDeliveryDate(moment(e).format("YYYY-MM-DD"))} 
+                                    /> :
+                                        <DatePicker
+                                            format="YYYY-MM-DD"
+                                            disabledDate={
+                                                disabledDate
+                                            }
+                                            // defaultValue={moment('2015/01/01', "YYYY-MM-DD")}
+                                            onChange={(e) => setDeliveryDate(moment(e).format("YYYY-MM-DD"))} 
                                         // disabledDate={current && current < moment().endOf('day')}
                                         // showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
-                                    />)}
-                                   
+                                        /> }
                                 </Form.Item>
-                                <Form.Item label="Site Address"
-                                    name="siteAddress"
-                                    rules={[{ required: true, message: 'Please input Site Adress Field!' }]}
-                                >
+                                <Form.Item label="Site Address"   name="siteAddress"
+                                    rules={[{ required: true, message: 'Please Input Site Adress Field!'}]}>
                                     <Input.TextArea 
+                                        // value={siteAddress}
                                         onChange={(e) => setSiteAddress(e.target.value)}  
                                     />
                                 </Form.Item>
+                                {/* <Form.Item>
+                                    <Button type="primary" htmlType="submit">Confirm</Button>
+                                    <Button type="danger">Cancel</Button>
+                                </Form.Item> */}
                                 <Divider orientation="center" />
                                 <Row>
                                     <Col span={18}>
@@ -750,9 +887,7 @@ const SdrForm = (props) => {
                                         </Col>
                                     </Form.Item>
                                 </Row>
-                                
                             </Form>
-                            
                         </Space>
                     </Card>
                 </Col>
@@ -762,4 +897,4 @@ const SdrForm = (props) => {
 
 }
 
-export default SdrForm;
+export default SDRLTRForm;
