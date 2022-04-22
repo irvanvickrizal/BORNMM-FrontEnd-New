@@ -460,7 +460,7 @@ const TableMaterial = () => {
                         </IconButton>
                         {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
                     </Tooltip>
-                    <Tooltip title="Upload File">
+                    <Tooltip title="Add Material">
                         <IconButton size="small" color="primary" onClick={handleShowAdd}>
                             <PlusOutlined />
                         </IconButton>
