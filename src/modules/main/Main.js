@@ -103,6 +103,7 @@ import TarIndex from "@app/pages/TransferAssetRequestForm/index"
 import indexTARMO from "@app/pages/TransferAssetRequestMaterialOrder/index"
 import indexSDRLTR from "@app/pages/SDRLTRForm/index"
 import indexMOSDRLTR from "@app/pages/SDRLTRMaterialOrder/index"
+import indexDOPRegionCoverage from "@app/pages/mDOPRegionCoverage/index"
 import BoqRefAccuracy from "@app/pages/BoqRefAccuracy/index"
 
 
@@ -566,6 +567,11 @@ const Main = () => {
                                             exact
                                             path="/boq/boqrefaccuracy"
                                             component={BoqRefAccuracy}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/master/dopregioncoverage"
+                                            component={indexDOPRegionCoverage}
                                         />
                                     </Switch>
                                 </div>
