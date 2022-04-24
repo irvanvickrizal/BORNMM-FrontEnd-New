@@ -4,6 +4,12 @@ export const getDataSiteInfo = (payload) => {
         payload,
     };
 };
+export const getDataSiteInfoLoading = (payload) => {
+    return {
+        type: "GET_DATA_SITE_INFO_LOADING",
+        payload,
+    };
+};
 
 export const setDataSiteInfo = (payload) => {
     return {
