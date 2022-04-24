@@ -54,51 +54,61 @@ const TableOutboundUpload = () => {
         },
         {
             title : "Warehouse",
+            width : 150,
             dataIndex:'warehouse',
             ...Search('warehouse'),
         },
         {
             title : "Warehouse Description",
+            width : 150,
             dataIndex:'warehouseDescr',
             ...Search('warehouseDescr'),
         },
         {
             title : "DN",
+            width : 150,
             dataIndex:'dnDoc',
             ...Search('dnDoc'),
         },
         {
             title : "SDR LTR No",
+            width : 150,
             dataIndex:'sdrLtr',
             ...Search('sdrLtr'),
         },
         {
             title : "Customer PO",
+            width : 150,
             dataIndex:'customerPo',
             ...Search('customerPo'),
         },
         {
             title : "Material Code",
+            width : 150,
             dataIndex:'materialCode',
             ...Search('materialCode'),
         },
         {
             title : "Packing List",
+            width : 150,
             dataIndex:'packingList',
             ...Search('packingList'),
         },
         {
             title : "Out QTY",
+            width : 150,
             dataIndex:'qtyOut',
             ...Search('qtyOut'),
         },
         {
             title : "UOM",
+            width : 100,
             dataIndex:'uom',
             ...Search('uom'),
         },
         {
             title : "Delivery Type",
+            width : 150,
             dataIndex:'deliveryType',
             ...Search('deliveryType'),
         },
@@ -116,6 +126,7 @@ const TableOutboundUpload = () => {
         },        
         {
             title : "Area",
+            width : 150,
             dataIndex:'area',
             ...Search('area'),
         },
@@ -133,11 +144,13 @@ const TableOutboundUpload = () => {
         },
         {
             title : "File Name",
+            width : 250,
             dataIndex:'fileName',
             ...Search('fileName'),
         },
         {
             title : "Uploaded By",
+            width : 150,
             dataIndex:'uploadedBy',
             ...Search('uploadedBy'),
         },             
@@ -267,6 +280,7 @@ const TableOutboundUpload = () => {
         {
             title : "File Name",
             dataIndex:'fileName',
+            width : 250,
             ...Search('fileName'),
         },
         {
@@ -290,6 +304,7 @@ const TableOutboundUpload = () => {
         },
         {
             title : "Status",
+            width : 150,
             render:(record)=>{
                 return (
                     <Space>
@@ -297,11 +312,11 @@ const TableOutboundUpload = () => {
                     </Space>
                 )
             },
-            width: 100,
             ...Search('executeStatus'),
         },
         {
             title : "System Execute Date",
+            width : 150,
             render:(record)=>{
                 return (
                     <Space>
@@ -309,13 +324,13 @@ const TableOutboundUpload = () => {
                     </Space>
                 )
             },
-            width: 150,
             ...Search('systemExecuteDate'),
         },
         {
             title:"Err Message",
             key:"orderMaterialId",
             align:'center',
+            width : 150,
             ellipsis: true,
             render:(record)=>{
                 return (

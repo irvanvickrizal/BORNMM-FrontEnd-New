@@ -539,6 +539,7 @@ const putMaterial = (body) => PUT('mastermaterial',body);
 const putMaterialActivation = (body) => PUT('mastermaterial/setactivationstatus',body);
 const getUomList = () => GET('mastermaterial/UomGetList');
 const postmMaterial = (body) => POST('mastermaterial',body);
+const postDOPRegion = (body) => POST('masterdop/dopRegionCoverageAdd',body);
 
 const getmScope = () => GET('poscope');
 const postmScope = (body) => POST('poscope', body);
@@ -546,6 +547,9 @@ const putmScope = (body) => PUT('poscope', body);
 const putmScopeActivation = (body) => PUT('poscope/SetActivationStatus', body);
 
 const getmOrderType = () => GET('masterordertype');
+const getDOPNotCoverage = (dopid) => GETParam('masterdop/getDOPRegionNotCoverageYet',dopid);
+const getDOPRegion = () => GET('masterdop/getDOPRegionCoverageList');
+const deleteDOPRegion = (doprgnid) => DELETE('masterdop/dopRegionCoverageDelete',doprgnid);
 const putActivationmOrderType = (body) => PUT('masterordertype/OrderTypeSetActivation',body);
 
 const getmSubcon = () => GET('subcon/getlsp');
@@ -823,6 +827,10 @@ const getSDRLTRDDL = (odi) => GETParam("materialmanagement/orderRequestDetailOri
 
 
 const API ={
+    postDOPRegion,
+    getDOPRegion,
+    deleteDOPRegion,
+    getDOPNotCoverage,
     getMaterialOrderSDRLTR,
     putSDRLTRForm,
     getSDRLTRDDL,
