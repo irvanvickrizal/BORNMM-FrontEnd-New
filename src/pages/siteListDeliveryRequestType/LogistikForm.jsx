@@ -1,3 +1,4 @@
+/* eslint-disable radix */
 /* eslint-disable react/jsx-no-duplicate-props */
 /* eslint-disable no-undef */
 /* eslint-disable no-nested-ternary */
@@ -347,7 +348,7 @@ export default function LogisticForm() {
         dispatch(getDeliveryList())
         dispatch(getDeliveryMode())
         getLogLogistic()
-    }, [dispatch,wh,parentOrderDetailId,parentReqNo])
+    }, [dispatch,wh,parentOrderDetailId,parentReqNo,odi])
 
     return (
         <div>
@@ -571,7 +572,7 @@ export default function LogisticForm() {
                                     onFinish={showModal}
                                     onFinishFailed={onFinishFailedAddMaterial}
                                     initialValues={{
-                                        "modeTransport":dataSite[0]?.proposeDeliveryModeId,
+                                        "modeTransport":parseInt(dataSite[0]?.proposeDeliveryModeId),
                                     }}
                                     fields={[
                                         {
