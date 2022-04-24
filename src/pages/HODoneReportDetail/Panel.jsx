@@ -205,50 +205,58 @@ export default function HODonePanel() {
             render: (value, item, index) => 1 + index
         },
         {
+            width:150,
             title : "Site No",
             dataIndex:'siteNo',
             ...Search('siteNo'),
         },
         {
+            width:150,
             title : "Site Name",
             dataIndex:'siteName',
             ...Search('siteName'),
         },
         {
+            width:150,
             title : "Region",
             dataIndex:'region',
             ...Search('region'),
         },
         {
+            width:150,
             title : "Zone",
             dataIndex:'zone',
             ...Search('zone'),
         },
         {
+            width:150,
             title : "WorkpackageId",
             dataIndex:'workpackageId',
             ...Search('workpackageId'),
         },
         {
+            width:150,
             title : "Scope Name",
             dataIndex:'scopeName',
             ...Search('scopeName'),
         },
         {
+            width:150,
             title : "Scope Detail",
             dataIndex:'packageName',
             ...Search('packageName'),
         },
         {
+            width:150,
             title : "Address",
             dataIndex:'siteAddress',
             ...Search('siteAddress'),
         },
         {
+            width:80,
             title:"Action",
             align:'center',
             fixed:'right',
-            width:70,
             render:(record)=>{
                 return (
                     <Space>
@@ -275,26 +283,31 @@ export default function HODonePanel() {
             render: (value, item, index) => 1 + index
         },
         {
+            width:150,
             title : "Material Code",
             dataIndex:'materialCode',
             ...Search('materialCode'),
         },
         {
+            width:150,
             title : "Material Desc",
             dataIndex:'materialDesc',
             ...Search('materialDesc'),
         },
         {
+            width:150,
             title : "UOM",
             dataIndex:'uom',
             ...Search('uom'),
         },
         {
+            width:150,
             title : "Req QTY",
             dataIndex:'reqQTY',
             ...Search('reqQTY'),
         },
         {
+            width:150,
             title : "Site",
             dataIndex:'site',
             ...Search('site'),
@@ -308,6 +321,7 @@ export default function HODonePanel() {
             render: (value, item, index) => 1 + index
         },
         {
+            width:150,
             title : "Incoming Date",
             render:(record)=>{
                 return (
@@ -319,6 +333,7 @@ export default function HODonePanel() {
             ...Search('incomingDate'),
         },
         {
+            width:150,
             title : "Execute Date",
             render:(record)=>{
                 return (
@@ -330,21 +345,25 @@ export default function HODonePanel() {
             ...Search('executeDate'),
         },
         {
+            width:150,
             title : "Execute By",
             dataIndex:'executedBy',
             ...Search('executedBy'),
         },
         {
+            width:150,
             title : "Event Desc",
             dataIndex:'taskEventDesc',
             ...Search('taskEventDesc'),
         },
         {
+            width:150,
             title : "Activity",
             dataIndex:'activityDesc',
             ...Search('activityDesc'),
         },
         {
+            width:150,
             title : "Remarks",
             dataIndex:'remarks',
             ...Search('remarks'),
@@ -352,11 +371,13 @@ export default function HODonePanel() {
     ]
     const columnsdn = [
         {
+
             title : "No",
             width : 50,
             render: (value, item, index) => 1 + index
         },
         {
+            width:150,
             title : "File Name",
             dataIndex:'evidenceFilename',
             ...Search('evidenceFilename'),
@@ -421,7 +442,7 @@ export default function HODonePanel() {
     return (
         <div>
            
-            <Space direction="vertical">
+            <Space direction="vertical" style={{ width: '100%' }}>
                 <Card hoverable>
                     <Table
                         scroll={{ x: '200%' }}

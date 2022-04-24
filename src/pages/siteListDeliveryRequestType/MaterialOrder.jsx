@@ -727,34 +727,42 @@ export default function MaterialOrder() {
     const expandedRowRender = () => {
         const columnsSiteInfo =[
             {
+                width:150,
                 title:"Site No",
                 dataIndex:"siteNo",
             },
             {
+                width:150,
                 title:"Site Name",
                 dataIndex:"siteName",
             },
             {
+                width:150,
                 title:"Region",
                 dataIndex:"region",
             },
             {
+                width:150,
                 title:"Zone",
                 dataIndex:'zone',
             },
             {
+                width:150,
                 title:"WorkpackageId",
                 dataIndex:"workpackageId",
             },
             {
+                width:150,
                 title:"Package Name",
                 dataIndex:"packageName",
             },
             {
+                width:150,
                 title:"CPO No",
                 dataIndex:"cpoNo",
             },
             {
+                width:150,
                 title:"Project Name",
                 dataIndex:"projectName",
             }

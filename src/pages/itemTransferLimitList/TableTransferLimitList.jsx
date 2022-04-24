@@ -46,11 +46,13 @@ export default function TableTransferLimitList() {
             ...Search('whName'),
         },
         {
+            width:150,
             title : "WH Code",
             dataIndex:'whCode',
             ...Search('whCode'),
         },
         {
+            width:150,
             title : "WH Adress",
             dataIndex:'whAddress',
             ...Search('whAddress'),
@@ -58,6 +60,7 @@ export default function TableTransferLimitList() {
        
     
         {
+            
             title:"Action",
            
             align:'center',
@@ -99,7 +102,7 @@ export default function TableTransferLimitList() {
                 </Row>  
                 :
                 <Table
-                    // scroll={{ x: '55%' }}
+                    scroll={{ x: '100%' }}
                     rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
                     // expandable={{ expandedRowRender }}
                     columns={columns}

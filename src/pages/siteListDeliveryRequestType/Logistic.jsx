@@ -1,7 +1,7 @@
 import React,{useEffect,useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {Table,Typography} from 'antd'
-import { getIdTaskPending, getLogisticPending, getOdi } from '@app/store/action/logistikFormAction'
+import { getDataSiteInfoLoading, getIdTaskPending, getLogisticPending, getOdi } from '@app/store/action/logistikFormAction'
 import {EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled} from '@ant-design/icons'
 import { useHistory } from 'react-router-dom'
 import HeaderChanger from '@app/components/cardheader/HeaderChanger'
@@ -30,6 +30,7 @@ export default function Logistic() {
     }
 
     const handleEdit =(record) => {
+        dispatch(getDataSiteInfoLoading())
         setOdi(record.orderDetailId)
         dispatch(getOdi(record.orderDetailId))
         dispatch(getIdTaskPending(record.orderDetailId))

@@ -133,11 +133,13 @@ export default function TableTransportTaskTracking() {
             render: (value, item, index) => 1 + index
         },
         {
+            width:150,
             title : "File Name",
             dataIndex:'evidenceFilename',
             ...Search('evidenceFilename'),
         },
         {
+            
             title:"Action",
             align:'center',
             fixed: 'right',
@@ -169,42 +171,50 @@ export default function TableTransportTaskTracking() {
             render: (value, item, index) => 1 + index
         },
         {
+            width:150,
             title : " LSP Transport",
             dataIndex:'lspTransport',
             ...Search('lspTransport'),
         },
         {
+            width:150,
             title : "Request No",
             dataIndex:'orderRequestNo',
             ...Search('orderRequestNo'),
         },
         {
+            width:150,
             title : "Multi Delivery No",
             dataIndex:'multiDeliveryNo',
             ...Search('multiDeliveryNo'),
         },
         {
+            width:150,
             title : "Delivery No",
             dataIndex:'deliveryMode',
       
             ...Search('deliveryMode'),
         },
         {
+            width:150,
             title : "CDMR Req",
             dataIndex:'cdmrType',
             ...Search('cdmrType'),
         },
         {
+            width:150,
             title : "Site No",
             dataIndex:'siteNo',
             ...Search('siteNo'),
         },
         {
+            width:150,
             title : "Site Name",
             dataIndex:'siteName',
             ...Search('siteName'),
         },
         {
+            width:150,
             title : "Workpackage ID",
             dataIndex:'workpackageId',
             ...Search('workpackageId'),
@@ -216,6 +226,7 @@ export default function TableTransportTaskTracking() {
             ...Search('region'),
         },
         {
+            width:150,
             title : "Zone",
             dataIndex:'zone',
             ...Search('zone'),
@@ -229,23 +240,27 @@ export default function TableTransportTaskTracking() {
         },
     
         {
+            width:150,
             title : "Total Collies",
             dataIndex:'totalCollies',
             ...Search('totalCollies'),
         },
     
         {
+            width:150,
             title : "Total Volume",
             dataIndex:'totalVolume',
             ...Search('totalVolume'),
         },
     
         {
+            width:150,
             title : "Assign By",
             dataIndex:'assignBy',
             ...Search('assignBy'),
         },
         {
+            width:150,
             title : "Assign Date",
             render:(record)=>{
                 return (
@@ -263,18 +278,21 @@ export default function TableTransportTaskTracking() {
         },
     
         {
+            width:150,
             title : "Assign To",
             dataIndex:'assignTo',
             ...Search('assignTo'),
         },
     
         {
+            width:150,
             title : "Confirm Status",
             dataIndex:'confirmStatus',
             ...Search('confirmStatus'),
         },
     
         {
+            width:150,
             title : "RFP Date",
             render:(record)=>{
                 return (
@@ -291,6 +309,7 @@ export default function TableTransportTaskTracking() {
         },
     
         {
+            width:150,
             title : " Confirm Date",
             render:(record)=>{
                 return (
@@ -306,7 +325,7 @@ export default function TableTransportTaskTracking() {
             },
             ...Search('confirmDate'),
         },
-        {
+        {width:150,
             title : "Pickup Date",
             render:(record)=>{
                 return (
@@ -322,7 +341,7 @@ export default function TableTransportTaskTracking() {
             ...Search('pickupDate'),
         },
 
-        {
+        {width:150,
             title : "Task Complete Date",
             render:(record)=>{
                 return (

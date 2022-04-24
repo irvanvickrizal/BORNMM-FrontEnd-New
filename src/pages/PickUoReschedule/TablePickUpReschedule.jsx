@@ -138,52 +138,54 @@ export default function TablePickUpReschedule() {
             render: (value, item, index) => 1 + index
         },
         {
+            width:150,
             title : "Request No",
             dataIndex:'requestNo',
             ...Search('requestNo'),
         },
         {
+            width:150,
             title : "Origin",
             dataIndex:'originName',
             ...Search('originName'),
         },
-        {
+        {width:150,
             title : "Destination",
             dataIndex:'destinationName',
             ...Search('destinationName'),
         },
-        {
+        {width:150,
             title : "Site No",
             dataIndex:'siteNo',
             responsive: ['md'],
             ...Search('siteNo'),
         },
-        {
+        {width:150,
             title : "Workpackage Id",
             dataIndex:'workpackageid',
             ...Search('workpackageid'),
         },
-        {
+        {width:150,
             title : "Address",
             dataIndex:'locationAddress',
             ...Search('locationAddress'),
         },
-        {
+        {width:150,
             title : "Scope Name",
             dataIndex:'scopeName',
             ...Search('scopeName'),
         },
-        {
+        {width:150,
             title : "CDMR Req",
             dataIndex:'cdmrType',
             ...Search('cdmrType'),
         },
-        {
+        {width:150,
             title : "Request Delivery Mode",
             dataIndex:'deliveryMode',
             ...Search('deliveryMode'),
         },
-        {
+        {width:150,
             title : "LSP Name",
             dataIndex:'lspName',
             ...Search('lspName'),
@@ -191,7 +193,7 @@ export default function TablePickUpReschedule() {
     
       
 
-        {
+        {width:150,
             title : "Pickup Date",
             render:(record)=>{
                 return (
@@ -202,7 +204,7 @@ export default function TablePickUpReschedule() {
             },
             ...Search('pickupDate'),
         },
-        {
+        {width:150,
             title : "RFP Date",
             render:(record)=>{
                 return (
@@ -213,7 +215,7 @@ export default function TablePickUpReschedule() {
             },
             ...Search('rfpDate'),
         },
-        {
+        {width:150,
             title : "Assign Date",
             render:(record)=>{
                 return (
@@ -229,12 +231,12 @@ export default function TablePickUpReschedule() {
             },
             ...Search('logisticCompletedDate'),
         },
-        {
+        {width:150,
             title : "Asign To",
             dataIndex:'assignTo',
             ...Search('assignTo'),
         },
-        {
+        {width:150,
             title : "Day To Go",
             dataIndex:'dayToGo',
             ...Search('dayToGo'),

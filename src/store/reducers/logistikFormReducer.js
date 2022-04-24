@@ -27,7 +27,16 @@ export const logistikFormReducer = (state = initialState, action) => {
             ...state,
   
             isLoading: true,
+            
+        }   
+     
+    case "GET_DATA_SITE_INFO_LOADING":
+        return {
+            ...state,
+            dataSiteInfo:[],
+            isLoading: true,
         };
+    
     case "SET_DATA_SITE_INFO":
         return {
             ...state,
