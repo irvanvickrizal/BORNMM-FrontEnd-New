@@ -53,42 +53,42 @@ export default function TableHODoneReport() {
             width : 50,
             render: (value, item, index) => 1 + index
         },
-        {
+        {width:150,
             title : "Site No",
             dataIndex:'siteNo',
             ...Search('siteNo'),
         },
-        {
+        {width:150,
             title : "Region",
             dataIndex:'region',
             ...Search('region'),
         },
-        {
+        {width:150,
             title : "Zone",
             dataIndex:'zone',
             ...Search('zone'),
         },
-        {
+        {width:150,
             title : "WorkpackageId",
             dataIndex:'workpackageId',
             ...Search('workpackageId'),
         },
-        {
+        {width:150,
             title : "CDMR Type",
             dataIndex:'cdmrType',
             ...Search('cdmrType'),
         },
-        {
+        {width:150,
             title : "Delivery Type",
             dataIndex:'deliveryType',
             ...Search('deliveryType'),
         },
-        {
+        {width:150,
             title : "Delivery Mode",
             dataIndex:'deliveryMode',
             ...Search('deliveryMode'),
         },
-        {
+        {width:150,
             title :  "RFP Date",
             ...Search('rdpDate'),
             render:(record)=>{
@@ -99,27 +99,27 @@ export default function TableHODoneReport() {
                 )
             },
         },
-        {
+        {width:150,
             title :  "Order Request No",
             dataIndex:'orderReqNo',
             ...Search('orderReqNo'),
         },
-        {
+        {width:150,
             title : "Total Request QTY",
             dataIndex:'totalReqQTY',
             ...Search('totalReqQTY'),
         },
-        {
+        {width:150,
             title : "Total Booked QTY",
             dataIndex:'bookedQTY',
             ...Search('bookedQTY'),
         },
-        {
+        {width:150,
             title : "Total Outbound QTY",
             dataIndex:'outQTY',
             ...Search('outQTY'),
         },
-        {
+        {width:150,
             title : "Outbound Status",
             dataIndex:'outboundStatus',
             ...Search('outboundStatus'),

@@ -223,79 +223,95 @@ export default function TableTransport() {
         {
             title: "Request No",
             dataIndex: "requestNo",
+            width:150,
             ...Search('requestNo'),
         },
         {
             title: "Order Type",
             dataIndex: "orderType",
+            width:150,
             ...Search('orderType'),
         },
         {
             title: "Site No",
             dataIndex: "siteNo",
+            width:150,
             ...Search('siteNo'),
         },
         {
             title: "Origin",
+            width:150,
             dataIndex: "originName",
             ...Search('originName'),
         },
         {
+            width:150,
             title: "Destination",
             dataIndex: "destinationName",
             ...Search('destinationName'),
         },
         {
+            width:150,
             title: "Delivery Mode",
             dataIndex:"deliveryMode",
             ...Search('deliveryMode'),
         },
         {
+            width:150,
             title: "CDMR Type",
             dataIndex: "cdmrType",
             ...Search('cdmrType'),
         },
         {
+            width:150,
             title: "Site Name",
             dataIndex: "siteName",
             ...Search('siteName'),
         },
         {
+            width:150,
             title: "Region",
             dataIndex: "region",
             ...Search('region'),
         },
         {
+            width:150,
             title: "Work Package ID",
             dataIndex: "workpackageid",
             ...Search('workpackageid'),
         },
         {
+            width:150,
             title: "Scope Name",
             dataIndex: "scopeName",
             ...Search('scopeName'),
         },
         {
+            width:150,
             title: "Scope Detail",
             dataIndex: "scopeDetail",
             ...Search('scopeDetail'),
         },
         {
+            width:150,
             title: "Assigned By",
             dataIndex: "assignedBy",
             ...Search('assignedBy'),
         },
         {
+            width:150,
             title: "Expected Delivery Date",
             dataIndex: "pickupOrDeliveryDate",
             ...Search('pickupOrDeliveryDate'),
         },
         {
+            width:150,
             title: "Incoming Date",
             dataIndex: "incomingDate",
             ...Search('incomingDate'),
         },
         {
+            
             title: "Action",
             fixed: "right",
             align: "center",
@@ -351,6 +367,7 @@ export default function TableTransport() {
             render: (value, item, index) => page + index
         },
         {
+            width:150,
             title: "File Name",
             dataIndex: "evidenceFilename",
             ...Search('evidenceFilename'),

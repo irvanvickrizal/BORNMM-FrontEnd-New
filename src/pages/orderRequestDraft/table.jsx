@@ -155,36 +155,41 @@ export default function TableSite() {
         {
             title: "No",
             key: "index",
-            width:"2%",
+            width:50,
             render: (value, item, index) => page + index
         },
         {
             title:"CPO No",
             dataIndex:"cpoNo",
+            width:150,
             key:"cpoNo",
             ...Search('cpoNo'),
         },
         {
             title:"Site No",
             dataIndex:"siteNo",
+            width:150,
             key:"siteNo",
             ...Search('siteNo'),
         },
         {
             title:"Workpackage ID",
             dataIndex:"workpackageId",
+            width:150,
             key:"workpackageId",
             ...Search('workpackageId'),
         },
         {
             title:"Site Name",
             dataIndex:"siteName",
+            width:150,
             key:"siteName",
             ...Search('siteName'),
         },
         {
             title:"Region",
             dataIndex:"region",
+            width:150,
             key:"region",
             ...Search('region'),
 
@@ -192,12 +197,14 @@ export default function TableSite() {
         {
             title:"Zone",
             dataIndex:'zone',
+            width:150,
             key:"zone",
             ...Search('zone'),
         },
         {
             title:"Order Type",
             dataIndex:"orderType",
+            width:150,
             key:"orderType",
             ...Search('orderType'),
         },
@@ -205,22 +212,26 @@ export default function TableSite() {
             title:"Origin Name",
             dataIndex:"originName",
             key:"originName",
+            width:150,
             ...Search('originName'),
         },
         {
             title:"Destination Name",
             dataIndex:"destinationName",
+            width:150,
             key:"destinationName"
             ,...Search('destinationName'),
         },
         {
             title:"Request Type",
             dataIndex:"requestTypeName",
+            width:150,
             key:"requestTypeName",
             ...Search('requestTypeName'),
         },
         {
             title:"Expected Delivery Date",
+            width:250,
             ...Search('expectedDeliveryDate'),
             render:(record)=>{
                 return (
@@ -233,11 +244,13 @@ export default function TableSite() {
         {
             title:"Requester",
             dataIndex:"requesterName",
+            width:150,
             key:"requesterName",
             ...Search('requesterName'),
         },
         {
             title:"Request Date",
+            width:150,
             ...Search('requestDate'),
             render:(record)=>{
                 return (

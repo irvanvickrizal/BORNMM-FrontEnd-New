@@ -255,57 +255,68 @@ export default function TablePickup() {
             render: (value, item, index) => 1 + index
         },
         {
+            width:150,
             title : "Request No",
             dataIndex:'requestNo',
             ...Search('requestNo'),
         },
         {
+            width:150,
             title : "Order Type",
             dataIndex:'orderType',
             ...Search('requestNo'),
         },
         {
+            width:150,
             title : "Site No",
             dataIndex:'siteNo',
             ...Search('siteNo'),
         },
         {
+            width:150,
             title : "Origin",
             dataIndex:'originName',
             ...Search(''),
         },
         {
+            width:150,
             title : "Destination",
             dataIndex:'destinationName',
             ...Search('destinationName'),
         },
         {
+            width:150,
             title : "Site Name",
             dataIndex:'siteName',
             responsive: ['md'],
             ...Search('siteName'),
         },
         {
+            width:150,
             title : "Region",
             dataIndex:'region',
             ...Search('region'),
         },
         {
+            width:150,
             title : "Workpackage Id",
             dataIndex:'workpackageid',
             ...Search('workpackageid'),
         },
         {
+            width:150,
             title : "Scope Name",
             dataIndex:'scopeName',
             ...Search('scopeName'),
         },
         {
+            width:150,
             title : "CDMR Req",
             dataIndex:'cdmrType',
             ...Search('cdmrType'),
         },
         {
+            width:150,
             title : "RFP Date",
             render:(record)=>{
                 return (
@@ -317,16 +328,19 @@ export default function TablePickup() {
             ...Search('incomingDate'),
         },
         {
+            width:150,
             title : "Assigned By",
             dataIndex:'assignBy',
             ...Search('assignBy'),
         },
         {
+            width:150,
             title : "Assigned To",
             dataIndex:'assignTo',
             ...Search('assignTo'),
         },
         {
+            width:150,
             title : "Assign Date",
             render:(record)=>{
                 return (
@@ -338,11 +352,13 @@ export default function TablePickup() {
             ...Search('assignDate'),
         },
         {
+            width:150,
             title : "Assign Status",
             dataIndex:'assignStatus',
             ...Search('assignStatus'),
         },
         {
+            width:80,
             title:"Action",
             key:"orderMaterialId",
             align:'center',
@@ -442,36 +458,43 @@ export default function TablePickup() {
             render: (value, item, index) => 1 + index
         },
         {
+            width:150,
             title : "Multi Delivery No",
             dataIndex:'multiDeliveryNo',
             ...Search('multiDeliveryNo'),
         },
         {
+            width:150,
             title : "WH Team",
             dataIndex:'lspName',
             ...Search('lspName'),
         },
         {
+            width:150,
             title : "Transport Team",
             dataIndex:'transportTeam',
             ...Search('transportTeam'),
         },
         {
+            width:150,
             title : "Total Order Request",
             dataIndex:'totalOrderRequestGroup',
             ...Search('totalOrderRequestGroup'),
         },
         {
+            width:150,
             title : "Total Collies (Coll)",
             dataIndex:'totalCollies',
             ...Search('totalCollies'),
         },
         {
+            width:150,
             title : "Total Volume (CBM)",
             dataIndex:'totalVolume',
             ...Search('totalVolume'),
         },
         {
+            width:150,
             title : "Total Pickup Completed",
             dataIndex:'totalPickupComplete',
             ...Search('totalPickupComplete'),
@@ -505,46 +528,55 @@ export default function TablePickup() {
             render: (value, item, index) => 1 + index
         },
         {
+            width:150,
             title : "Multi Delivery No",
             dataIndex:'multiDeliveryNo',
             ...Search('multiDeliveryNo'),
         },
         {
+            width:150,
             title : "Multi Delivery Status",
             dataIndex:'multiDeliveryStatus',
             ...Search('multiDeliveryStatus'),
         },
         {
+            width:150,
             title : "Order Request Number",
             dataIndex:'orderReqNo',
             ...Search('orderReqNo'),
         },
         {
+            width:150,
             title : "Transport Team",
             dataIndex:'transportTeam',
             ...Search('transportTeam'),
         },
         {
+            width:150,
             title : "PIC Name",
             dataIndex:'picName',
             ...Search('picName'),
         },
         {
+            width:150,
             title : "note",
             dataIndex:'note',
             ...Search('note'),
         },        
         {
+            width:150,
             title : "Task Status",
             dataIndex:'taskStatus',
             ...Search('taskStatus'),
         },
         {
+            width:150,
             title : "Total Collies",
             dataIndex:'totalCollies',
             ...Search('totalCollies'),
         },
         {
+            width:150,
             title : "Total Volume",
             dataIndex:'totalVolume',
             ...Search('totalVolume'),
@@ -574,75 +606,89 @@ export default function TablePickup() {
     const columnsOrder = [
    
         {
+            width:150,
             title : "CPO No",
             dataIndex:'cpoNo',
          
         },
         {
+            width:150,
             title : "CT Name",
             dataIndex:'ctName',
          
         },
         {
+            width:150,
             title : "Inventory Code",
             dataIndex:'inventoryCode',
          
         },
   
         {
+            width:150,
             title : "Order Type",
             dataIndex:'orderType',
      
         },
         {
+            width:150,
             title : "Request No",
             dataIndex:'requestNo',
       
         },
         {
+            width:150,
             title : "Package Name",
             dataIndex:'packageName',
    
         },
         {
+            width:150,
             title : "Project Name",
             dataIndex:'projectName',
    
         },
         {
+            width:150,
             title : "Site No",
             dataIndex:'siteNo',
       
         },
         {
+            width:150,
             title : "Zone",
             dataIndex:'zone',
     
         },
         {
+            width:150,
             title : "Region",
             dataIndex:'region',
         
         },
            
         {
+            width:150,
             title : "Workpackage Id",
             dataIndex:'workpackageId',
       
         },
         {
+            width:150,
             title : "Site Name",
             dataIndex:'siteName',
             responsive: ['md'],
      
         },
         {
+            width:150,
             title : "Requester",
             dataIndex:'requesterName',
             responsive: ['md'],
    
         },
         {
+            width:150,
             title : "Dismantle By",
             dataIndex:'recipientOrDismantledBy',
             responsive: ['md'],
@@ -651,6 +697,7 @@ export default function TablePickup() {
 
  
         {
+            width:150,
             title : "Request Date",
             render:(record)=>{
                 return (
@@ -663,6 +710,7 @@ export default function TablePickup() {
     
         },
         {
+            width:150,
             title : "Incoming Date",
             render:(record)=>{
                 return (
@@ -675,6 +723,7 @@ export default function TablePickup() {
       
         },
         {
+            width:150,
             title : "Expected Delivery Date",
             render:(record)=>{
                 return (
@@ -691,40 +740,48 @@ export default function TablePickup() {
 
     const columnsMaterial = [
         {
+            width:50,
             title: "No",
             key: "index",
             render: (value, item, index) => page + index
         },
         {
+            width:150,
             title: "Category",
             dataIndex: "site",
             ...Search("site")
         },
         {
+            width:150,
             title: "Item Code",
             dataIndex: "materialCode",
             ...Search("materialCode")
         },
 
         {
+            width:150,
             title: "Item Desc",
             dataIndex: "materialDesc",
             ...Search("materialDesc")
         },
         {
+            width:150,
             title: "BOQ Ref QTY",
             dataIndex: "refQTY"
         },
         {
+            width:150,
             title: "Current Req QTY",
             dataIndex: "reqQTY"
         },
    
         {
+            width:150,
             title: "Total BOQ Req QTY",
             dataIndex: "totalReqQTY"
         },
         {
+            width:150,
             title: "Delta QTY",
    
             render:(record)=>{
@@ -744,11 +801,13 @@ export default function TablePickup() {
 
     const columnsLog = [
         {
+            width:150,
             title: "No",
             key: "index",
             render: (value, item, index) => page + index
         },
         {
+            width:150,
             title: "Incoming Date",
             dataIndex: "incomingDate",
             render:(record)=>{
@@ -760,6 +819,7 @@ export default function TablePickup() {
             },
         },
         {
+            width:150,
             title: "Execute Date",
             dataIndex: "executeDate",
             render:(record)=>{
@@ -772,14 +832,17 @@ export default function TablePickup() {
         },
 
         {
+            width:150,
             title: "Execute By",
             dataIndex: "executedBy",
         },
         {
+            width:150,
             title: "Event Desc",
             dataIndex: "taskName"
         },
         {
+            width:150,
             title: "Remarks",
             dataIndex: "remarks"
         }

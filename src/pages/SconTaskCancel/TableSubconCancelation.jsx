@@ -188,80 +188,94 @@ export default function TableSubconCancelation() {
         
         {
             title: "No",
+            width:50,
             key: "index",
-            width:"2%",
             render: (value, item, index) => page + index
         },
         {
+            width:150,
             title: "Request No",
             dataIndex: "orderReqNo",
             ...Search("orderReqNo")
         },
         {
+            width:150,
             title: "Order Type",
             dataIndex: "orderType",
             ...Search("orderType")
         },
         {
+            width:150,
             title: "Site No",
             dataIndex: "siteNo",
             ...Search("siteNo")
         },
     
         {
+            width:150,
             title: "Origin",
             dataIndex: "originName",
             ...Search("originName")
         },
         {
+            width:150,
             title: "Destination",
             dataIndex: "destinationName",
             ...Search("destinationName")
         },
         {
+            width:150,
             title: "Site Name",
             dataIndex: "siteName",
             ...Search("siteName")
         },
         {
+            width:150,
             title: "Region",
             dataIndex: "region",
             ...Search("region")
         },
   
         {
+            width:150,
             title: "Scope Name",
             dataIndex: "scopeName",
             ...Search("scopeName")
         },
         {
+            width:150,
             title: "Scope Detail",
             dataIndex: "scopeDetail",
             ...Search("scopeDetail")
         },
         {
+            width:150,
             title: "Delivery Mode",
             dataIndex: "deliveryMode",
             ...Search("deliveryMode")
         },
         {
+            width:150,
             title: "Workpackage ID",
             dataIndex: "workpackageId",
             ...Search("workpackageId")
         },
         
         {
+            width:150,
             title: "Rejected By",
             dataIndex: "taskCancelledBy",
             ...Search("taskCancelledBy")
         },
         {
+            width:150,
             title: "Subcon Name",
             dataIndex: "subconName",
             ...Search("subconName")
         },
   
         {
+            width:150,
             title: "Rejected Date",
                 
             render:(record)=>{
@@ -274,6 +288,7 @@ export default function TableSubconCancelation() {
             ...Search("pickupOrDeliveryDate")
         },
         {
+            width:150,
             title: "Reason of Cancelation",
             dataIndex: "reasonOfCancelledTask",
             ...Search("reasonOfCancelledTask")
@@ -310,79 +325,89 @@ export default function TableSubconCancelation() {
     const columnsOrder = [
    
         {
+            width:150,
             title : "CPO No",
             dataIndex:'cpoNo',
          
         },
         {
+            width:150,
             title : "CT Name",
             dataIndex:'ctName',
          
         },
         {
+            width:150,
             title : "Inventory Code",
             dataIndex:'inventoryCode',
          
         },
   
         {
+            width:150,
             title : "Order Type",
             dataIndex:'orderType',
      
         },
         {
+            width:150,
             title : "Request No",
             dataIndex:'requestNo',
       
         },
         {
+            width:150,
             title : "Package Name",
             dataIndex:'packageName',
    
         },
         {
+            width:150,
             title : "Project Name",
             dataIndex:'projectName',
    
         },
         {
+            width:150,
             title : "Site No",
             dataIndex:'siteNo',
       
         },
         {
+            width:150,
             title : "Zone",
             dataIndex:'zone',
     
         },
         {
+            width:150,
             title : "Region",
             dataIndex:'region',
         
         },
            
         {
+            width:150,
             title : "Workpackage Id",
             dataIndex:'workpackageId',
       
         },
- 
-   
- 
-       
         {
+            width:150,
             title : "Site Name",
             dataIndex:'siteName',
             responsive: ['md'],
      
         },
         {
+            width:150,
             title : "Requester",
             dataIndex:'requesterName',
             responsive: ['md'],
    
         },
         {
+            width:150,
             title : "Dismantle By",
             dataIndex:'recipientOrDismantledBy',
             responsive: ['md'],
@@ -391,6 +416,7 @@ export default function TableSubconCancelation() {
 
  
         {
+            width:150,
             title : "Request Date",
             render:(record)=>{
                 return (
@@ -403,6 +429,7 @@ export default function TableSubconCancelation() {
     
         },
         {
+            width:150,
             title : "Incoming Date",
             render:(record)=>{
                 return (
@@ -415,6 +442,7 @@ export default function TableSubconCancelation() {
       
         },
         {
+            width:150,
             title : "Expected Delivery Date",
             render:(record)=>{
                 return (
@@ -431,31 +459,37 @@ export default function TableSubconCancelation() {
 
     const columnsMaterial = [
         {
+            width:50,
             title: "No",
             key: "index",
             render: (value, item, index) => page + index
         },
         {
+            width:150,
             title: "Category",
             dataIndex: "site",
             ...Search("site")
         },
         {
+            width:150,
             title: "Item Code",
             dataIndex: "materialCode",
             ...Search("materialCode")
         },
 
         {
+            width:150,
             title: "Item Desc",
             dataIndex: "materialDesc",
             ...Search("materialDesc")
         },
         {
+            width:150,
             title: "BOQ Ref QTY",
             dataIndex: "refQTY"
         },
         {
+            width:150,
             title: "Delta QTY",
             dataIndex: "reqQTY"
         }
@@ -463,11 +497,13 @@ export default function TableSubconCancelation() {
 
     const columnsLog = [
         {
+            width:50,
             title: "No",
             key: "index",
             render: (value, item, index) => page + index
         },
         {
+            width:150,
             title: "Incoming Date",
             dataIndex: "incomingDate",
             render:(record)=>{
@@ -480,6 +516,7 @@ export default function TableSubconCancelation() {
             ...Search("incomingDate")
         },
         {
+            width:150,
             title: "Execute Date",
             dataIndex: "executeDate",
             render:(record)=>{
@@ -493,16 +530,19 @@ export default function TableSubconCancelation() {
         },
 
         {
+            width:150,
             title: "Execute By",
             dataIndex: "executedBy",
             ...Search("executedBy")
         },
         {
+            width:150,
             title: "Event Desc",
             dataIndex: "taskName",
             ...Search("taskName")
         },
         {
+            width:150,
             title: "Remarks",
             dataIndex: "remarks",
             ...Search("remarks")
