@@ -87,16 +87,17 @@ export default function TableSite() {
     const scopeDetailMap = dataSiteList.map(e=>e.scopeDetail.scopeName)
 
     const columns = [
-        {
+        {width: 50,
             title : "No",
             render: (value, item, index) => 1 + index
+            
         },
-        {
+        {width: 150,
             title : "Site No",
             dataIndex:'siteNo',
             ...Search('siteNo'),
         },
-        {
+        {width: 150,
             title : "Site Name",
             dataIndex:'siteName',
             sorter:(record1,record2)=>{
@@ -127,26 +128,26 @@ export default function TableSite() {
             },
             
         },
-        {
+        {width: 150,
             title : "CPO No",
             dataIndex:'poDetail',
             
             ...Search('poDetail'),
             render: item => Object.keys(item).map(k => item[k])[1]
         },
-        {
+        {width: 150,
             title : "Workpackage ID",
             dataIndex:'workpackageID',
             
             ...Search('workpackageID'),
         },
-        {
+        {width: 150,
             title : "Package Type",
             dataIndex:'packageType',
             
             ...Search('packageType'),
         },
-        {
+        {width: 150,
             title : "Scope",
             dataIndex:'scopeDetail',
             
@@ -178,16 +179,17 @@ export default function TableSite() {
             
             
         },
-        {
+        {width: 150,
             title : "Region",
             dataIndex:'region',
             responsive: ['md'],
             ...Search('region'),
         },
-        {
+        {width: 80,
             title : "Options",
             dataIndex:'',
             align:'center',
+            fixed:'right',
             render : (record,wp)=>{
                 return <Space direction="vertical">
                     <Space wrap>

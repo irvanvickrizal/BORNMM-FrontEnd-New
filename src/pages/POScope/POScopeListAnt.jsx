@@ -27,7 +27,7 @@ import {useDispatch,useSelector} from 'react-redux';
 import { setIsEdit, setIsNew } from '@app/store/reducers/scope';
 import {toast} from 'react-toastify';
 import {IconButton, TextField}  from '@mui/material/';
-import {Modal,message,Upload,Typography, Table, Button, Space,Card,Tooltip,Row,Col,Title } from 'antd';
+import {Modal,message,Upload,Typography, Table, Button, Space,Card,Tooltip,Row,Col } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { CloudUploadOutlined, UploadOutlined,DownloadOutlined,PlusOutlined,FileExcelOutlined,CloseOutlined, EditOutlined,DeleteOutlined,CheckOutlined  } from '@ant-design/icons';
 import {variables} from '../../Variables';
