@@ -67,6 +67,16 @@ export default function TableBoqAccuracy() {
             }
         )
     }
+    const getDownloadDataSiteBase = (record) => {
+        API.getBoqAccuracySiteBase(record.boqId).then(
+            result=>{
+                const data = result//result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
+                const exportType =  exportFromJSON.types.xls;
+                const fileName = `BOQ_Accuracy_Site_Base ${moment().format("DD-MM-YYYY hh:mm:ss")}`;
+                exportFromJSON({ data, fileName, exportType });
+            }
+        )
+    }
 
     const columns = [
         {
@@ -123,6 +133,71 @@ export default function TableBoqAccuracy() {
                         <Space size={20}>
                             <Tooltip title="Download Boq Detail">
                                 <FileExcelOutlined style={{fontSize:20,color:"#0c6907"}} onClick={()=>getDownloadDataDetail(record)}/>
+                            </Tooltip>
+                            
+
+                        </Space>
+                       
+                    </div>
+                )
+            },
+        }
+    ]
+    const columnsSite = [
+        {
+            title : "No",
+            width : 50,
+            render: (value, item, index) => 1 + index
+        },
+        {
+            width:150,
+            title : "CPO No",
+            dataIndex:'cpoNo',
+            // width:100,
+            ...Search('cpoNo'),
+        },
+        {
+            width:150,
+            title : "CPO Name",
+            dataIndex:'CPOName',
+            // width:150,
+            ...Search('CPOName'),
+        },
+        {
+            title : "Total Scopes",
+            dataIndex:'totalScopes',
+            width:150,
+            ...Search('totalScopes'),
+        },
+        {
+            title : "Total BOQ Ref",
+            dataIndex:'totalBOQRef',
+      
+            width:150,
+            ...Search('totalBOQRef'),
+        },
+        {
+            title : "Total Req",
+            dataIndex:'totalReq',
+            width:150,
+            ...Search('totalReq'),
+        },
+      
+     
+   
+    
+        {
+            title:"Action",
+           
+            align:'center',
+            fixed:'right',
+            width:90,
+            render:(record)=>{
+                return (
+                    <div style={{display:"flex",alignItems:'center',justifyContent:'center'}}>
+                        <Space size={20}>
+                            <Tooltip title="Download Boq Detail">
+                                <FileExcelOutlined style={{fontSize:20,color:"#0c6907"}} onClick={()=>getDownloadDataSiteBase(record)}/>
                             </Tooltip>
                             
 
@@ -210,9 +285,9 @@ export default function TableBoqAccuracy() {
         },
         {
             title : "WorkpackageID",
-            dataIndex:'Workpackageid',
+            dataIndex:'workpackageid',
             width:150,
-            ...Search('Workpackageid'),
+            ...Search('workpackageid'),
         },
         {
             title : "Material Code",
@@ -329,7 +404,7 @@ export default function TableBoqAccuracy() {
                     </TabPane>
                     <TabPane tab="Sitebase Request" key="2">
                         <Table 
-                            columns={columns} 
+                            columns={columnsSite} 
                             dataSource={dataBoqAccuracyList}
                             size="medium" 
                             pagination={{
