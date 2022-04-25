@@ -76,67 +76,80 @@ export default function TableOrderRejection() {
             render: (value, item, index) => 1 + index
         },
         {
+            width:150,
             title : "Request No",
             dataIndex:'requestNo',
             ...Search('requestNo'),
         },
         {
+            width:150,
             title : "Order Type",
             dataIndex:'orderType',
             ...Search('requestNo'),
         },
         {
+            width:150,
             title : "Site No",
             dataIndex:'siteNo',
             ...Search('siteNo'),
         },
         {
+            width:150,
             title : "Origin",
             dataIndex:'originName',
             ...Search(''),
         },
         {
+            width:150,
             title : "Destination",
             dataIndex:'destinationName',
             ...Search(''),
         },
         {
+            width:150,
             title : "Site Name",
             dataIndex:'siteName',
             responsive: ['md'],
             ...Search('siteName'),
         },
         {
+            width:150,
             title : "Region",
             dataIndex:'region',
             ...Search('region'),
         },
         {
+            width:150,
             title : "Workpackage Id",
             dataIndex:'workpackageid',
             ...Search('workpackageid'),
         },
         {
+            width:150,
             title : "Scope Name",
             dataIndex:'scopeName',
             ...Search('scopeName'),
         },
         {
+            width:150,
             title : "Scope Detail",
             dataIndex:'scopeDetail',
             ...Search('scopeDetail'),
         },
         {
+            width:150,
             title : "Reason of Rejection",
             dataIndex:'reasonOfRejection',
             ...Search('reasonOfRejection'),
         },
         {
+            width:150,
             title : "Rejected By",
             dataIndex:'rejectedBy',
             ...Search('rejectedBy'),
         },
         {
+            width:150,
             title : "Incoming Date",
             render:(record)=>{
                 return (

@@ -75,12 +75,14 @@ export default function TableBoqAccuracy() {
             render: (value, item, index) => 1 + index
         },
         {
+            width:150,
             title : "CPO No",
             dataIndex:'cpoNo',
             // width:100,
             ...Search('cpoNo'),
         },
         {
+            width:150,
             title : "CPO Name",
             dataIndex:'CPOName',
             // width:150,
@@ -139,12 +141,14 @@ export default function TableBoqAccuracy() {
             render: (value, item, index) => 1 + index
         },
         {
+            width:150,
             title : "Material Code",
             dataIndex:'materialCode',
             // width:100,
             ...Search('materialCode'),
         },
         {
+            width:150,
             title : "Material Desc",
             dataIndex:'materialDesc',
             // width:150,
@@ -164,6 +168,7 @@ export default function TableBoqAccuracy() {
             ...Search('totalReqQTY'),
         },
         {
+            width:150,
             title : "Boq Accuracy (%)",
             render:(record)=>{
                 return (
@@ -177,7 +182,6 @@ export default function TableBoqAccuracy() {
                     </div>
                 )
             },
-            width:150,
             ...Search('boqAccuracy'),
         },
       

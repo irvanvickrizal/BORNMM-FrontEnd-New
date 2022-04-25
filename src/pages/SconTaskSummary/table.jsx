@@ -303,59 +303,69 @@ export default function TableTaskSummary(props) {
     const columnsAssigmentPending = [
         {
             title: "No",
+            width:50,
             key: "index",
             render: (value, item, index) => page + index
         },
         {
             title: "Request No",
+            width:150,
             dataIndex: "requestNo",
             ...Search("requestNo")
         },
         {
             title: "Order Type",
+            width:150,
             dataIndex: "orderType",
             ...Search("orderType")
         },
         {
             title: "Site No",
             dataIndex: "siteNo",
+            width:150,
             ...Search("siteNo")
         },
 
         {
             title: "Origin",
             dataIndex: "originName",
+            width:150,
             ...Search("originName")
         },
         {
             title: "Destination",
             dataIndex: "destinationName",
+            width:150,
             ...Search("destinationName")
         },
         {
             title: "Site Name",
             dataIndex: "siteName",
+            width:150,
             ...Search("siteName")
         },
         {
             title: "Region",
+            width:150,
             dataIndex: "region",
             ...Search("region")
         },
         {
-            title: "Work Pakgae ID",
+            title: "WorkpackageID",
+            width:150,
             dataIndex: "workpackageid",
             
             ...Search("workpackageid")
         },
         {
             title: "Scope Name",
+            width:150,
             dataIndex: "scopeName",
             ...Search("scopeName")
         },
         {
             title: "Pickup Date",
-            
+            width:150,
             render:(record)=>{
                 return (
                     <Space>
@@ -372,6 +382,7 @@ export default function TableTaskSummary(props) {
         // },
         {
             title: "Incoming Date",
+            width:150,
             dataIndex: "incomingDate",
             render:(record)=>{
                 return (
@@ -390,6 +401,7 @@ export default function TableTaskSummary(props) {
         
         {
             title: "Action",
+            width:80,
             fixed: 'right',
             render:(record)=>{
                 return (
@@ -466,56 +478,67 @@ export default function TableTaskSummary(props) {
         {
             title: "No",
             key: "index",
+            width:50,
             render: (value, item, index) => page + index
         },
         {
             title: "Request No",
             dataIndex: "requestNo",
+            width:150,
             ...Search("requestNo")
         },
         {
             title: "Order Type",
             dataIndex: "orderType",
-            ...Search("orderType")
+            ...Search("orderType"),
+            width:150,
         },
         {
             title: "Site No",
+            width:150,
             dataIndex: "siteNo",
             ...Search("siteNo")
         },
 
         {
             title: "Origin",
+            width:150,
             dataIndex: "originName",
             ...Search("originName")
         },
         {
             title: "Destination",
+            width:150,
             dataIndex: "destinationName",
             ...Search("destinationName")
         },
         {
             title: "Site Name",
+            width:150,
             dataIndex: "siteName",
             ...Search("siteName")
         },
         {
             title: "Region",
+            width:150,
             dataIndex: "region",
             ...Search("region")
         },
         {
-            title: "Work Pakgae ID",
+            title: "WorkPackgae ID",
+            width:150,
             dataIndex: "workpackageid",
             ...Search("workpackageid")
         },
         {
             title: "Scope Name",
+            width:150,
             dataIndex: "scopeName",
             ...Search("scopeName")
         },
         {
             title: "Pickup Date",
+            width:150,
             dataIndex: "pickupOrDeliveryDate",
             render:(record)=>{
                 return (
@@ -528,12 +551,14 @@ export default function TableTaskSummary(props) {
         },
         {
             title: "Assign To",
+            width:150,
             dataIndex: "assignedTo",
             ...Search("assignedTo")
         },
         {
             title: "Incoming Date",
             dataIndex: "incomingDate",
+            width:150,
             render:(record)=>{
                 return (
                     <Space>
@@ -546,12 +571,13 @@ export default function TableTaskSummary(props) {
         {
             title: "Task Status",
             dataIndex: "taskStatus",
+            width:150,
             ...Search("taskStatus")
         },
         
         {
             title: "Action",
-         
+            width:150,
             fixed: 'right',
             render:(record)=>{
                 return (
@@ -585,47 +611,58 @@ export default function TableTaskSummary(props) {
         {
             title: "No",
             key: "index",
+            width:50,
             render: (value, item, index) => page + index
         },
         {
             title: "Request No",
-            dataIndex: "requestNo"
+            dataIndex: "requestNo",
+            width:150,
         },
         {
             title: "Order Type",
+            width:150,
             dataIndex: "orderType"
         },
         {
             title: "Site No",
+            width:150,
             dataIndex: "siteNo"
         },
 
         {
             title: "Origin",
+            width:150,
             dataIndex: "originName"
         },
         {
             title: "Destination",
+            width:150,
             dataIndex: "destinationName"
         },
         {
             title: "Site Name",
+            width:150,
             dataIndex: "siteName"
         },
         {
             title: "Region",
+            width:150,
             dataIndex: "region"
         },
         {
-            title: "Work Pakgae ID",
+            title: "Workpackage ID",
+            width:150,
             dataIndex: "workpackageid"
         },
         {
             title: "Scope Name",
+            width:150,
             dataIndex: "scopeName"
         },
         {
             title: "Pickup Date",
+            width:150,
             dataIndex: "pickupOrDeliveryDate",
             render:(record)=>{
                 return (
@@ -637,18 +674,22 @@ export default function TableTaskSummary(props) {
         },
         {
             title: "Assign To",
+            width:150,
             dataIndex: "assignedTo"
         },
         {
             title: "Assign Date",
-         
+            dataIndex: "assignedDate",
+            width:150,
         },
         {
             title: "Task Status",
+            width:150,
             dataIndex: "taskStatus"
         },
         {
             title: "Task Complete Date",
+            width:150,
             dataIndex: "incomingDate",
             render:(record)=>{
                 return (

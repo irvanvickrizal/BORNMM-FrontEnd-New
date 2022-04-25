@@ -158,31 +158,37 @@ const TableMultiDeliveryConfirmation = () => {
             render: (value, item, index) => 1 + index
         },
         {
+            width:150,
             title : "Multi Delivery No",
             dataIndex:'multiDeliveryNo',
             ...Search('multiDeliveryNo'),
         },
         {
+            width:150,
             title : "Multi Delivery Note",
             dataIndex:'multideliveryNote',
             ...Search('multideliveryNote'),
         },
         {
+            width:150,
             title : "WH Team",
             dataIndex:'lspName',
             ...Search('lspName'),
         },
         {
+            width:150,
             title : "Transport Team",
             dataIndex:'transportTeam',
             ...Search('transportTeam'),
         },
         {
+            width:150,
             title : "Created By",
             dataIndex:'createdBy',
             ...Search('createdBy'),
         },
         {
+            width:150,
             title : "Created Date",
             ...Search('createdDate'),
             render:(record)=>{
@@ -237,51 +243,61 @@ const TableMultiDeliveryConfirmation = () => {
             render: (value, item, index) => 1 + index
         },
         {
+            width:150,
             title : "Request No",
             dataIndex:'requestNo',
             ...Search('requestNo'),
         },
         {
+            width:150,
             title : "Origin",
             dataIndex:'originName',
             ...Search('originName'),
         },
         {
+            width:150,
             title : "Destination",
             dataIndex:'destinationName',
             ...Search('destinationName'),
         },
         {
+            width:150,
             title : "Site No",
             dataIndex:'siteNo',
             ...Search('siteNo'),
         },        
         {
+            width:150,
             title : "Site Name",
             dataIndex:'siteName',
             ...Search('siteName'),
         },
         {
+            width:150,
             title : "Region",
             dataIndex:'region',
             ...Search('region'),
         },
         {
+            width:150,
             title : "WorkpackageId",
             dataIndex:'workpackageid',
             ...Search('workpackageid'),
         },
         {
+            width:150,
             title : "Scope Name",
             dataIndex:'scopeName',
             ...Search('scopeName'),
         },
         {
+            width:150,
             title : "CDMR Req",
             dataIndex:'cdmrType',
             ...Search('cdmrType'),
         },
         {
+            width:150,
             title : "RFP Date",
             render:(record)=>{
                 return (
@@ -293,21 +309,23 @@ const TableMultiDeliveryConfirmation = () => {
             ...Search('rfpDate'),
         },
         {
+            width:150,
             title : "Total Volume",
             dataIndex:'totalVolume',
             ...Search('totalVolume'),
         },
         {
+            width:150,
             title : "Request Delivery Mode",
             dataIndex:'deliveryMode',
             ...Search('deliveryMode'),
         },
         {
+            width:80,
             title:"Action",
             // key:"orderDetailId",
             align:'center',
             fixed:'right',
-            width: 60,
             render:(record)=>{
                 return (
                     <div>  

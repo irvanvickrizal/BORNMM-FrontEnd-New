@@ -156,71 +156,85 @@ export default function TableOrderRequestTracking() {
             render: (value, item, index) => 1 + index
         },
         {
+            width:150,
             title : "Request No",
             dataIndex:'requestNo',
             ...Search('requestNo'),
         },
         {
+            width:150,
             title : "Order Type",
             dataIndex:'orderType',
             ...Search('orderType'),
         },
         {
+            width:150,
             title : "Request Type Name",
             dataIndex:'requestTypeName',
             ...Search('requestTypeName'),
         },
         {
+            width:150,
             title : "CT Name",
             dataIndex:'ctName',
             ...Search('ctName'),
         },
         {
+            width:150,
             title : "Site Condition",
             dataIndex:'siteCondition',
             ...Search('siteCondition'),
         },
         {
+            width:150,
             title : "Origin",
             dataIndex:'originName',
             ...Search('originName'),
         },
         {
+            width:150,
             title : "Destination",
             dataIndex:'destinationName',
             ...Search('destinationName'),
         },
         {
+            width:150,
             title : "Delivery Type",
             dataIndex:'deliveryType',
             ...Search('deliveryType'),
         },
         {
+            width:150,
             title :  "Packet Type",
             dataIndex:'packetType',
             ...Search('packetType'),
         },
         {
+            width:150,
             title :  "Location Address",
             dataIndex:'locationAddress',
             ...Search('locationAddress'),
         },
         {
+            width:150,
             title :  "PIC on Site",
             dataIndex:'picOnSite',
             ...Search('picOnSite'),
         },
         {
+            width:150,
             title :  "Subcon Name",
             dataIndex:'subconName',
             ...Search('subconName'),
         },
         {
+            width:150,
             title : "Requester",
             dataIndex:'requesterName',
             ...Search('requesterName'),
         },
         {
+            width:150,
             title : "Request Date",
             render:(record)=>{
                 return (
@@ -232,6 +246,7 @@ export default function TableOrderRequestTracking() {
             ...Search('requestDate'),
         },
         {
+            width:150,
             title : "Logistic Completed Date",
             render:(record)=>{
                 return (
@@ -250,6 +265,7 @@ export default function TableOrderRequestTracking() {
 
       
         {
+            width:150,
             title : "Approve Date",
          
             responsive: ['md'],
@@ -268,39 +284,46 @@ export default function TableOrderRequestTracking() {
             ...Search('approveDate'),
         },
         {
+            width:150,
             title : "Approve By",
             dataIndex:'approvedBy',
             responsive: ['md'],
             ...Search('approvedBy'),
         },
         {
+            width:150,
             title : "Site No",
             dataIndex:'siteNo',
             responsive: ['md'],
             ...Search('siteNo'),
         },
         {
+            width:150,
             title : "Site Name",
             dataIndex:'siteName',
             responsive: ['md'],
             ...Search('siteName'),
         },
         {
+            width:150,
             title : "Region",
             dataIndex:'region',
             ...Search('region'),
         },
         {
+            width:150,
             title : "Zone",
             dataIndex:'zone',
             ...Search('zone'),
         },
         {
+            width:150,
             title : "Workpackage Id",
             dataIndex:'workpackageId',
             ...Search('workpackageId'),
         },
         {
+            width:150,
             title : "Package Name",
             dataIndex:'packageName',
             ...Search('packageName'),
@@ -308,6 +331,7 @@ export default function TableOrderRequestTracking() {
      
     
         {
+            width:150,
             title : "Logistic Completed By ",
             dataIndex:'logisticCompletedBy',
             ...Search('logisticCompletedBy'),
@@ -315,11 +339,13 @@ export default function TableOrderRequestTracking() {
     
 
         {
+            width:150,
             title : "LSP Name",
             dataIndex:'lspName',
             ...Search('lspName'),
         },
         {
+            width:150,
             title : "RFP Date",
             render:(record)=>{
                 return (
@@ -337,23 +363,27 @@ export default function TableOrderRequestTracking() {
         
 
         {
+            width:150,
             title : "Total Volume",
             dataIndex:'totalCollies',
             ...Search('totalCollies'),
         },
         
         {
+            width:150,
             title : "Total ",
             dataIndex:'total',
             ...Search('total'),
         },
         
         {
+            width:150,
             title : "RFP Confirmed By",
             dataIndex:'rfpConfirmedBy',
             ...Search('rfpConfirmedBy'),
         },
         {
+            width:150,
             title : "Pick Up Date",
             render:(record)=>{
                 return (
@@ -369,7 +399,7 @@ export default function TableOrderRequestTracking() {
             ...Search('rfpDpickupDateate'),
         },
         
-        {
+        {width:150,
             title : "Delivery Complete Date",
             render:(record)=>{
                 return (
@@ -390,17 +420,16 @@ export default function TableOrderRequestTracking() {
 
     
 
-        {
+        {width:150,
             title : " Order Status",
             dataIndex:'orderStatus',
             ...Search('orderStatus'),
         },
-        {
+        {width:150,
             title:"Action",
             key:"orderMaterialId",
             align:'center',
             fixed:'right',
-            width:75,
             render:(record)=>{
                 return (
                     <div>
@@ -543,40 +572,48 @@ export default function TableOrderRequestTracking() {
 
     const columnsMaterial = [
         {
+            width:150,
             title: "No",
             key: "index",
             render: (value, item, index) => page + index
         },
         {
+            width:150,
             title: "Category",
             dataIndex: "site",
             ...Search("site")
         },
         {
+            width:150,
             title: "Item Code",
             dataIndex: "materialCode",
             ...Search("materialCode")
         },
 
         {
+            width:150,
             title: "Item Desc",
             dataIndex: "materialDesc",
             ...Search("materialDesc")
         },
         {
+            width:150,
             title: "BOQ Ref QTY",
             dataIndex: "refQTY"
         },
         {
+            width:150,
             title: "Current Req QTY",
             dataIndex: "reqQTY"
         },
    
         {
+            width:150,
             title: "Total BOQ Req QTY",
             dataIndex: "totalReqQTY"
         },
         {
+            width:150,
             title: "Delta QTY",
    
             render:(record)=>{
@@ -596,11 +633,13 @@ export default function TableOrderRequestTracking() {
 
     const columnsLog = [
         {
+            width:150,
             title: "No",
             key: "index",
             render: (value, item, index) => page + index
         },
         {
+            width:150,
             title: "Incoming Date",
             dataIndex: "incomingDate",
             render:(record)=>{
@@ -612,6 +651,7 @@ export default function TableOrderRequestTracking() {
             },
         },
         {
+            width:150,
             title: "Execute Date",
             dataIndex: "executeDate",
             render:(record)=>{
@@ -624,14 +664,17 @@ export default function TableOrderRequestTracking() {
         },
 
         {
+            width:150,
             title: "Execute By",
             dataIndex: "executedBy",
         },
         {
+            width:150,
             title: "Event Desc",
             dataIndex: "taskName"
         },
         {
+            width:150,
             title: "Remarks",
             dataIndex: "remarks"
         }
