@@ -666,6 +666,7 @@ const getBoqSummaryAsPoBoq = (boqid) => GETParam('boqref/boqGetSummaryAsPOBOQCom
 const getListBoqAsPo = (boqid) => GETParam('boqref/boqGetListAsPOBOQ',boqid)
 const getDownloadPoBoqCompletion = (boqid,poscopeid) => GETParam2('boqref/boqGetListAsPOBOQCompletion',boqid,poscopeid)
 const getListBoqAccuracy = (uid) => GETParam('rpt/boqAccuracyGetBOQList',uid)
+const getBoqAccuracySiteBase = (boqId) => GETParam('rpt/boqAccuracyGetDetailSitebase',boqId)
    
 const getListBoqAccuracyDetail = (boqId) => GETParam('rpt/boqAccuracyGetDetail',boqId)
    
@@ -840,6 +841,7 @@ const API ={
     getSDRLTRDDL,
     getWHTeam,
     checkIsSite,
+    getBoqAccuracySiteBase,
     getWHSupervisor,
     getMaterialOrderTARItem,
     getOrderDetailMaterialTAR,
