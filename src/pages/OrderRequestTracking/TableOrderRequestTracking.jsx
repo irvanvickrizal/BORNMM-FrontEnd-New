@@ -163,6 +163,26 @@ export default function TableOrderRequestTracking() {
         },
         {
             width:150,
+            title : "Site No",
+            dataIndex:'siteNo',
+            responsive: ['md'],
+            ...Search('siteNo'),
+        },
+        {
+            width:150,
+            title : "Site Name",
+            dataIndex:'siteName',
+            responsive: ['md'],
+            ...Search('siteName'),
+        },
+        {
+            width:150,
+            title : "Workpackage Id",
+            dataIndex:'workpackageId',
+            ...Search('workpackageId'),
+        },
+        {
+            width:150,
             title : "Order Type",
             dataIndex:'orderType',
             ...Search('orderType'),
@@ -290,20 +310,7 @@ export default function TableOrderRequestTracking() {
             responsive: ['md'],
             ...Search('approvedBy'),
         },
-        {
-            width:150,
-            title : "Site No",
-            dataIndex:'siteNo',
-            responsive: ['md'],
-            ...Search('siteNo'),
-        },
-        {
-            width:150,
-            title : "Site Name",
-            dataIndex:'siteName',
-            responsive: ['md'],
-            ...Search('siteName'),
-        },
+        
         {
             width:150,
             title : "Region",
@@ -316,12 +323,7 @@ export default function TableOrderRequestTracking() {
             dataIndex:'zone',
             ...Search('zone'),
         },
-        {
-            width:150,
-            title : "Workpackage Id",
-            dataIndex:'workpackageId',
-            ...Search('workpackageId'),
-        },
+        
         {
             width:150,
             title : "Package Name",
@@ -408,24 +410,16 @@ export default function TableOrderRequestTracking() {
                             <p>{moment(record.deliveredCompletedDate).format("YYYY-MM-DD")}</p>
                         </Space>):(<></>)}
                     </div>
-                    
-                
-                  
                 )
             },
             ...Search('deliveredCompletedDate'),
         },
-        
-        
-
-    
-
         {width:150,
             title : " Order Status",
             dataIndex:'orderStatus',
             ...Search('orderStatus'),
         },
-        {width:150,
+        {width:80,
             title:"Action",
             key:"orderMaterialId",
             align:'center',
@@ -613,7 +607,7 @@ export default function TableOrderRequestTracking() {
             dataIndex: "totalReqQTY"
         },
         {
-            width:150,
+            width:80,
             title: "Delta QTY",
    
             render:(record)=>{

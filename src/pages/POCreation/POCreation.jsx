@@ -4,6 +4,7 @@ import React,{useEffect} from 'react';
 import HeaderChanger from '@app/components/cardheader/HeaderChanger';
 import API  from '../../utils/apiServices';
 import POList from './POCreationList';
+import POListAnt from './POCreationListAnt';
 import {useSelector} from 'react-redux';
 
 
@@ -27,7 +28,8 @@ const POCreation = () => {
         <div>
             <HeaderChanger title="PO Creation"/>
             {/* {isEdit || isNew ? <DOPPanel/> : null} */}
-            <POList />
+            {/* <POLsist /> */}
+            <POListAnt />
         </div>
     );
 };

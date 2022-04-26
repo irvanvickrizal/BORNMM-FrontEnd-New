@@ -6,7 +6,7 @@ import {Table ,Space,Row,Col,Spin,Tooltip} from "antd"
 import moment from "moment"
 import Search from '@app/components/searchcolumn/SearchColumn';
 import { EditFilled,EyeFilled  } from '@ant-design/icons'
-
+import {IconButton, TextField}  from '@mui/material/';
 import { useHistory } from 'react-router-dom';
 
 export default function TableDismantleActDone() {
@@ -147,7 +147,14 @@ export default function TableDismantleActDone() {
                     <div style={{display:"flex",alignItems:'center',justifyContent:'center'}}>
                         <Space size={20}>
                             <Tooltip title="">
-                                <EyeFilled style={{fontSize:20,style:"#1e71ee"}} onClick = {()=>handleNavigate(record)}/>
+                                <IconButton
+                                    size='small'
+                                    color="primary"
+                                    aria-label="upload file"
+                                    component="span"
+                                    onClick = {()=>handleNavigate(record)}>
+                                    <EyeFilled />
+                                </IconButton>
                             </Tooltip>
                             
 

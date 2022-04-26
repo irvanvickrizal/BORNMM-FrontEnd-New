@@ -544,7 +544,10 @@ const postDOPRegion = (body) => POST('masterdop/dopRegionCoverageAdd',body);
 const getmScope = () => GET('poscope');
 const postmScope = (body) => POST('poscope', body);
 const putmScope = (body) => PUT('poscope', body);
+const putCustomerPO = (body) => PUT('customerpo', body);
 const putmScopeActivation = (body) => PUT('poscope/SetActivationStatus', body);
+
+
 
 const getmOrderType = () => GET('masterordertype');
 const getDOPNotCoverage = (dopid) => GETParam('masterdop/getDOPRegionNotCoverageYet',dopid);
@@ -557,7 +560,7 @@ const getWHSPV = (lspteamid,wpid) => GETParam2('subcon/GetLSPWHTeam',lspteamid,w
 
 const getPOList = () => GET('customerpo');
 const postPOData = (body) => POST('customerpo', body);
-const putPOActivation = () => PUT('customerpo/SetActivationStatusU');
+const putPOActivation = (body) => PUT('customerpo/SetActivationStatusU',body);
 
 const getPOScopeList = () => GET('poscope/getposcopelist');
 const getPOScopeListFile = (id) => GETParam('positelist/GetUploadedSitelistFile',id);
@@ -663,6 +666,7 @@ const getBoqSummaryAsPoBoq = (boqid) => GETParam('boqref/boqGetSummaryAsPOBOQCom
 const getListBoqAsPo = (boqid) => GETParam('boqref/boqGetListAsPOBOQ',boqid)
 const getDownloadPoBoqCompletion = (boqid,poscopeid) => GETParam2('boqref/boqGetListAsPOBOQCompletion',boqid,poscopeid)
 const getListBoqAccuracy = (uid) => GETParam('rpt/boqAccuracyGetBOQList',uid)
+const getBoqAccuracySiteBase = (boqId) => GETParam('rpt/boqAccuracyGetDetailSitebase',boqId)
    
 const getListBoqAccuracyDetail = (boqId) => GETParam('rpt/boqAccuracyGetDetail',boqId)
    
@@ -827,6 +831,7 @@ const getSDRLTRDDL = (odi) => GETParam("materialmanagement/orderRequestDetailOri
 
 
 const API ={
+    putCustomerPO,
     postDOPRegion,
     getDOPRegion,
     deleteDOPRegion,
@@ -836,6 +841,7 @@ const API ={
     getSDRLTRDDL,
     getWHTeam,
     checkIsSite,
+    getBoqAccuracySiteBase,
     getWHSupervisor,
     getMaterialOrderTARItem,
     getOrderDetailMaterialTAR,

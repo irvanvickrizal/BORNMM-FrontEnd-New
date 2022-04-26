@@ -66,32 +66,17 @@ export default function TableTransferAsserRequest() {
             width : 50,
             render: (value, item, index) => 1 + index
         },
-        {
+        {width:150,
             title : "WH Code",
             dataIndex:'siteNo',
             ...Search('siteNo'),
         },
-        {
+        {width:150,
             title : "WH Name",
             dataIndex:'siteName',
             ...Search('siteName'),
-        },
-      
-        // {
-        //     title : "CPO No",
-        //     render:(record)=>{
-        //         return (
-        //             <div>
-        //                 <Typography>{record.poDetail.cpoNo}</Typography>
-        //             </div>
-                   
-                   
-        //         )
-        //     },
-        //     ...Search('siteNo'),
-        // },
-     
-        {
+        },     
+        {width:150,
             title : "Workpackage ID",
             render:(record)=>{
                 return (
@@ -104,12 +89,12 @@ export default function TableTransferAsserRequest() {
             },
             ...Search('workpackageid'),
         },
-        {
+        {width:150,
             title : "Package Type",
             dataIndex:'packageType',
             ...Search('packageType'),
         },
-        {
+        {width:150,
             title : "Scope",
             render:(record)=>{
                 return (
@@ -129,10 +114,11 @@ export default function TableTransferAsserRequest() {
             width:150,
             ...Search('region'),
         },
-        {
+        {width:80,
             title : "Options",
             dataIndex:'',
             align:'center',
+            fixed:'right',
             render : (record,wp)=>{
                 return <Space direction="vertical">
                     <Space wrap>

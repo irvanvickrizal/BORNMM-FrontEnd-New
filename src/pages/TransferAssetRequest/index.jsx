@@ -5,7 +5,7 @@ import TableTransferAsserRequest from '@app/pages/TransferAssetRequest/TableTran
 export default function TransferAsserRequest() {
     return (
         <div>
-            <HeaderChanger title="Transfer Request"/>
+            <HeaderChanger title="Transfer Asset Request"/>
             <TableTransferAsserRequest/>
         </div>
     )

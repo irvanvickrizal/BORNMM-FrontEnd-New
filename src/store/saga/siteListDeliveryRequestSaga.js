@@ -2,15 +2,16 @@ import axios from "axios";
 import { variables } from "@app/Variables";
 import {Alert} from 'antd'
 import { put, takeLatest, select } from "redux-saga/effects";
-
+import {useDispatch, useSelector} from 'react-redux';
 import { setDataSiteList,setOrderRejectionPending } from "@app/store/action/siteListDeliveryRequestAction";
 //action
 
 const API = variables.API_URL;
 function* sagaGetSiteList(action) {
+    const user = yield select((state) => state.auth.user);
     const token = yield select(state=>state.auth.token)
     try {
-        const res = yield axios.get(`${API}sitelist/SitelistRequireDeliveryReq`,{headers: {
+        const res = yield axios.get(`${API}sitelist/SitelistRequireDeliveryReq/${user.uid}`,{headers: {
             Authorization: `Bearer ${token}` 
         }});
         console.log(res,"result get site condition")

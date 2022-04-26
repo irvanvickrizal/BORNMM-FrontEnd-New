@@ -34,46 +34,48 @@ export default function TableBoqRef() {
     }
     const columns = [
         {
+            width: 50,
             title : "No",
             render: (value, item, index) => 1 + index
         },
-        {
+        {width: 150,
             title : "CPO No",
             dataIndex:'cpoNo',
             ...Search('cpoNo'),
         },
-        {
+        {width: 150,
             title : "CPO No Alias",
             dataIndex:'cpoNoAlias',
             ...Search('cpoNoAlias'),
         },
-        {
+        {width: 150,
             title : "Project Name",
             dataIndex:'projectName',
             ...Search('projectName'),
         },
-        {
+        {width: 80,
             title : "Total Scope",
             dataIndex:'totalScopes',
             ...Search('totalScopes'),
         },
-        {
+        {width: 80,
             title : "Total Sites",
             dataIndex:'totalSites',
             ...Search('totalSites'),
         },
-        {
+        {width: 100,
             title : "Total BOQ as PO Complete",
             dataIndex:'totalBOQasPODone',
             ...Search('totalBOQasPODone'),
         },
-        {
+        {width: 100,
             title : "Total BOQ as Plan Complete",
             dataIndex:'totalBOQasPlanDone',
             ...Search('totalBOQasPlanDone'),
         },
-        {
+        {width: 80,
             title : "Action",
+            fixed : "right",
             render : (record)=>{
                 return (
                     <Tooltip title="BOQ Detail">
