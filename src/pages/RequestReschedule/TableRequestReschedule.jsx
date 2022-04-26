@@ -357,7 +357,7 @@ export default function TablePickUpReschedule() {
             title: "Action",
             align:'center',
             fixed:'right',
-            width:130,
+            width:100,
             render:(record)=>{
                 return (
                     <div style={{display:"flex",alignItems:'center',justifyContent:'center'}}>

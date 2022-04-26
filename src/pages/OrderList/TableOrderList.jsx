@@ -308,18 +308,33 @@ export default function TableOrderList() {
         {
             title:"Action",
             align:'center',
-            width : 70,
+            width : 80,
             fixed:'right',
             render:(record)=>{
                 return (
                     <div>  
                         {record.allowToView=="true" ? <Space size={20}>
                             <Tooltip title="View Detail">
-                                <EyeFilled style={{fontSize:20}} onClick={()=>showModal(record.orderDetailId)}/>  
+                                <IconButton
+                                    size='small'
+                                    color="primary"
+                                    aria-label="upload file"
+                                    component="span"
+                                    onClick={()=>showModal(record.orderDetailId)}>
+                                    <EyeFilled />
+                                </IconButton>
                             </Tooltip>
                             {record.allowToDelete=="true" ?  <>
                                 <Tooltip title="Edit Order Request ">
-                                    <EditOutlined style={{ fontSize: 20 }} onClick={()=>navigateToMaterialOrderForm(record)}/>
+                                    <IconButton
+                                        size='small'
+                                        color="primary"
+                                        aria-label="upload file"
+                                        component="span"
+                                        onClick={()=>navigateToMaterialOrderForm(record)}>
+                                        <EditOutlined />
+                                    </IconButton>
+                                    
                                 </Tooltip><Tooltip title=" Delete Order Request">
                                     <DeleteFilled style={{ fontSize: 20, color: 'red' }} onClick={()=>showModalDelete(record.orderDetailId)} />
                                 </Tooltip>
@@ -334,7 +349,14 @@ export default function TableOrderList() {
                             <Space size={20}>
 
                                 {record.allowToEdit == "true" ? <Tooltip title="Edit Order Request ">
-                                    <EditOutlined style={{ fontSize: 20 }} onClick={() => navigateToMaterialOrderForm(record)} />
+                                    <IconButton
+                                        size='small'
+                                        color="primary"
+                                        aria-label="upload file"
+                                        component="span"
+                                        onClick={() => navigateToMaterialOrderForm(record)}>
+                                        <EditOutlined  />
+                                    </IconButton>
                                 </Tooltip> : null}
                             </Space></>
                         }
