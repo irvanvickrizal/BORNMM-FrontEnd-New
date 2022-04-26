@@ -176,7 +176,7 @@ const POListAnt = () => {
             const body={
                 "Id":record.cpoId,
                 "ActStatus":e,
-                "LMBY":0  
+                "LMBY":userId  
             }
             console.log(e,"checked",record,"record");
             console.log(body,"body");
