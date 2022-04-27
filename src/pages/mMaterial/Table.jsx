@@ -14,14 +14,17 @@ import moment from 'moment';
 import { useDispatch,useSelector } from 'react-redux'
 // import exportFromJSON from 'export-from-json'
 import {Checkbox,Switch ,Tabs,Tag,Typography,Popconfirm,Select,Upload,message,Form,Modal,Table, Input,Menu, Dropdown, Button, Space, Spin, Row, Col,Tooltip  } from 'antd'
-import {CheckOutlined,CloseOutlined,PlusOutlined, FileExcelOutlined,CloseSquareTwoTone ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined, EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined,DeleteTwoTone,UploadOutlined } from '@ant-design/icons'
+import {CheckOutlined ,CloseOutlined,PlusOutlined, FileExcelOutlined,CloseSquareTwoTone ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined, EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined,DeleteTwoTone,UploadOutlined } from '@ant-design/icons'
 import {toast} from 'react-toastify';
 import DGMasterMaterial from './DataGenerator';
 import DGMasterMaterialDownload from '@app/pages/mMaterial/DataGeneratorDownload';
 
 import exportFromJSON from 'export-from-json'
+import { useHistory } from 'react-router-dom';
 
 const TableMaterial = () => {
+    const history = useHistory()
+    const { Text } = Typography;
     // const { TabPane } = Tabs;
     const [isLoading, setIsLoading] = useState(false);
     const user = useSelector((state) => state.auth.user);
@@ -54,6 +57,17 @@ const TableMaterial = () => {
     // const [isActiveRow,setIsActiveRow] = useState(false);
     const [isNew,setIsNew] = useState(false);
     const [isEdit,setIsEdit] = useState(false);
+
+    const [fileUpload, setFileUpload] = useState(null);
+    const [uploading, setUploading] = useState(false);
+    const [dataUpload, setDataUpload] = useState([]);
+    const [dataDownload, setDataDownload] = useState("");
+    const [flagUpload, setFlagUpload] = useState(false);
+    const [isModalUploadVisible,setIsModalUploadVisible] = useState(false)
+
+    const boqId = 2
+    const uId = useSelector(state=>state.auth.user.uid)
+    
     
     // const dispatch = useDispatch();
 
@@ -226,6 +240,34 @@ const TableMaterial = () => {
               
     }
 
+    function getFlagUpload(){
+        API.getFlagUpload("").then(
+            result=>{
+                console.log('flag',result)
+                setFlagUpload(result);
+            }
+        )
+    }
+    function getResultUpload(){
+        API.getResultUpload().then(
+            result=>{
+                console.log('i am DDL UoM',result)
+                setDataUpload(result);
+            }
+        )
+    }
+    
+
+
+    const showModalUpload = () => {
+        getFlagUpload()
+        setIsModalUploadVisible(true)
+        getResultUpload()
+    }
+    const hideModalUpload = () => {
+        setIsModalUploadVisible(false)
+    }
+
 
     const handleEdit = (data) =>{
         console.log(data,"edit")
@@ -310,7 +352,126 @@ const TableMaterial = () => {
         }
     }
 
+    const navigateUploadPage = () => {
+        history.push('/master/materialbulkupload')
+    }
+
+    const props = {
+        onRemove: () => {
+            setFileUpload(null);
+            return fileUpload
+        },
+        // beforeUpload: file => {
+        //     const isPNG = file.type === 'image/png';
+        //     if (!isPNG) {
+        //         message.error(`${file.name} is not a png file`);
+        //     }
+        //     return isPNG || Upload.LIST_IGNORE;
+        // },
+        beforeUpload: file => {
+            console.log(file,"file");
+            const isXLSX = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+            if(isXLSX){
+                setFileUpload(file);
+                return false;
+            }
+            toast.error(`${file.name} is not a xlsx`)
+            return isXLSX || Upload.LIST_IGNORE;
+        },
+        fileUpload,
+    };
+
+
+    const handleUpload = () => {
+        setUploading(true)
+        try{
+            API.postBulkUpload(uId,fileUpload).then(
+                result=>{
+                    try{
+                        if(result.status=="success"){
+                            setFileUpload(null);
+                            setUploading(false);
+                            props.onRemove();
+                            toast.success(result.message);
+                            getFlagUpload()
+                            getResultUpload()
+                        }
+                        else{
+                            setFileUpload(null);
+                            setUploading(false);
+                            props.onRemove();
+                            toast.error(result.message);
+                        }
+                    }
+                    catch(e){
+                        toast.error("Upload file error")
+                        setUploading(false);
+                        console.log(e,"error catch")
+                    }
+                }
+            );
+        }catch(e)
+        {
+            console.log(e,"errorrrrororoo");
+        }
+    }
+
+    const postProceedUploaded = () => {
+   
+        API.postProceedUpload("",uId).then(
+            result=>{
+                try{
+                    if(result.status=="success"){
+                        toast.success(result.message)
+                        getFlagUpload()
+                    }
+              
+                }
+                catch(e){
+                    toast.error(result.message)
+                   
+                    console.log(e,"error catch")
+                }
+            }
+        )
+    }
+
+    const postResetUploaded = () => {
+ 
+        API.postClearUpload("").then(
+            result=>{
+                try{
+                    if(result.status=="success"){
+                        toast.success(result.message)
+                        getFlagUpload()
+                    }
+              
+                }
+                catch(e){
+                    toast.error(result.message)
+                   
+                    console.log(e,"error catch")
+                }
+            }
+        )
+    }
     
+    const getDownload = () => {
+        API.getDownloadUploaded().then(
+            result=>{
+                setDataDownload(result)
+               
+                const data = result;
+                //const data = result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
+                const exportType =  exportFromJSON.types.xls;
+                const fileName = `Bulkup_Result_Summary`;
+                exportFromJSON({ data, fileName, exportType });
+                console.log("BulkUp_Result_Summary")
+            }
+        )
+    }
+
+
     const columns = [
         {
             title : "No",
@@ -438,11 +599,35 @@ const TableMaterial = () => {
         
     
     ]
+
+    const columnsResumeUpload = [
+        {
+            title : "No",
+            width : 50,
+            render: (value, item, index) => 1 + index
+        },
+        {
+            title : "totalDataSuccess",
+            width: 100,
+            dataIndex:'totalDataSuccess',
+            // ...Search('materialCode'),
+        },
+        {
+            title : "totalDataError",
+            width: 100,
+            dataIndex:'totalDataError',
+            // ...Search('materialName'),
+        },
+    ]
     
     
     useEffect(() => {
         refreshData()
     },[])
+
+    useEffect(() => {
+        //getDOP();
+    },[fileUpload])
 
     return(
         <div>
@@ -454,12 +639,19 @@ const TableMaterial = () => {
                 </Row>  
                 :
                 <><div className='float-right'>
+                    <Tooltip title="Master Material Bulk Upload">
+                        <IconButton size="small" onClick={showModalUpload}>
+                            <UploadOutlined style={{color:"#2a74bf"}} />
+                        </IconButton>
+                        {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
+                    </Tooltip>
                     <Tooltip title="Download As Excell File">
                         <IconButton size="small" color="success" onClick={getDownloadDataDetail}>
                             <FileExcelOutlined />
                         </IconButton>
                         {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
                     </Tooltip>
+                   
                     <Tooltip title="Add Material">
                         <IconButton size="small" color="primary" onClick={handleShowAdd}>
                             <PlusOutlined />
@@ -760,6 +952,89 @@ const TableMaterial = () => {
                 </Modal>    
                 </>
             }
+            <Modal title="New Master Material Bulk Upload"
+                visible={isModalUploadVisible}
+                destroyOnClose={true}
+                onCancel={hideModalUpload}
+                    
+                maskClosable={false}
+                closable={true}
+                footer={null}
+            >
+                {flagUpload == true ? (<> <Row direction="vertical">
+                    <Col span={12}>
+                        <Upload {...props}>
+                            <Button icon={<UploadOutlined />}>Select File</Button>
+                            <Row>
+
+                                <Text type="danger">Note : (*.XLSX) is format allowed</Text>
+                            </Row>
+                        </Upload>
+                    </Col>
+                    <Col span={12}>
+                        <div className='float-right'>
+                            <Button
+                                type="primary"
+                                onClick={handleUpload}
+                                disabled={fileUpload == null}
+                                loading={uploading}
+                            >
+                                {uploading ? 'Uploading' : 'Start Upload'}
+                            </Button>
+                        </div>
+                    </Col>
+                </Row></>):flagUpload == false ?(<>
+                    <Table
+           
+                      
+                        dataSource={dataUpload}
+                        columns={columnsResumeUpload}
+                        pagination={false}
+
+                        scroll={{ x: '100%' }}
+                        // eslint-disable-next-line react/jsx-boolean-value
+                        // pagination={{
+                        //     pageSizeOptions: ['5','10','20','30', '40'],
+                        //     showSizeChanger: true,
+                        //     position: ["bottomLeft"],
+                        // }}
+                        size="small"
+                    />
+
+                    <div style={{display: 'flex',flexDirection:"column"}}>
+                        <div className="mt-4" style={{alignSelf:"end"}}>
+                            <Col span={4} md={8} sm={24}>
+                                <Space direction="horizontal">
+                                    <Button
+                                        type="primary"
+                                        onClick={postProceedUploaded}
+                                    >
+                                      Proceed
+                                    </Button>
+                                    <Button
+                                        type="danger"
+                                        htmlType="submit"
+                                        onClick={postResetUploaded}
+                                    >
+                                        Reset
+                                    </Button>
+                                    <Button
+                                       
+                                        htmlType="submit"
+                                        onClick={getDownload}
+                                    >
+                                        Download Resume
+                                    </Button>
+                                </Space>
+                            </Col>
+                        </div>
+         
+   
+                    </div>
+
+                </>):(<></>)}
+               
+            </Modal>
 
         
         </div>
