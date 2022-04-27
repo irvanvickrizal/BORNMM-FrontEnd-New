@@ -3,15 +3,21 @@
 import React,{useEffect} from 'react';
 import HeaderChanger from '@app/components/cardheader/HeaderChanger';
 import API  from '../../utils/apiServices';
-import SubMateialCategoryTable from './mSubMaterialCategoryList';
+import SubMaterialCategoryList from './mSubMaterialCategoryList';
 import {useSelector} from 'react-redux';
 
 
-const mSubMaterialCategory = () => {
+const mScope = () => {
     const isNew = useSelector((state) => state.dop.isNew);
     const isEdit = useSelector((state) => state.dop.isEdit);
 
- 
+    const getDOP = () =>{
+        API.getmDOPList().then(
+            result=>{
+                return result;
+            }
+        )
+    } 
 
     useEffect(() => {
         //getDOP();
@@ -19,11 +25,11 @@ const mSubMaterialCategory = () => {
 
     return (
         <div>
-            <HeaderChanger title="Master Sub Material Category"/>
+            <HeaderChanger title="Sub Category"/>
             {/* {isEdit || isNew ? <DOPPanel/> : null} */}
-            <SubMateialCategoryTable />
+            <SubMaterialCategoryList />
         </div>
     );
 };
 
-export default mSubMaterialCategory;
+export default mScope;

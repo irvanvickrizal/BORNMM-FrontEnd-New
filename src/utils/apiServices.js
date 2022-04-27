@@ -541,6 +541,16 @@ const getUomList = () => GET('mastermaterial/UomGetList');
 const postmMaterial = (body) => POST('mastermaterial',body);
 const postDOPRegion = (body) => POST('masterdop/dopRegionCoverageAdd',body);
 
+// Upload mMaterial bulk
+const getFlagUpload = (body) => POST('mastermaterial/masterMaterialBulkUploadHasClearedOrNot',body);
+const postProceedUpload = (body,uid) => POSTParam('mastermaterial/masterMaterialBulkUploadProceed',body,uid);
+const postClearUpload = (body) => POST('mastermaterial/masterMaterialBulkUploadTempCleanup',body);
+const getResultUpload = () => GET('mastermaterial/masterMaterialBulkUploadGetResult');
+const getDownloadUploaded = () => GET('mastermaterial/masterMaterialBulkUploadGetResultSummary');
+
+const postBulkUpload = (uId,file) => POSTFile('mastermaterial/masterMaterialBulkUpload',uId,file);
+
+
 const getmScope = () => GET('poscope');
 const postmScope = (body) => POST('poscope', body);
 const putmScope = (body) => PUT('poscope', body);
@@ -873,6 +883,7 @@ const API ={
     getDismantleActPending,
     downloadMMaterial,
     getDismantleActDone,
+    getFlagUpload,
     getMaterialOrderHODetail,
     getHODoneReportDetail,
     getHODoneReport,
@@ -884,6 +895,10 @@ const API ={
     getItemBookedList,
     postmMaterial,
     postUploadEvidence,
+    postClearUpload,
+    getResultUpload,
+    postProceedUpload,
+    getDownloadUploaded,
     getScheduleAssignment,
     postRescheduleDirect,
     getTransportTaskTracking,
@@ -908,6 +923,7 @@ const API ={
     getSconTaskCancel,
     postApprovalConfirm,
     orderRequestDraft,
+    postBulkUpload,
     postRejectAproval,
     postLogisticCancelForm,
     getMultiDeliveryAssigned,
