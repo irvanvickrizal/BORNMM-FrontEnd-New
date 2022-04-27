@@ -105,6 +105,7 @@ import indexSDRLTR from "@app/pages/SDRLTRForm/index"
 import indexMOSDRLTR from "@app/pages/SDRLTRMaterialOrder/index"
 import indexDOPRegionCoverage from "@app/pages/mDOPRegionCoverage/index"
 import BoqRefAccuracy from "@app/pages/BoqRefAccuracy/index"
+import mMaterialBulkUpload from "@app/pages/mMaterial/mMaterialBulkUpload"
 
 
 const Main = () => {
@@ -572,6 +573,11 @@ const Main = () => {
                                             exact
                                             path="/master/dopregioncoverage"
                                             component={indexDOPRegionCoverage}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/master/materialbulkupload"
+                                            component={mMaterialBulkUpload}
                                         />
                                     </Switch>
                                 </div>
