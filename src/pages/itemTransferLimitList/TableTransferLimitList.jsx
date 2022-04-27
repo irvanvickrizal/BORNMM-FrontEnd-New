@@ -6,7 +6,7 @@ import {Table,InputNumber ,Space,Row,Col,Spin,Tooltip,Modal,Upload,Button,Form,I
 import moment from "moment"
 import Search from '@app/components/searchcolumn/SearchColumn';
 import { EditFilled,EyeFilled  } from '@ant-design/icons'
-
+import {IconButton, TextField}  from '@mui/material/';
 import { useHistory } from 'react-router-dom';
 
 
@@ -71,10 +71,15 @@ export default function TableTransferLimitList() {
                     <div style={{display:"flex",alignItems:'center',justifyContent:'center'}}>
                         <Space size={20}>
                             <Tooltip title="Go to WH Item Transfer Limit ">
-                                <EditFilled style={{fontSize:20}} onClick = {()=>handleNavigate(record)}/>
+                                <IconButton
+                                    size='small'
+                                    color="primary"
+                                    aria-label="upload file"
+                                    component="span"
+                                    onClick = {()=>handleNavigate(record)}>
+                                    <EditFilled style={{fontSize:20}} />
+                                </IconButton>
                             </Tooltip>
-                            
-
                         </Space>
                        
                     </div>
