@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-boolean-value */
 /* eslint-disable no-shadow */
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable react/no-unescaped-entities */
@@ -12,74 +13,43 @@
 /* eslint-disable import/extensions */
 /* eslint-disable react/no-unused-state */
 /* eslint-disable react/prefer-stateless-function */
-import React, {Component,useState,useEffect} from 'react';
-import Modal from 'react-bootstrap/Modal';
-import axios from 'axios';
-
-import {variables} from '../../Variables';
-import {ContentHeader} from '@components';
-//Bootstrap and jQuery libraries
-// import 'bootstrap/dist/css/bootstrap.min.css';
-import 'jquery/dist/jquery.min.js';
-//Datatable Modules
-import "datatables.net-dt/js/dataTables.dataTables";
-import "datatables.net-dt/css/jquery.dataTables.min.css";
-import "datatables.net-bs4/js/dataTables.bootstrap4"
-import "datatables.net-buttons/js/dataTables.buttons"
-import "datatables.net-fixedcolumns/js/dataTables.fixedColumns.min.js";
-
-import $ from 'jquery'; 
+import React, {useState,useEffect} from 'react';
 import API  from '../../utils/apiServices';
-import SubCategoryPanel from './mSubMaterialCategoryPanel';
-import {useDispatch,useSelector} from 'react-redux';
-import { setIsEdit, setIsNew } from '@app/store/reducers/scope';
+import {useSelector} from 'react-redux';
 import {toast} from 'react-toastify';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSave, faPowerOff } from '@fortawesome/free-solid-svg-icons'
-import { BsPencilFill } from 'react-icons/bs';
+import Search from '@app/components/searchcolumn/SearchColumn';
+import {Switch ,Form,Modal,Select,Table, Input, Button, Space, Spin, Row, Col,Tooltip  } from 'antd'
+import {CheckOutlined,CloseOutlined,PlusOutlined, EditOutlined } from '@ant-design/icons'
+import {IconButton}  from '@mui/material/';
 
-import Form from 'react-bootstrap/Form';
 
 
-const mScopeList = () => {
-    const [isEdit,setIsEdit] = useState(false);
-    const [isNew,setIsNew] = useState(false);
+const SubMateialCategoryTable = () => {
 
+    const [isLoading, setIsLoading] = useState(false);
     const [ddlCategory,setDdlCategory] = useState([]);
     const [selectedCategory,setSelectedCategory] = useState("");
+    const [selectedSubcategoryId,setSelectedSubcategoryId] = useState("");
+    const [selectedSubcategoryName,setSelectedSubcategoryName] = useState("");
+    const [selectedSubcategoryCode,setSelectedSubcategoryCode] = useState("");
+    const [selectedQtyRequired,setSelectedQtyRequired] = useState("");
+    const [selectedSNRequired,setSelectedSNRequired] = useState("");
+    const [selectedFieldConfirm,setSelectedFieldConfirm] = useState("");
 
-    const [subCategoryName,setSubCategoryName] = useState("");
-    const [fieldConfirm, setFieldConfirm] = useState(false);
-    const [categoryId, setCategoryId] = useState("");
-    const [snRequired, setSnRequired] = useState(false);
-    const [qtyRequired, setqtyRequired] = useState(false);
+    const [scopeName,setScopeName] = useState("");
+    const [scopeDesc,setScopeDesc] = useState("");
 
-    const [show, setShow] = useState(false);
-    const [subCategoryData,setsubCategoryData] = useState([]);
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isModalEditVisible, setIsModalEditVisible] = useState(false);
+    const [scopeData,setScopeData] = useState([]);
+    const [idScope,setIdScope] = useState("");
     
-    const handleClose = () => 
-    {
-        setShow(false) 
-        setIsNew(false);
-        setIsEdit(false);
-    }
+    const [subCategoryData,setsubCategoryData] = useState([]);
 
-    const handleShowAdd = () => {
-        setShow(true);
-        setIsNew(true);
-    };
+    const user = useSelector((state) => state.auth.user);
 
-    const handleShowEdit = (sct) => {
-        //setShow(true);
-        sct.isEditRow = true;
-        setIsEdit(true);
-    };
 
-    const handleCancelEdit = (sct) => {
-        //setShow(true);
-        sct.isEditRow = null;
-        setIsEdit(false);
-    };
 
     function getSubCategory(){
         API.getSubMaterialCategory().then(
@@ -108,32 +78,35 @@ const mScopeList = () => {
         //getSubcon();
     }
 
-    function saveClick(subCategoryId){
+    function saveClick(data){
         const body ={
-            "subCategoryId" : subCategoryId,
-            "subCategoryName" : subCategoryName,
+            "subCategoryId" : data.subCategoryId,
+            "subCategoryName" : data.subCategoryName,
             "CategoryDetail":{
-                "categoryId": selectedCategory
+                "categoryId": data.selectedCategory
             },  
-            "fieldConfirm":fieldConfirm,
-            "snRequired":snRequired,
-            "qtyRequired":qtyRequired,
-            "lmby": 0    
+            "fieldConfirm":data.fieldConfirm,
+            "snRequired":data.snRequired,
+            "qtyRequired":data.qtyRequired,
+            "subCategoryCode" : data.subCategoryCode,
+            "lmby": user.uid   
         }
+
         console.log("saveclick",body);
-        API.putSubMaterialCategory(body).then(
-            result=>{
-                console.log(result);
-                if(result.status=="success")
-                {
-                    toast.success(result.message);
-                    refreshData();
-                }
-                else{
-                    toast.error(result.message);
-                }
-            }
-        )
+        // API.putSubMaterialCategory(body).then(
+        //     result=>{
+        //         console.log(result);
+        //         if(result.status=="success")
+        //         {
+        //             toast.success(result.message);
+        //             refreshData();
+        //         }
+        //         else{
+        //             toast.error(result.message);
+        //         }
+        //     }
+        // )
+
     }
 
     function handleIsActiveClick(subCategoryId, e ){
@@ -161,174 +134,488 @@ const mScopeList = () => {
         }
     }
 
-    const handleSaveFromPanel = () =>{
-        setShow(false);
-        refreshData();
+    const handleIsActive = (status,data) =>{
+        console.log(data,"data pass")
+        console.log(status,data,"isActive")
+        if (window.confirm('Are you sure you want to process this action ?')) {
+            const body={
+                "Id":data.subCategoryId,
+                "actstatus":status,
+                "lmby":0  
+            }
+            console.log(body);
+            API.putSubCategoryStatus(body).then(
+                result=>{
+                    console.log("put scope: ", result);
+                    if(result.status=="success")
+                    {
+                        toast.success(result.message);
+                        refreshData();
+                        //window.location.reload();
+                    }
+                    else{
+                        toast.error(result.message);
+                    }
+                }
+            )
+        }
     }
 
+    const showModal = () => {
+        setIsModalVisible(true)
+    }
+    const hideModal = () => {
+        setIsModalVisible(false)
+    }
+
+    const showModalEdit = (data) => {
+        setIsModalEditVisible(true)
+        setSelectedSubcategoryId(data.subCategoryId)
+        setSelectedSubcategoryName(data.subCategoryName)
+        setSelectedSubcategoryCode(data.subCategoryCode)
+        setSelectedCategory(data.categoryId)
+        setSelectedQtyRequired(data.qtyRequired)
+        setSelectedSNRequired(data.snRequired)
+        setSelectedFieldConfirm(data.fieldConfirm)
+
+        console.log(data,"dataedit")
+
+    }
+    const hideModalEdit = () => {
+        setIsModalEditVisible(false)
+    }
+
+    const handleEditAddForm = (data) => {
+        console.log(data,"datasaveedit")   
+        const body ={
+            "subCategoryId" : selectedSubcategoryId,
+            "subCategoryName" : data.subCategoryName,
+            "CategoryDetail":{
+                "categoryId": data.category
+            },  
+            "fieldConfirm":data.fieldConfirm,
+            "snRequired":data.snRequired,
+            "qtyRequired":data.qtyRequired,
+            "subCategoryCode" : data.subCategoryCode,
+            "lmby": user.uid    
+        }
+
+        console.log("saveclick",body);
+        API.putSubMaterialCategory(body).then(
+            result=>{
+                console.log(result);
+                if(result.status=="success")
+                {
+                    toast.success(result.message);
+                    showModalEdit(false)
+                    refreshData();
+                }
+                else{
+                    toast.error(result.message);
+                }
+            }
+        ) 
+    }
+
+    const handleOkAddForm = (data) => {
+        const body = (
+            {
+                "subCategoryId" : 0,
+                "subCategoryName" : data.subCategoryName,
+                "CategoryDetail":{
+                    "categoryId": data.category
+                },        
+                "fieldConfirm":data.fieldConfirm,
+                "snRequired":data.snRequired,
+                "qtyRequired":data.qtyRequired,
+                "subCategoryCode" : data.subCategoryCode,
+                "lmby": user.uid   
+            }
+        )
+        console.log(body,"body")
+        console.log(data,"data")
+        API.postSubMaterialCategory(body).then(
+            result=>{
+                if(result.status=="success")
+                {
+                    toast.success(result.message);
+                    refreshData()
+                    setIsModalVisible(false)
+                    //window.location.reload();
+                }
+                else{
+                    toast.error(result.message);
+                }
+            }
+        )            
+    }
+
+    const column = [
+        {
+            title : "No",
+            width : 30,
+            render: (value, item, index) => 1 + index
+        },
+        {
+            title : "SubCategory Name",
+            width: 100,
+            dataIndex:'subCategoryName',
+            ...Search('subCategoryName'),
+        },
+        {
+            title : "SubCategory Code",
+            width: 100,
+            dataIndex:'subCategoryCode',
+            ...Search('subCategoryCode'),
+        },
+        {
+            title : "Is Field Confirm",
+            width: 50,
+            align:'center',
+            render:(record)=>{
+                return (
+                    <Switch
+                        checkedChildren={<CheckOutlined />}
+                        unCheckedChildren={<CloseOutlined />}
+                        defaultChecked={record.fieldConfirm}
+                        disabled={true}
+                        //onClick={(e)=>handleIsActive(e,record)}
+                        // checked={record.isActive}
+                    />
+                )
+            },
+  
+        },
+        {
+            title : "Is SN Required",
+            width: 50,
+            align:'center',
+            render:(record)=>{
+                return (
+                    <Switch
+                        checkedChildren={<CheckOutlined />}
+                        unCheckedChildren={<CloseOutlined />}
+                        defaultChecked={record.snRequired}
+                        disabled={true}
+                        //onClick={(e)=>handleIsActive(e,record)}
+                        // checked={record.isActive}
+                    />
+                )
+            },
+  
+        },
+        {
+            title : "Is QTY Required",
+            width: 50,
+            align:'center',
+            render:(record)=>{
+                return (
+                    <Switch
+                        checkedChildren={<CheckOutlined />}
+                        unCheckedChildren={<CloseOutlined />}
+                        defaultChecked={record.qtyRequired}
+                        disabled={true}
+                        //onClick={(e)=>handleIsActive(e,record)}
+                        // checked={record.isActive}
+                    />
+                )
+            },
+  
+        },
+        {
+            title : "Category Name",
+            width: 100,
+            align:'center',
+            render:(record)=>{
+                return (
+                    <p>{record.categoryDetail.categoryName}</p>
+                )
+            },
+  
+        },
+        {
+            title : "isActive",
+            width: 50,
+            align:'center',
+            fixed: 'right',
+            render:(record)=>{
+                return (
+                    <Switch
+                        checkedChildren={<CheckOutlined />}
+                        unCheckedChildren={<CloseOutlined />}
+                        defaultChecked={record.isActive}
+                        onClick={(e)=>handleIsActive(e,record)}
+                        // checked={record.isActive}
+                    />
+                )
+            },
+  
+        },
+        {
+            title : "Options",
+            width: 40,
+            key:"orderMaterialId",
+            align:'center',
+            fixed: 'right',
+
+            render:(record)=>{
+                return (
+                    <Space>
+                        <Tooltip title="Edit Material">
+                            <IconButton
+                                size='small'
+                                color="primary"
+                                aria-label="upload file"
+                                component="span" 
+                                // onClick={() => handleEdit(record)}
+                            >
+                                <EditOutlined onClick={()=>showModalEdit(record)}/>
+                            </IconButton>
+                        </Tooltip>
+                    </Space>
+                )
+  
+            },}
+
+    ]
+        
+
     useEffect(() => {
-        refreshData();
-        setTimeout(()=>{                        
-
-            var t = $('#tblScope').DataTable( {
-                "columnDefs": [ 
-                    {width: '9%', targets: 4}
-                    
-                ],
-                "order": [[ 1, 'asc' ]],
-                "scrollX": false,
-                orderCellsTop: true,
-                responsive:true,
-                autoWidth: false,
-                search:true
-            } );
-
-            t.on( 'order.dt search.dt', function () {
-                t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-                    cell.innerHTML = i+1;
-                } );
-            } ).draw();
-
-        }, 1000);
+        refreshData()
+    
     },[])
     
     return (
-        <><div className="card card-primary">
-            <div className="card-header align-middle">
-                <h3 className="card-title">Sub Category List</h3>
-                <a href='javascript:void(0)' onClick={handleShowAdd} class="btn btn-success float-right">
-                    <i class="fas fa-plus"></i>
-                </a>
-            </div>
-            <div className="card-body">
-                <table id="tblScope" className="display table table-striped table-bordered table-sm row-border hover mb-5 responsive" aria-labelledby="tabelLabel">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Name</th>
-                            <th>Field Confirm</th>
-                            <th>SN Required</th>
-                            <th>Qty Required</th>
-                            <th>Grouping Count</th>
-                            <th>Category Name</th>
-                            <th>Is Active</th>
-                            <th>Option</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {subCategoryData.map(sct => <tr key={sct.subCategoryId}>
-                            <td></td>
-                            <td>
-                                {sct.isEditRow == null ? sct.subCategoryName :
-                                    <input placeholder={sct.subCategoryName} onChange={(e) => setSubCategoryName(e.target.value)} type="text" class="form-control col-md-9" aria-label="Username" aria-describedby="basic-addon1" />}
-                            </td>
-                            <td>
-                                {sct.isEditRow == null ? <Form.Check
-                                    type="switch"
-                                    id={"fieldConfirm" + sct.subCategoryId + "binded"}
-                                    checked={sct.fieldConfirm}/> :
-                                    <Form.Check
-                                        type="switch"
-                                        id={"fieldConfirm" + sct.subCategoryId}
-                                        // checked={sct.fieldConfirm}
-                                        onChange={(e) => setFieldConfirm(e.target.checked)}/>}
-                            </td>
-                            <td>
-                                {sct.isEditRow == null ? <Form.Check
-                                    type="switch"
-                                    id={"snRequired" + sct.subCategoryId + "binded"}
-                                    checked={sct.snRequired}/> :
-                                    <Form.Check
-                                        type="switch"
-                                        id={"snRequired" + sct.subCategoryId}
-                                        onChange={(e) => setSnRequired(e.target.checked)}/>}
-                            </td>
-                            <td>
-                                {sct.isEditRow == null ? <Form.Check
-                                    type="switch"
-                                    id={"qtyRequired" + sct.subCategoryId + "binded"}
-                                    checked={sct.qtyRequired}/> :
-                                    <Form.Check
-                                        type="switch"
-                                        id={"qtyRequired" + sct.subCategoryId}
-                                        onChange={(e) => setqtyRequired(e.target.checked)}/>}
-                            </td>
-                            <td>
-                                {sct.matGroupCount}
-                            </td>
-                            <td>
-                                {sct.isEditRow == null ?  sct.categoryDetail.categoryName:
-                                    <select className="form-select col-md-9" onChange={(e) => setSelectedCategory(e.target.value)} >
-                                        <option value="0">Select Order Type</option>
-                                        {ddlCategory.map(um => <option key={um.categoryId} value={um.categoryId}>
-                                            {um.categoryName}
-                                        </option>)}
-                                    </select>}
-                            </td>
-                            <td>
-                                <Form.Check
-                                    type="switch"
-                                    id={"isActive"+sct.subCategoryId}
-                                    checked={sct.isActive}
-                                    onChange={(e) => handleIsActiveClick(sct.subCategoryId, e)}/>
-                            </td>
-                            <td>
-                                {sct.isEditRow == false || sct.isEditRow == null ?
-                                    <button type="button"
-                                        className="btn btn-light mr-1"
-                                        onClick={() => handleShowEdit(sct)}
-                                        title="edit">
-                                        <BsPencilFill/>
-                                    </button>
-                                    :
-                                    <button type="button"
-                                        className="btn btn-success mr-1"
-                                        onClick={() => saveClick(sct.subCategoryId)}>
-                                        <FontAwesomeIcon icon={faSave} />
-                                    </button>
-                                }
-                                {sct.isEditRow == true ?
-                                    <a href='javascript:void(0)' onClick={() => handleCancelEdit(sct)} class="btn btn-danger float-right">
-                                        <i class="fas fa-light fa-times"></i>
-                                    </a> : null}
-                            </td>
-                        </tr>
-                        )}
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>No</th>
-                            <th>Name</th>
-                            <th>Field Confirm</th>
-                            <th>SN Required</th>
-                            <th>Qty Required</th>
-                            <th>Grouping Count</th>
-                            <th>Category Name</th>
-                            <th>Is Active</th>
-                            <th>Option</th>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div><Modal
-            size="lg"
-            show={show}
-            onHide={handleClose}
-            backdrop="static"
-            keyboard={false}
-        >
-            <Modal.Header closeButton>
-                <Modal.Title>Add New Sub Category</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <SubCategoryPanel/>
-            </Modal.Body>
-            {/* <Modal.Footer>
-                    <Button variant="primary" onClick={saveClick}>Save</Button>
-                </Modal.Footer> */}
-        </Modal>
-        </>
+        <div>
+            {isLoading ? 
+                <Row justify="center">
+                    <Col span={1}>    
+                        <Spin />
+                    </Col>
+                </Row>  
+                :
+                <><div className='float-right'>
+                
+                    <Tooltip title="Add New SubCategory">
+                        <IconButton  color="primary" onClick={()=>showModal()}>
+                            <PlusOutlined style={{fontSize:24}} />
+                        </IconButton>
+                    </Tooltip>
+
+                </div><Table
+                    scroll={{ x: '150%' }}
+                    size="medium"
+                    // expandable={{ expandedRowRender }}
+                    columns={column}
+                    dataSource={[...subCategoryData]}
+                    rowKey={record => record.subCategoryId}
+                    pagination={{
+                        pageSizeOptions: ['5', '10', '20', '30', '40'],
+                        showSizeChanger: true,
+                        position: ["bottomLeft"],
+                    }}
+                    bordered /></>}
+
+            {/* Modal add */}
+            <Modal title="Add New Sub Category"
+                visible={isModalVisible}
+                destroyOnClose
+                onCancel={hideModal}
+                centered
+                maskClosable={false}
+                closable
+                footer={null}
+            >
+                <Form
+                    name="basic"
+                    labelCol={{ span: 7 }}
+                    wrapperCol={{ span: 17 }}
+                    initialValues={{
+                        "qtyRequired":false,
+                        "snRequired":false,
+                        "fieldConfirm":false,
+
+                    }}
+                    onFinish={handleOkAddForm}
+                    // onFinishFailed={handleFailedAddForm}
+                    autoComplete="off"
+                >
+           
+            
+                    <Form.Item
+                        label="Sub Category Name"
+                        name="subCategoryName"
+                        rules={[{ required: true, message: 'Please input Scope Name Field!' }]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        label="Sub Category Code"
+                        name="subCategoryCode"
+                        rules={[{ required: true, message: 'Please input Scope Name Field!' }]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item label="Category"
+                        name="category"
+                        rules={[{ required: true, message: 'Please Select Item Level!'}]}
+                    >
+                        <Select 
+                            // onChange={(e) => handleDDLSubconChange(e)}
+                            placeholder="Select an option"
+                        >
+                            {/* <Select.Option value={0}>-- SELECT --</Select.Option> */}
+                            {
+                                ddlCategory.map(inv =>  <Select.Option value={inv.categoryId}> 
+                                    {inv.categoryName}</Select.Option>)
+                            }
+                        </Select>
+                    </Form.Item>
+                    <Form.Item label="Is Field Confirm"
+                        name="fieldConfirm"
+                            
+                    >
+                        <Switch
+                            checkedChildren={<CheckOutlined />}
+                            unCheckedChildren={<CloseOutlined />}
+                            defaultChecked={false}
+                            // checked={record.isActive}
+                        />
+                    </Form.Item>
+                    <Form.Item label="SN Required"
+                        name="snRequired"
+                            
+                    >
+                        <Switch
+                            checkedChildren={<CheckOutlined />}
+                            unCheckedChildren={<CloseOutlined />}
+                            
+                            // checked={record.isActive}
+                        />
+                    </Form.Item>
+                    <Form.Item label="QTY Required"
+                        name="qtyRequired"
+                    >
+                        <Switch
+                            checkedChildren={<CheckOutlined />}
+                            unCheckedChildren={<CloseOutlined />}
+                            // checked={record.isActive}
+                        />
+                    </Form.Item>
+
+                    <Form.Item wrapperCol={{ offset: 20, span: 4 }}>
+                        <Space>
+                            <Button type="primary" htmlType="submit">
+                                Confirm
+                            </Button>
+                        </Space>
+                    </Form.Item>
+                </Form>
+            </Modal>    
+
+            {/* Modal Edit */}
+            <Modal title="Edit Sub Category"
+                visible={isModalEditVisible}
+                destroyOnClose
+                onCancel={hideModalEdit}
+                centered
+                maskClosable={false}
+                closable
+                footer={null}
+            >
+                <Form
+                    name="basic"
+                    labelCol={{ span: 7 }}
+                    wrapperCol={{ span: 17 }}
+              
+                    onFinish={handleEditAddForm}
+                    // onFinishFailed={handleFailedAddForm}
+                    autoComplete="off"
+                    initialValues={{
+                        "subCategoryName":selectedSubcategoryName,
+                        "subCategoryCode":selectedSubcategoryCode,
+                        "category":selectedCategory,
+                        "qtyRequired":selectedQtyRequired,
+                        "snRequired":selectedSNRequired,
+                        "fieldConfirm":selectedFieldConfirm,
+                       
+                    }}
+                >
+                    
+                    <Form.Item
+                        label="Sub Category Name"
+                        name="subCategoryName"
+                        rules={[{ required: true, message: 'Please input Scope Name Field!' }]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        label="Sub Category Code"
+                        name="subCategoryCode"
+                        rules={[{ required: true, message: 'Please input Scope Name Field!' }]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item label="Category"
+                        name="category"
+                        rules={[{ required: true, message: 'Please Select Item Level!'}]}
+                    >
+                        <Select 
+                            // onChange={(e) => handleDDLSubconChange(e)}
+                            placeholder="Select an option"
+                        >
+                            {/* <Select.Option value={0}>-- SELECT --</Select.Option> */}
+                            {
+                                ddlCategory.map(inv =>  <Select.Option value={inv.categoryId}> 
+                                    {inv.categoryName}</Select.Option>)
+                            }
+                        </Select>
+                    </Form.Item>
+                    <Form.Item label="Is Field Confirm"
+                        name="fieldConfirm"
+                            
+                    >
+                        <Switch
+                            checkedChildren={<CheckOutlined />}
+                            unCheckedChildren={<CloseOutlined />}
+                            defaultChecked={selectedFieldConfirm}
+                            // checked={record.isActive}
+                        />
+                    </Form.Item>
+                    <Form.Item label="SN Required"
+                        name="snRequired"
+                            
+                    >
+                        <Switch
+                            checkedChildren={<CheckOutlined />}
+                            unCheckedChildren={<CloseOutlined />}
+                            defaultChecked={selectedSNRequired}
+                            // checked={record.isActive}
+                        />
+                    </Form.Item>
+                    <Form.Item label="QTY Required"
+                        name="qtyRequired"
+                    >
+                        <Switch
+                            checkedChildren={<CheckOutlined />}
+                            unCheckedChildren={<CloseOutlined />}
+                            defaultChecked={selectedQtyRequired}
+                            // checked={record.isActive}
+                        />
+                    </Form.Item>
+
+                    <Form.Item wrapperCol={{ offset: 20, span: 4 }}>
+                        <Space>
+                            <Button type="primary" htmlType="submit">
+                                Confirm
+                            </Button>
+                        </Space>
+                    </Form.Item>
+                </Form>
+            </Modal>    
+        </div>
+    
     );
 };
 
-export default mScopeList;
+export default SubMateialCategoryTable;

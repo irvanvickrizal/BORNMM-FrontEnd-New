@@ -22,18 +22,19 @@ import "datatables.net-dt/css/jquery.dataTables.min.css";
 import "datatables.net-bs4/js/dataTables.bootstrap4"
 import "datatables.net-buttons/js/dataTables.buttons"
 
-import {useDispatch} from 'react-redux';
+import {useDispatch,useSelector} from 'react-redux';
 import API  from '../../utils/apiServices';
 import { toast } from 'react-toastify';
 import Form from 'react-bootstrap/Form';
 
 
 const mSubMaterialCategoryPanel = (props) => {
-
+    const user = useSelector((state) => state.auth.user);
     const [ddlCategory,setDdlCategory] = useState([]);
     const [selectedCategory,setSelectedCategory] = useState("");
 
     const [subCategoryName,setSubCategoryName] = useState("");
+    const [subCategoryCode,setSubCategoryCode] = useState("");
     const [fieldConfirm, setFieldConfirm] = useState(false);
     const [categoryId, setCategoryId] = useState("");
     const [snRequired, setSnRequired] = useState(false);
@@ -62,7 +63,8 @@ const mSubMaterialCategoryPanel = (props) => {
                 "fieldConfirm":fieldConfirm,
                 "snRequired":snRequired,
                 "qtyRequired":qtyRequired,
-                "lmby": 0      
+                "subCategoryCode" : subCategoryCode,
+                "lmby": user.uid   
             }
         )
         API.postSubMaterialCategory(body).then(
@@ -70,7 +72,7 @@ const mSubMaterialCategoryPanel = (props) => {
                 if(result.status=="success")
                 {
                     toast.success(result.message);
-                    window.location.reload();
+                    //window.location.reload();
                 }
                 else{
                     toast.error(result.message);
@@ -94,9 +96,13 @@ const mSubMaterialCategoryPanel = (props) => {
                         <input onChange={(e) => setSubCategoryName(e.target.value)} type="text" class="form-control col-md-9" aria-label="Username" aria-describedby="basic-addon1" />
                     </div>
                     <div class="input-group mb-3">
+                        <span class="input-group-text col-md-3" id="basic-addon1">Sub Category Code </span>
+                        <input onChange={(e) => setSubCategoryCode(e.target.value)} type="text" class="form-control col-md-9" aria-label="Username" aria-describedby="basic-addon1" />
+                    </div>
+                    <div class="input-group mb-3">
                         <span class="input-group-text col-md-3" id="basic-addon1">Category </span>
                         <select className="form-select col-md-9" onChange={(e) => setSelectedCategory(e.target.value)} >
-                            <option value="0">Select Order Type</option>
+                            <option value="0">Select Category</option>
                             {ddlCategory.map(um => <option key={um.categoryId} value={um.categoryId}>
                                 {um.categoryName}
                             </option>)}

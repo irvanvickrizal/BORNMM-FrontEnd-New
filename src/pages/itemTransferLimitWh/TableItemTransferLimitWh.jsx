@@ -427,7 +427,7 @@ export default function TableItemTransferLimitWh() {
     
             <Row >
     
-                <Col span={12}>
+                <Col md={12} sm={24} xs={24}>
                     <Card hoverable>
                             
                         <Tabs defaultActiveKey="1" onChange={callback}>
@@ -491,7 +491,7 @@ export default function TableItemTransferLimitWh() {
                        
                       
                 </Col>
-                <Col span={12}>
+                <Col md={12} sm={24} xs={24}>
                     <Card hoverable   title={CardTitle("Define Item transfer limit Upload ")}
                         headStyle={{ 'color': 'blue' }}>
                         <div>
