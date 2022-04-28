@@ -135,7 +135,7 @@ const TableInventoryReport = () => {
            
             render:(record)=>{
                 return (
-                    <Tooltip title="Download">
+                    <Tooltip title="Download Inbound List">
                         <IconButton
                             size='small'
                             color="primary"
@@ -143,7 +143,7 @@ const TableInventoryReport = () => {
                             component="span" 
                             onClick={() => downloadInbondData(record)}
                         >
-                            <Typography style={{fontSize:12}}>{record.outboundQty}</Typography>
+                            <Typography style={{fontSize:12,textDecoration: "underline", color:"#3a55ef",fontWeight:"700"}}>{record.outboundQty}</Typography>
                         </IconButton>
                     </Tooltip>
                     
@@ -166,7 +166,7 @@ const TableInventoryReport = () => {
             // dataIndex:'outboundQty',
             render:(record)=>{
                 return (
-                    <Tooltip title="Download">
+                    <Tooltip title="Download Outbound List">
                         <IconButton
                             size='small'
                             color="primary"
@@ -174,7 +174,7 @@ const TableInventoryReport = () => {
                             component="span" 
                             onClick={() => downloadOutbondData(record)}
                         >
-                            <Typography style={{fontSize:12}}>{record.outboundQty}</Typography>
+                            <Typography style={{fontSize:12,textDecoration: "underline", color:"#3a55ef",fontWeight:"700"}}>{record.outboundQty}</Typography>
                         </IconButton>
                     </Tooltip>
                     
