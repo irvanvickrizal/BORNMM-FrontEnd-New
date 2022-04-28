@@ -67,7 +67,7 @@ const TableInventoryReport = () => {
                 
                 //const data = result//result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
                 const exportType =  exportFromJSON.types.xls;
-                const fileName =`BORN_MasterMaterial_${moment().format("DD-MM-YYYY")}`;
+                const fileName =`inboundListReportDownload_${moment().format("DD-MM-YYYY")}`;
                 exportFromJSON({ data, fileName, exportType });
             }
         )
@@ -83,7 +83,7 @@ const TableInventoryReport = () => {
                 
                 //const data = result//result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
                 const exportType =  exportFromJSON.types.xls;
-                const fileName =`BORN_MasterMaterial_${moment().format("DD-MM-YYYY")}`;
+                const fileName =`onboundListReportDownload_${moment().format("DD-MM-YYYY")}`;
                 exportFromJSON({ data, fileName, exportType });
             }
         )
