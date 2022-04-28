@@ -56,11 +56,37 @@ const TableInventoryReport = () => {
         )
     }
 
-    const downloadInbondData = (data) => {
-        console.log(data,"payloadInbond")
+    const downloadInbondData = (payload) => {
+        console.log(payload,"payloadInbond")
+        API.getDownloadInbond(payload.whCode,payload.materialCode).then(
+            result=>{
+                console.log(result,"ini resul")
+                const data = result
+
+              
+                
+                //const data = result//result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
+                const exportType =  exportFromJSON.types.xls;
+                const fileName =`BORN_MasterMaterial_${moment().format("DD-MM-YYYY")}`;
+                exportFromJSON({ data, fileName, exportType });
+            }
+        )
     }
-    const downloadOutbondData = (data) => {
-        console.log(data,"payload outbond")
+    const downloadOutbondData = (payload) => {
+        console.log(payload,"payload outbond")
+        API.getDownloadOutbond(payload.whCode,payload.materialCode).then(
+            result=>{
+                console.log(result,"ini result")
+                const data = result
+
+              
+                
+                //const data = result//result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
+                const exportType =  exportFromJSON.types.xls;
+                const fileName =`BORN_MasterMaterial_${moment().format("DD-MM-YYYY")}`;
+                exportFromJSON({ data, fileName, exportType });
+            }
+        )
     }
 
     const columns = [
