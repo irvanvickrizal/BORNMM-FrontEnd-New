@@ -186,7 +186,7 @@ export default function TableDismantleActDone() {
                 </Row>  
                 :
                 <Table
-                    scroll={{ x: '150%' }}
+                    scroll={{ x: '150%',y:500 }}
                     rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
                     // expandable={{ expandedRowRender }}
                     columns={columns}

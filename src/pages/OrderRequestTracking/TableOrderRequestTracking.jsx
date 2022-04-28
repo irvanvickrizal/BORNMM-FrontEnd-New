@@ -720,7 +720,8 @@ export default function TableOrderRequestTracking() {
                     </Col>
                 </Row>
                 <Table
-                    scroll={{ x: '300%' }}
+                    scroll={{ x: '300%' ,y:600}}
+                    
                     rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
                     // expandable={{ expandedRowRender }}
                     columns={columns}
@@ -730,6 +731,7 @@ export default function TableOrderRequestTracking() {
                         showSizeChanger: true,
                         position: ["bottomLeft"],
                     }}
+                    size='small'
                     bordered /></>}
             <Modal visible={modalDetailVisible}  onCancel={hideModalDetail} 
              
