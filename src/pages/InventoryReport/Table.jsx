@@ -143,7 +143,7 @@ const TableInventoryReport = () => {
                             component="span" 
                             onClick={() => downloadInbondData(record)}
                         >
-                            <Typography style={{fontSize:12,textDecoration: "underline", color:"#3a55ef",fontWeight:"700"}}>{record.outboundQty}</Typography>
+                            <Typography style={{fontSize:12,textDecoration: "underline", color:"#3a55ef",fontWeight:"700"}}>{record.inboundQty}</Typography>
                         </IconButton>
                     </Tooltip>
                     
