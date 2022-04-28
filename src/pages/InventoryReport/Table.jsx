@@ -5,13 +5,14 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React,{useEffect,useState} from 'react'
 import { useDispatch,useSelector } from 'react-redux'
-import {Select,Form,Modal,Table,Tabs, Input,Menu, Dropdown, Button, Space, Spin, Row, Col,Tooltip  } from 'antd'
+import {Select,Form,Modal,Table,Tabs, Input,Menu, Dropdown, Button, Space, Spin, Row, Col,Tooltip,Typography  } from 'antd'
 import {IconButton, TextField}  from '@mui/material/';
 import API  from '../../utils/apiServices';
 import Search from '@app/components/searchcolumn/SearchColumn';
 import moment from 'moment';
 import exportFromJSON from 'export-from-json'
 import { CloudUploadOutlined, UploadOutlined,DownloadOutlined,PlusOutlined,FileExcelOutlined,CloseOutlined, EditOutlined,DeleteOutlined,CheckOutlined  } from '@ant-design/icons';
+
 
 
 const TableInventoryReport = () => {
@@ -53,6 +54,13 @@ const TableInventoryReport = () => {
                 setIsLoading(false);
             }
         )
+    }
+
+    const downloadInbondData = (data) => {
+        console.log(data,"payloadInbond")
+    }
+    const downloadOutbondData = (data) => {
+        console.log(data,"payload outbond")
     }
 
     const columns = [
@@ -98,7 +106,23 @@ const TableInventoryReport = () => {
         },
         {
             title : "Inbound QTY",
-            dataIndex:'inboundQty',
+           
+            render:(record)=>{
+                return (
+                    <Tooltip title="Download">
+                        <IconButton
+                            size='small'
+                            color="primary"
+                            aria-label="upload file"
+                            component="span" 
+                            onClick={() => downloadInbondData(record)}
+                        >
+                            <Typography style={{fontSize:12}}>{record.outboundQty}</Typography>
+                        </IconButton>
+                    </Tooltip>
+                    
+                )
+            },
             ...Search('inboundQty'),
         },
         {
@@ -113,7 +137,23 @@ const TableInventoryReport = () => {
         },
         {
             title : "Outbond QTY",
-            dataIndex:'outboundQty',
+            // dataIndex:'outboundQty',
+            render:(record)=>{
+                return (
+                    <Tooltip title="Download">
+                        <IconButton
+                            size='small'
+                            color="primary"
+                            aria-label="upload file"
+                            component="span" 
+                            onClick={() => downloadOutbondData(record)}
+                        >
+                            <Typography style={{fontSize:12}}>{record.outboundQty}</Typography>
+                        </IconButton>
+                    </Tooltip>
+                    
+                )
+            },
             ...Search('outboundQty'),
         },
         {
