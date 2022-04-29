@@ -89,6 +89,21 @@ const TableInventoryReport = () => {
         )
     }
 
+    const downloadRequestedBornData = (payload) => {
+        console.log(payload,"payload outbond")
+        API.getDownloadRequestedBORN(payload.whCode,payload.materialCode).then(
+            result=>{
+                console.log(result,"ini result")
+                const data = result
+
+                //const data = result//result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
+                const exportType =  exportFromJSON.types.xls;
+                const fileName =`outboundListReportDownload_${moment().format("DD-MM-YYYY")}`;
+                exportFromJSON({ data, fileName, exportType });
+            }
+        )
+    }
+
     const columns = [
         {
             title : "No",
@@ -158,7 +173,22 @@ const TableInventoryReport = () => {
         },
         {
             title : "Requested BORN",
-            dataIndex:'bookedQty',
+            render:(record)=>{
+                return (
+                    <Tooltip title="Download Requested Born List">
+                        <IconButton
+                            size='small'
+                            color="primary"
+                            aria-label="upload file"
+                            component="span" 
+                            onClick={() => downloadRequestedBornData(record)}
+                        >
+                            <Typography style={{fontSize:12,textDecoration: "underline", color:"#3a55ef",fontWeight:"700"}}>{record.bookedQty}</Typography>
+                        </IconButton>
+                    </Tooltip>
+                    
+                )
+            },
             ...Search('bookedQty'),
         },
         {

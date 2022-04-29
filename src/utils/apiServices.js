@@ -652,6 +652,7 @@ const deleteOutboundFile = (body,id) => PUTParam('inventory/outboundFileDelete',
 const deleteOutboundFile2 = (body,id,userid) => PUTParam2('inventory/outboundFileDelete',body,id,userid);
 const getDownloadInbond = (whcode,materialcode) => GETParam2('inventory/inboundListReportDownload',whcode,materialcode);
 const getDownloadOutbond = (whcode,materialcode) => GETParam2('inventory/outboundListReportDownload',whcode,materialcode);
+const getDownloadRequestedBORN = (whcode,materialcode) => GETParam2('inventory/requestedBORNListReportDownload',whcode,materialcode);
 
 
 const getSconTaskOnProgress = (uid) => GETParam('taskassignment/taskAssignmentSubconOnProgress',uid);
@@ -844,6 +845,7 @@ const getSDRLTRDDL = (odi) => GETParam("materialmanagement/orderRequestDetailOri
 
 
 const API ={
+    getDownloadRequestedBORN,
     putCustomerPO,
     postDOPRegion,
     getDOPRegion,
