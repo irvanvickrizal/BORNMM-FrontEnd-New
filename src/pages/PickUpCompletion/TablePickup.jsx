@@ -42,6 +42,8 @@ export default function TablePickup() {
     const [multiDeliveryRequestPendingList,setMultiDeliveryRequestPendingList] = useState([])
     const [isManageMulti,setIsManageMulti] = useState(false);
     const [isModalMaterialArrive, setIsModalMaterialArrive] = useState(false);
+    const [isMulti, setIsMulti] = useState(false);
+    const [selectedMultiDeliveryId, setSelectedMultiDeliveryId] = useState('');
     // const [requestNo, setRequestNo] = useState('');
 
     const [currentAssignTo,setCurrentAssignTo] = useState('')
@@ -103,9 +105,15 @@ export default function TablePickup() {
         )
     }
 
-    const handleMaterialArrived =(data)=>{
+    const handleMaterialArrived =(data,multi)=>{
+        setIsMulti(multi)
+    
         setIsModalMaterialArrive(true)
-        setRequestNo(data.requestNo)
+        if(multi==true){
+            setRequestNo(data.orderReqNo)
+        }else{
+            setRequestNo(data.requestNo)
+        }        
         setOdi(data.orderDetailId)
     }
 
@@ -129,7 +137,11 @@ export default function TablePickup() {
             result=>{
                 if(result.status=="success"){
                     toast.success(result.message)
-                    getPickUpCompletion();
+                    if(isMulti==true){
+                        getMultiDeliveryAssigned(selectedMultiDeliveryId)
+                    }else{
+                        getPickUpCompletion();
+                    }
                     setIsModalMaterialArrive(false)
                 }
                 else if(result.status=="warning"){
@@ -373,7 +385,7 @@ export default function TablePickup() {
                                     <Tooltip title="Material Arrived at Warehouse">
                                         <IconButton
                                             size="small"
-                                            onClick={() => handleMaterialArrived(record)}
+                                            onClick={() => handleMaterialArrived(record,false)}
                                         >
                                             <CheckCircleTwoTone twoToneColor="#52c41a" />
                                         </IconButton>
@@ -405,6 +417,7 @@ export default function TablePickup() {
 
     const handleManageMultiDelivery = (record) =>{
         setIsManageMulti(true);
+        setSelectedMultiDeliveryId(record.multiDeliveryId)
         getMultiDeliveryAssigned(record.multiDeliveryId)
 
     }
@@ -459,15 +472,39 @@ export default function TablePickup() {
         },
         {
             width:150,
+            title : "Request Type",
+            dataIndex:'orderRequestType',
+            ...Search('orderRequestType'),
+        },
+        {
+            width:150,
             title : "Multi Delivery No",
             dataIndex:'multiDeliveryNo',
             ...Search('multiDeliveryNo'),
         },
         {
             width:150,
+            title : "Note",
+            dataIndex:'note',
+            ...Search('note'),
+        },
+        {
+            width:150,
             title : "WH Team",
             dataIndex:'lspName',
             ...Search('lspName'),
+        },
+        {
+            width:150,
+            title : "Total HO Complete",
+            dataIndex:'totalHOComplete',
+            ...Search('totalHOComplete'),
+        },
+        {
+            width:150,
+            title : "Total Order Complete",
+            dataIndex:'totalOrderComplete',
+            ...Search('totalOrderComplete'),
         },
         {
             width:150,
@@ -504,15 +541,34 @@ export default function TablePickup() {
             key:"orderMaterialId",
             align:'center',
             fixed:'right',
-            width: 70,
+            width: 120,
             render:(record)=>{
                 return (
                     <div>
-                        <Tooltip title="View Detail">
-                            <IconButton size="small" color="primary" onClick={()=>handleManageMultiDelivery(record)}>
-                                <EditOutlined style={{fontSize:20}} />  
-                            </IconButton>
-                        </Tooltip>
+                        <Space size={5}>
+                            {record.orderCompleteStatus == "notCompleteYet"?
+                                <Tooltip title="View Detail">
+                                    <IconButton size="small" color="primary" onClick={()=>handleManageMultiDelivery(record)}>
+                                        <EditOutlined style={{fontSize:20}} />  
+                                    </IconButton>
+                                </Tooltip>
+                                :
+                                record.orderCompleteStatus== "partialOrderComplete" ?
+                                    <Tooltip title="Confirm Partial Complete HO">
+                                        <IconButton size="small" color="primary" onClick={()=>handleManageMultiDelivery(record)}>
+                                            <CheckCircleTwoTone style={{fontSize:20}} />  
+                                        </IconButton>
+                                    </Tooltip>
+                                    :
+                                    <Tooltip title="Confirm Complete HO">
+                                        <IconButton size="small" color="success" onClick={()=>handleManageMultiDelivery(record)}>
+                                            <CheckCircleTwoTone twoToneColor="#52c41a" />  
+                                        </IconButton>
+                                    </Tooltip>
+                            
+                            }
+                        </Space>
+                        
                     </div>
                 )
             }
@@ -559,6 +615,18 @@ export default function TablePickup() {
         },
         {
             width:150,
+            title : "Assign Date",
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.assignDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            },
+            ...Search('assignDate'),
+        },
+        {
+            width:150,
             title : "note",
             dataIndex:'note',
             ...Search('note'),
@@ -591,11 +659,23 @@ export default function TablePickup() {
                 return (
                     <div>  
                         <Space>
-                            <Tooltip title="Cancel Assignment task">
-                                <IconButton size="small" color="error" onClick={()=>handleCancelAssignment(record)}>
-                                    <DeleteOutlined />
-                                </IconButton>
-                            </Tooltip>
+                            {record.orderRequestStatus == "OrderCompleted"?
+                                null 
+                                :
+                                record.orderRequestStatus == "OrderNotCompletedYet" ?
+                                    <Tooltip title="Cancel Assignment task">
+                                        <IconButton size="small" color="error" onClick={()=>handleCancelAssignment(record)}>
+                                            <DeleteOutlined />
+                                        </IconButton>
+                                    </Tooltip>
+                                    :
+                                    <Tooltip title="Material Arrived at Warehouse">
+                                        <IconButton size="small" color="error" onClick={() => handleMaterialArrived(record,true)}>
+                                            <CheckCircleTwoTone twoToneColor="#52c41a" />
+                                        </IconButton>
+                                    </Tooltip>
+                            }
+                            
                         </Space>
                     </div>
                 )
@@ -1282,7 +1362,7 @@ export default function TablePickup() {
                         <Input disabled/>
                     </Form.Item>
                     <Form.Item
-                        // hidden
+                        hidden
                         label="Order Detail Id"
                         name="orderDetailId"
                         
