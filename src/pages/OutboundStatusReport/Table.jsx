@@ -307,7 +307,7 @@ export default function TableOutboundStatusReport() {
     return (
         <div>
             <Tabs defaultActiveKey="1" onChange={callback}>
-                <TabPane tab="Outbound File List" key="1">
+                <TabPane tab="Outbound Site List" key="1">
                     { isLoading ?   
                         <Row justify="center">
                             <Col span={1}>    
@@ -323,7 +323,9 @@ export default function TableOutboundStatusReport() {
                                 {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
                             </Tooltip>
                         </div><Table
-                            scroll={{ x: '200%' }}
+                            scroll={{ x: '200%',y:500 }}
+                            rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
+                            size='small'
                             columns={columns}
                             dataSource={dataOutboundStatus}
                             pagination={{
@@ -349,7 +351,8 @@ export default function TableOutboundStatusReport() {
                                 {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
                             </Tooltip>
                         </div><Table
-                            scroll={{ x: '200%' }}
+                            scroll={{ x: '200%',y:500 }}
+                            rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
                             columns={columsOutboundSuccessLog}
                             size="small"
                             dataSource={outboundSuccessLog}

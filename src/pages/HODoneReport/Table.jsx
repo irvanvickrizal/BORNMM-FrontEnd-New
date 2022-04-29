@@ -54,6 +54,11 @@ export default function TableHODoneReport() {
             render: (value, item, index) => 1 + index
         },
         {width:150,
+            title :  "Order Request No",
+            dataIndex:'orderReqNo',
+            ...Search('orderReqNo'),
+        },
+        {width:150,
             title : "Site No",
             dataIndex:'siteNo',
             ...Search('siteNo'),
@@ -173,7 +178,7 @@ export default function TableHODoneReport() {
                         {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
                     </Tooltip>
                 </div><Table
-                    scroll={{ x: '200%' }}
+                    scroll={{ x: '200%',y:500 }}
                     columns={columns}
                     dataSource={dataHODone}
                     pagination={{

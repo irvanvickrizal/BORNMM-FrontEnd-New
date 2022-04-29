@@ -650,6 +650,10 @@ const postOutboundFile = (file) => POSTFiled('inventory/outboundFileUpload',file
 const postOutboundFile2 = (file,userid) => POSTFile('inventory/outboundFileUpload',userid,file);
 const deleteOutboundFile = (body,id) => PUTParam('inventory/outboundFileDelete',body,id);
 const deleteOutboundFile2 = (body,id,userid) => PUTParam2('inventory/outboundFileDelete',body,id,userid);
+const getDownloadInbond = (whcode,materialcode) => GETParam2('inventory/inboundListReportDownload',whcode,materialcode);
+const getDownloadOutbond = (whcode,materialcode) => GETParam2('inventory/outboundListReportDownload',whcode,materialcode);
+const getDownloadRequestedBORN = (whcode,materialcode) => GETParam2('inventory/requestedBORNListReportDownload',whcode,materialcode);
+
 
 const getSconTaskOnProgress = (uid) => GETParam('taskassignment/taskAssignmentSubconOnProgress',uid);
 const getSconTaskOnDone = (uid) => GETParam('taskassignment/taskAssignmentSubconDone',uid);
@@ -841,6 +845,7 @@ const getSDRLTRDDL = (odi) => GETParam("materialmanagement/orderRequestDetailOri
 
 
 const API ={
+    getDownloadRequestedBORN,
     putCustomerPO,
     postDOPRegion,
     getDOPRegion,
@@ -988,6 +993,8 @@ const API ={
     getDownloadPoBoqCompletion,
     getListBoqAsPo,
     getBoqSummaryAsPoBoq,
+    getDownloadOutbond,
+    getDownloadInbond,
     postAssitgnTransportTeam,
     putCancelRFP,
     putReAssignTransportTeam,

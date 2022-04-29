@@ -385,7 +385,7 @@ export default function TableBoqAccuracy() {
                             expandable={{
                                 expandedRowRender: (record) => (
                                     <Table 
-                                        scroll={{ x: '100%' }}
+                                        scroll={{ x: '100%',y:500 }}
                                         columns={columnDetail} 
                                         dataSource={dataBoqAccuracyDetail} 
                                         pagination={false}
@@ -412,7 +412,7 @@ export default function TableBoqAccuracy() {
                                 showSizeChanger: true,
                                 position: ["bottomLeft"],
                             }}
-                            scroll={{ x: '100%' }}
+                            scroll={{ x: '100%',y:500 }}
                             expandable={{
                                 expandedRowRender: (record) => (
                                     <Table 

@@ -146,7 +146,7 @@ export default function TableDismantleActForm() {
                 <Row  gutter={16}>
                     <Image.PreviewGroup>
                         {data.getDismantleImages?.map((pht)=>
-                            <Col className="gutter-row" style={{ 'margin-top': '10px' }} span={4}>
+                            <Col className="gutter-row" style={{ 'margin-top': '10px' }} md={4} sm={12} xs={24}>
                                 <Image
                                     width={100}
                                     src={pht.photoImage}

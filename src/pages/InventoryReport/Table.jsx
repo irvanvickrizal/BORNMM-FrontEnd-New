@@ -5,13 +5,14 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React,{useEffect,useState} from 'react'
 import { useDispatch,useSelector } from 'react-redux'
-import {Select,Form,Modal,Table,Tabs, Input,Menu, Dropdown, Button, Space, Spin, Row, Col,Tooltip  } from 'antd'
+import {Select,Form,Modal,Table,Tabs, Input,Menu, Dropdown, Button, Space, Spin, Row, Col,Tooltip,Typography  } from 'antd'
 import {IconButton, TextField}  from '@mui/material/';
 import API  from '../../utils/apiServices';
 import Search from '@app/components/searchcolumn/SearchColumn';
 import moment from 'moment';
 import exportFromJSON from 'export-from-json'
 import { CloudUploadOutlined, UploadOutlined,DownloadOutlined,PlusOutlined,FileExcelOutlined,CloseOutlined, EditOutlined,DeleteOutlined,CheckOutlined  } from '@ant-design/icons';
+
 
 
 const TableInventoryReport = () => {
@@ -51,6 +52,54 @@ const TableInventoryReport = () => {
                 console.log("item booked list",result);
                 setItemBookedList(result)
                 setIsLoading(false);
+            }
+        )
+    }
+
+    const downloadInbondData = (payload) => {
+        console.log(payload,"payloadInbond")
+        API.getDownloadInbond(payload.whCode,payload.materialCode).then(
+            result=>{
+                console.log(result,"ini resul")
+                const data = result
+
+              
+                
+                //const data = result//result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
+                const exportType =  exportFromJSON.types.xls;
+                const fileName =`Inbound_${payload.whCode}_${payload.materialCode}_${moment().format("DD-MM-YYYY")}`;
+                exportFromJSON({ data, fileName, exportType });
+            }
+        )
+    }
+    const downloadOutbondData = (payload) => {
+        console.log(payload,"payload outbond")
+        API.getDownloadOutbond(payload.whCode,payload.materialCode).then(
+            result=>{
+                console.log(result,"ini result")
+                const data = result
+
+              
+                
+                //const data = result//result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
+                const exportType =  exportFromJSON.types.xls;
+                const fileName =`Outbound_${payload.whCode}_${payload.materialCode}_${moment().format("DD-MM-YYYY")}`;
+                exportFromJSON({ data, fileName, exportType });
+            }
+        )
+    }
+
+    const downloadRequestedBornData = (payload) => {
+        console.log(payload,"payload outbond")
+        API.getDownloadRequestedBORN(payload.whCode,payload.materialCode).then(
+            result=>{
+                console.log(result,"ini result")
+                const data = result
+
+                //const data = result//result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
+                const exportType =  exportFromJSON.types.xls;
+                const fileName =`BORNRequested_${payload.whCode}_${payload.materialCode}${moment().format("DD-MM-YYYY")}`;
+                exportFromJSON({ data, fileName, exportType });
             }
         )
     }
@@ -98,7 +147,23 @@ const TableInventoryReport = () => {
         },
         {
             title : "Inbound QTY",
-            dataIndex:'inboundQty',
+           
+            render:(record)=>{
+                return (
+                    <Tooltip title="Download Inbound List">
+                        <IconButton
+                            size='small'
+                            color="primary"
+                            aria-label="upload file"
+                            component="span" 
+                            onClick={() => downloadInbondData(record)}
+                        >
+                            <Typography style={{fontSize:12,textDecoration: "underline", color:"#3a55ef",fontWeight:"700"}}>{record.inboundQty}</Typography>
+                        </IconButton>
+                    </Tooltip>
+                    
+                )
+            },
             ...Search('inboundQty'),
         },
         {
@@ -108,12 +173,43 @@ const TableInventoryReport = () => {
         },
         {
             title : "Requested BORN",
-            dataIndex:'bookedQty',
+            render:(record)=>{
+                return (
+                    <Tooltip title="Download Requested Born List">
+                        <IconButton
+                            size='small'
+                            color="primary"
+                            aria-label="upload file"
+                            component="span" 
+                            onClick={() => downloadRequestedBornData(record)}
+                        >
+                            <Typography style={{fontSize:12,textDecoration: "underline", color:"#3a55ef",fontWeight:"700"}}>{record.bookedQty}</Typography>
+                        </IconButton>
+                    </Tooltip>
+                    
+                )
+            },
             ...Search('bookedQty'),
         },
         {
             title : "Outbond QTY",
-            dataIndex:'outboundQty',
+            // dataIndex:'outboundQty',
+            render:(record)=>{
+                return (
+                    <Tooltip title="Download Outbound List">
+                        <IconButton
+                            size='small'
+                            color="primary"
+                            aria-label="upload file"
+                            component="span" 
+                            onClick={() => downloadOutbondData(record)}
+                        >
+                            <Typography style={{fontSize:12,textDecoration: "underline", color:"#3a55ef",fontWeight:"700"}}>{record.outboundQty}</Typography>
+                        </IconButton>
+                    </Tooltip>
+                    
+                )
+            },
             ...Search('outboundQty'),
         },
         {

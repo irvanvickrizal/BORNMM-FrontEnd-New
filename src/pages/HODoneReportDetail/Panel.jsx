@@ -465,7 +465,7 @@ export default function HODonePanel() {
                                     </Row>  
                                     :
                                     <Row gutter={16}>
-                                        <Col className="gutter-row" span={12}>
+                                        <Col className="gutter-row" md={12}sm={24} xs={24}>
                                             <Card
                                                 title="Order Request Detail"
                                             >
@@ -593,7 +593,7 @@ export default function HODonePanel() {
                                                 </Form>
                                             </Card>
                                         </Col>
-                                        <Col className="gutter-row" span={12}>
+                                        <Col className="gutter-row" md={12}sm={24} xs={24}>
                                             <Card
                                                 title="Logistic Detail"
                                             >
@@ -707,7 +707,7 @@ export default function HODonePanel() {
                         </TabPane>
                         <TabPane tab="HO Document" key="3">
                             <Row gutter={16}>
-                                <Col className="gutter-row" span={12}>
+                                <Col className="gutter-row" md={12} sm={24} xs={24}>
                                     <Card title={<Title level={5}>Photo Documentation</Title>}>
                                         
                                         <Space direction="vertical" style={{ width: '100%' }}>
@@ -736,7 +736,7 @@ export default function HODonePanel() {
                                         </Space>
                                     </Card>
                                 </Col>
-                                <Col className="gutter-row" span={12}>
+                                <Col className="gutter-row" md={12} sm={24} xs={24}>
                                     <Card
                                         title={<Title level={5}>Delivery Note</Title>}
                                     >
