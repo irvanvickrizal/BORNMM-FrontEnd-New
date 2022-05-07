@@ -12,7 +12,7 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import {BackTop ,Image,Table,InputNumber ,Tabs,Space,Row,Col,Spin,Tooltip,Modal,Upload,Button,Form,Input,Typography,Card,DatePicker} from "antd"
 import moment from "moment"
 import Search from '@app/components/searchcolumn/SearchColumn';
-import { FileExcelOutlined,StepBackwardOutlined,EyeFilled,DeleteOutlined ,UploadOutlined } from '@ant-design/icons'
+import { FileExcelOutlined,FilePdfOutlined ,StepBackwardOutlined,EyeFilled,DeleteOutlined ,UploadOutlined } from '@ant-design/icons'
 import { toast } from 'react-toastify';
 import {IconButton, TextField}  from '@mui/material/';
 import RoomIcon from '@mui/icons-material/Room';
@@ -534,6 +534,12 @@ export default function TableDismantleActForm() {
                                         <Tooltip title="Download Data">
                                             <IconButton size="small" color="success" onClick={handleDownloadData}>
                                                 <FileExcelOutlined />
+                                            </IconButton>
+                                            {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
+                                        </Tooltip>
+                                        <Tooltip title="Download Data as PDF">
+                                            <IconButton size="small" onClick={handleDownloadData}>
+                                                <FilePdfOutlined style={{color:'red'}}/>
                                             </IconButton>
                                             {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
                                         </Tooltip>
