@@ -299,14 +299,11 @@ export default function TableDismantleActForm() {
             history.push("/rpt/ackdismantledone")
         }
     }
-<<<<<<< HEAD
-=======
 
     const handleDwonloadPdf = () => {
         history.push(`/task/ackdismantleformdownload?tdg=${tdg}&odi=${odi}`)
     }
 
->>>>>>> 557121c2d170ed55e752bba800f3d3458149dfca
     useEffect(() => {
         getDataSiteInfo();
         getDismantleList()
