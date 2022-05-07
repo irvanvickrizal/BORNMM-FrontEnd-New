@@ -298,6 +298,10 @@ export default function TableDismantleActForm() {
         }
     }
 
+    const handleDwonloadPdf = () => {
+        history.push(`/task/ackdismantleformdownload?tdg=${tdg}&odi=${odi}`)
+    }
+
     useEffect(() => {
         getDataSiteInfo();
         getDismantleList()
@@ -538,7 +542,7 @@ export default function TableDismantleActForm() {
                                             {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
                                         </Tooltip>
                                         <Tooltip title="Download Data as PDF">
-                                            <IconButton size="small" onClick={handleDownloadData}>
+                                            <IconButton size="small" onClick={handleDwonloadPdf}>
                                                 <FilePdfOutlined style={{color:'red'}}/>
                                             </IconButton>
                                             {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
