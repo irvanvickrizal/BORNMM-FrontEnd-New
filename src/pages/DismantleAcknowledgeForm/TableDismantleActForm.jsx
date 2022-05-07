@@ -299,6 +299,14 @@ export default function TableDismantleActForm() {
             history.push("/rpt/ackdismantledone")
         }
     }
+<<<<<<< HEAD
+=======
+
+    const handleDwonloadPdf = () => {
+        history.push(`/task/ackdismantleformdownload?tdg=${tdg}&odi=${odi}`)
+    }
+
+>>>>>>> 557121c2d170ed55e752bba800f3d3458149dfca
     useEffect(() => {
         getDataSiteInfo();
         getDismantleList()
@@ -539,7 +547,6 @@ export default function TableDismantleActForm() {
                                             {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
                                         </Tooltip>
                                         <Tooltip title="Download Data as PDF">
-                                           
                                             <ReactToPrint
                                                 trigger={() => 
                                                     <IconButton size="small">
