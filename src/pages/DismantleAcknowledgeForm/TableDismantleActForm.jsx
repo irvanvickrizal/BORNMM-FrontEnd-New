@@ -4,7 +4,7 @@
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable no-empty */
 /* eslint-disable react/no-unstable-nested-components */
-import React,{useEffect,useState} from 'react'
+import React,{useEffect,useState,useRef} from 'react'
 import API from '@app/utils/apiServices'
 import { useSelector } from 'react-redux';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -20,6 +20,8 @@ import { useHistory } from 'react-router-dom';
 import exportFromJSON from 'export-from-json'
 import L, { divIcon } from "leaflet";
 import { MapContainer, TileLayer, Marker, Popup,useMapEvent } from 'react-leaflet'
+import ReactToPrint from "react-to-print";
+import {PDFTemplate} from './PDFTemplate'
 
 export default function TableDismantleActForm() {
     const customURL = window.location.href;
@@ -42,7 +44,7 @@ export default function TableDismantleActForm() {
     const tdg = params.get('tdg');
     const pg = params.get('pg');
     const rbid = params.get('rbid');
-
+    const componentRef = useRef();
     const getWindowDimensions = () => {
         const { innerWidth: width, innerHeight: height } = window
         return { width, height }
@@ -297,7 +299,6 @@ export default function TableDismantleActForm() {
             history.push("/rpt/ackdismantledone")
         }
     }
-
     useEffect(() => {
         getDataSiteInfo();
         getDismantleList()
@@ -538,9 +539,19 @@ export default function TableDismantleActForm() {
                                             {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
                                         </Tooltip>
                                         <Tooltip title="Download Data as PDF">
-                                            <IconButton size="small" onClick={handleDownloadData}>
-                                                <FilePdfOutlined style={{color:'red'}}/>
-                                            </IconButton>
+                                           
+                                            <ReactToPrint
+                                                trigger={() => 
+                                                    <IconButton size="small">
+                                                        <FilePdfOutlined style={{color:'red'}}/>
+                                                    </IconButton>
+                                                }
+                                                content={() => componentRef.current}
+                                            />
+                                            <div hidden>
+                                                <PDFTemplate ref={componentRef} />
+                                            
+                                            </div>
                                             {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
                                         </Tooltip>
                                     </div>
