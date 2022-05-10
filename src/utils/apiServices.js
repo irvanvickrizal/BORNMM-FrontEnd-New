@@ -846,6 +846,7 @@ const getSDRLTRDDL = (odi) => GETParam("materialmanagement/orderRequestDetailOri
 //PMR Inventory
 
 const getStockDetail = () => GET("inventory/pmrInventoryGetDetailList");
+const getInventoryRepor = () => GET("inventory/pmrInventoryGetSummary");
 
 
 
@@ -859,6 +860,7 @@ const API ={
     getDOPNotCoverage,
     getStockDetail,
     getMaterialOrderSDRLTR,
+    getInventoryRepor,
     putSDRLTRForm,
     getSDRLTRDDL,
     getWHTeam,

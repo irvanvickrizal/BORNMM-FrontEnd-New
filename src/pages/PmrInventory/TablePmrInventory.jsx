@@ -26,12 +26,32 @@ export default function TablePmrInventory() {
             }
         )
     }
+    function getInventoryReport() {
+        setIsLoading(true);
+        API.getInventoryRepor().then(
+            result=>{
+                setDataInventoryReport(result);
+                setIsLoading(false);
+                console.log("Data Invent report =>",result);
+            }
+        )
+    }
     const getDownloadDataStockDetail = () => {
         API.getStockDetail().then(
             result=>{
                 const data = result//result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
                 const exportType =  exportFromJSON.types.xls;
                 const fileName = `Inventory_Stock_Detail_${moment().format("DD-MM-YYYY hh:mm:ss")}`;
+                exportFromJSON({ data, fileName, exportType });
+            }
+        )
+    }
+    const getDownloadInventoryReport = () => {
+        API.getInventoryRepor().then(
+            result=>{
+                const data = result//result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
+                const exportType =  exportFromJSON.types.xls;
+                const fileName = `Inventory_Report_${moment().format("DD-MM-YYYY hh:mm:ss")}`;
                 exportFromJSON({ data, fileName, exportType });
             }
         )
@@ -96,26 +116,8 @@ export default function TablePmrInventory() {
     const columnInventoryReport = [
         {
             title : "No",
-            width : 50,
+            width : 40,
             render: (value, item, index) => 1 + index
-        },
-        {
-            title : "Order Req No",
-            width:180,
-            dataIndex:'orderRequestNo',
-            ...Search('orderReqNo'),
-        },
-        {
-            title : "Site No",
-            width:100,
-            dataIndex:'siteNo',
-            ...Search('siteNo'),
-        },
-        {
-            title : "Workpackage ID",
-            width:120,
-            dataIndex:'workpackageId',
-            ...Search('workpackageId'),
         },
         {
             title : "Material Code",
@@ -124,34 +126,42 @@ export default function TablePmrInventory() {
             ...Search('materialCode'),
         },
         {
-            title : "Material Desc",
+            title : "Cust Material Code",
+            width:100,
+            dataIndex:'customerMaterialCode',
+            ...Search('customerMaterialCode'),
+        },
+        {
+            title : "Description",
             width:220,
             dataIndex:'materialDesc',
             ...Search('materialDesc'),
         },
         {
-            title : "Serial No",
-            width:100,
-            dataIndex:'serialNo',
-            ...Search('serialNo'),
-        },
-        {
-            title : "Item QTY",
-            width:80,
-            dataIndex:'itemQty',
-            ...Search('itemQty'),
-        },
-        {
             title : "UOM",
             width:80,
-            dataIndex:'uOM',
+            dataIndex:'uom',
             ...Search('uOM'),
         },
+        {
+            title : "Is Reusable",
+            width:80,
+            dataIndex:'isReusable',
+            ...Search('isReusable'),
+        },
+    
+        {
+            title : "On Hand QTY",
+            width:80,
+            dataIndex:'onHandQty',
+            ...Search('onHandQty'),
+        },
+       
     ]
 
     function callback(key) {
         if(key==1){
-            getStockDetail();
+            getInventoryReport()
         }
         else if(key==2){
             getStockDetail();
@@ -160,7 +170,8 @@ export default function TablePmrInventory() {
     }
 
     useEffect(() => {
-        getStockDetail();
+        getInventoryReport()
+     
 
        
     },[])
@@ -179,7 +190,7 @@ export default function TablePmrInventory() {
                         :
                         <><div className='float-right'>
                             <Tooltip title="Download Inventory Report">
-                                <IconButton size="small" color="success" onClick={getDownloadDataStockDetail}>
+                                <IconButton size="small" color="success" onClick={getDownloadInventoryReport}>
                                     <FileExcelOutlined />
                                 </IconButton>
                                 {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
@@ -188,8 +199,8 @@ export default function TablePmrInventory() {
                             scroll={{ x: '100%',y:500 }}
                             rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
                             size='medium'
-                            columns={columnStockDetail}
-                            dataSource={dataStockDetail}
+                            columns={columnInventoryReport}
+                            dataSource={dataInventoryReport}
                             pagination={{
                                 pageSizeOptions: ['5', '10', '20', '30', '40'],
                                 showSizeChanger: true,
