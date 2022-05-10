@@ -106,6 +106,8 @@ import indexMOSDRLTR from "@app/pages/SDRLTRMaterialOrder/index"
 import indexDOPRegionCoverage from "@app/pages/mDOPRegionCoverage/index"
 import BoqRefAccuracy from "@app/pages/BoqRefAccuracy/index"
 import mMaterialBulkUpload from "@app/pages/mMaterial/mMaterialBulkUpload"
+import DismatleAckFormDownload from "@app/pages/DismantleAcknowledgeForm/DismatleAckFormDownload"
+import PmrInventory from "@app/pages/PmrInventory/index"
 
 
 const Main = () => {
@@ -578,6 +580,16 @@ const Main = () => {
                                             exact
                                             path="/master/materialbulkupload"
                                             component={mMaterialBulkUpload}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/task/ackdismantleformdownload"
+                                            component={DismatleAckFormDownload}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/stockpmr/inventory"
+                                            component={PmrInventory}
                                         />
                                     </Switch>
                                 </div>

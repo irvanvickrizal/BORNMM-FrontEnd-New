@@ -1,0 +1,401 @@
+﻿<html>
+<head>
+    <title></title>
+    <style type="text/css">
+        tr {
+            padding: 3px;
+        }
+
+        .MainCSS {
+            margin-bottom: 0px;
+            margin-left: 20px;
+            margin-right: 20px;
+            margin-top: 0px;
+            width: 800px;
+            height: 700px;
+            text-align: center;
+        }
+
+        #dvPrint {
+            width: 780px;
+            height: 950px;
+            margin-left: 20px;
+            margin-right: 30px;
+            margin-top: 25px;
+        }
+
+        .lblText {
+            font-family: verdana;
+            font-size: 8pt;
+            color: #000000;
+            text-align: left;
+        }
+
+        .lblTextItalic {
+            font-family: verdana;
+            font-size: 8pt;
+            color: #000000;
+            text-align: left;
+            font-style: italic;
+        }
+
+        .lblBText {
+            font-family: verdana;
+            font-size: 8pt;
+            color: #000000;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .lblBold {
+            font-family: verdana;
+            font-size: 18px;
+            color: #000000;
+            font-weight: bold;
+        }
+
+        .lblRef {
+            font-family: verdana;
+            font-size: 11px;
+            color: #000000;
+            font-weight: bold;
+        }
+
+        .textFieldStyle {
+            background-color: white;
+            border: 1px solid;
+            color: black;
+            font-family: verdana;
+            font-size: 9pt;
+        }
+
+        .GrdDocPanelRows {
+            background-color: white;
+            vertical-align: middle;
+            font-family: verdana;
+            font-size: 7.5pt;
+            color: #000000;
+        }
+
+        .PagerTitle {
+            font-size: 8pt;
+            background-color: #cddbbf;
+            text-align: Right;
+            vertical-align: middle;
+            color: #25375b;
+            font-weight: bold;
+        }
+
+        .Hcap {
+            height: 5px;
+        }
+
+        .VCap {
+            width: 10px;
+        }
+
+        .headerform {
+            margin-top: 15px;
+            height: 105px;
+        }
+
+        .siteATTPanel {
+            margin-top: 10px;
+            height: 90px;
+            text-align: left;
+        }
+
+        .SiteDetailInfoPanel {
+            margin-top: 10px;
+            width: 100%;
+            text-align: left;
+            height: 150px;
+        }
+
+        .sitedescription {
+            margin-top: 10px;
+            width: 750px;
+            text-align: left;
+            height: 60px;
+        }
+
+        .pnlremarks {
+            height: 120px;
+        }
+
+        .whitespace {
+            height: 8px;
+        }
+
+        .pnlNote {
+            height: 70px;
+            text-align: left;
+            width: 97%;
+        }
+
+        .pnlNote2 {
+            height: 20px;
+            text-align: left;
+        }
+
+        .footerPanel {
+            height: 440px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body class="MainCSS">
+    <div id="dvPrint">
+        <div class="headerform">
+            <table cellpadding="0" cellspacing="0" width="96%" border="0">
+                <tr>
+                    <td align="left" valign="top" style="width: 15%">[nsnlogo_replace]
+                    </td>
+                    <td colspan="4"></td>
+                    <td align="right" valign="top" style="width: 15%">[h3ilogo_replace]
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td colspan="4" align="center" class="lblBold" valign="top" style="width: 70%">CONDITIONAL ACCEPTANCE CERTIFICATE<br />
+                        <span id="LblRFTNo" class="lblRef">[CACDocNo]</span>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="6" width="100%">
+                        <hr />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6" align="center">
+                        <b>Two Originals</b>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+        <div class="siteATTPanel">
+            <table cellpadding="0" cellspacing="0">
+
+                <tr class="lblText">
+                    <td>Type of Works</td>
+                    <td>:</td>
+                    <td>&nbsp;<span id="LblTypeofWork" class="lblText">[TypeofWork]</span></td>
+                </tr>
+                <tr class="lblText">
+                    <td style="width: 100px;">Date of Creation
+                    </td>
+                    <td>:</td>
+                    <td>&nbsp;<span id="LblDateofCreation" class="lblText">[CACGenerateDate]</span>
+                    </td>
+                </tr>
+                <tr class="lblText">
+                    <td>Contractor Name</td>
+                    <td>:</td>
+                    <td>&nbsp;<span id="LblContractorName" class="lblText">[VendorName]</span></td>
+                </tr>
+                <tr class="lblText">
+                    <td>Site ID
+                    </td>
+                    <td>:</td>
+                    <td>&nbsp;<span id="lblSiteID" class="lblText">[SiteID]</span>
+                    </td>
+                </tr>
+                <tr class="lblText">
+                    <td>Site Name
+                    </td>
+                    <td>:</td>
+                    <td>&nbsp;<span id="lblSiteName" class="lblText">[SiteName]</span>
+                    </td>
+                </tr>
+                <tr class="lblText">
+                    <td>PO Number
+                    </td>
+                    <td>:</td>
+                    <td>&nbsp;<span id="LblPono" class="lblText">[WPONO]</span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="sitedescription">
+            <div class="lblText">
+                The contractor hereby certifies that relevant parts of the Works referred to in this Conditional Acceptance Certificate complies with the 2015 Network Expansion Framework Procurement Agreement dated [ProcurementAgreed_Date], in particular
+                    the specifications and this has successfully passed the Acceptance Tests and Acceptance Criteria (as defined in Annex E) on the Site with the following remarks:                    
+            </div>
+        </div>
+        <div class="pnlremarks">
+            <table cellpadding="2" width="96%">
+                <tr>
+                    <td colspan="2">
+                        <hr />
+                    </td>
+                </tr>
+                <tr class="lblText" valign="top">
+                    <td>[chkPassed_WithoutPunchlist]
+                    </td>
+                    <td>Passed Without any Punch List or outstanding Documentation
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <hr />
+                    </td>
+                </tr>
+                <tr class="lblText" valign="top">
+                    <td colspan="2">Passed with a Punch List of Cosmetic and Minor Defects whereby
+                    </td>
+                </tr>
+                <tr class="lblText" valign="top">
+                    <td>[chkPassed_WithPunchlistDefect]
+                    </td>
+                    <td>Defects have been classified in accordance with the Annex E (Acceptances)
+                    </td>
+                </tr>
+                <tr class="lblText" valign="top">
+                    <td>[chkPassed_WithPunchlistDoc]
+                    </td>
+                    <td>Documentation in outstanding as listed in Punch List (save for those that are required to be submitted with this certificate as stipulated in the Documentation Annex E)
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <hr />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="whitespace">
+        </div>
+        <div class="pnlNote">
+            <span class="lblTextItalic">Note:</span>
+            <table cellpadding="2" width="97%">
+                <tr class="lblText" valign="top">
+                    <td>
+                        <div style="height: 3px;"></div>
+                        <img src="https://eboqh3i.nsnebast.com/images/circle-black-icon.png" width="7" height="7" />
+                    </td>
+                    <td><span class="lblTextItalic">The Punch List shall be cleared and outstanding Documentation shall be supplied to the Customer with the time period(s) stipulated in the Punch List</span>
+                    </td>
+                </tr>
+                <tr class="lblText" valign="top">
+                    <td>
+                        <div style="height: 3px;"></div>
+                        <img src="https://eboqh3i.nsnebast.com/images/circle-black-icon.png" width="7" height="7" />
+                    </td>
+                    <td><span class="lblTextItalic">Conditional Acceptance Punch List attached</span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="whitespace" style="clear: both;">
+        </div>
+        <div class="pnlNote2">
+            <span class="lblText">The Required Documentation is attached with this certificate and
+                    a detailed check list of the bill of materials </span>
+        </div>
+        <div class="footerPanel">
+            <div id="signaturePanel_Top" style="text-align: left; width: 100%; margin-top: 10px;">
+                <table id="DLDigitalSign_NSNOnly" cellspacing="0" border="0" style="width: 100%; border-collapse: collapse;">
+                    <tr>
+                        <td>
+                            <table cellpadding="0" cellspacing="0" width="250px" border="0">
+                                <tr>
+                                    <td class="lblBText" style="text-align: left;">For and behalf of<br />
+                                        PT. Nokia Solutions and Networks Indonesia (NEFPA)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td id="DLDigitalSign_NSNOnly_ctl00_DgSign" style="height: 100px; text-align: left;">
+
+                                        <input type="hidden" name="DLDigitalSign_NSNOnly$ctl00$hdXCoordinate" id="DLDigitalSign_NSNOnly_ctl00_hdXCoordinate" />
+                                        <input type="hidden" name="DLDigitalSign_NSNOnly$ctl00$hdYCoordinate" id="DLDigitalSign_NSNOnly_ctl00_hdYCoordinate" />
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td class="lblBText" style="border-width: 1px; border-color: Black; border-collapse: collapse; border-style: solid; vertical-align: top; text-align: center;">[NokiaSigner]
+                                        <br />
+                                        [NokiaSigner_Title]
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+            <div style="margin-top: 5px; text-align: left;">
+                <span class="lblBText" style="text-decoration: underline;">Counter signatures</span>
+            </div>
+            <div id="SignaturePanel_Bottom" style="text-align: left; width: 100%; margin-top: 10px;">
+                <table id="DdlDigitalSignature_Customer" cellspacing="0" border="0" style="width: 100%; border-collapse: collapse;">
+                    <tr valign="top">
+                        <td>
+                            <table cellpadding="0" cellspacing="0" width="250px" border="0">
+                                <tr>
+                                    <td class="lblBText">For and behalf of<br />
+                                        Managed Service
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td id="DdlDigitalSignature_Customer_ctl04_DgSign" style="height: 100px; text-align: left;">
+
+                                        <input type="hidden" name="DdlDigitalSignature_Customer$ctl04$hdXCoordinate" id="DdlDigitalSignature_Customer_ctl04_hdXCoordinate" />
+                                        <input type="hidden" name="DdlDigitalSignature_Customer$ctl04$hdYCoordinate" id="DdlDigitalSignature_Customer_ctl04_hdYCoordinate" />
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td class="lblBText" style="border-width: 1px; border-color: Black; border-collapse: collapse; border-style: solid; vertical-align: top; text-align: center;">[MSSigner]
+                                        <br />
+                                        <br />
+                                        [MSSigner_Title]
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>
+                            <table cellpadding="0" cellspacing="0" width="250px" border="0">
+                                <tr>
+                                    <td class="lblBText">For and behalf of<br />
+                                        PT. Hutchison 3 Indonesia
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td id="DdlDigitalSignature_Customer_ctl00_DgSign" style="height: 100px; text-align: left;">
+
+                                        <input type="hidden" name="DdlDigitalSignature_Customer$ctl00$hdXCoordinate" id="DdlDigitalSignature_Customer_ctl00_hdXCoordinate" />
+                                        <input type="hidden" name="DdlDigitalSignature_Customer$ctl00$hdYCoordinate" id="DdlDigitalSignature_Customer_ctl00_hdYCoordinate" />
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td class="lblBText" style="border-width: 1px; border-color: Black; border-collapse: collapse; border-style: solid; vertical-align: top; text-align: center;">[H3ISigner]
+                                        <br />
+                                        [H3ISigner_Title]
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="lblText">
+                                        <br />
+                                        This counter Signature does not alleviate the Contractor from their obligation under the Network Expansion Framework Procurement Agreement
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div style="margin-top: 25px; width: 96%;">
+            <hr />
+            <div style="width: 100%; text-align: right;" class="lblText">
+                Document Title : Conditional Acceptance Certificate
+                    <br />
+                Document Number : 5008
+            </div>
+        </div>
+    </div>
+</body>
+</html>

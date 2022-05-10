@@ -4,7 +4,7 @@
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable no-empty */
 /* eslint-disable react/no-unstable-nested-components */
-import React,{useEffect,useState} from 'react'
+import React,{useEffect,useState,useRef} from 'react'
 import API from '@app/utils/apiServices'
 import { useSelector } from 'react-redux';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -12,7 +12,7 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import {BackTop ,Image,Table,InputNumber ,Tabs,Space,Row,Col,Spin,Tooltip,Modal,Upload,Button,Form,Input,Typography,Card,DatePicker} from "antd"
 import moment from "moment"
 import Search from '@app/components/searchcolumn/SearchColumn';
-import { FileExcelOutlined,StepBackwardOutlined,EyeFilled,DeleteOutlined ,UploadOutlined } from '@ant-design/icons'
+import { FileExcelOutlined,FilePdfOutlined ,StepBackwardOutlined,EyeFilled,DeleteOutlined ,UploadOutlined } from '@ant-design/icons'
 import { toast } from 'react-toastify';
 import {IconButton, TextField}  from '@mui/material/';
 import RoomIcon from '@mui/icons-material/Room';
@@ -20,6 +20,8 @@ import { useHistory } from 'react-router-dom';
 import exportFromJSON from 'export-from-json'
 import L, { divIcon } from "leaflet";
 import { MapContainer, TileLayer, Marker, Popup,useMapEvent } from 'react-leaflet'
+import ReactToPrint from "react-to-print";
+import {PDFTemplate} from './PDFTemplate'
 
 export default function TableDismantleActForm() {
     const customURL = window.location.href;
@@ -42,7 +44,7 @@ export default function TableDismantleActForm() {
     const tdg = params.get('tdg');
     const pg = params.get('pg');
     const rbid = params.get('rbid');
-
+    const componentRef = useRef();
     const getWindowDimensions = () => {
         const { innerWidth: width, innerHeight: height } = window
         return { width, height }
@@ -298,6 +300,13 @@ export default function TableDismantleActForm() {
         }
     }
 
+    const handleDwonloadPdf = () => {
+        console.log("doing something");
+        const win = window.open(`/task/ackdismantleformdownload?tdg=${tdg}&odi=${odi}`, "_blank");
+        win.focus();
+        // win.print();
+    }
+
     useEffect(() => {
         getDataSiteInfo();
         getDismantleList()
@@ -537,6 +546,28 @@ export default function TableDismantleActForm() {
                                             </IconButton>
                                             {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
                                         </Tooltip>
+                                        {pg == "done" ?
+                                            <Tooltip title="Download Data as PDF">
+                                                <IconButton size="small"
+                                                    onClick={handleDwonloadPdf}
+                                                >
+                                                    <FilePdfOutlined style={{color:'red'}} />
+                                                </IconButton>
+                                                {/* <ReactToPrint
+                                                trigger={() => 
+                                                    <IconButton size="small">
+                                                        <FilePdfOutlined style={{color:'red'}}/>
+                                                    </IconButton>
+                                                }
+                                                content={() => componentRef.current}
+                                            />
+                                            <div hidden>
+                                                <PDFTemplate ref={componentRef} />
+                                            </div> */}
+                                                {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
+                                            </Tooltip>:
+                                            null
+                                        }
                                     </div>
                                 </Col>
                             </Row>
