@@ -301,7 +301,10 @@ export default function TableDismantleActForm() {
     }
 
     const handleDwonloadPdf = () => {
-        history.push(`/task/ackdismantleformdownload?tdg=${tdg}&odi=${odi}`)
+        console.log("doing something");
+        const win = window.open(`/task/ackdismantleformdownload?tdg=${tdg}&odi=${odi}`, "_blank");
+        win.focus();
+        // win.print();
     }
 
     useEffect(() => {
@@ -543,8 +546,14 @@ export default function TableDismantleActForm() {
                                             </IconButton>
                                             {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
                                         </Tooltip>
-                                        <Tooltip title="Download Data as PDF">
-                                            <ReactToPrint
+                                        {pg == "done" ?
+                                            <Tooltip title="Download Data as PDF">
+                                                <IconButton size="small"
+                                                    onClick={handleDwonloadPdf}
+                                                >
+                                                    <FilePdfOutlined style={{color:'red'}} />
+                                                </IconButton>
+                                                {/* <ReactToPrint
                                                 trigger={() => 
                                                     <IconButton size="small">
                                                         <FilePdfOutlined style={{color:'red'}}/>
@@ -554,10 +563,11 @@ export default function TableDismantleActForm() {
                                             />
                                             <div hidden>
                                                 <PDFTemplate ref={componentRef} />
-                                            
-                                            </div>
-                                            {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
-                                        </Tooltip>
+                                            </div> */}
+                                                {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
+                                            </Tooltip>:
+                                            null
+                                        }
                                     </div>
                                 </Col>
                             </Row>
