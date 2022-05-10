@@ -843,6 +843,12 @@ const getTARWarehouseInfor = (uId) => GETParam("sitelist/transferAssetReq",uId);
 const getMaterialOrderTARItem = (siteno) => GETParam("transferasset/getSummaryItemLimitBasedOnWHCode",siteno);
 const getSDRLTRDDL = (odi) => GETParam("materialmanagement/orderRequestDetailOriginal",odi);
 
+//PMR Inventory
+
+const getStockDetail = () => GET("inventory/pmrInventoryGetDetailList");
+
+
+
 
 const API ={
     getDownloadRequestedBORN,
@@ -851,6 +857,7 @@ const API ={
     getDOPRegion,
     deleteDOPRegion,
     getDOPNotCoverage,
+    getStockDetail,
     getMaterialOrderSDRLTR,
     putSDRLTRForm,
     getSDRLTRDDL,
