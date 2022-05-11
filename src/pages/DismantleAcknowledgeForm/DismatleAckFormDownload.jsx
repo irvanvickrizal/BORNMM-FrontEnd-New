@@ -16,6 +16,8 @@ import moment from 'moment';
 export default function DismatleAckFormDownload() {
     const [dataSite,setDataSite] = useState([])
     const [dataInfo,setDataInfo] = useState([])
+    const [siteNo,setSiteNo] = useState('')
+    const [siteName,setSiteName] = useState('')
 
     const customURL = window.location.href;
     const params = new URLSearchParams(customURL.split('?')[1])
@@ -38,8 +40,10 @@ export default function DismatleAckFormDownload() {
         API.getDismantleSiteInfo(odi).then(
             result=>{
                 setDataInfo(result);
-              
+                setSiteName(result[0].siteName)
+                setSiteNo(result[0].siteNo)
                 console.log("data  Indfo =>",result);
+                console.log("deliverydate =>",moment(result[0]?.ackCompleteDate).format("DD-MMM-YYYY"));
             }
         )
     }
@@ -135,9 +139,9 @@ export default function DismatleAckFormDownload() {
                             <Typography style={{ fontSize: 18, fontWeight: 700 }}>Material Return Form</Typography>
                         </div>
                     </Col>
-                    <Col className="gutter-row" span={4}>
+                    <Col className="gutter-row" span={7}>
                         <div style={{ marginTop: 6 }}>
-                            <Typography style={{ fontSize: 18, fontWeight: 700 }}>{`Document Date :`}</Typography>
+                            <Typography style={{ fontSize: 18, fontWeight: 700 }}>{`Document Date : ${moment(dataInfo[0]?.ackCompleteDate).format("DD-MMM-YYYY")}`}</Typography>
                         </div>
                     </Col>
 
@@ -194,7 +198,7 @@ export default function DismatleAckFormDownload() {
                             name="username"
                             style={{ 'margin-top': '4px', 'margin-bottom': '4px' }}
                         >
-                            <Input />
+                            <Input style={{ width: "75%", marginTop: 10, "background-color": 'white', color:"black"  }}  disabled/>
                         </Form.Item>
 
                         <Form.Item
@@ -202,7 +206,7 @@ export default function DismatleAckFormDownload() {
                             name="password"
                             style={{ 'margin-top': '4px', 'margin-bottom': '4px' }}
                         >
-                            <Input />
+                            <Input style={{ width: "75%", marginTop: 10, "background-color": 'white', color:"black"  }}  disabled/>
                         </Form.Item>
 
                         <Form.Item
@@ -210,7 +214,7 @@ export default function DismatleAckFormDownload() {
                             name="password"
                             style={{ 'margin-top': '4px', 'margin-bottom': '4px' }}
                         >
-                            <Input />
+                            <Input style={{ width: "75%", marginTop: 10, "background-color": 'white', color:"black"  }}  disabled/>
                         </Form.Item>
                     </Form>
                 </Row>
@@ -225,37 +229,23 @@ export default function DismatleAckFormDownload() {
                             autoComplete="off"
                             labelAlign="left"
                             initialValues={{
-                                'deliveryDate':moment(dataInfo[0]?.ackCompleteDate, "YYYY-MM-DD"),
+                                'deliveryDate':moment(dataInfo[0]?.ackCompleteDate).format("DD-MMM-YYYY"),
                             }}
                         >
-                            <Form.Item name="deliveryDate" label="DatePicker" >
-                                <DatePicker />
-                            </Form.Item>
-                            <Form.Item
-                                label="Delivery Date"
-                                name="delivseryDate"
+                            <Form.Item name="deliveryDate" label="Delivery Date" 
                                 style={{ 'margin-top': '4px', 'margin-bottom': '4px' }}
-                            >
-                                <Input />
-                                {/* <Input style={{ width: 5 }} />
-                                <Input style={{ width: 5 }} />
-                                <span>-</span>
-                                <Input style={{ width: 5 }} />
-                                <Input style={{ width: 5 }} />
-                                <span>-</span>
-                                <Input style={{ width: 5 }} />
-                                <Input style={{ width: 5 }} />
-                                <Input style={{ width: 5 }} />
-                                <Input style={{ width: 5 }} /> */}
-                                {/* <span>  From Site:  {moment(dataInfo[0]?.ackCompleteDate, "DD-MMM-YYYY")}</span> */}
-                            </Form.Item>
 
+                            >
+                                {/* <DatePicker /> */}
+                                <Input style={{ width: "75%", marginTop: 10, "background-color": 'white', color:"black"  }}  disabled/>
+                            </Form.Item>
+                           
                             <Form.Item
                                 label="Doc Header Text"
                                 name="password"
                                 style={{ 'margin-top': '4px', 'margin-bottom': '4px' }}
                             >
-                                <Input />
+                                <Input style={{ width: "75%", marginTop: 10, "background-color": 'white', color:"black"  }}   disabled />
                             </Form.Item>
 
                             <Form.Item
@@ -263,7 +253,7 @@ export default function DismatleAckFormDownload() {
                                 name="password"
                                 style={{ 'margin-top': '4px', 'margin-bottom': '4px' }}
                             >
-                                <Input style={{ width: 80 }} />
+                                <Input style={{ width: 80, marginTop: 10, "background-color": 'white', color:"black"  }}  disabled />
                                 <span>  WH Nokia Semarang</span>
                             </Form.Item>
                             <Form.Item
@@ -271,7 +261,7 @@ export default function DismatleAckFormDownload() {
                                 name="password"
                                 style={{ 'margin-top': '4px', 'margin-bottom': '4px' }}
                             >
-                                <Input style={{ width: 80 }} />
+                                <Input style={{ width: 80, marginTop: 10, "background-color": 'white', color:"black"  }} disabled />
                                 <span>  If faulty pls return to nearby remote warehouse</span>
                             </Form.Item>
                             <Form.Item
@@ -279,15 +269,21 @@ export default function DismatleAckFormDownload() {
                                 name="password"
                                 style={{ 'margin-top': '4px', 'margin-bottom': '4px' }}
                             >
-                                <Input style={{ width: 180 }} />
+                                <Input style={{ marginTop: 10, "background-color": 'white', color:"black",width: 180   }}disabled />
                                 <span> Nama Penerima Barang</span>
                             </Form.Item>
                         </Form>
                     </Col>
                     <Col justify="center" span={10}>
                         <Row justify="center">
-                            <Input disabled style={{ width: "75%", "background-color": 'lightgreen' }} />
-                            <Input disabled style={{ width: "75%", marginTop: 10, "background-color": 'lightgreen' }} />
+                            <Col span={6} push={2}>
+                                <span>From Site : </span>
+                            </Col>
+                            <Col span={18} push={2}>
+                                <Input disabled style={{ width: "75%", "background-color": 'lightgreen', color:"black" }} value={dataInfo[0]?.siteName} />
+                                <Input disabled style={{ width: "75%", marginTop: 10, "background-color": 'lightgreen', color:"black"  }}  value={dataInfo[0]?.siteNo}/>
+                            </Col>
+                            
                         </Row>
                     </Col>
 
