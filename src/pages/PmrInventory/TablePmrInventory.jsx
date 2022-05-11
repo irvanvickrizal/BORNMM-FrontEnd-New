@@ -41,7 +41,8 @@ export default function TablePmrInventory() {
             result=>{
                 const data = result//result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
                 const exportType =  exportFromJSON.types.xls;
-                const fileName = `Inventory_Stock_Detail_${moment().format("DD-MM-YYYY hh:mm:ss")}`;
+                // const fileName = `Inventory_Stock_Detail_${moment().format("DD-MM-YYYY hh:mm:ss")}`;
+                const fileName = `PMRInventoryStock_detail${moment().format("DD-MM-YYYY")}`;
                 exportFromJSON({ data, fileName, exportType });
             }
         )
@@ -51,7 +52,7 @@ export default function TablePmrInventory() {
             result=>{
                 const data = result//result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
                 const exportType =  exportFromJSON.types.xls;
-                const fileName = `Inventory_Report_${moment().format("DD-MM-YYYY hh:mm:ss")}`;
+                const fileName = `PMRInventoryReport${moment().format("DD-MM-YYYY")}`;
                 exportFromJSON({ data, fileName, exportType });
             }
         )
