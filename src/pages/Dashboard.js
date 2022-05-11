@@ -214,8 +214,10 @@ const Dashboard = () => {
                                     <Space size={16} direction="vertical" style={{width:'100%'}}>
                                         <Bar
                                             data = {data}
+                                            height="236"
                                             options={{
                                                 responsive:true,
+                                                
                                                 plugins: {
                                                 // legend: {
                                                 //     position: 'bottom',
@@ -239,6 +241,8 @@ const Dashboard = () => {
                                                         animateScale: true,
                                                         animateRotate: true
                                                     },
+                                                    
+                                                    
                                   
                                    
                                                 }}}
