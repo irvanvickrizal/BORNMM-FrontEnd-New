@@ -16,11 +16,14 @@ import { Table, Row, Col,Card, Typography, Input, Space,
     TreeSelect,
     Switch,
     message,
+    Tooltip,
     Tabs,
     List } from 'antd';
 import { FormOutlined } from '@ant-design/icons';
 import API from '@app/utils/apiServices';
 import { useSelector } from 'react-redux';
+import SquareIcon from '@mui/icons-material/Square';
+import SquareRoundedIcon from '@mui/icons-material/SquareRounded';
 
 
 
@@ -98,7 +101,7 @@ const Dashboard = () => {
                 data: dataGraphComplete.map(x=>x.logisticRevDone)
             },
             {
-                label: "Logistic Rev Done",
+                label: "Order Request",
                 backgroundColor: "#db30d2",
                 data: dataGraphComplete.map(x=>x.orderReq)
             },
@@ -208,39 +211,93 @@ const Dashboard = () => {
                     
                                     
                                 <Card>
-                           
-                                    <Bar
-                                        data = {data}
-                                        options={{
-                                            responsive:true,
-                                            plugins: {
-                                                legend: {
-                                                    position: 'bottom',
-                                                },
-                                                // title: {
-                                                //     display: true,
-                                                //     text: 'Order Request Progress Summary (Forward Logistic)'
+                                    <Space size={16} direction="vertical" style={{width:'100%'}}>
+                                        <Bar
+                                            data = {data}
+                                            options={{
+                                                responsive:true,
+                                                plugins: {
+                                                // legend: {
+                                                //     position: 'bottom',
                                                 // },
-                                                datalabels: {
+                                                    legend: {
+                                                        display: false
+                                                    },
+                                                    // title: {
+                                                    //     display: true,
+                                                    //     text: 'Order Request Progress Summary (Forward Logistic)'
+                                                    // },
+                                                    datalabels: {
                                       
-                                                    display:true,
-                                                    align: 'bottom',
+                                                        display:true,
+                                                        align: 'bottom',
                                       
                                        
 
-                                                },
-                                                animation: {
-                                                    animateScale: true,
-                                                    animateRotate: true
-                                                },
+                                                    },
+                                                    animation: {
+                                                        animateScale: true,
+                                                        animateRotate: true
+                                                    },
                                   
                                    
-                                            }}}
+                                                }}}
                            
-                                    >
+                                        >
 
-                                    </Bar>
+                                        </Bar>
+                                        <Card hoverable>
+                                            {dataGraphComplete?.map(e=>{
+                                                return(
+                                                    <Row>
+                                                        <Col className="gutter-row" span={9}>
+                                                            <Typography style={{fontWeight:'500'}}>{e.project_name} </Typography>
+                                                        </Col>
+                                                        <Col className="gutter-row" span={3}>
+                                                            <Tooltip title="HO Done">
+                                                                <Typography style={{fontSize:16,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#eba111"}}/>     {e.HODone}</Typography>
+                                                            </Tooltip>
+                                                        
+                                                        </Col>
+                                                        <Col className="gutter-row" span={3}>
+                                                            <Tooltip title="RFP Done">
+                                                                <Typography style={{fontSize:16,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#1960db"}}/>       {e.RFPDone}</Typography>
+                                                            </Tooltip>
+                                                     
+                                                        </Col>
+                                                        <Col className="gutter-row" span={3}>
+                                                            <Tooltip title="Logistic Rev Done">
+                                                                <Typography style={{fontSize:16,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#41c358"}}/>       {e.logisticRevDone}</Typography>
+                                                            </Tooltip>
+                                                     
+                                                        </Col>
+                                                        <Col className="gutter-row" span={3}>
+                                                            <Tooltip title="Order Req">
+                                                                <Typography style={{fontSize:16,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#db30d2"}}/>        {e.orderReq}</Typography>
+                                                            </Tooltip>
+                                                     
+                                                        </Col>
+                                                   
+                                                        <Col className="gutter-row" span={3}>
+                                                            <Tooltip title="Order Req">
+                                                                <Typography style={{fontSize:16,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#d93a23"}}/>        {e.totalSites}</Typography>
+                                                            </Tooltip>
+                                                     
+                                                        </Col>
+                                                   
+                                                    
+                                                    </Row>
+                                              
+                                                )
+                                            })}
+                                        </Card>
+                                    </Space>
+                           
+                                    
+                                        
+                                    
                                 </Card>
+                           
                                  
                              
                               
