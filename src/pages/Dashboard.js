@@ -1,3 +1,5 @@
+/* eslint-disable prefer-template */
+/* eslint-disable indent */
 /* eslint-disable no-undef */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable radix */
@@ -25,7 +27,9 @@ import API from '@app/utils/apiServices';
 import { useSelector } from 'react-redux';
 import SquareIcon from '@mui/icons-material/Square';
 import SquareRoundedIcon from '@mui/icons-material/SquareRounded';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
+Chart.register(ChartDataLabels);
 
 
 const Dashboard = () => {
@@ -131,6 +135,7 @@ const Dashboard = () => {
     
       
         datasets:[{
+        
             data:dataValuePie,
             backgroundColor: colorHex,
             display:true,
@@ -220,11 +225,12 @@ const Dashboard = () => {
                                                     height="236"
                                                     options={{
                                                         responsive:true,
-                                                
+                                                        aspectRatio:1.63,
                                                         plugins: {
                                                             // legend: {
                                                             //     position: 'bottom',
                                                             // },
+                                                        
                                                             legend: {
                                                      
                                                                 position: 'bottom',
@@ -234,12 +240,13 @@ const Dashboard = () => {
                                                                 text: 'Order Request Progress Summary (Forward Logistic)'
                                                             },
                                                             datalabels: {
-                                      
-                                                                display:true,
-                                                                align: 'bottom',
-                                      
-                                       
-
+                                                                // display: false,
+                                                                color: "#black",
+                                                                font: {
+                                                                    size: 12,
+                                                                    weight: "500",
+                                                                    color:"#000"
+                                                                }
                                                             },
                                                             animation: {
                                                                 animateScale: true,
@@ -247,9 +254,10 @@ const Dashboard = () => {
                                                             },
                                                     
                                                     
-                                  
+                                                           
                                    
                                                         }}}
+                                            
                            
                                                 >
 
@@ -313,16 +321,17 @@ const Dashboard = () => {
                            
                                             <Pie
                                                 data = {dataNotComplete}
-                                                width="696" height="556"
+                                                width="596" height="456"
                                                
                                                 options={{
                                                     responsive: true,
-                                                    aspectRatio:1.16,
-                                              
+                                                    aspectRatio:1.5,
+                                                    cutoutPercentage: 75,
                                                     plugins: {
                                                     
                                                         legend: {
                                                             position: 'bottom',
+                                                            padding:2
                                                         },
                           
                                                         title: {
@@ -330,37 +339,39 @@ const Dashboard = () => {
                                                             text: 'Task Not Complete Yet',
                                                           
                                                         },
-                                                        // datalabels: {
-                                                        //     display: true,
-                                                        //     align: 'bottom',
-                                                        //     backgroundColor: '#ccc',
-                                                        //     borderRadius: 3,
-                                                        //     font: {
-                                                        //         size: 18,
-                                                        //     }
-                                                        // },
+                                                 
+                                                 
                                                         datalabels: {
-                                                            color: 'blue',
-                                                            labels: {
-                                                                title: {
-                                                                    font: {
-                                                                        weight: 'bold'
-                                                                    }
-                                                                },
-                                                                value: {
-                                                                    color: 'green'
-                                                                }
-                                                            }
+                                                            // display: false,
+                                                            color: "black",
+                                                            font: {
+                                                                size: 14,
+                                                                weight: "500",
+                                                                color:"#000"
+                                                            },
+                                                            anchor: 'end',
+                                                            align: 'end',
+                                                            offset: 8,
+                                                            display: function(context) {
+                                                                return context.dataset.data[context.dataIndex] !== 0; // or >= 1 or ...
+                                                             },
+                                                             formatter: function(value,ctx) {
+                                                                return `${ctx.chart.data.labels[ctx.dataIndex]}:${value}`;
+                                                             
+                                                              }
+                                                          
                                                         },
+                                                        
                                                         animation: {
                                                             animateScale: true,
                                                             animateRotate: true
                                                         },
+                                                             
                                                         
                       
              
                                                     }}}
-                                                  
+                                               
      
                                             >
 
