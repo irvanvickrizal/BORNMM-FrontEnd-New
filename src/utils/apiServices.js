@@ -851,9 +851,11 @@ const getInventoryRepor = () => GET("inventory/pmrInventoryGetSummary");
 //Dashboard
 const getGraphNotCompleteYet = (uid) => GETParam("dashboard/dashboardGraphOrderRequestNYCompleteSummary/0",uid)
 const getGraphComplete = (uid) => GETParam("dashboard/dashboardGraphOrderRequestCompletionSummary/0",uid)
+const getSummary = (uid) => GETParam("dashboard/dashboardPanelOrderRequestSummary",uid)
 
 
 const API ={
+    getSummary,
     getDownloadRequestedBORN,
     putCustomerPO,
     postDOPRegion,
