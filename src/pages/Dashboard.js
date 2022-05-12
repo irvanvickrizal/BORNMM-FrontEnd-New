@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable radix */
 import React,{useEffect, useState} from 'react';
@@ -161,27 +162,27 @@ const Dashboard = () => {
         datasets: [
             {
                 label: "HO Done",
-                backgroundColor: "#eba111",
-                data: dataGraphComplete.map(x=>x.HODone)
+                backgroundColor: "#41c358",
+                data: dataGraphComplete.map(x=>x.LSP_HODone)
             },
             {
                 label: "RFP Done",
-                backgroundColor: "#1960db",
-                data: dataGraphComplete.map(x=>x.RFPDone)
+                backgroundColor: "#0ed7dd",
+                data: dataGraphComplete.map(x=>x.LSP_RFPDone)
             },
             {
                 label: "Logistic Rev Done",
-                backgroundColor: "#41c358",
-                data: dataGraphComplete.map(x=>x.logisticRevDone)
+                backgroundColor: "#acf890",
+                data: dataGraphComplete.map(x=>x.logistic_RevDone)
             },
             {
                 label: "Order Request",
                 backgroundColor: "#db30d2",
-                data: dataGraphComplete.map(x=>x.orderReq)
+                data: dataGraphComplete.map(x=>x.RO_OrderReq)
             },
             {
                 label: "Total Sites",
-                backgroundColor: "#d93a23",
+                backgroundColor: "#1960db",
                 data: dataGraphComplete.map(x=>x.totalSites)
             },
        
@@ -227,7 +228,7 @@ const Dashboard = () => {
             projectName.push(dataObj.project_name)
             totalSite.push(parseInt(dataObj.totalSites))
         }
-        console.log(hoDone,"tes")
+        console.log(dataGraphNotComplete.LSP_HOPending,"tes")
         
     },[uid])
  
@@ -276,12 +277,13 @@ const Dashboard = () => {
             </div>
             <div className="container-fluid">
                 <div className='row'>
-                    <div className='col-lg-6 col-md-6'>
+                    <div className='col-lg-12 col-md-12'>
                         <div className='card card-primary'>
                             <div className='card-header align-middle'>
-                                <h3 className="card-title">Order Request Progress Summary (Forward Logistic)</h3>
+                                <h3 className="card-title">Forward Logistic Summary</h3>
                             </div>
                             <Card>
+<<<<<<< HEAD
                                 <Card>
                                     <Space size={16} direction="vertical" style={{width:'100%'}}>
                                         <Bar
@@ -299,21 +301,63 @@ const Dashboard = () => {
                                                     //     text: 'Order Request Progress Summary (Forward Logistic)'
                                                     // },
                                                     datalabels: {
+=======
+                       
+                    
+                                <Row gutter={24}>
+                              
+                                    <Col className="gutter-row" span={12}>
+                                        <Card hoverable>
+                                            <Space size={16} direction="vertical" style={{width:'100%'}}>
+                                                <Bar
+                                                    data = {data}
+                                                    height="236"
+                                                    options={{
+                                                        responsive:true,
+                                                
+                                                        plugins: {
+                                                            // legend: {
+                                                            //     position: 'bottom',
+                                                            // },
+                                                            legend: {
+                                                     
+                                                                position: 'bottom',
+                                                            },
+                                                            title: {
+                                                                display: true,
+                                                                text: 'Order Request Progress Summary (Forward Logistic)'
+                                                            },
+                                                            datalabels: {
+>>>>>>> 5e5cdc8220d5e3930574ebd94fc9064323759986
                                       
-                                                        display:true,
-                                                        align: 'bottom',
+                                                                display:true,
+                                                                align: 'bottom',
                                       
                                        
 
+<<<<<<< HEAD
                                                     },
                                                     animation: {
                                                         animateScale: true,
                                                         animateRotate: true
                                                     },
                                                 }}}
+=======
+                                                            },
+                                                            animation: {
+                                                                animateScale: true,
+                                                                animateRotate: true
+                                                            },
+                                                    
+                                                    
+                                  
+                                   
+                                                        }}}
+>>>>>>> 5e5cdc8220d5e3930574ebd94fc9064323759986
                            
-                                        >
+                                                >
 
+<<<<<<< HEAD
                                         </Bar>
                                         <Card hoverable>
                                             
@@ -328,37 +372,52 @@ const Dashboard = () => {
                                                             <Tooltip title="HO Done">
                                                                 <Typography style={{fontSize:16,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#eba111"}}/>     {e.HODone}</Typography>
                                                             </Tooltip>
+=======
+                                                </Bar>
+                                                <Card hoverable>
+                                                    {dataGraphComplete?.map(e=>{
+                                                        return(
+                                                            <Row>
+                                                                <Col className="gutter-row" span={9}>
+                                                                    <Typography style={{fontWeight:'500'}}>{e.project_name} </Typography>
+                                                                </Col>
+                                                                <Col className="gutter-row" span={3}>
+                                                                    <Tooltip title="HO Done">
+                                                                        <Typography style={{fontSize:16,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#41c358"}}/>     {e.LSP_HODone}</Typography>
+                                                                    </Tooltip>
+>>>>>>> 5e5cdc8220d5e3930574ebd94fc9064323759986
                                                         
-                                                        </Col>
-                                                        <Col className="gutter-row" span={3}>
-                                                            <Tooltip title="RFP Done">
-                                                                <Typography style={{fontSize:16,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#1960db"}}/>       {e.RFPDone}</Typography>
-                                                            </Tooltip>
+                                                                </Col>
+                                                                <Col className="gutter-row" span={3}>
+                                                                    <Tooltip title="RFP Done">
+                                                                        <Typography style={{fontSize:16,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#0ed7dd"}}/>       {e.LSP_RFPDone}</Typography>
+                                                                    </Tooltip>
                                                      
-                                                        </Col>
-                                                        <Col className="gutter-row" span={3}>
-                                                            <Tooltip title="Logistic Rev Done">
-                                                                <Typography style={{fontSize:16,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#41c358"}}/>       {e.logisticRevDone}</Typography>
-                                                            </Tooltip>
+                                                                </Col>
+                                                                <Col className="gutter-row" span={3}>
+                                                                    <Tooltip title="Logistic Rev Done">
+                                                                        <Typography style={{fontSize:16,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#acf890"}}/>       {e.logistic_RevDone}</Typography>
+                                                                    </Tooltip>
                                                      
-                                                        </Col>
-                                                        <Col className="gutter-row" span={3}>
-                                                            <Tooltip title="Order Req">
-                                                                <Typography style={{fontSize:16,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#db30d2"}}/>        {e.orderReq}</Typography>
-                                                            </Tooltip>
+                                                                </Col>
+                                                                <Col className="gutter-row" span={3}>
+                                                                    <Tooltip title="Order Req">
+                                                                        <Typography style={{fontSize:16,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#db30d2"}}/>        {e.RO_OrderReq}</Typography>
+                                                                    </Tooltip>
                                                      
-                                                        </Col>
+                                                                </Col>
                                                    
-                                                        <Col className="gutter-row" span={3}>
-                                                            <Tooltip title="Order Req">
-                                                                <Typography style={{fontSize:16,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#d93a23"}}/>        {e.totalSites}</Typography>
-                                                            </Tooltip>
+                                                                <Col className="gutter-row" span={3}>
+                                                                    <Tooltip title="Order Req">
+                                                                        <Typography style={{fontSize:16,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#1960db"}}/>        {e.totalSites}</Typography>
+                                                                    </Tooltip>
                                                      
-                                                        </Col>
+                                                                </Col>
                                                    
                                                     
-                                                    </Row>
+                                                            </Row>
                                               
+<<<<<<< HEAD
                                                 )
                                             })}
                                              */}
@@ -434,12 +493,136 @@ const Dashboard = () => {
                                     </Card>
                                 </Card>
                                 
+=======
+                                                        )
+                                                    })}
+                                                </Card>
+                                            </Space>
+                           
+                                    
+                                        
+                                    
+                                        </Card>
+                                    </Col>
+                                    
+                               
+                                    <Col className="gutter-row" span={12}>
+                                        <Card hoverable>
+                           
+                                            <Pie
+                                                data = {dataNotComplete}
+                                                width="696" height="556"
+                                               
+                                                options={{
+                                                    responsive: true,
+                                                    aspectRatio:1.16,
+                                              
+                                                    plugins: {
+                                                    
+                                                        legend: {
+                                                            position: 'bottom',
+                                                        },
+                          
+                                                        title: {
+                                                            display: true,
+                                                            text: 'Task Not Complete Yet',
+                                                          
+                                                        },
+                                                        // datalabels: {
+                                                        //     display: true,
+                                                        //     align: 'bottom',
+                                                        //     backgroundColor: '#ccc',
+                                                        //     borderRadius: 3,
+                                                        //     font: {
+                                                        //         size: 18,
+                                                        //     }
+                                                        // },
+                                                        datalabels: {
+                                                            color: 'blue',
+                                                            labels: {
+                                                                title: {
+                                                                    font: {
+                                                                        weight: 'bold'
+                                                                    }
+                                                                },
+                                                                value: {
+                                                                    color: 'green'
+                                                                }
+                                                            }
+                                                        },
+                                                        animation: {
+                                                            animateScale: true,
+                                                            animateRotate: true
+                                                        },
+                                                        
+                      
+             
+                                                    }}}
+                                                  
+     
+                                            >
+
+                                            </Pie>
+                                            <Card hoverable>
+                                                {dataGraphNotComplete?.map(e=>{
+                                                    return(
+                                                  
+                                                        <><Row>
+                                                            <Col className="gutter-row" span={12}>
+                                                              
+                                                                <Typography style={{ fontSize: 16, fontWeight: "500" }}><SquareRoundedIcon style={{ color: "#d93a23" }} />RO Order Req: {e.LSP_HOPending}</Typography>
+                                                             
+
+                                                            </Col>
+                                                            <Col className="Logistic Rev Pending" span={12}>
+                                                         
+                                                                <Typography style={{ fontSize: 16, fontWeight: "500" }}><SquareRoundedIcon style={{ color: "#1960db" }} /> Logistic Rev Pending: {e.Logistic_RevPending}</Typography>
+                                                        
+
+                                                            </Col>
+                                                        </Row><Row>
+                                                            <Col className="gutter-row" span={12}>
+                                                              
+                                                                <Typography style={{ fontSize: 16, fontWeight: "500" }}><SquareRoundedIcon style={{ color: "#41c358" }} />LSP RFP Pending: {e.LSP_RFPPending}</Typography>
+                                                          
+
+                                                            </Col>
+                                                            <Col className="LSP HO Pending" span={12}>
+                                                             
+                                                                <Typography style={{ fontSize: 16, fontWeight: "500" }}><SquareRoundedIcon style={{ color: "#eba111" }} />LSP HO Pending: {e.RO_OrderReq}</Typography>
+                                                             
+
+                                                            </Col>
+
+                                                        </Row></>
+                                                     
+                                                         
+                                                   
+                                                    
+                                                   
+                                              
+                                                    )
+                                                })}
+                                            </Card>
+                                        </Card>
+              
+                                    </Col>
+                           
+                              
+                                  
+                                 
+                             
+                              
+                                </Row> 
+>>>>>>> 5e5cdc8220d5e3930574ebd94fc9064323759986
                             </Card>
+
                        
          
                            
                         </div>
                     </div>
+                 
                     <div className='col-lg-6 col-md-6'>
                         <div className='card card-primary'>
                             <div className='card-header align-middle'>
