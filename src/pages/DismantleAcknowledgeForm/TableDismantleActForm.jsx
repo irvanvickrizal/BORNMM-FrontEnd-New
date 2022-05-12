@@ -547,25 +547,43 @@ export default function TableDismantleActForm() {
                                             {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
                                         </Tooltip>
                                         {pg == "done" ?
-                                            <Tooltip title="Download Data as PDF">
+                                            <><Tooltip title="Download Data as PDF">
                                                 <IconButton size="small"
                                                     onClick={handleDwonloadPdf}
                                                 >
-                                                    <FilePdfOutlined style={{color:'red'}} />
+                                                    <FilePdfOutlined style={{ color: 'red' }} />
                                                 </IconButton>
                                                 {/* <ReactToPrint
-                                                trigger={() => 
-                                                    <IconButton size="small">
-                                                        <FilePdfOutlined style={{color:'red'}}/>
-                                                    </IconButton>
-                                                }
-                                                content={() => componentRef.current}
-                                            />
-                                            <div hidden>
-                                                <PDFTemplate ref={componentRef} />
-                                            </div> */}
+    trigger={() =>
+        <IconButton size="small">
+            <FilePdfOutlined style={{color:'red'}}/>
+        </IconButton>
+    }
+    content={() => componentRef.current}
+/>
+<div hidden>
+    <PDFTemplate ref={componentRef} />
+</div> */}
                                                 {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
-                                            </Tooltip>:
+                                            </Tooltip><Tooltip title="Download Data as PDF">
+                                                <IconButton size="small"
+                                                    onClick={handleDwonloadPdf}
+                                                >
+                                                    <FileExcelOutlined style={{ color: 'blue' }} />
+                                                </IconButton>
+                                                {/* <ReactToPrint
+    trigger={() =>
+        <IconButton size="small">
+            <FilePdfOutlined style={{color:'red'}}/>
+        </IconButton>
+    }
+    content={() => componentRef.current}
+/>
+<div hidden>
+    <PDFTemplate ref={componentRef} />
+</div> */}
+                                                {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
+                                            </Tooltip></>:
                                             null
                                         }
                                     </div>
