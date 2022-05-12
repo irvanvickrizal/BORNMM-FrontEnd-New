@@ -283,25 +283,6 @@ const Dashboard = () => {
                                 <h3 className="card-title">Forward Logistic Summary</h3>
                             </div>
                             <Card>
-<<<<<<< HEAD
-                                <Card>
-                                    <Space size={16} direction="vertical" style={{width:'100%'}}>
-                                        <Bar
-                                            data = {data}
-                                            height="236"
-                                            options={{
-                                                responsive:true,
-                                                
-                                                plugins: {
-                                                    legend: {
-                                                        position: 'bottom',
-                                                    },
-                                                    // title: {
-                                                    //     display: true,
-                                                    //     text: 'Order Request Progress Summary (Forward Logistic)'
-                                                    // },
-                                                    datalabels: {
-=======
                        
                     
                                 <Row gutter={24}>
@@ -328,21 +309,12 @@ const Dashboard = () => {
                                                                 text: 'Order Request Progress Summary (Forward Logistic)'
                                                             },
                                                             datalabels: {
->>>>>>> 5e5cdc8220d5e3930574ebd94fc9064323759986
                                       
                                                                 display:true,
                                                                 align: 'bottom',
                                       
                                        
 
-<<<<<<< HEAD
-                                                    },
-                                                    animation: {
-                                                        animateScale: true,
-                                                        animateRotate: true
-                                                    },
-                                                }}}
-=======
                                                             },
                                                             animation: {
                                                                 animateScale: true,
@@ -353,26 +325,9 @@ const Dashboard = () => {
                                   
                                    
                                                         }}}
->>>>>>> 5e5cdc8220d5e3930574ebd94fc9064323759986
                            
                                                 >
 
-<<<<<<< HEAD
-                                        </Bar>
-                                        <Card hoverable>
-                                            
-                                            {/* 
-                                            {dataGraphComplete?.map(e=>{
-                                                return(
-                                                    <Row>
-                                                        <Col className="gutter-row" span={9}>
-                                                            <Typography style={{fontWeight:'500'}}>{e.project_name} </Typography>
-                                                        </Col>
-                                                        <Col className="gutter-row" span={3}>
-                                                            <Tooltip title="HO Done">
-                                                                <Typography style={{fontSize:16,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#eba111"}}/>     {e.HODone}</Typography>
-                                                            </Tooltip>
-=======
                                                 </Bar>
                                                 <Card hoverable>
                                                     {dataGraphComplete?.map(e=>{
@@ -385,7 +340,6 @@ const Dashboard = () => {
                                                                     <Tooltip title="HO Done">
                                                                         <Typography style={{fontSize:16,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#41c358"}}/>     {e.LSP_HODone}</Typography>
                                                                     </Tooltip>
->>>>>>> 5e5cdc8220d5e3930574ebd94fc9064323759986
                                                         
                                                                 </Col>
                                                                 <Col className="gutter-row" span={3}>
@@ -417,83 +371,6 @@ const Dashboard = () => {
                                                     
                                                             </Row>
                                               
-<<<<<<< HEAD
-                                                )
-                                            })}
-                                             */}
-                                            <Table
-                                                scroll={{ x: '150%',y:500 }}
-                                                rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
-                                                // expandable={{ expandedRowRender }}
-                                                columns={columns}
-                                                dataSource={dataGraphComplete}
-                                                pagination={{
-                                                    pageSizeOptions: ['5', '10', '20', '30', '40'],
-                                                    showSizeChanger: true,
-                                                    position: ["bottomLeft"],
-                                                }}
-                                                bordered />
-                                        </Card>
-                                    </Space>
-                                </Card>
-                            </Card>
-                        </div>
-                    </div>
-                    <div className='col-lg-6 col-md-6'>
-                        <div className='card card-primary'>
-                            <div className='card-header align-middle'>
-                                <h3 className="card-title">Task Not Complete Yet</h3>
-                            </div>
-                            <Card>
-                                <Card>
-                                    <Pie
-                                        data = {dataNotComplete}
-                                        options={{
-                                            responsive:true,
-                                            plugins: {
-                                                legend: {
-                                                    position: 'bottom',
-                                                },
-                                                // title: {
-                                                //     display: true,
-                                                //     text: 'Task Not Complete Yet'
-                                                // },
-                                                datalabels: {
-                                      
-                                                    display:true,
-                                                    align: 'bottom',
-                                      
-                                       
-
-                                                },
-                                                animation: {
-                                                    animateScale: true,
-                                                    animateRotate: true
-                                                },
-                                  
-                                   
-                                            }}}
-                           
-                                    >
-
-                                    </Pie>
-                                    <Card hoverable>
-                                        <Table
-                                            scroll={{ x: '100%',y:'100%' }}
-                                            rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
-                                            // expandable={{ expandedRowRender }}
-                                            columns={columnsPie}
-                                            dataSource={dataGraphNotComplete}
-                                            pagination={{
-                                                pageSizeOptions: ['5', '10', '20', '30', '40'],
-                                                showSizeChanger: true,
-                                                position: ["bottomLeft"],
-                                            }}
-                                            bordered />
-                                    </Card>
-                                </Card>
-                                
-=======
                                                         )
                                                     })}
                                                 </Card>
@@ -614,7 +491,6 @@ const Dashboard = () => {
                              
                               
                                 </Row> 
->>>>>>> 5e5cdc8220d5e3930574ebd94fc9064323759986
                             </Card>
 
                        
