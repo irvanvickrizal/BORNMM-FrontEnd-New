@@ -12,6 +12,9 @@ import SquareOutlinedIcon from '@mui/icons-material/SquareOutlined';
 import API from '@app/utils/apiServices';
 import DismantleAcknowledgeForm from '@app/pages/DismantleAcknowledgeForm/DismantleAcknowledgeForm';
 import moment from 'moment';
+import { utils, write } from "xlsx";
+import XlsxPopulate from "xlsx-populate";
+import * as FileSaver from "file-saver";
 
 export default function DismatleAckFormDownload() {
     const [dataSite,setDataSite] = useState([])
@@ -23,6 +26,8 @@ export default function DismatleAckFormDownload() {
     const params = new URLSearchParams(customURL.split('?')[1])
     const odi = params.get('odi');
     const tdg = params.get('tdg');
+
+    var table1 = document.getElementById("table1");
 
     function getDataSiteInfo() {
       
@@ -105,6 +110,46 @@ export default function DismatleAckFormDownload() {
 
         document.body.innerHTML = originalContents;
     }
+
+    const exportToCSV = (csvData) => {
+        const fileName = "selectedFile";
+        const fileType =
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+        const fileExtension = ".xlsx";
+        //const ws = utils.json_to_sheet(csvData.data_product);
+        var wscols = [
+            { wch: 10 }, // "characters"
+            { wpx: 150 } // "pixels"
+        ];
+    
+        const ws = utils.json_to_sheet([{}], {
+            header: ["Senat Report"]
+        });
+    
+     
+    
+        utils.sheet_add_dom(ws, document.getElementById("table1"), { origin: 25 });
+    
+        console.log(document.getElementById("table2"));
+    
+        console.log(ws);
+        ws["!cols"] = wscols;
+    
+        // var cell_ref = utils.encode_cell({ c: 0, r: 24 });
+        // console.log("ws", ws);
+    
+        // ws["A2"] = { t: "s", w: "Senat", s: { font: { bold: true } } };
+    
+        const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+        const excelBuffer = write(wb, {
+            bookType: "xlsx",
+            type: "array",
+            cellStyles: true
+        });
+    
+        const data = new Blob([excelBuffer], { type: fileType });
+        FileSaver.saveAs(data, fileName + fileExtension);
+    };
 
     useEffect(() => {
         getDataSiteInfo();
@@ -294,6 +339,7 @@ export default function DismatleAckFormDownload() {
                     <b>Detail Information</b>
                     <Col span={24}>
                         <Table
+                            id="table1"
                             columns={columnDismantleList}
                             dataSource={dataSite}
                             pagination={false} />
