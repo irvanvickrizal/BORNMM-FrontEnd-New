@@ -215,7 +215,7 @@ const Dashboard = () => {
             backgroundColor: colorHex,
             display:true,
             datalabels: {
-                color: '#FFCE56'
+                color: '#black'
             }
         }]
     };
@@ -419,7 +419,7 @@ const Dashboard = () => {
                                                  
                                                         datalabels: {
                                                             // display: false,
-                                                            color: "black",
+                                                            color: '#ffffff',
                                                             font: {
                                                                 size: 14,
                                                                 weight: "500",
