@@ -498,7 +498,7 @@ const Dashboard = () => {
                            
                         </div>
                     </div>
-                 
+                    {/*                  
                     <div className='col-lg-6 col-md-6'>
                         <div className='card card-primary'>
                             <div className='card-header align-middle'>
@@ -518,7 +518,7 @@ const Dashboard = () => {
                                 />
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </>
