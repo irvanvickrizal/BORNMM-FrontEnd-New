@@ -23,6 +23,10 @@ import { MapContainer, TileLayer, Marker, Popup,useMapEvent } from 'react-leafle
 import ReactToPrint from "react-to-print";
 import {PDFTemplate} from './PDFTemplate'
 
+import { utils, write } from "xlsx";
+
+import * as FileSaver from "file-saver";
+
 export default function TableDismantleActForm() {
     const customURL = window.location.href;
     const params = new URLSearchParams(customURL.split('?')[1])
@@ -136,6 +140,48 @@ export default function TableDismantleActForm() {
             {data.materialCode} ( {data.materialDesc} ) QTY: {data.itemQty}
         </Title>
     )
+
+    var table1 = document.getElementById("table1");
+
+    const exportToCSV = (csvData) => {
+        const fileName = "selectedFile";
+        const fileType =
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+        const fileExtension = ".xlsx";
+        //const ws = utils.json_to_sheet(csvData.data_product);
+        var wscols = [
+            { wch: 10 }, // "characters"
+            { wpx: 150 } // "pixels"
+        ];
+    
+        const ws = utils.json_to_sheet([{}], {
+            header: ["Senat Report"]
+        });
+    
+     
+    
+        utils.sheet_add_dom(ws, document.getElementById("table1"), { origin: 25 });
+    
+      
+    
+        console.log(ws);
+        ws["!cols"] = wscols;
+    
+        // var cell_ref = utils.encode_cell({ c: 0, r: 24 });
+        // console.log("ws", ws);
+    
+        // ws["A2"] = { t: "s", w: "Senat", s: { font: { bold: true } } };
+    
+        const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+        const excelBuffer = write(wb, {
+            bookType: "xlsx",
+            type: "array",
+            cellStyles: true
+        });
+    
+        const data = new Blob([excelBuffer], { type: fileType });
+        FileSaver.saveAs(data, fileName + fileExtension);
+    };
 
     const DismantlePhotoList = ({data}) =>{
 
@@ -567,7 +613,7 @@ export default function TableDismantleActForm() {
                                                 {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
                                             </Tooltip><Tooltip title="Download Data as PDF">
                                                 <IconButton size="small"
-                                                    onClick={handleDwonloadPdf}
+                                                    onClick={exportToCSV}
                                                 >
                                                     <FileExcelOutlined style={{ color: 'blue' }} />
                                                 </IconButton>
@@ -590,6 +636,7 @@ export default function TableDismantleActForm() {
                                 </Col>
                             </Row>
                             <Table
+                                id="table1"
                                 scroll={{ x: '100%' }}
                                 //rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
                                 // expandable={{ expandedRowRender }}
