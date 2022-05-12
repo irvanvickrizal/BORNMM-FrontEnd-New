@@ -29,12 +29,14 @@ import SquareIcon from '@mui/icons-material/Square';
 import SquareRoundedIcon from '@mui/icons-material/SquareRounded';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-Chart.register(ChartDataLabels);
+import Search from '@app/components/searchcolumn/SearchColumn';
 
+Chart.register(ChartDataLabels);
 
 const Dashboard = () => {
     const [dataGraphNotComplete,setDataGraphNotComplete] = useState([])
     const [dataGraphComplete,setDataGraphComplete] = useState([])
+    const [dataSummary,setDataSummary] = useState([])
     const [labelPie,setLabelPie] = useState([])
     const [dataValuePie,setValueDataPie] = useState([])
     const uid = useSelector(state=>state.auth.user.uid)
@@ -73,6 +75,79 @@ const Dashboard = () => {
                 // console.log("Graph Complete =>",rfpDone);
                 // console.log("Graph Complete projectName=>",projectName);
                 // console.log("Graph Complete =>",hoDone);
+            }
+        )
+    }
+
+    const columns = [
+        {
+            width:70,
+            title : "Project",
+            dataIndex:'project_name',
+            ...Search('project_name'),
+        },
+        {
+            width:70,
+            title : "Total Sites",
+            dataIndex:'totalSites',
+            ...Search('totalSites'),
+        },
+        {
+            width:70,
+            title : "Order Req",
+            dataIndex:'orderReq',
+            ...Search('orderReq'),
+        },
+        {
+            width:70,
+            title : "Logistic-RevDone",
+            dataIndex:'logisticRevDone',
+            ...Search('logisticRevDone'),
+        },
+        {
+            width:70,
+            title : "LSP-RFPDone",
+            dataIndex:'RFPDone',
+            ...Search('RFPDone'),
+        },
+        {
+            width:70,
+            title : "LSPHODone",
+            dataIndex:'HODone',
+            ...Search('HODone'),
+        },
+    ]
+    const columnsPie = [
+        {
+            width:70,
+            title : "RO-OrderReq",
+            dataIndex:'RO-OrderReq',
+            ...Search('RO-OrderReq'),
+        },
+        {
+            width:70,
+            title : "Logistic-RevPending",
+            dataIndex:'logistic-RevPending',
+            ...Search('logistic-RevPending'),
+        },
+        {
+            width:70,
+            title : "LSP-RFPPending",
+            dataIndex:'LSP-RFPPending',
+            ...Search('LSP-RFPPending'),
+        },
+        {
+            width:70,
+            title : "LSP-HOPending",
+            dataIndex:'LSP-HOPending',
+            ...Search('LSP-HOPending'),
+        },
+    ]
+
+    const getSummary=(userid)=>{
+        API.getSummary(uid).then(
+            result=>{
+                setDataSummary(result)
             }
         )
     }
@@ -149,6 +224,7 @@ const Dashboard = () => {
     useEffect(() => {
         getGraphNotCompleteYet()
         getGraphComplete()
+        getSummary(uid)
         console.log("data dashboard")
         for (const dataObj of dataGraphComplete){
             hoDone.push(parseInt(dataObj.HODone))
@@ -160,7 +236,7 @@ const Dashboard = () => {
         }
         console.log(dataGraphNotComplete.LSP_HOPending,"tes")
         
-    },[])
+    },[uid])
  
 
 
@@ -172,7 +248,7 @@ const Dashboard = () => {
                 <div className="row">
                     <div className="col-lg-3 col-6">
                         <SmallBox
-                            count={0}
+                            count={dataSummary[0]?.totalSDRDone}
                             title="SDR Done"
                             type="info"
                             icon="fas fa-list"
@@ -180,7 +256,7 @@ const Dashboard = () => {
                     </div>
                     <div className="col-lg-3 col-6">
                         <SmallBox
-                            count={0}
+                            count={dataSummary[0]?.totalLTRDone}
                             title="LTR Done"
                             type="success"
                             icon="fas fa-list"
@@ -188,7 +264,7 @@ const Dashboard = () => {
                     </div>
                     <div className="col-lg-3 col-6">
                         <SmallBox
-                            count={0}
+                            count={dataSummary[0]?.totalPMRDone}
                             title="PMR Done"
                             type="warning"
                             icon="fas fa-list"
@@ -196,7 +272,7 @@ const Dashboard = () => {
                     </div>
                     <div className="col-lg-3 col-6">
                         <SmallBox
-                            count={0}
+                            count={dataSummary[0]?.totalOrderRejection}
                             title="Order Rejection"
                             type="danger"
                             icon="fas fa-list"
@@ -434,7 +510,7 @@ const Dashboard = () => {
                            
                         </div>
                     </div>
-                 
+                    {/*                  
                     <div className='col-lg-6 col-md-6'>
                         <div className='card card-primary'>
                             <div className='card-header align-middle'>
@@ -454,7 +530,7 @@ const Dashboard = () => {
                                 />
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </>
