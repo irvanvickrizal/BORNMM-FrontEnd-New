@@ -848,18 +848,24 @@ const getSDRLTRDDL = (odi) => GETParam("materialmanagement/orderRequestDetailOri
 const getStockDetail = () => GET("inventory/pmrInventoryGetDetailList");
 const getInventoryRepor = () => GET("inventory/pmrInventoryGetSummary");
 
-
+//Dashboard
+const getGraphNotCompleteYet = (uid) => GETParam("dashboard/dashboardGraphOrderRequestNYCompleteSummary/0",uid)
+const getGraphComplete = (uid) => GETParam("dashboard/dashboardGraphOrderRequestCompletionSummary/0",uid)
+const getSummary = (uid) => GETParam("dashboard/dashboardPanelOrderRequestSummary",uid)
 
 
 const API ={
+    getSummary,
     getDownloadRequestedBORN,
     putCustomerPO,
     postDOPRegion,
     getDOPRegion,
+    getGraphComplete,
     deleteDOPRegion,
     getDOPNotCoverage,
     getStockDetail,
     getMaterialOrderSDRLTR,
+    getGraphNotCompleteYet,
     getInventoryRepor,
     putSDRLTRForm,
     getSDRLTRDDL,
