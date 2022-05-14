@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/jsx-curly-brace-presence */
 /* eslint-disable global-require */
 import HeaderChanger from '@app/components/cardheader/HeaderChanger'
@@ -17,6 +18,7 @@ import moment from 'moment';
 export default function DismatleAckFormDownload() {
     const [dataSite,setDataSite] = useState([])
     const [dataInfo,setDataInfo] = useState([])
+    const [dataDismantleLog,setDataDismantleLog] = useState([])
     const [siteNo,setSiteNo] = useState('')
     const [siteName,setSiteName] = useState('')
 
@@ -25,7 +27,24 @@ export default function DismatleAckFormDownload() {
     const odi = params.get('odi');
     const tdg = params.get('tdg');
 
-  
+    const TimeStampComponent = ({odiParam}) => {
+        console.log(odiParam,"oadoiiii")
+        API.getDismantleLog(odiParam).then(
+            result=>{
+                setDataDismantleLog(result);
+                console.log("log =>",result);
+                console.log("log =>",dataDismantleLog[0]?.docName);
+                
+            }
+        )
+        // [docName] + “ “ + [eventDesc] + “ by “ + [userType]  + “, ”+ [Name] + “ “ + [signTitle] + “ on ” + [executeDate]
+
+        return (
+            <><><span>{dataDismantleLog[0]?.docName} {dataDismantleLog[0]?.eventDesc} by {dataDismantleLog[0]?.userType},</span><b> {dataDismantleLog[0]?.name} {dataDismantleLog[0]?.signTitle} on {moment(dataDismantleLog[0]?.executeDate).format("DD-MMM-YYYY hh:mm:ss")}    </b><br></br></>
+                <><span>{dataDismantleLog[1]?.docName} {dataDismantleLog[1]?.eventDesc} by {dataDismantleLog[1]?.userType},</span><b> {dataDismantleLog[1]?.name} {dataDismantleLog[1]?.signTitle} on {moment(dataDismantleLog[1]?.executeDate).format("DD-MMM-YYYY hh:mm:ss")}    </b></></>
+        )
+
+    }
 
     function getDataSiteInfo() {
       
@@ -108,17 +127,19 @@ export default function DismatleAckFormDownload() {
 
         document.body.innerHTML = originalContents;
     }
-
-  
+    
+    const TimeStamp = (data) => {
+        <p>{data[0]?.docName}</p>
+    }
 
     useEffect(() => {
         getDataSiteInfo();
         getDataInfo()
-       
     },[])
     useEffect(()=>
     {
         document.title=`${dataInfo[0]?.siteNo}_${dataInfo[0]?.siteName}_Dismantlelist`
+
         if(dataInfo.length>0 && dataSite.length>0){
             var printContents = document.getElementById("printArea").innerHTML;
             var originalContents = document.body.innerHTML;
@@ -129,7 +150,7 @@ export default function DismatleAckFormDownload() {
 
             document.body.innerHTML = originalContents;
         }
-    },[dataSite,dataInfo])
+    },[dataSite,dataInfo,dataDismantleLog])
     return (
         <><HeaderChanger title='' />
             <div id="printArea">
@@ -305,6 +326,7 @@ export default function DismatleAckFormDownload() {
                             pagination={false} />
                     </Col>
                 </Row>
+                <TimeStampComponent odiParam={odi}/>
 
             </div></>
     )
