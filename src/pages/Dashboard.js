@@ -79,7 +79,7 @@ const Dashboard = () => {
                   )) 
                 const dataLogistic = result.map((rs)=>CreateDataGraphNotComplete.dataGraphNotCompleteLogistic(
                     rs.RO_OrderReq,
-                    45
+                    7
                   )) 
                 const dataOrderReq = result.map((rs)=>CreateDataGraphNotComplete.dataGraphNotCompleteOrderReq(
                     rs.RO_OrderReq,
@@ -201,7 +201,7 @@ const Dashboard = () => {
         'Task Pending',
     ];
 
-    const colorHex = ['#1960db','#d93a23','#41c358',"#eba111"]
+    const colorHex = ['#d93a23','#1960db','#41c358',"#eba111"]
     const data = {
         // labels:["LTR","SDR","PMR","ORDER REJECTION"],
         labels:dataGraphComplete.map(x => x.project_name),
@@ -671,7 +671,7 @@ const Dashboard = () => {
                            </Col>
                            <Col className="gutter-row" span={12}>
                            <Doughnut
-                                                data = {dataNotCompleteLogistic}
+                                                data = {dataNotCompleteOrderReq}
                                                 width="196" height="256"
                                                
                                                 options={{
