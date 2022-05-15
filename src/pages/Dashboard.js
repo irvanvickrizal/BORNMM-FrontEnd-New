@@ -1,3 +1,5 @@
+/* eslint-disable prefer-template */
+/* eslint-disable indent */
 /* eslint-disable no-undef */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable radix */
@@ -5,7 +7,7 @@ import React,{useEffect, useState} from 'react';
 import SmallBox from '../components/small-box/SmallBox';
 import Chart from 'chart.js/auto';
 import HeaderChanger from '@app/components/cardheader/HeaderChanger';
-import {Bar,Line,Pie} from "react-chartjs-2"
+import {Bar,Line,Pie,Doughnut} from "react-chartjs-2"
 import { Table, Row, Col,Card, Typography, Input, Space,
     Form,
     Button,
@@ -25,15 +27,29 @@ import API from '@app/utils/apiServices';
 import { useSelector } from 'react-redux';
 import SquareIcon from '@mui/icons-material/Square';
 import SquareRoundedIcon from '@mui/icons-material/SquareRounded';
-import Search from '@app/components/searchcolumn/SearchColumn';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
+import Search from '@app/components/searchcolumn/SearchColumn';
+import CreateDataGraphNotComplete from "./DashboardDataGenerator"
+
+
+Chart.register(ChartDataLabels);
 
 const Dashboard = () => {
-    const [dataGraphNotComplete,setDataGraphNotComplete] = useState([])
+    const [dataGraphNotCompleteRfp,setDataGraphNotCompleteRfp] = useState([])
+    const [dataGraphNotCompleteHo,setDataGraphNotCompleteHo] = useState([])
+    const [dataGraphNotCompleteLogistic,setDataGraphNotCompleteLogistic] = useState([])
+    const [dataGraphNotCompleteOrderReq,setDataGraphNotCompleteOrderReq] = useState([])
     const [dataGraphComplete,setDataGraphComplete] = useState([])
     const [dataSummary,setDataSummary] = useState([])
-    const [labelPie,setLabelPie] = useState([])
-    const [dataValuePie,setValueDataPie] = useState([])
+    const [labelPieHo,setLabelPieHo] = useState([])
+    const [dataValuePieHo,setValueDataPieHo] = useState([])
+    const [labelPieRfp,setLabelPieRfp] = useState([])
+    const [dataValuePieRfp,setValueDataPieRfp] = useState([])
+    const [labelPieLogistic,setLabelPieLogistic] = useState([])
+    const [dataValuePieLogistic,setValueDataPieLogistic] = useState([])
+    const [labelPieOrderReq,setLabelPieOrderReq] = useState([])
+    const [dataValuePieOrderReq,setValueDataPieOrderReq] = useState([])
     const uid = useSelector(state=>state.auth.user.uid)
     const { TabPane } = Tabs;
 
@@ -49,12 +65,42 @@ const Dashboard = () => {
         // setIsLoading(true);
         API.getGraphNotCompleteYet(uid).then(
             result=>{
-                setDataGraphNotComplete(result);
-                setLabelPie(Object.keys(result[0]))
-                setValueDataPie(Object.values(result[0]))
-                console.log("Graph Not Complete =>",result);
+                // setDataGraphNotComplete(result);
+                // setLabelPie(Object.keys(result[0]))
+                // setValueDataPie(Object.values(result[0]))
+               
+                const dataHo = result.map((rs)=>CreateDataGraphNotComplete.dataGraphNotCompleteHo(
+                    rs.LSP_HOPending,
+                    46
+                  )) 
+                const dataRfp = result.map((rs)=>CreateDataGraphNotComplete.dataGraphNotCompleteRfp(
+                    rs.LSP_RFPPending,
+                    20
+                  )) 
+                const dataLogistic = result.map((rs)=>CreateDataGraphNotComplete.dataGraphNotCompleteLogistic(
+                    rs.RO_OrderReq,
+                    7
+                  )) 
+                const dataOrderReq = result.map((rs)=>CreateDataGraphNotComplete.dataGraphNotCompleteOrderReq(
+                    rs.RO_OrderReq,
+                    10
+                  )) 
+                  
+                  setDataGraphNotCompleteHo(dataHo);
+                  setLabelPieHo(Object.keys(dataHo[0]))
+                  setValueDataPieHo(Object.values(dataHo[0]))
+                  setLabelPieRfp(Object.keys(dataRfp[0]))
+                  setValueDataPieRfp(Object.values(dataRfp[0]))
+                  setLabelPieLogistic(Object.keys(dataLogistic[0]))
+                  setValueDataPieLogistic(Object.values(dataLogistic[0]))
+                  setLabelPieOrderReq(Object.keys(dataOrderReq[0]))
+                  setValueDataPieOrderReq(Object.values(dataOrderReq[0]))
+                //   setDataGraphNotCompleteRfp(dataRfp);
+                //   setDataGraphNotCompleteLogistic(dataLogistic)
+                //   setDataGraphNotCompleteLogistic(dataOrderReq)
+             
             }
-        )
+            )
     }
 
     function getGraphComplete() {
@@ -199,17 +245,66 @@ const Dashboard = () => {
         // }]
     };
     const dataNotComplete = {
-        labels:labelPie,
+        labels:labelPieHo,
         // labels:dataGraphComplete.map(x => x.project_name),
       
     
       
         datasets:[{
-            data:dataValuePie,
+        
+            data:dataValuePieHo,
             backgroundColor: colorHex,
             display:true,
             datalabels: {
-                color: '#FFCE56'
+                color: '#black'
+            }
+        }]
+    };
+    const dataNotCompleteRfp = {
+        labels:labelPieRfp,
+        // labels:dataGraphComplete.map(x => x.project_name),
+      
+    
+      
+        datasets:[{
+        
+            data:dataValuePieRfp,
+            backgroundColor: colorHex,
+            display:true,
+            datalabels: {
+                color: '#black'
+            }
+        }]
+    };
+    const dataNotCompleteLogistic = {
+        labels:labelPieLogistic,
+        // labels:dataGraphComplete.map(x => x.project_name),
+      
+    
+      
+        datasets:[{
+        
+            data:dataValuePieLogistic,
+            backgroundColor: colorHex,
+            display:true,
+            datalabels: {
+                color: '#black'
+            }
+        }]
+    };
+    const dataNotCompleteOrderReq = {
+        labels:labelPieOrderReq,
+        // labels:dataGraphComplete.map(x => x.project_name),
+      
+    
+      
+        datasets:[{
+        
+            data:dataValuePieOrderReq,
+            backgroundColor: colorHex,
+            display:true,
+            datalabels: {
+                color: '#black'
             }
         }]
     };
@@ -228,7 +323,7 @@ const Dashboard = () => {
             projectName.push(dataObj.project_name)
             totalSite.push(parseInt(dataObj.totalSites))
         }
-        console.log(dataGraphNotComplete.LSP_HOPending,"tes")
+        // console.log(dataGraphNotComplete.LSP_HOPending,"tes")
         
     },[uid])
  
@@ -276,30 +371,31 @@ const Dashboard = () => {
 
             </div>
             <div className="container-fluid">
-                <div className='row'>
-                    <div className='col-lg-12 col-md-12'>
-                        <div className='card card-primary'>
+                <div className='row' >
+                    <div className='col-lg-12 col-md-12' >
+                        <div className='card card-primary' >
                             <div className='card-header align-middle'>
                                 <h3 className="card-title">Forward Logistic Summary</h3>
                             </div>
-                            <Card>
+                       
                        
                     
-                                <Row gutter={24}>
+                                <Row gutter={48} style={{paddingLeft:48,marginTop:48,paddingBottom:48}}>
                               
                                     <Col className="gutter-row" span={12}>
-                                        <Card hoverable>
+                                   
                                             <Space size={16} direction="vertical" style={{width:'100%'}}>
                                                 <Bar
                                                     data = {data}
                                                     height="236"
                                                     options={{
                                                         responsive:true,
-                                                
+                                                        aspectRatio:1.63,
                                                         plugins: {
                                                             // legend: {
                                                             //     position: 'bottom',
                                                             // },
+                                                        
                                                             legend: {
                                                      
                                                                 position: 'bottom',
@@ -309,12 +405,13 @@ const Dashboard = () => {
                                                                 text: 'Order Request Progress Summary (Forward Logistic)'
                                                             },
                                                             datalabels: {
-                                      
-                                                                display:true,
-                                                                align: 'bottom',
-                                      
-                                       
-
+                                                                // display: false,
+                                                                color: "#black",
+                                                                font: {
+                                                                    size: 12,
+                                                                    weight: "500",
+                                                                    color:"#000"
+                                                                }
                                                             },
                                                             animation: {
                                                                 animateScale: true,
@@ -322,9 +419,10 @@ const Dashboard = () => {
                                                             },
                                                     
                                                     
-                                  
+                                                           
                                    
                                                         }}}
+                                            
                            
                                                 >
 
@@ -379,109 +477,267 @@ const Dashboard = () => {
                                     
                                         
                                     
-                                        </Card>
+                                  
                                     </Col>
                                     
                                
                                     <Col className="gutter-row" span={12}>
-                                        <Card hoverable>
-                           
-                                            <Pie
+                                   
+                               <Space direction="vertical" style={{width:"100%"}} size={48}>
+                               <Row >
+                           <Col className="gutter-row" span={12}>
+                           <Doughnut
                                                 data = {dataNotComplete}
-                                                width="696" height="556"
+                                                width="196" height="256"
                                                
                                                 options={{
-                                                    responsive: true,
-                                                    aspectRatio:1.16,
-                                              
+                                                    responsive: false,
+                                                    aspectRatio:1.5,
+                                                    cutoutPercentage: 75,
                                                     plugins: {
                                                     
                                                         legend: {
+                                                            display:false,
                                                             position: 'bottom',
+                                                            padding:2
                                                         },
                           
                                                         title: {
                                                             display: true,
-                                                            text: 'Task Not Complete Yet',
+                                                            text: 'Task Not Complete Yet (LSP HO)',
                                                           
                                                         },
+                                                 
+                                                 
                                                         // datalabels: {
-                                                        //     display: true,
-                                                        //     align: 'bottom',
-                                                        //     backgroundColor: '#ccc',
-                                                        //     borderRadius: 3,
+                                                        //     // display: false,
+                                                        //     color: '#ffffff',
                                                         //     font: {
-                                                        //         size: 18,
-                                                        //     }
+                                                        //         size: 14,
+                                                        //         weight: "500",
+                                                        //         color:"#000"
+                                                        //     },
+                                                        //     anchor: 'end',
+                                                        //     align: 'end',
+                                                        //     offset: 8,
+                                                        //     display: function(context) {
+                                                        //         return context.dataset.data[context.dataIndex] !== 0; // or >= 1 or ...
+                                                        //      },
+                                                        //      formatter: function(value,ctx) {
+                                                        //         return `${ctx.chart.data.labels[ctx.dataIndex]}:${value}`;
+                                                             
+                                                        //       }
+                                                          
                                                         // },
-                                                        datalabels: {
-                                                            color: 'blue',
-                                                            labels: {
-                                                                title: {
-                                                                    font: {
-                                                                        weight: 'bold'
-                                                                    }
-                                                                },
-                                                                value: {
-                                                                    color: 'green'
-                                                                }
-                                                            }
-                                                        },
+                                                        
                                                         animation: {
                                                             animateScale: true,
                                                             animateRotate: true
                                                         },
+                                                             
                                                         
                       
              
                                                     }}}
-                                                  
+                                               
      
                                             >
 
-                                            </Pie>
-                                            <Card hoverable>
-                                                {dataGraphNotComplete?.map(e=>{
-                                                    return(
-                                                  
-                                                        <><Row>
-                                                            <Col className="gutter-row" span={12}>
-                                                              
-                                                                <Typography style={{ fontSize: 16, fontWeight: "500" }}><SquareRoundedIcon style={{ color: "#d93a23" }} />RO Order Req: {e.LSP_HOPending}</Typography>
-                                                             
-
-                                                            </Col>
-                                                            <Col className="Logistic Rev Pending" span={12}>
-                                                         
-                                                                <Typography style={{ fontSize: 16, fontWeight: "500" }}><SquareRoundedIcon style={{ color: "#1960db" }} /> Logistic Rev Pending: {e.Logistic_RevPending}</Typography>
-                                                        
-
-                                                            </Col>
-                                                        </Row><Row>
-                                                            <Col className="gutter-row" span={12}>
-                                                              
-                                                                <Typography style={{ fontSize: 16, fontWeight: "500" }}><SquareRoundedIcon style={{ color: "#41c358" }} />LSP RFP Pending: {e.LSP_RFPPending}</Typography>
-                                                          
-
-                                                            </Col>
-                                                            <Col className="LSP HO Pending" span={12}>
-                                                             
-                                                                <Typography style={{ fontSize: 16, fontWeight: "500" }}><SquareRoundedIcon style={{ color: "#eba111" }} />LSP HO Pending: {e.RO_OrderReq}</Typography>
-                                                             
-
-                                                            </Col>
-
-                                                        </Row></>
-                                                     
-                                                         
-                                                   
+                                            </Doughnut>
+                           </Col>
+                           <Col className="gutter-row" span={12}>
+                           <Doughnut
+                                                data = {dataNotCompleteRfp}
+                                                width="196" height="256"
+                                               
+                                                options={{
+                                                    responsive: false,
+                                                    aspectRatio:1.5,
+                                                    cutoutPercentage: 75,
+                                                    plugins: {
                                                     
-                                                   
-                                              
-                                                    )
-                                                })}
-                                            </Card>
-                                        </Card>
+                                                        legend: {
+                                                            display:false,
+                                                            position: 'bottom',
+                                                            padding:2
+                                                        },
+                          
+                                                        title: {
+                                                            display: true,
+                                                            text: 'Task Not Complete Yet (LSP RFP)',
+                                                          
+                                                        },
+                                                 
+                                                 
+                                                        // datalabels: {
+                                                        //     // display: false,
+                                                        //     color: '#ffffff',
+                                                        //     font: {
+                                                        //         size: 14,
+                                                        //         weight: "500",
+                                                        //         color:"#000"
+                                                        //     },
+                                                        //     anchor: 'end',
+                                                        //     align: 'end',
+                                                        //     offset: 8,
+                                                        //     display: function(context) {
+                                                        //         return context.dataset.data[context.dataIndex] !== 0; // or >= 1 or ...
+                                                        //      },
+                                                        //      formatter: function(value,ctx) {
+                                                        //         return `${ctx.chart.data.labels[ctx.dataIndex]}:${value}`;
+                                                             
+                                                        //       }
+                                                          
+                                                        // },
+                                                        
+                                                        animation: {
+                                                            animateScale: true,
+                                                            animateRotate: true
+                                                        },
+                                                             
+                                                        
+                      
+             
+                                                    }}}
+                                               
+     
+                                            >
+
+                                            </Doughnut>
+                           </Col>
+                         
+                                        
+                           </Row>
+                           <Row>
+                           <Col className="gutter-row" span={12}>
+                           <Doughnut
+                                                data = {dataNotCompleteLogistic}
+                                                width="196" height="256"
+                                               
+                                                options={{
+                                                    responsive: false,
+                                                    aspectRatio:1.5,
+                                                    cutoutPercentage: 75,
+                                                    plugins: {
+                                                    
+                                                        legend: {
+                                                            display:false,
+                                                            position: 'bottom',
+                                                            padding:2
+                                                        },
+                          
+                                                        title: {
+                                                            display: true,
+                                                            text: 'Task Not Complete Yet (Logistic Rev)',
+                                                          
+                                                        },
+                                                 
+                                                 
+                                                        // datalabels: {
+                                                        //     // display: false,
+                                                        //     color: '#ffffff',
+                                                        //     font: {
+                                                        //         size: 14,
+                                                        //         weight: "500",
+                                                        //         color:"#000"
+                                                        //     },
+                                                        //     anchor: 'end',
+                                                        //     align: 'end',
+                                                        //     offset: 8,
+                                                        //     display: function(context) {
+                                                        //         return context.dataset.data[context.dataIndex] !== 0; // or >= 1 or ...
+                                                        //      },
+                                                        //      formatter: function(value,ctx) {
+                                                        //         return `${ctx.chart.data.labels[ctx.dataIndex]}:${value}`;
+                                                             
+                                                        //       }
+                                                          
+                                                        // },
+                                                        
+                                                        animation: {
+                                                            animateScale: true,
+                                                            animateRotate: true
+                                                        },
+                                                             
+                                                        
+                      
+             
+                                                    }}}
+                                               
+     
+                                            >
+
+                                            </Doughnut>
+                           </Col>
+                           <Col className="gutter-row" span={12}>
+                           <Doughnut
+                                                data = {dataNotCompleteOrderReq}
+                                                width="196" height="256"
+                                               
+                                                options={{
+                                                    responsive: false,
+                                                    aspectRatio:1.5,
+                                                    cutoutPercentage: 75,
+                                                    plugins: {
+                                                    
+                                                        legend: {
+                                                            display:false,
+                                                            position: 'bottom',
+                                                            padding:2
+                                                        },
+                          
+                                                        title: {
+                                                            display: true,
+                                                            text: 'Task Not Complete Yet (RO Order Req)',
+                                                          
+                                                        },
+                                                 
+                                                 
+                                                        // datalabels: {
+                                                        //     // display: false,
+                                                        //     color: '#ffffff',
+                                                        //     font: {
+                                                        //         size: 14,
+                                                        //         weight: "500",
+                                                        //         color:"#000"
+                                                        //     },
+                                                        //     anchor: 'end',
+                                                        //     align: 'end',
+                                                        //     offset: 8,
+                                                        //     display: function(context) {
+                                                        //         return context.dataset.data[context.dataIndex] !== 0; // or >= 1 or ...
+                                                        //      },
+                                                        //      formatter: function(value,ctx) {
+                                                        //         return `${ctx.chart.data.labels[ctx.dataIndex]}:${value}`;
+                                                             
+                                                        //       }
+                                                          
+                                                        // },
+                                                        
+                                                        animation: {
+                                                            animateScale: true,
+                                                            animateRotate: true
+                                                        },
+                                                             
+                                                        
+                      
+             
+                                                    }}}
+                                               
+     
+                                            >
+
+                                            </Doughnut>
+                           </Col>
+                          
+                                
+                           </Row>
+                               </Space>
+                      
+                                          
+                                           
+                                         
+                                        
               
                                     </Col>
                            
@@ -491,34 +747,14 @@ const Dashboard = () => {
                              
                               
                                 </Row> 
-                            </Card>
+                          
 
                        
          
                            
                         </div>
                     </div>
-                    {/*                  
-                    <div className='col-lg-6 col-md-6'>
-                        <div className='card card-primary'>
-                            <div className='card-header align-middle'>
-                                <h3 className="card-title">My Agenda</h3>
-                            </div>
-                            <div className="card-body">
-                                <List
-                                    
-                                    footer={<div></div>}
-                                    bordered
-                                    dataSource={dataAgenda}
-                                    renderItem={item => (
-                                        <List.Item>
-                                            <Button ghost type="text"><FormOutlined /> {item} </Button>
-                                        </List.Item>
-                                    )}
-                                />
-                            </div>
-                        </div>
-                    </div> */}
+            
                 </div>
             </div>
         </>

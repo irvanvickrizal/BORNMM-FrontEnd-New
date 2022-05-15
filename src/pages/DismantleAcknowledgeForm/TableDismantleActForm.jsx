@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/jsx-boolean-value */
@@ -21,13 +22,18 @@ import exportFromJSON from 'export-from-json'
 import L, { divIcon } from "leaflet";
 import { MapContainer, TileLayer, Marker, Popup,useMapEvent } from 'react-leaflet'
 import ReactToPrint from "react-to-print";
-import {PDFTemplate} from './PDFTemplate'
+import {PDFTemplate} from './PDFTemplate';
+import Logo from '../../assets/image/logoXL.png';
+import { utils, write } from "xlsx";
+
+import * as FileSaver from "file-saver";
 
 export default function TableDismantleActForm() {
     const customURL = window.location.href;
     const params = new URLSearchParams(customURL.split('?')[1])
     const [dataTableAtas,setDataTableAtas] = useState([])
     const [dataDismantleList,setDataDismantleList] = useState([])
+    const [dataDismantleLog,setDataDismantleLog] = useState([])
     const [dataDismantlePhotoList,setDataDismantlePhotoList] = useState([])
     const [isLoading, setIsLoading] = useState(false);
     const [isLoadingTab, setIsLoadingTab] = useState(false);
@@ -137,6 +143,109 @@ export default function TableDismantleActForm() {
         </Title>
     )
 
+    const ExcelTemplate = () =>
+        (
+            <Row>
+                <Col className="gutter-row" span={2}>
+                    <Image
+                        src={Logo}
+                        width={50} />
+                </Col>
+                <Col className="gutter-row" span={15}>
+                    <div style={{ marginTop: 6 }}>
+                        <Typography style={{ fontSize: 18, fontWeight: 700 }}>Material Return Form</Typography>
+                    </div>
+                </Col>
+                <Col className="gutter-row" span={7}>
+                    <div style={{ marginTop: 6 }}>
+                        <Typography style={{ fontSize: 18, fontWeight: 700 }}>{`Document Date : ${moment(dataTableAtas[0]?.ackCompleteDate).format("DD-MMM-YYYY")}`}</Typography>
+                    </div>
+                </Col>
+            </Row>
+        )
+    
+    var tbl = () => {
+        return (
+            <p>testing</p>
+        );
+    };
+
+    var table1 = document.getElementById("table1");
+
+    const exportToCSV = (csvData) => {
+        const fileName = "selectedFile";
+        const fileType =
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+        const fileExtension = ".xlsx";
+        //const ws = utils.json_to_sheet(csvData.data_product);
+        var wscols = [
+            { wch: 10 }, // "characters"
+            { wpx: 150 } // "pixels"
+        ];
+    
+        const ws = utils.json_to_sheet([{}], {
+            header: ["Senat Report"]
+        });
+        const wsImage = utils.json_to_sheet([{}], {
+            header: ["Test Image"],
+            name: 'image1.jpg',
+            data: {Logo}.base64,
+            opts: { base64: true },
+            position: {
+                type: 'twoCellAnchor',
+                attrs: { editAs: 'oneCell' },
+                from: { col: 2, row : 2 },
+                to: { col: 6, row: 5 }
+            }
+        });
+    
+        utils.sheet_add_dom(ws, document.getElementById("table1"), { origin: 25 });
+        utils.sheet_add_dom(ws, document.getElementById("docHeader"), { origin: 4 });
+        console.log(ws);
+        ws["!cols"] = wscols;
+    
+        // var cell_ref = utils.encode_cell({ c: 0, r: 24 });
+        // console.log("ws", ws);
+    
+        // ws["A2"] = { t: "s", w: "Senat", s: { font: { bold: true } } };
+    
+        const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+
+        // workbook.Sheets['my-sheet']['!images'] = [
+        //     {
+        //         name: 'image1.jpg',
+        //         data: image[0].base64,
+        //         opts: { base64: true },
+        //         position: {
+        //             type: 'twoCellAnchor',
+        //             attrs: { editAs: 'oneCell' },
+        //             from: { col: 2, row : 2 },
+        //             to: { col: 6, row: 5 }
+        //         }
+        //     },
+        //     {
+        //         name: 'image2.jpg',
+        //         data: image[1].base64,
+        //         opts: { base64: true },
+        //         position: {
+        //             type: 'twoCellAnchor',
+        //             attrs: { editAs: 'oneCell' },
+        //             from: { col: 2, row : 10 },
+        //             to: { col: 6, row: 14 }
+        //         }
+        //     }
+        // ];
+
+        const excelBuffer = write(wb, {
+            bookType: "xlsx",
+            type: "array",
+            cellStyles: true
+        });
+    
+        const data = new Blob([excelBuffer], { type: fileType });
+        FileSaver.saveAs(data, fileName + fileExtension);
+    };
+
     const DismantlePhotoList = ({data}) =>{
 
         console.log("photolost",data)
@@ -196,6 +305,14 @@ export default function TableDismantleActForm() {
         API.getDismantleList(tdg).then(
             result=>{
                 setDataDismantleList(result);
+                console.log("tdg =>",result);
+            }
+        )
+    }
+    function getLog(odiParam) {
+        API.getDismantleLog(odiParam).then(
+            result=>{
+                setDataDismantleLog(result);
                 console.log("tdg =>",result);
             }
         )
@@ -319,6 +436,9 @@ export default function TableDismantleActForm() {
         }
         else if(key==2){
             getDismantlePhotoList()
+        }
+        else if(key==3){
+            getLog(odi)
         }
         console.log("keytabs",key);
     }
@@ -480,6 +600,42 @@ export default function TableDismantleActForm() {
         },
    
     ]
+
+    const columnDismantleLog = [ 
+      
+        {
+            title : "No",
+            width : 50,
+            render: (value, item, index) => 1 + index
+        },
+   
+        {
+            title : "Document",
+            dataIndex:'docName',
+            ...Search('docName'),
+        },
+        {
+            title : "Execute By",
+            dataIndex:'name',
+            ...Search('name'),
+        },
+        {
+            title : "Execute Date",
+            dataIndex:'executeDate',
+            ...Search('executeDate'),
+        },
+        {
+            title : "Event Desc",
+            dataIndex:'eventDesc',
+            ...Search('eventDesc'),
+        },
+        {
+            title : "Company",
+            dataIndex:'userType',
+            ...Search('userType'),
+        },
+   
+    ]
     return (
         <div>
             <BackTop />
@@ -492,6 +648,7 @@ export default function TableDismantleActForm() {
                     </Row>  
                     :
                     <><Row>
+                        
                         <Col span={24}>
                             <div className='float-right'>
                                 <Space direction="horizhontal">
@@ -547,43 +704,74 @@ export default function TableDismantleActForm() {
                                             {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
                                         </Tooltip>
                                         {pg == "done" ?
-                                            <Tooltip title="Download Data as PDF">
+                                            <><Tooltip title="Download MRF as PDF">
                                                 <IconButton size="small"
                                                     onClick={handleDwonloadPdf}
                                                 >
-                                                    <FilePdfOutlined style={{color:'red'}} />
+                                                    <FilePdfOutlined style={{ color: 'red' }} />
                                                 </IconButton>
                                                 {/* <ReactToPrint
-                                                trigger={() => 
-                                                    <IconButton size="small">
-                                                        <FilePdfOutlined style={{color:'red'}}/>
-                                                    </IconButton>
-                                                }
-                                                content={() => componentRef.current}
-                                            />
-                                            <div hidden>
-                                                <PDFTemplate ref={componentRef} />
-                                            </div> */}
+    trigger={() =>
+        <IconButton size="small">
+            <FilePdfOutlined style={{color:'red'}}/>
+        </IconButton>
+    }
+    content={() => componentRef.current}
+/>
+<div hidden>
+    <PDFTemplate ref={componentRef} />
+</div> */}
                                                 {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
-                                            </Tooltip>:
+                                            </Tooltip><Tooltip title="Download MRF as Excel">
+                                                <IconButton size="small"
+                                                    // onClick={exportToCSV}
+                                                >
+                                                    <FileExcelOutlined style={{ color: 'grey' }} />
+                                                </IconButton>
+                                                {/* <ReactToPrint
+    trigger={() =>
+        <IconButton size="small">
+            <FilePdfOutlined style={{color:'red'}}/>
+        </IconButton>
+    }
+    content={() => componentRef.current}
+/>
+<div hidden>
+    <PDFTemplate ref={componentRef} />
+</div> */}
+                                                {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
+                                            </Tooltip></>:
                                             null
                                         }
                                     </div>
                                 </Col>
                             </Row>
-                            <Table
-                                scroll={{ x: '100%' }}
-                                //rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
-                                // expandable={{ expandedRowRender }}
-                                columns={columnDismantleList}
-                                dataSource={dataDismantleList}
-                                pagination={false}
-                                bordered />
+                            <div id="table1">
+                                <Table
+                                    scroll={{ x: '100%' }}
+                                    //rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
+                                    // expandable={{ expandedRowRender }}
+                                    columns={columnDismantleList}
+                                    dataSource={dataDismantleList}
+                                    pagination={false}
+                                    bordered />
+                            </div>
+                            
                         </TabPane>
                         <TabPane tab="Dismantle Photo List" key="2">
                             {dataDismantlePhotoList?.map((dt)=>
                                 <DismantlePhotoList data={dt}/>
                             )}
+                        </TabPane>
+                        <TabPane tab="Log" key="3">
+                            <Table
+                                scroll={{ x: '100%' }}
+                                //rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
+                                // expandable={{ expandedRowRender }}
+                                columns={columnDismantleLog}
+                                dataSource={dataDismantleLog}
+                                pagination={false}
+                                bordered />
                         </TabPane>
                     </Tabs>
                 </Col>
