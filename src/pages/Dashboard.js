@@ -65,27 +65,24 @@ const Dashboard = () => {
         // setIsLoading(true);
         API.getGraphNotCompleteYet(uid).then(
             result=>{
+                console.log(result,"complete result")
                 // setDataGraphNotComplete(result);
                 // setLabelPie(Object.keys(result[0]))
                 // setValueDataPie(Object.values(result[0]))
                
                 const dataHo = result.map((rs)=>CreateDataGraphNotComplete.dataGraphNotCompleteHo(
                     rs.LSP_HOPending,
-                    46
+                    rs.LSP_TotalHOPending
                   )) 
                 const dataRfp = result.map((rs)=>CreateDataGraphNotComplete.dataGraphNotCompleteRfp(
                     rs.LSP_RFPPending,
-                    20
+                    rs.LSP_TotalRFPPending
                   )) 
                 const dataLogistic = result.map((rs)=>CreateDataGraphNotComplete.dataGraphNotCompleteLogistic(
-                    rs.RO_OrderReq,
-                    7
+                    rs.Logistic_RevPending,
+                    rs.RO_OrderReq
                   )) 
-                const dataOrderReq = result.map((rs)=>CreateDataGraphNotComplete.dataGraphNotCompleteOrderReq(
-                    rs.RO_OrderReq,
-                    10
-                  )) 
-                  
+            
                   setDataGraphNotCompleteHo(dataHo);
                   setLabelPieHo(Object.keys(dataHo[0]))
                   setValueDataPieHo(Object.values(dataHo[0]))
@@ -93,9 +90,7 @@ const Dashboard = () => {
                   setValueDataPieRfp(Object.values(dataRfp[0]))
                   setLabelPieLogistic(Object.keys(dataLogistic[0]))
                   setValueDataPieLogistic(Object.values(dataLogistic[0]))
-                  setLabelPieOrderReq(Object.keys(dataOrderReq[0]))
-                  setValueDataPieOrderReq(Object.values(dataOrderReq[0]))
-                //   setDataGraphNotCompleteRfp(dataRfp);
+                  
                 //   setDataGraphNotCompleteLogistic(dataLogistic)
                 //   setDataGraphNotCompleteLogistic(dataOrderReq)
              
@@ -609,7 +604,7 @@ const Dashboard = () => {
                                         
                            </Row>
                            <Row>
-                           <Col className="gutter-row" span={12}>
+                           <Col className="gutter-row" span={24}>
                            <Doughnut
                                                 data = {dataNotCompleteLogistic}
                                                 width="196" height="256"
@@ -633,26 +628,24 @@ const Dashboard = () => {
                                                         },
                                                  
                                                  
-                                                        // datalabels: {
-                                                        //     // display: false,
-                                                        //     color: '#ffffff',
-                                                        //     font: {
-                                                        //         size: 14,
-                                                        //         weight: "500",
-                                                        //         color:"#000"
-                                                        //     },
-                                                        //     anchor: 'end',
-                                                        //     align: 'end',
-                                                        //     offset: 8,
-                                                        //     display: function(context) {
-                                                        //         return context.dataset.data[context.dataIndex] !== 0; // or >= 1 or ...
-                                                        //      },
-                                                        //      formatter: function(value,ctx) {
-                                                        //         return `${ctx.chart.data.labels[ctx.dataIndex]}:${value}`;
+                                                        datalabels: {
+                                                            // display: true,
+                                                            color: '#black',
+                                                            font: {
+                                                                size: 14,
+                                                                weight: "500",
+                                                                color:"#000"
+                                                            },
+                                                           
+                                                            display: function(context) {
+                                                                return context.dataset.data[context.dataIndex] !== 0; // or >= 1 or ...
+                                                             },
+                                                            //  formatter: function(value,ctx) {
+                                                            //     return `${ctx.chart.data.labels[ctx.dataIndex]}:${value}`;
                                                              
-                                                        //       }
+                                                            //   }
                                                           
-                                                        // },
+                                                        },
                                                         
                                                         animation: {
                                                             animateScale: true,
@@ -669,66 +662,7 @@ const Dashboard = () => {
 
                                             </Doughnut>
                            </Col>
-                           <Col className="gutter-row" span={12}>
-                           <Doughnut
-                                                data = {dataNotCompleteOrderReq}
-                                                width="196" height="256"
-                                               
-                                                options={{
-                                                    responsive: false,
-                                                    aspectRatio:1.5,
-                                                    cutoutPercentage: 75,
-                                                    plugins: {
-                                                    
-                                                        legend: {
-                                                            display:false,
-                                                            position: 'bottom',
-                                                            padding:2
-                                                        },
-                          
-                                                        title: {
-                                                            display: true,
-                                                            text: 'Task Not Complete Yet (RO Order Req)',
-                                                          
-                                                        },
-                                                 
-                                                 
-                                                        // datalabels: {
-                                                        //     // display: false,
-                                                        //     color: '#ffffff',
-                                                        //     font: {
-                                                        //         size: 14,
-                                                        //         weight: "500",
-                                                        //         color:"#000"
-                                                        //     },
-                                                        //     anchor: 'end',
-                                                        //     align: 'end',
-                                                        //     offset: 8,
-                                                        //     display: function(context) {
-                                                        //         return context.dataset.data[context.dataIndex] !== 0; // or >= 1 or ...
-                                                        //      },
-                                                        //      formatter: function(value,ctx) {
-                                                        //         return `${ctx.chart.data.labels[ctx.dataIndex]}:${value}`;
-                                                             
-                                                        //       }
-                                                          
-                                                        // },
-                                                        
-                                                        animation: {
-                                                            animateScale: true,
-                                                            animateRotate: true
-                                                        },
-                                                             
-                                                        
-                      
-             
-                                                    }}}
-                                               
-     
-                                            >
-
-                                            </Doughnut>
-                           </Col>
+                     
                           
                                 
                            </Row>
