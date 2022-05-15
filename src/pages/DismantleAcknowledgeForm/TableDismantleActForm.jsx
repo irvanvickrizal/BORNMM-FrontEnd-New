@@ -704,7 +704,7 @@ export default function TableDismantleActForm() {
                                             {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
                                         </Tooltip>
                                         {pg == "done" ?
-                                            <><Tooltip title="Download Data as PDF">
+                                            <><Tooltip title="Download MRF as PDF">
                                                 <IconButton size="small"
                                                     onClick={handleDwonloadPdf}
                                                 >
@@ -722,11 +722,11 @@ export default function TableDismantleActForm() {
     <PDFTemplate ref={componentRef} />
 </div> */}
                                                 {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
-                                            </Tooltip><Tooltip title="Download Data as PDF">
+                                            </Tooltip><Tooltip title="Download MRF as Excel">
                                                 <IconButton size="small"
-                                                    onClick={exportToCSV}
+                                                    // onClick={exportToCSV}
                                                 >
-                                                    <FileExcelOutlined style={{ color: 'blue' }} />
+                                                    <FileExcelOutlined style={{ color: 'grey' }} />
                                                 </IconButton>
                                                 {/* <ReactToPrint
     trigger={() =>
