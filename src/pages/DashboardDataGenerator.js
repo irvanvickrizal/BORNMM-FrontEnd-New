@@ -1,8 +1,9 @@
 
-const dataGraphNotCompleteHo = (LSPHOPPending,LSPTotalHOPending) => {
+const dataGraphNotCompleteHo = (LSPHOPPending,LSPTotalHOPending,Total) => {
     const datas = {
         LSP_HOPending:LSPHOPPending,
-        LSP_TotalHOPending:LSPTotalHOPending
+        LSP_TotalHOPending:LSPTotalHOPending,
+        
     }
     
     return datas;
