@@ -822,7 +822,9 @@ const getDismantleList = (tdg) => GETParam("boqref/boqAsBuiltMMResult",tdg);
 const getDismantleLog = (odi) => GETParam("wftransaction/orderRequestDismantleACKGetTimeStamp",odi);
 const getDismantlePhotoList = (tdg) => GETParam("boqref/boqAsBuiltMMResultIncludeImage",tdg);
 const postDismantleAck = (body) => POST("taskassignment/logisticMilestoneACKConfirmed",body);
+const postDismantleAckNew = (body) => POST("taskassignment/logisticMilestoneACKConfirmedNew",body);
 const postRejectDismantleAck = (body) => POST("taskassignment/logisticMilestoneACKRejected",body);
+const postRejectDismantleAckNew = (body) => POST("taskassignment/logisticMilestoneACKRejectedNew",body);
 
 // Dismantle Act Done
 const getDismantleActDone = (uId) => GETParam("rpt/dismantleACKDoneList",uId);
@@ -856,6 +858,8 @@ const getSummary = (uid) => GETParam("dashboard/dashboardPanelOrderRequestSummar
 
 
 const API ={
+    postDismantleAckNew,
+    postRejectDismantleAckNew,
     getDismantleLog,
     getSummary,
     getDownloadRequestedBORN,
