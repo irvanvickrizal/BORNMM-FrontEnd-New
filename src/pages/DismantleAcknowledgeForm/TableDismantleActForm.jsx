@@ -48,6 +48,7 @@ export default function TableDismantleActForm() {
     const history = useHistory();
     const odi = params.get('odi');
     const tdg = params.get('tdg');
+    const sno = params.get('sno');
     const pg = params.get('pg');
     const rbid = params.get('rbid');
     const componentRef = useRef();
@@ -334,13 +335,14 @@ export default function TableDismantleActForm() {
         if (window.confirm('Are you sure you want to confirm ?')) {
             
             const body = {
+                "sno":sno,
                 'orderDetailId':odi,
                 'transDelegateId' :tdg,
                 'confirmedBy':user.uid,
                 'requestedBy':rbid
             }
 
-            API.postDismantleAck(body).then(
+            API.postDismantleAckNew(body).then(
                 result=>{
                     toast.success("Confirm Successfull")
                     history.push("/task/ackdismantlepending")
@@ -377,6 +379,7 @@ export default function TableDismantleActForm() {
         if (window.confirm('Are you sure you want to reject ?')) {
             
             const body = {
+                'sno':sno,                
                 'orderDetailId':odi,
                 'confirmedBy':user.uid,
                 'transDelegateId' :tdg,
@@ -385,7 +388,7 @@ export default function TableDismantleActForm() {
             }
 
             console.log(body,"body rejection ")
-            API.postRejectDismantleAck(body).then(
+            API.postRejectDismantleAckNew(body).then(
                 result=>{
                     if(result.status=="success")
                     {

@@ -50,7 +50,7 @@ export default function TableDismantlePending() {
     }
 
     const handleNavigate = (data) => {
-        history.push(`/task/ackdismantleform?odi=${data.orderDetailId}&tdg=${data.transDelegateId}&pg=pending&rbid=${data.requestedById}`)
+        history.push(`/task/ackdismantleform?odi=${data.orderDetailId}&tdg=${data.transDelegateId}&pg=pending&rbid=${data.requestedById}&sno=${data.sno}`)
         console.log(data,"navigate tp")
     
     }
@@ -167,11 +167,7 @@ export default function TableDismantlePending() {
 
     useEffect(() => {
         getDataDismantleActPending();
-      
     },[])
-    
-
-
 
     return (
         <div>
