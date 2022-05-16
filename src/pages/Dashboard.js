@@ -35,6 +35,7 @@ import CreateDataGraphNotComplete from "./DashboardDataGenerator"
 
 Chart.register(ChartDataLabels);
 
+
 const Dashboard = () => {
     const [dataGraphNotCompleteRfp,setDataGraphNotCompleteRfp] = useState([])
     const [dataGraphNotCompleteHo,setDataGraphNotCompleteHo] = useState([])
@@ -379,22 +380,24 @@ const Dashboard = () => {
                     
                                 <Row gutter={48} style={{paddingLeft:48,marginTop:48,paddingBottom:48}}>
                               
-                                    <Col className="gutter-row" span={12}>
+                                    <Col className="gutter-row" span={13}>
                                    
                                             <Space size={16} direction="vertical" style={{width:'100%'}}>
                                                 <Bar
                                                     data = {data}
-                                                    height="236"
+                                                    height="436"
+                                                    width="436"
                                                     options={{
                                                         responsive:true,
                                                         aspectRatio:1.63,
+                                                       
                                                         plugins: {
                                                             // legend: {
                                                             //     position: 'bottom',
                                                             // },
                                                         
                                                             legend: {
-                                                     
+                                                           
                                                                 position: 'bottom',
                                                             },
                                                             title: {
@@ -402,7 +405,7 @@ const Dashboard = () => {
                                                                 text: 'Order Request Progress Summary (Forward Logistic)'
                                                             },
                                                             datalabels: {
-                                                                // display: false,
+                                                                display: false,
                                                                 color: "#black",
                                                                 font: {
                                                                     size: 12,
@@ -424,41 +427,41 @@ const Dashboard = () => {
                                                 >
 
                                                 </Bar>
-                                                <Card hoverable>
+                                                <Card>
                                                     {dataGraphComplete?.map(e=>{
                                                         return(
                                                             <Row>
                                                                 <Col className="gutter-row" span={9}>
-                                                                    <Typography style={{fontWeight:'500'}}>{e.project_name} </Typography>
+                                                                    <Typography style={{fontWeight:'500',fontSize:14}}>{e.project_name} </Typography>
                                                                 </Col>
                                                                 <Col className="gutter-row" span={3}>
                                                                     <Tooltip title="HO Done">
-                                                                        <Typography style={{fontSize:16,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#41c358"}}/>     {e.LSP_HODone}</Typography>
+                                                                        <Typography style={{fontSize:14,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#41c358",fontSize:18}}/>     {e.LSP_HODone}</Typography>
                                                                     </Tooltip>
                                                         
                                                                 </Col>
                                                                 <Col className="gutter-row" span={3}>
                                                                     <Tooltip title="RFP Done">
-                                                                        <Typography style={{fontSize:16,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#0ed7dd"}}/>       {e.LSP_RFPDone}</Typography>
+                                                                        <Typography style={{fontSize:14,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#0ed7dd",fontSize:18}}/>       {e.LSP_RFPDone}</Typography>
                                                                     </Tooltip>
                                                      
                                                                 </Col>
                                                                 <Col className="gutter-row" span={3}>
                                                                     <Tooltip title="Logistic Rev Done">
-                                                                        <Typography style={{fontSize:16,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#acf890"}}/>       {e.logistic_RevDone}</Typography>
+                                                                        <Typography style={{fontSize:14,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#acf890",fontSize:18}}/>       {e.logistic_RevDone}</Typography>
                                                                     </Tooltip>
                                                      
                                                                 </Col>
                                                                 <Col className="gutter-row" span={3}>
                                                                     <Tooltip title="Order Req">
-                                                                        <Typography style={{fontSize:16,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#db30d2"}}/>        {e.RO_OrderReq}</Typography>
+                                                                        <Typography style={{fontSize:14,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#db30d2",fontSize:18}}/>        {e.RO_OrderReq}</Typography>
                                                                     </Tooltip>
                                                      
                                                                 </Col>
                                                    
                                                                 <Col className="gutter-row" span={3}>
                                                                     <Tooltip title="Order Req">
-                                                                        <Typography style={{fontSize:16,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#1960db"}}/>        {e.totalSites}</Typography>
+                                                                        <Typography style={{fontSize:14,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#1960db",fontSize:18}}/>        {e.totalSites}</Typography>
                                                                     </Tooltip>
                                                      
                                                                 </Col>
@@ -478,7 +481,7 @@ const Dashboard = () => {
                                     </Col>
                                     
                                
-                                    <Col className="gutter-row" span={12}>
+                                    <Col className="gutter-row" span={11}>
                                    
                                <Space direction="vertical" style={{width:"100%"}} size={48}>
                                <Row >
@@ -574,7 +577,9 @@ const Dashboard = () => {
                                                 options={{
                                                     responsive: false,
                                                     aspectRatio:1.5,
+                                                    centertext:"112",
                                                     cutoutPercentage: 75,
+                                                 
                                                     plugins: {
                                                     
                                                         legend: {
@@ -681,6 +686,7 @@ const Dashboard = () => {
                                                     aspectRatio:1.5,
                                                     cutoutPercentage: 75,
                                                     
+                                                    
                                                     plugins: {
                                                     
                                                         legend: {
@@ -737,7 +743,7 @@ const Dashboard = () => {
                                               <SquareRoundedIcon style={{color:"#1960db",fontSize:20}}/>
                                           </Tooltip>
                                             </Col>
-                                            <Col className="gutter-row" span={6}>
+                                            <Col className="gutter-row" span={5}>
                                             <Typography style={{fontSize:12,paddingTop:4}}>RO Order Request</Typography>
                                             </Col>
                                               
@@ -748,8 +754,8 @@ const Dashboard = () => {
                                               <SquareRoundedIcon style={{color:"#d93a23",fontSize:20}}/>
                                           </Tooltip>
                                             </Col>
-                                            <Col className="gutter-row" span={6}>
-                                            <Typography style={{fontSize:12,paddingTop:4}}>Logistic Rev Pending Pending</Typography>
+                                            <Col className="gutter-row" span={8}>
+                                            <Typography style={{fontSize:12,paddingTop:4}}>Logistic Rev Pending</Typography>
                                             </Col>
                                                 
                                        
