@@ -604,7 +604,7 @@ const Dashboard = () => {
                           
                                                         title: {
                                                             display: true,
-                                                            text: 'Wqiting HO Complete',
+                                                            text: 'Waiting HO Complete',
                                                           
                                                         },
                                                  
