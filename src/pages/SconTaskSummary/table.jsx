@@ -539,11 +539,11 @@ export default function TableTaskSummary(props) {
         {
             title: "Pickup Date",
             width:150,
-            dataIndex: "pickupOrDeliveryDate",
+            // dataIndex: "pickupOrDeliveryDate",
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(stateDataOnProgress.pickupOrDeliveryDate).format("YYYY-MM-DD")}</p>
+                        <p>{moment(record.pickupOrDeliveryDate).format("YYYY-MM-DD")}</p>
                     </Space>
                 )
             },
@@ -557,12 +557,12 @@ export default function TableTaskSummary(props) {
         },
         {
             title: "Incoming Date",
-            dataIndex: "incomingDate",
+            // dataIndex: "incomingDate",
             width:150,
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(stateDataOnProgress.incomingDate).format("YYYY-MM-DD hh:mm:ss")}</p>
+                        <p>{moment(record.incomingDate).format("YYYY-MM-DD hh:mm:ss")}</p>
                     </Space>
                 )
             },

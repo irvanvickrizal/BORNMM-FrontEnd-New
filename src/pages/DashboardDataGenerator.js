@@ -1,34 +1,27 @@
 
-const dataGraphNotCompleteHo = (LSPHOPPending,total) => {
+const dataGraphNotCompleteHo = (LSPHOPPending,LSPTotalHOPending,Total) => {
     const datas = {
         LSP_HOPending:LSPHOPPending,
-        total:total
+        LSP_TotalHOPending:LSPTotalHOPending,
+        
     }
     
     return datas;
 }
 
 
-const dataGraphNotCompleteRfp = (LSPRFPPending,total) => {
+const dataGraphNotCompleteRfp = (LSPRFPPending,LSPTotalRFPPending) => {
     const datas = {
         LSP_RFPPending:LSPRFPPending,
-        total:total
+        LSP_TotalRFPPending:LSPTotalRFPPending
     }
     
     return datas;
 }
-const dataGraphNotCompleteLogistic = (LogisticRevPending,total) => {
+const dataGraphNotCompleteLogistic = (LogisticRevPending,ROOrderReq) => {
     const datas = {
         Logistic_RevPending:LogisticRevPending,
-        total:total
-    }
-    
-    return datas;
-}
-const dataGraphNotCompleteOrderReq = (ROOrderReq,total) => {
-    const datas = {
-        RO_OrderReq:ROOrderReq,
-        total:total
+        RO_OrderReq:ROOrderReq
     }
     
     return datas;
@@ -38,7 +31,7 @@ const CreateDataGraphNotComplete = {
     dataGraphNotCompleteRfp,
     dataGraphNotCompleteHo,
     dataGraphNotCompleteLogistic,
-    dataGraphNotCompleteOrderReq
+  
   
 }
 

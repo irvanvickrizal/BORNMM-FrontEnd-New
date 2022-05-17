@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable prefer-template */
 /* eslint-disable indent */
 /* eslint-disable no-undef */
@@ -35,6 +36,7 @@ import CreateDataGraphNotComplete from "./DashboardDataGenerator"
 
 Chart.register(ChartDataLabels);
 
+
 const Dashboard = () => {
     const [dataGraphNotCompleteRfp,setDataGraphNotCompleteRfp] = useState([])
     const [dataGraphNotCompleteHo,setDataGraphNotCompleteHo] = useState([])
@@ -52,6 +54,7 @@ const Dashboard = () => {
     const [dataValuePieOrderReq,setValueDataPieOrderReq] = useState([])
     const uid = useSelector(state=>state.auth.user.uid)
     const { TabPane } = Tabs;
+    const {Title} = Typography
 
     //variable for chart
     const hoDone = []
@@ -65,27 +68,26 @@ const Dashboard = () => {
         // setIsLoading(true);
         API.getGraphNotCompleteYet(uid).then(
             result=>{
+                console.log(result,"complete result")
                 // setDataGraphNotComplete(result);
                 // setLabelPie(Object.keys(result[0]))
                 // setValueDataPie(Object.values(result[0]))
                
                 const dataHo = result.map((rs)=>CreateDataGraphNotComplete.dataGraphNotCompleteHo(
                     rs.LSP_HOPending,
-                    46
+                    rs.LSP_TotalHOPending - rs.LSP_HOPending,
+                 
                   )) 
                 const dataRfp = result.map((rs)=>CreateDataGraphNotComplete.dataGraphNotCompleteRfp(
                     rs.LSP_RFPPending,
-                    20
+                    rs.LSP_TotalRFPPending  -   rs.LSP_RFPPending
+
                   )) 
                 const dataLogistic = result.map((rs)=>CreateDataGraphNotComplete.dataGraphNotCompleteLogistic(
-                    rs.RO_OrderReq,
-                    7
+                    rs.Logistic_RevPending,
+                    rs.RO_OrderReq -  rs.Logistic_RevPending
                   )) 
-                const dataOrderReq = result.map((rs)=>CreateDataGraphNotComplete.dataGraphNotCompleteOrderReq(
-                    rs.RO_OrderReq,
-                    10
-                  )) 
-                  
+            
                   setDataGraphNotCompleteHo(dataHo);
                   setLabelPieHo(Object.keys(dataHo[0]))
                   setValueDataPieHo(Object.values(dataHo[0]))
@@ -93,9 +95,7 @@ const Dashboard = () => {
                   setValueDataPieRfp(Object.values(dataRfp[0]))
                   setLabelPieLogistic(Object.keys(dataLogistic[0]))
                   setValueDataPieLogistic(Object.values(dataLogistic[0]))
-                  setLabelPieOrderReq(Object.keys(dataOrderReq[0]))
-                  setValueDataPieOrderReq(Object.values(dataOrderReq[0]))
-                //   setDataGraphNotCompleteRfp(dataRfp);
+                  
                 //   setDataGraphNotCompleteLogistic(dataLogistic)
                 //   setDataGraphNotCompleteLogistic(dataOrderReq)
              
@@ -309,6 +309,8 @@ const Dashboard = () => {
         }]
     };
 
+    const CardTitle = (title) => <Title level={5}>{title}</Title>
+
 
     useEffect(() => {
         getGraphNotCompleteYet()
@@ -380,24 +382,26 @@ const Dashboard = () => {
                        
                        
                     
-                                <Row gutter={48} style={{paddingLeft:48,marginTop:48,paddingBottom:48}}>
+                                <Row gutter={24} style={{paddingLeft:48,marginTop:48,paddingBottom:48,paddingRight:48}}>
                               
-                                    <Col className="gutter-row" span={12}>
+                                    <Col className="gutter-row" span={13}>
                                    
                                             <Space size={16} direction="vertical" style={{width:'100%'}}>
                                                 <Bar
                                                     data = {data}
-                                                    height="236"
+                                                    height="436"
+                                                    width="436"
                                                     options={{
                                                         responsive:true,
                                                         aspectRatio:1.63,
+                                                       
                                                         plugins: {
                                                             // legend: {
                                                             //     position: 'bottom',
                                                             // },
                                                         
                                                             legend: {
-                                                     
+                                                           
                                                                 position: 'bottom',
                                                             },
                                                             title: {
@@ -405,7 +409,7 @@ const Dashboard = () => {
                                                                 text: 'Order Request Progress Summary (Forward Logistic)'
                                                             },
                                                             datalabels: {
-                                                                // display: false,
+                                                                display: false,
                                                                 color: "#black",
                                                                 font: {
                                                                     size: 12,
@@ -427,41 +431,41 @@ const Dashboard = () => {
                                                 >
 
                                                 </Bar>
-                                                <Card hoverable>
+                                                <Card>
                                                     {dataGraphComplete?.map(e=>{
                                                         return(
                                                             <Row>
                                                                 <Col className="gutter-row" span={9}>
-                                                                    <Typography style={{fontWeight:'500'}}>{e.project_name} </Typography>
+                                                                    <Typography style={{fontWeight:'500',fontSize:14}}>{e.project_name} </Typography>
                                                                 </Col>
                                                                 <Col className="gutter-row" span={3}>
                                                                     <Tooltip title="HO Done">
-                                                                        <Typography style={{fontSize:16,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#41c358"}}/>     {e.LSP_HODone}</Typography>
+                                                                        <Typography style={{fontSize:14,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#41c358",fontSize:18}}/>     {e.LSP_HODone}</Typography>
                                                                     </Tooltip>
                                                         
                                                                 </Col>
                                                                 <Col className="gutter-row" span={3}>
                                                                     <Tooltip title="RFP Done">
-                                                                        <Typography style={{fontSize:16,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#0ed7dd"}}/>       {e.LSP_RFPDone}</Typography>
+                                                                        <Typography style={{fontSize:14,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#0ed7dd",fontSize:18}}/>       {e.LSP_RFPDone}</Typography>
                                                                     </Tooltip>
                                                      
                                                                 </Col>
                                                                 <Col className="gutter-row" span={3}>
                                                                     <Tooltip title="Logistic Rev Done">
-                                                                        <Typography style={{fontSize:16,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#acf890"}}/>       {e.logistic_RevDone}</Typography>
+                                                                        <Typography style={{fontSize:14,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#acf890",fontSize:18}}/>       {e.logistic_RevDone}</Typography>
                                                                     </Tooltip>
                                                      
                                                                 </Col>
                                                                 <Col className="gutter-row" span={3}>
                                                                     <Tooltip title="Order Req">
-                                                                        <Typography style={{fontSize:16,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#db30d2"}}/>        {e.RO_OrderReq}</Typography>
+                                                                        <Typography style={{fontSize:14,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#db30d2",fontSize:18}}/>        {e.RO_OrderReq}</Typography>
                                                                     </Tooltip>
                                                      
                                                                 </Col>
                                                    
                                                                 <Col className="gutter-row" span={3}>
                                                                     <Tooltip title="Order Req">
-                                                                        <Typography style={{fontSize:16,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#1960db"}}/>        {e.totalSites}</Typography>
+                                                                        <Typography style={{fontSize:14,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#1960db",fontSize:18}}/>        {e.totalSites}</Typography>
                                                                     </Tooltip>
                                                      
                                                                 </Col>
@@ -481,14 +485,109 @@ const Dashboard = () => {
                                     </Col>
                                     
                                
-                                    <Col className="gutter-row" span={12}>
+                                    <Col className="gutter-row" span={11}>
                                    
-                               <Space direction="vertical" style={{width:"100%"}} size={48}>
+                               <Space direction="vertical" style={{width:"100%"}} size={24}>
+                               <Card title={CardTitle("Nokia Task")}>
+                                   <Row>
+                           <Col className="gutter-row" span={24}  offset={6}>
+                           <Doughnut
+                                                data = {dataNotCompleteLogistic}
+                                                width="196" height="256"
+                                            
+                                               
+                                                options={{
+                                                    responsive: false,
+                                                    aspectRatio:1.5,
+                                                    cutoutPercentage: 75,
+                                                    
+                                                    
+                                                    plugins: {
+                                                    
+                                                        legend: {
+                                                            display:false,
+                                                            position: 'bottom',
+                                                            padding:2
+                                                        },
+                          
+                                                        title: {
+                                                            display: true,
+                                                            text: 'Logistic Review',
+                                                          
+                                                        },
+                                                 
+                                                 
+                                                        datalabels: {
+                                                            // display: true,
+                                                            color: '#black',
+                                                            font: {
+                                                                size: 14,
+                                                                weight: "500",
+                                                                color:"#000"
+                                                            },
+                                                           
+                                                            display: function(context) {
+                                                                return context.dataset.data[context.dataIndex] !== 0; // or >= 1 or ...
+                                                             },
+                                                            //  formatter: function(value,ctx) {
+                                                            //     return `${ctx.chart.data.labels[ctx.dataIndex]}:${value}`;
+                                                             
+                                                            //   }
+                                                          
+                                                        },
+                                                        
+                                                        animation: {
+                                                            animateScale: true,
+                                                            animateRotate: true
+                                                        },
+                                                             
+                                                        
+                                                        
+                      
+             
+                                                    }}}
+                                                    
+                                               
+     
+                                            >
+
+                                            </Doughnut>
+                                            <Row>
+                                            <Col className="gutter-row" span={1}>
+                                          <Tooltip>
+                                              <SquareRoundedIcon style={{color:"#1960db",fontSize:20}}/>
+                                          </Tooltip>
+                                            </Col>
+                                            <Col className="gutter-row" span={5}>
+                                            <Typography style={{fontSize:12,paddingTop:4}}>RO Order Request</Typography>
+                                            </Col>
+                                              
+                                            </Row>
+                                            <Row>
+                                            <Col className="gutter-row" span={1}>
+                                          <Tooltip>
+                                              <SquareRoundedIcon style={{color:"#d93a23",fontSize:20}}/>
+                                          </Tooltip>
+                                            </Col>
+                                            <Col className="gutter-row" span={8}>
+                                            <Typography style={{fontSize:12,paddingTop:4}}>Logistic Rev Pending</Typography>
+                                            </Col>
+                                                
+                                       
+                                            </Row>
+                                                                   </Col>
+                     
+                          
+                                
+                           </Row>
+                                   </Card>
+                                   <Card title={CardTitle("LSP Task")}>
                                <Row >
-                           <Col className="gutter-row" span={12}>
+                                   <Col className="gutter-row" span={12}>
                            <Doughnut
                                                 data = {dataNotComplete}
                                                 width="196" height="256"
+                                          
                                                
                                                 options={{
                                                     responsive: false,
@@ -501,34 +600,32 @@ const Dashboard = () => {
                                                             position: 'bottom',
                                                             padding:2
                                                         },
+                                                        
                           
                                                         title: {
                                                             display: true,
-                                                            text: 'Task Not Complete Yet (LSP HO)',
+                                                            text: 'Wqiting HO Complete',
                                                           
                                                         },
                                                  
                                                  
-                                                        // datalabels: {
-                                                        //     // display: false,
-                                                        //     color: '#ffffff',
-                                                        //     font: {
-                                                        //         size: 14,
-                                                        //         weight: "500",
-                                                        //         color:"#000"
-                                                        //     },
-                                                        //     anchor: 'end',
-                                                        //     align: 'end',
-                                                        //     offset: 8,
-                                                        //     display: function(context) {
-                                                        //         return context.dataset.data[context.dataIndex] !== 0; // or >= 1 or ...
-                                                        //      },
-                                                        //      formatter: function(value,ctx) {
-                                                        //         return `${ctx.chart.data.labels[ctx.dataIndex]}:${value}`;
-                                                             
-                                                        //       }
+                                                        datalabels: {
+                                                            // display: false,
+                                                            color: '#ffffff',
+                                                            font: {
+                                                                size: 14,
+                                                                weight: "500",
+                                                                color:"#000"
+                                                            },
+                                                            // anchor: 'end',
+                                                            // align: 'end',
+                                                            offset: 8,
+                                                            display: function(context) {
+                                                                return context.dataset.data[context.dataIndex] !== 0; // or >= 1 or ...
+                                                             },
                                                           
-                                                        // },
+                                                          
+                                                        },
                                                         
                                                         animation: {
                                                             animateScale: true,
@@ -544,6 +641,31 @@ const Dashboard = () => {
                                             >
 
                                             </Doughnut>
+                                            <Row>
+                                            <Col className="gutter-row" span={2}>
+                                          <Tooltip>
+                                              <SquareRoundedIcon style={{color:"#d93a23",fontSize:20}}/>
+                                          </Tooltip>
+                                            </Col>
+                                            <Col className="gutter-row" span={12}>
+                                            <Typography style={{fontSize:12,paddingTop:4}}>LSP HO Pending</Typography>
+                                            </Col>
+                                              
+                                            </Row>
+                                            <Row>
+                                            <Col className="gutter-row" span={2}>
+                                          <Tooltip>
+                                              <SquareRoundedIcon style={{color:"#1960db",fontSize:20}}/>
+                                          </Tooltip>
+                                            </Col>
+                                            <Col className="gutter-row" span={12}>
+                                            <Typography style={{fontSize:12,paddingTop:4}}>LSP HO Done</Typography>
+                                            </Col>
+                                                
+                                       
+                                            </Row>
+                                       
+  
                            </Col>
                            <Col className="gutter-row" span={12}>
                            <Doughnut
@@ -553,7 +675,9 @@ const Dashboard = () => {
                                                 options={{
                                                     responsive: false,
                                                     aspectRatio:1.5,
+                                                    centertext:"112",
                                                     cutoutPercentage: 75,
+                                                 
                                                     plugins: {
                                                     
                                                         legend: {
@@ -564,10 +688,11 @@ const Dashboard = () => {
                           
                                                         title: {
                                                             display: true,
-                                                            text: 'Task Not Complete Yet (LSP RFP)',
+                                                            text: 'Waiting RFP',
                                                           
                                                         },
                                                  
+                                                        
                                                  
                                                         // datalabels: {
                                                         //     // display: false,
@@ -589,6 +714,20 @@ const Dashboard = () => {
                                                         //       }
                                                           
                                                         // },
+                                                        beforeDraw: function(chart) {
+                                                            var {width} = chart;
+                                                                var {height} = chart;
+                                                                var {ctx} = chart;
+                                                                ctx.restore();
+                                                                var fontSize = (height / 160).toFixed(2);
+                                                                ctx.font = fontSize + "em sans-serif";
+                                                                ctx.textBaseline = "top";
+                                                                var text = "Foo-bar";
+                                                                var textX = Math.round((width - ctx.measureText(text).width) / 2);
+                                                                var textY = height / 2;
+                                                                ctx.fillText(text, textX, textY);
+                                                                ctx.save();
+                                                           } ,
                                                         
                                                         animation: {
                                                             animateScale: true,
@@ -602,136 +741,41 @@ const Dashboard = () => {
                                                
      
                                             >
+                                                
 
                                             </Doughnut>
+                                            <Row>
+                                            <Col className="gutter-row" span={2}>
+                                          <Tooltip>
+                                              <SquareRoundedIcon style={{color:"#d93a23",fontSize:20}}/>
+                                          </Tooltip>
+                                            </Col>
+                                            <Col className="gutter-row" span={12}>
+                                            <Typography style={{fontSize:12,paddingTop:4}}>LSP RFP Pending</Typography>
+                                            </Col>
+                                              
+                                            </Row>
+                                            <Row>
+                                            <Col className="gutter-row" span={2}>
+                                          <Tooltip>
+                                              <SquareRoundedIcon style={{color:"#1960db",fontSize:20}}/>
+                                          </Tooltip>
+                                            </Col>
+                                            <Col className="gutter-row" span={12}>
+                                            <Typography style={{fontSize:12,paddingTop:4}}>LSP RFP Done</Typography>
+                                            </Col>
+                                                
+                                       
+                                            </Row>
+                                    
                            </Col>
                          
+                     
                                         
                            </Row>
-                           <Row>
-                           <Col className="gutter-row" span={12}>
-                           <Doughnut
-                                                data = {dataNotCompleteLogistic}
-                                                width="196" height="256"
-                                               
-                                                options={{
-                                                    responsive: false,
-                                                    aspectRatio:1.5,
-                                                    cutoutPercentage: 75,
-                                                    plugins: {
-                                                    
-                                                        legend: {
-                                                            display:false,
-                                                            position: 'bottom',
-                                                            padding:2
-                                                        },
-                          
-                                                        title: {
-                                                            display: true,
-                                                            text: 'Task Not Complete Yet (Logistic Rev)',
-                                                          
-                                                        },
-                                                 
-                                                 
-                                                        // datalabels: {
-                                                        //     // display: false,
-                                                        //     color: '#ffffff',
-                                                        //     font: {
-                                                        //         size: 14,
-                                                        //         weight: "500",
-                                                        //         color:"#000"
-                                                        //     },
-                                                        //     anchor: 'end',
-                                                        //     align: 'end',
-                                                        //     offset: 8,
-                                                        //     display: function(context) {
-                                                        //         return context.dataset.data[context.dataIndex] !== 0; // or >= 1 or ...
-                                                        //      },
-                                                        //      formatter: function(value,ctx) {
-                                                        //         return `${ctx.chart.data.labels[ctx.dataIndex]}:${value}`;
-                                                             
-                                                        //       }
-                                                          
-                                                        // },
-                                                        
-                                                        animation: {
-                                                            animateScale: true,
-                                                            animateRotate: true
-                                                        },
-                                                             
-                                                        
-                      
-             
-                                                    }}}
-                                               
-     
-                                            >
-
-                                            </Doughnut>
-                           </Col>
-                           <Col className="gutter-row" span={12}>
-                           <Doughnut
-                                                data = {dataNotCompleteOrderReq}
-                                                width="196" height="256"
-                                               
-                                                options={{
-                                                    responsive: false,
-                                                    aspectRatio:1.5,
-                                                    cutoutPercentage: 75,
-                                                    plugins: {
-                                                    
-                                                        legend: {
-                                                            display:false,
-                                                            position: 'bottom',
-                                                            padding:2
-                                                        },
-                          
-                                                        title: {
-                                                            display: true,
-                                                            text: 'Task Not Complete Yet (RO Order Req)',
-                                                          
-                                                        },
-                                                 
-                                                 
-                                                        // datalabels: {
-                                                        //     // display: false,
-                                                        //     color: '#ffffff',
-                                                        //     font: {
-                                                        //         size: 14,
-                                                        //         weight: "500",
-                                                        //         color:"#000"
-                                                        //     },
-                                                        //     anchor: 'end',
-                                                        //     align: 'end',
-                                                        //     offset: 8,
-                                                        //     display: function(context) {
-                                                        //         return context.dataset.data[context.dataIndex] !== 0; // or >= 1 or ...
-                                                        //      },
-                                                        //      formatter: function(value,ctx) {
-                                                        //         return `${ctx.chart.data.labels[ctx.dataIndex]}:${value}`;
-                                                             
-                                                        //       }
-                                                          
-                                                        // },
-                                                        
-                                                        animation: {
-                                                            animateScale: true,
-                                                            animateRotate: true
-                                                        },
-                                                             
-                                                        
-                      
-             
-                                                    }}}
-                                               
-     
-                                            >
-
-                                            </Doughnut>
-                           </Col>
-                          
-                                
-                           </Row>
+                                   </Card>
+                            
+                        
                                </Space>
                       
                                           
