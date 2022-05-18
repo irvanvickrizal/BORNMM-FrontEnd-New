@@ -88,7 +88,7 @@ export default function TableDismantlePending() {
         {
             title : "Workpackage ID",
             dataIndex:'workpackageId',
-            width:150,
+            width:170,
             ...Search('workpackageId'),
         },
         {

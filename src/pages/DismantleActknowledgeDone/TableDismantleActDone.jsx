@@ -67,7 +67,7 @@ export default function TableDismantleActDone() {
         {
             title : "Workpackage ID",
             dataIndex:'workpackageId',
-            width:100,
+            width:140,
             ...Search('workpackageId'),
         },
         {
