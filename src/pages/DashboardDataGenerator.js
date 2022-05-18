@@ -26,12 +26,21 @@ const dataGraphNotCompleteLogistic = (LogisticRevPending,ROOrderReq) => {
     
     return datas;
 }
+const dataGraphNotCompletePmApproval = (PMRevPending,TotalOrderReq) => {
+    const datas = {
+        PM_RevPending:PMRevPending,
+        Total_OrderReq:TotalOrderReq,
+       
+    }
+    
+    return datas;
+}
 
 const CreateDataGraphNotComplete = {
     dataGraphNotCompleteRfp,
     dataGraphNotCompleteHo,
     dataGraphNotCompleteLogistic,
-  
+    dataGraphNotCompletePmApproval,
   
 }
 
