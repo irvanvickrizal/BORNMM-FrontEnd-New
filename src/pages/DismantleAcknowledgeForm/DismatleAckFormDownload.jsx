@@ -21,6 +21,7 @@ export default function DismatleAckFormDownload() {
     const [dataDismantleLog,setDataDismantleLog] = useState([])
     const [siteNo,setSiteNo] = useState('')
     const [siteName,setSiteName] = useState('')
+    const [documentDate,setDocumentDate] = useState('')
 
     const customURL = window.location.href;
     const params = new URLSearchParams(customURL.split('?')[1])
@@ -41,7 +42,9 @@ export default function DismatleAckFormDownload() {
 
         return (
             <><><span>{dataDismantleLog[0]?.docName} {dataDismantleLog[0]?.eventDesc} by {dataDismantleLog[0]?.userType},</span><b> {dataDismantleLog[0]?.name} {dataDismantleLog[0]?.signTitle} on {moment(dataDismantleLog[0]?.executeDate).format("DD-MMM-YYYY hh:mm:ss")}    </b><br></br></>
-                <><span>{dataDismantleLog[1]?.docName} {dataDismantleLog[1]?.eventDesc} by {dataDismantleLog[1]?.userType},</span><b> {dataDismantleLog[1]?.name} {dataDismantleLog[1]?.signTitle} on {moment(dataDismantleLog[1]?.executeDate).format("DD-MMM-YYYY hh:mm:ss")}    </b></></>
+                <><span>{dataDismantleLog[1]?.docName} {dataDismantleLog[1]?.eventDesc} by {dataDismantleLog[1]?.userType},</span><b> {dataDismantleLog[1]?.name} {dataDismantleLog[1]?.signTitle} on {moment(dataDismantleLog[1]?.executeDate).format("DD-MMM-YYYY hh:mm:ss")}    </b></>
+                <br></br>
+            </>
         )
 
     }
@@ -136,10 +139,12 @@ export default function DismatleAckFormDownload() {
         getDataSiteInfo();
         getDataInfo()
     },[])
+    useEffect(() => {
+        document.title=`${dataInfo[0]?.siteNo}_${dataInfo[0]?.siteName}_Dismantlelist`
+        setDocumentDate(`${moment(dataInfo[0]?.ackCompleteDate).format("DD-MMM-YYYY")}`)
+    },[dataInfo])
     useEffect(()=>
     {
-        document.title=`${dataInfo[0]?.siteNo}_${dataInfo[0]?.siteName}_Dismantlelist`
-
         if(dataInfo.length>0 && dataSite.length>0){
             var printContents = document.getElementById("printArea").innerHTML;
             var originalContents = document.body.innerHTML;
@@ -150,7 +155,7 @@ export default function DismatleAckFormDownload() {
 
             document.body.innerHTML = originalContents;
         }
-    },[dataSite,dataInfo,dataDismantleLog])
+    },[])
     return (
         <><HeaderChanger title='' />
             <div id="printArea">
@@ -255,17 +260,16 @@ export default function DismatleAckFormDownload() {
                             autoComplete="off"
                             labelAlign="left"
                             initialValues={{
-                                'deliveryDate':moment(dataInfo[0]?.ackCompleteDate).format("DD-MMM-YYYY"),
+                                'deliveryDate':"test",
                             }}
                         >
                             <Form.Item name="deliveryDate" label="Delivery Date" 
                                 style={{ 'margin-top': '4px', 'margin-bottom': '4px' }}
-
                             >
                                 {/* <DatePicker /> */}
-                                <Input style={{ width: "75%", marginTop: 10, "background-color": 'white', color:"black"  }}  disabled/>
+                                <Input hidden style={{ width: "75%", marginTop: 10, "background-color": 'white', color:"black"  }}  disabled/>
+                                <Input value={documentDate} style={{ width: "75%", marginTop: 10, "background-color": 'white', color:"black"  }}  disabled/>
                             </Form.Item>
-                           
                             <Form.Item
                                 label="Doc Header Text"
                                 name="password"
