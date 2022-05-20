@@ -41,10 +41,12 @@ export default function DismatleAckFormDownload() {
         // [docName] + “ “ + [eventDesc] + “ by “ + [userType]  + “, ”+ [Name] + “ “ + [signTitle] + “ on ” + [executeDate]
 
         return (
-            <><><span>{dataDismantleLog[0]?.docName} {dataDismantleLog[0]?.eventDesc} by {dataDismantleLog[0]?.userType},</span><b> {dataDismantleLog[0]?.name} {dataDismantleLog[0]?.signTitle} on {moment(dataDismantleLog[0]?.executeDate).format("DD-MMM-YYYY hh:mm:ss")}    </b><br></br></>
-                <><span>{dataDismantleLog[1]?.docName} {dataDismantleLog[1]?.eventDesc} by {dataDismantleLog[1]?.userType},</span><b> {dataDismantleLog[1]?.name} {dataDismantleLog[1]?.signTitle} on {moment(dataDismantleLog[1]?.executeDate).format("DD-MMM-YYYY hh:mm:ss")}    </b></>
+            <div>
+                <span>{dataDismantleLog[0]?.docName} {dataDismantleLog[0]?.eventDesc} by {dataDismantleLog[0]?.userType},</span><b> {dataDismantleLog[0]?.name} {dataDismantleLog[0]?.signTitle} on {moment(dataDismantleLog[0]?.executeDate).format("DD-MMM-YYYY hh:mm:ss")}    </b>
                 <br></br>
-            </>
+                <span>{dataDismantleLog[1]?.docName} {dataDismantleLog[1]?.eventDesc} by {dataDismantleLog[1]?.userType},</span><b> {dataDismantleLog[1]?.name} {dataDismantleLog[1]?.signTitle} on {moment(dataDismantleLog[1]?.executeDate).format("DD-MMM-YYYY hh:mm:ss")}    </b>
+                <br></br>
+            </div>
         )
 
     }
@@ -152,10 +154,11 @@ export default function DismatleAckFormDownload() {
             document.body.innerHTML = printContents;
 
             window.print();
-
+            window.onafterprint = window.close;
+            
             document.body.innerHTML = originalContents;
         }
-    },[])
+    },[dataInfo,dataSite])
     return (
         <><HeaderChanger title='' />
             <div id="printArea">
@@ -175,8 +178,6 @@ export default function DismatleAckFormDownload() {
                             <Typography style={{ fontSize: 18, fontWeight: 700 }}>{`Document Date : ${moment(dataInfo[0]?.ackCompleteDate).format("DD-MMM-YYYY")}`}</Typography>
                         </div>
                     </Col>
-
-
                 </Row>
                 <Divider style={{ 'margin-bottom': '4px' }} />
                 <Divider style={{ 'margin-top': '4px', 'margin-bottom': '4px' }} />
@@ -268,8 +269,9 @@ export default function DismatleAckFormDownload() {
                             >
                                 {/* <DatePicker /> */}
                                 <Input hidden style={{ width: "75%", marginTop: 10, "background-color": 'white', color:"black"  }}  disabled/>
-                                <Input value={documentDate} style={{ width: "75%", marginTop: 10, "background-color": 'white', color:"black"  }}  disabled/>
+                                <Input value={moment(dataInfo[0]?.ackCompleteDate).format("DD-MMM-YYYY")} style={{ width: "75%", marginTop: 10, "background-color": 'white', color:"black"  }}  disabled/>
                             </Form.Item>
+                            
                             <Form.Item
                                 label="Doc Header Text"
                                 name="password"
