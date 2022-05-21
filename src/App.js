@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Switch} from 'react-router-dom';
 import Main from '@modules/main/Main';
 import Login from '@modules/login/Login';
 import Register from '@modules/register/Register';
+import ApkDownloadPage from '@app/pages/ApkDownloadPage/index';
 import ForgetPassword from '@modules/forgot-password/ForgotPassword';
 import RecoverPassword from '@modules/recover-password/RecoverPassword';
 import PrivacyPolicy from '@modules/privacy-policy/PrivacyPolicy';
@@ -32,6 +33,9 @@ const App = () => {
     return (
         <Router>
             <Switch>
+                <PublicRoute exact path="/apkdownload">
+                    <ApkDownloadPage />
+                </PublicRoute>
                 <PublicRoute exact path="/login">
                     <Login />
                 </PublicRoute>

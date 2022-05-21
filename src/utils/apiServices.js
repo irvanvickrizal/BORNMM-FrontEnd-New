@@ -856,11 +856,14 @@ const getGraphNotCompleteYet = (uid) => GETParam("dashboard/dashboardGraphOrderR
 const getGraphComplete = (uid) => GETParam("dashboard/dashboardGraphOrderRequestCompletionSummary/0",uid)
 const getSummary = (uid) => GETParam("dashboard/dashboardPanelOrderRequestSummary",uid)
 
+//Download APK
+const getApkLink = () => GET("dashboard/bornMobileAppLatestVersion");
 
 const API ={
     postDismantleAckNew,
     postRejectDismantleAckNew,
     getDismantleLog,
+    getApkLink,
     getSummary,
     getDownloadRequestedBORN,
     putCustomerPO,
