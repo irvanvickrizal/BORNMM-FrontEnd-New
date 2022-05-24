@@ -5,8 +5,9 @@ import { useSelector } from 'react-redux';
 import {Table ,Space,Row,Col,Spin,Tooltip} from "antd"
 import moment from "moment"
 import Search from '@app/components/searchcolumn/SearchColumn';
-import { EditFilled,EyeFilled  } from '@ant-design/icons'
+import { EditFilled,EyeFilled,FileExcelOutlined  } from '@ant-design/icons'
 import {IconButton, TextField}  from '@mui/material/';
+import exportFromJSON from 'export-from-json'
 import { useHistory } from 'react-router-dom';
 
 export default function TableDismantleActDone() {
@@ -25,6 +26,22 @@ export default function TableDismantleActDone() {
                 setDtaDismantleAct(result);
                 setIsLoading(false);
                 console.log("data Dismantle Act Done =>",result);
+            }
+        )
+    }
+
+    const getDownloadAck = () => {
+        API.getDismantleActDone(userId).then(
+            result=>{
+                // setDownloadData(result);
+                console.log("data  Download :",result);
+               
+                const data = result;
+                //const data = result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
+                const exportType =  exportFromJSON.types.xls;
+                const fileName = `Dismantle_Ack`;
+                exportFromJSON({ data, fileName, exportType });
+               
             }
         )
     }
@@ -113,13 +130,13 @@ export default function TableDismantleActDone() {
             ...Search('requestDate'),
         },
         {
-            title : "Actknowledge By",
+            title : "Ack Completed By",
             width:100,
             dataIndex:'ackCompletedBy',
             ...Search('ackCompletedBy'),
         },
         {
-            title : "Act Date",
+            title : "Ack Complete Date",
             width:100,
             render:(record)=>{
                 return (
@@ -185,9 +202,23 @@ export default function TableDismantleActDone() {
                     </Col>
                 </Row>  
                 :
-                <Table
-                    scroll={{ x: '150%',y:500 }}
-                    rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
+                <><Row>
+                    <Col md={24} sm={24}>
+                        <div className='float-right'>
+
+                            <Tooltip title="Download Template">
+                                <IconButton size="medium" color="success" onClick={getDownloadAck}>
+
+                                    <FileExcelOutlined />
+
+                                </IconButton>
+                                {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
+                            </Tooltip>
+                        </div>
+                    </Col>
+                </Row><Table
+                    scroll={{ x: '150%', y: 500 }}
+                    rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' : 'table-row-dark'}
                     // expandable={{ expandedRowRender }}
                     columns={columns}
                     dataSource={dataDismatleAct}
@@ -196,7 +227,7 @@ export default function TableDismantleActDone() {
                         showSizeChanger: true,
                         position: ["bottomLeft"],
                     }}
-                    bordered />}
+                    bordered /></>}
         </div>
     )
 }
