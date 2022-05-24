@@ -859,7 +859,11 @@ const getSummary = (uid) => GETParam("dashboard/dashboardPanelOrderRequestSummar
 //Download APK
 const getApkLink = () => GET("dashboard/bornMobileAppLatestVersion");
 
+const getRPTAPPTracking =(userid) => GETParam('rpt/OrderRequestDismantleGetApprovalTracking',userid);
+
+
 const API ={
+    getRPTAPPTracking,
     postDismantleAckNew,
     postRejectDismantleAckNew,
     getDismantleLog,
