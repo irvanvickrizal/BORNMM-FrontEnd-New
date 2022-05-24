@@ -108,6 +108,7 @@ import BoqRefAccuracy from "@app/pages/BoqRefAccuracy/index"
 import mMaterialBulkUpload from "@app/pages/mMaterial/mMaterialBulkUpload"
 import DismatleAckFormDownload from "@app/pages/DismantleAcknowledgeForm/DismatleAckFormDownload"
 import PmrInventory from "@app/pages/PmrInventory/index"
+import DismantleAckTracking from "@app/pages/DismantleAckTracking/DismantleAckTracking"
 
 
 const Main = () => {
@@ -590,6 +591,11 @@ const Main = () => {
                                             exact
                                             path="/stockpmr/inventory"
                                             component={PmrInventory}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/rpt/dismantleapptracking"
+                                            component={DismantleAckTracking}
                                         />
                                     </Switch>
                                 </div>
