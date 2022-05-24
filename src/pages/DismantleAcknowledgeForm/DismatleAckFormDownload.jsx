@@ -95,11 +95,6 @@ export default function DismatleAckFormDownload() {
  
         },
         {
-            title : "Description",
-            dataIndex:'itemQty',
-        
-        },
-        {
             title : "Serial No",
             dataIndex:'serialNo',
     
