@@ -86,8 +86,24 @@ export default function TableDismantleAckTracking() {
     const columns = [
         {
             title : "No",
-            width : 50,
+            fixed:'left',
+            width : 30,
             render: (value, item, index) => 1 + index
+        },
+        {
+            width:100,
+            title : "Order Request No",
+            dataIndex:'orderRequestNo',
+            fixed:'left',
+            ...Search('orderRequestNo'),
+        },
+        {
+            width:70,
+            title : "Site No",
+            dataIndex:'siteNo',
+            responsive: ['md'],
+            fixed:'left',
+            ...Search('siteNo'),
         },
         {
             width:150,
@@ -100,21 +116,6 @@ export default function TableDismantleAckTracking() {
             title : "Project Name",
             dataIndex:'projectName',
             ...Search('projectName'),
-        },
-        {
-            width:150,
-            title : "Order Request No",
-            dataIndex:'orderRequestNo',
-            fixed:'left',
-            ...Search('orderRequestNo'),
-        },
-        {
-            width:150,
-            title : "Site No",
-            dataIndex:'siteNo',
-            responsive: ['md'],
-            fixed:'left',
-            ...Search('siteNo'),
         },
         {
             width:150,
@@ -206,7 +207,7 @@ export default function TableDismantleAckTracking() {
                     </Col>
                 </Row>
                 <Table
-                    scroll={{ x: '300%' ,y:600}}
+                    scroll={{ x: '200%' ,y:600}}
                     
                     rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
                     // expandable={{ expandedRowRender }}
