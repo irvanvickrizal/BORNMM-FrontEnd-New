@@ -485,6 +485,9 @@ const SdrForm = (props) => {
                                     'isExpressDelivery':false,
                                     'ctName':1,
                                     'invName':1,
+                                    "site":1,
+                                    "packetType":1,
+                                    "proposeDelivery":2,
                                     'deliveryDates': moment(date2, "YYYY-MM-DD").add(2,'d')
                                 }}
                                 fields={[
