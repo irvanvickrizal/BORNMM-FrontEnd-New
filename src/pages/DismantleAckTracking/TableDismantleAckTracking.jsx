@@ -105,6 +105,7 @@ export default function TableDismantleAckTracking() {
             width:150,
             title : "Order Request No",
             dataIndex:'orderRequestNo',
+            fixed:'left',
             ...Search('orderRequestNo'),
         },
         {
@@ -112,6 +113,7 @@ export default function TableDismantleAckTracking() {
             title : "Site No",
             dataIndex:'siteNo',
             responsive: ['md'],
+            fixed:'left',
             ...Search('siteNo'),
         },
         {
@@ -192,7 +194,7 @@ export default function TableDismantleAckTracking() {
                     <Col md={24} sm={24}>
                         <div className='float-right'>
                          
-                            <Tooltip title="Download Template">
+                            <Tooltip title="Download Dismantle Ack Tracking">
                                 <IconButton size="medium" color="success" onClick={getDownloadPoBoqList}>
                                     
                                     <FileExcelOutlined />
