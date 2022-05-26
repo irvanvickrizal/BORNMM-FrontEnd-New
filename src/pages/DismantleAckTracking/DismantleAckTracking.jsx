@@ -5,7 +5,7 @@ import TableDismantleAckTracking from '@app/pages/DismantleAckTracking/TableDism
 export default function DismantleAckTracking() {
     return (
         <div>
-            <HeaderChanger title="Dismantle ACK Done"/>
+            <HeaderChanger title="Dismantle ACK Tracking"/>
             <TableDismantleAckTracking/>
         </div>
     )
