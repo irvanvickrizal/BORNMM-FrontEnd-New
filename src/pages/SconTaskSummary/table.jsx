@@ -383,11 +383,11 @@ export default function TableTaskSummary(props) {
         {
             title: "Incoming Date",
             width:150,
-            dataIndex: "incomingDate",
+         
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(stateDataPending.incomingDate).format("YYYY-MM-DD hh:mm:ss")}</p>
+                        <p>{moment(record.incomingDate).format("YYYY-MM-DD hh:mm:ss")}</p>
                     </Space>
                 )
             },
