@@ -101,7 +101,6 @@ export default function TableDismantleAckTracking() {
             width:70,
             title : "Site No",
             dataIndex:'siteNo',
-            responsive: ['md'],
             fixed:'left',
             ...Search('siteNo'),
         },
