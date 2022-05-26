@@ -354,7 +354,7 @@ const Dashboard = () => {
                             count={dataSummary[0]?.totalSDRDone}
                             title="SDR Done"
                             type="info"
-                            icon="fas fa-list"
+                            icon="ion-android-document"
                             navigateTo="/" />
                     </div>
                     <div className="col-lg-3 col-6">
@@ -362,7 +362,7 @@ const Dashboard = () => {
                             count={dataSummary[0]?.totalLTRDone}
                             title="LTR Done"
                             type="success"
-                            icon="fas fa-list"
+                            icon="ion-android-document"
                             navigateTo="/" />
                     </div>
                     <div className="col-lg-3 col-6">
@@ -370,7 +370,7 @@ const Dashboard = () => {
                             count={dataSummary[0]?.totalPMRDone}
                             title="PMR Done"
                             type="warning"
-                            icon="fas fa-list"
+                            icon="ion-android-document"
                             navigateTo="/" />
                     </div>
                     <div className="col-lg-3 col-6">
@@ -378,7 +378,7 @@ const Dashboard = () => {
                             count={dataSummary[0]?.totalOrderRejection}
                             title="Order Rejection"
                             type="danger"
-                            icon="fas fa-list"
+                            icon="ion-android-document"
                             navigateTo="/" />
                     </div>
                 </div>
