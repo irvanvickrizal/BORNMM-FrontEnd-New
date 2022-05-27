@@ -33,6 +33,7 @@ export default function TableDismantleActForm() {
     const params = new URLSearchParams(customURL.split('?')[1])
     const [dataTableAtas,setDataTableAtas] = useState([])
     const [dataDismantleList,setDataDismantleList] = useState([])
+    const [dataPMRVSDismantle,setDataPMRVSDismantle] = useState([])
     const [dataDismantleLog,setDataDismantleLog] = useState([])
     const [dataDismantlePhotoList,setDataDismantlePhotoList] = useState([])
     const [isLoading, setIsLoading] = useState(false);
@@ -51,6 +52,7 @@ export default function TableDismantleActForm() {
     const sno = params.get('sno');
     const pg = params.get('pg');
     const rbid = params.get('rbid');
+    const boqref = params.get('boqref');
     const componentRef = useRef();
     const getWindowDimensions = () => {
         const { innerWidth: width, innerHeight: height } = window
@@ -310,6 +312,14 @@ export default function TableDismantleActForm() {
             }
         )
     }
+    function getPMRVSDismantle(transDelegateId,orderDerailId) {
+        API.getPMRVSDismantle(transDelegateId,orderDerailId).then(
+            result=>{
+                setDataPMRVSDismantle(result);
+                console.log("vs =>",result);
+            }
+        )
+    }
     function getLog(odiParam) {
         API.getDismantleLog(odiParam).then(
             result=>{
@@ -442,6 +452,9 @@ export default function TableDismantleActForm() {
         }
         else if(key==3){
             getLog(odi)
+        }
+        else if(key==4){
+            getPMRVSDismantle(tdg,odi)
         }
         console.log("keytabs",key);
     }
@@ -603,6 +616,46 @@ export default function TableDismantleActForm() {
         },
    
     ]
+    const columnPMRVSDismantle = [ 
+      
+        {
+            title : "No",
+            width : 50,
+            render: (value, item, index) => 1 + index
+        },
+   
+        {
+            title : "Material Code",
+            dataIndex:'materialCode',
+            ...Search('materialCode'),
+        },
+        {
+            title : "Item Description",
+            dataIndex:'materialDesc',
+            ...Search('materialDesc'),
+        },
+        {
+            title : "PMR QTY",
+            dataIndex:'qtyBOQRef',
+            ...Search('qtyBOQRef'),
+        },
+        {
+            title : "Dismantle QTY",
+            dataIndex:'qtyFinal',
+            ...Search('qtyFinal'),
+        },
+        {
+            title : "UOM",
+            dataIndex:'UOM',
+            ...Search('UOM'),
+        },
+        {
+            title : "Remarks",
+            dataIndex:'remarks',
+            ...Search('remarks'),
+        },
+   
+    ]
 
     const columnDismantleLog = [ 
       
@@ -696,6 +749,21 @@ export default function TableDismantleActForm() {
 
                 <Col span={24}>
                     <Tabs defaultActiveKey="1" onChange={callback}>
+                        {boqref == "yes" ? <TabPane tab="PMR VS Dismantle List" key="4">
+                            <div id="table1">
+                                <Table
+                                    scroll={{ x: '100%' }}
+                                    //rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' :  'table-row-dark'}
+                                    // expandable={{ expandedRowRender }}
+                                    columns={columnPMRVSDismantle}
+                                    dataSource={dataPMRVSDismantle}
+                                    pagination={false}
+                                    bordered />
+                            </div>
+                            
+                        </TabPane> :
+                            null }
+                        
                         <TabPane tab="Dismantle List" key="1">
                             <Row>
                                 <Col md={24} sm={24}>
