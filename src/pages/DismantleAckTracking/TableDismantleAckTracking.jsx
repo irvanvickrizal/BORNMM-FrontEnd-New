@@ -120,7 +120,6 @@ export default function TableDismantleAckTracking() {
             width:150,
             title : "Site Name",
             dataIndex:'siteName',
-            responsive: ['md'],
             ...Search('siteName'),
         },
         {
@@ -168,7 +167,18 @@ export default function TableDismantleAckTracking() {
         {
             width:150,
             title : "Lead Time",
-            dataIndex:'leadTime',
+            render:(record)=>{
+                return (
+                    <div>
+                        {record.leadTime < 0 
+                            ?
+                            <p style={{ color:'red' }}>{record.leadTime}</p>:
+                            <p>
+                                {record.leadTime}
+                            </p>}
+                    </div>
+                )
+            },
             ...Search('leadTime'),
         }
    
