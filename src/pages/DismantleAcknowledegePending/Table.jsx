@@ -50,7 +50,7 @@ export default function TableDismantlePending() {
     }
 
     const handleNavigate = (data) => {
-        history.push(`/task/ackdismantleform?odi=${data.orderDetailId}&tdg=${data.transDelegateId}&pg=pending&rbid=${data.requestedById}&sno=${data.sno}`)
+        history.push(`/task/ackdismantleform?odi=${data.orderDetailId}&tdg=${data.transDelegateId}&pg=pending&rbid=${data.requestedById}&sno=${data.sno}&boqref=${data.boqRef}`)
         console.log(data,"navigate tp")
     
     }
