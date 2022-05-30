@@ -131,7 +131,7 @@ export default function TableOrderRequestTracking() {
             result=>{
                 setDataLog(result);
                 //setIsLoading(false);
-                console.log("data order Material =>",result);
+                console.log("data Log =>",result);
             }
         )
     }
@@ -635,7 +635,7 @@ export default function TableOrderRequestTracking() {
         {
             width:150,
             title: "Incoming Date",
-            dataIndex: "incomingDate",
+         
             render:(record)=>{
                 return (
                     <Space>
@@ -647,7 +647,7 @@ export default function TableOrderRequestTracking() {
         {
             width:150,
             title: "Execute Date",
-            dataIndex: "executeDate",
+
             render:(record)=>{
                 return (
                     <Space>

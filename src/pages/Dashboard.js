@@ -387,7 +387,7 @@ const Dashboard = () => {
             <div className="container-fluid">
                 <div className='row' >
                     <div className='col-lg-12 col-md-12' >
-                        <div className='card card-primary' >
+                        <div className='card card-primary' data-toggle="collapse" >
                             <div className='card-header align-middle'>
                                 <h3 className="card-title">Forward Logistic Summary</h3>
                             </div>
@@ -398,15 +398,15 @@ const Dashboard = () => {
 
                         
                             <Row gutter={24} style={{paddingLeft:48,marginTop:48,paddingBottom:48,paddingRight:48}}>
-                                <Col className="gutter-row" span={24}>
+                                <Col className="gutter-row" span={24} >
                                    
                                     <Space size={16} direction="vertical" style={{width:'100%'}}>
                                         <Bar
                                             data = {data}
-                                            height="336"
-                                            width="1000"
+                                            height="100%"
+                                            width="100%"
                                             options={{
-                                                responsive:false,
+                                                responsive:true,
                                                 aspectRatio:1.5,
                                                 x: {
                                                     ticks: {
@@ -418,9 +418,7 @@ const Dashboard = () => {
                                             
                                                        
                                                 plugins: {
-                                                    // legend: {
-                                                    //     position: 'bottom',
-                                                    // },
+                                                  
                                                         
                                                     legend: {
                                                            
@@ -459,80 +457,64 @@ const Dashboard = () => {
                                                     <Row>
                                                    
                                                     
-                                                        <Col className="gutter-row" span={9}>
-                                                            <Typography style={{fontWeight:'500',fontSize:14}}>{e.project_name} </Typography>
+                                                        <Col className="gutter-row" xs={22} xl={9}>
+                                                            <Typography style={{fontWeight:'700',fontSize:14}}>{e.project_name} </Typography>
                                                         </Col>
-                                                        <Col className="gutter-row" span={3}>
+                                                        <Col className="gutter-row" xs={4} xl={3}>
                                                             <Tooltip title="Total Sites">
                                                                 <Typography style={{fontSize:14,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#1960db",fontSize:18}}/>        {e.totalSites}</Typography>
                                                             </Tooltip>
                                                      
                                                         </Col>
-                                                        <Col className="gutter-row" span={3}>
+                                                        <Col className="gutter-row" xs={4} xl={3}>
                                                             <Tooltip title="Order Req">
                                                                 <Typography style={{fontSize:14,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#ea8a0b",fontSize:18}}/>        {e.RO_OrderReq}</Typography>
                                                             </Tooltip>
                                                      
                                                         </Col>
-                                                        <Col className="gutter-row" span={3}>
+                                                        <Col className="gutter-row" xs={4} xl={3}>
                                                             <Tooltip title="Logistic Rev Done">
                                                                 <Typography style={{fontSize:14,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#acf890",fontSize:18}}/>       {e.logistic_RevDone}</Typography>
                                                             </Tooltip>
                                                      
                                                         </Col>
-                                                        <Col className="gutter-row" span={3}>
+                                                        <Col className="gutter-row" xs={4} xl={3}>
                                                             <Tooltip title="RFP Done">
                                                                 <Typography style={{fontSize:14,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#0ed7dd",fontSize:18}}/>       {e.LSP_RFPDone}</Typography>
                                                             </Tooltip>
                                                      
                                                         </Col>
-                                                        <Col className="gutter-row" span={3}>
+                                                        <Col className="gutter-row" xs={4} xl={3}>
                                                             <Tooltip title="HO Done">
                                                                 <Typography style={{fontSize:14,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#41c358",fontSize:18}}/>     {e.LSP_HODone}</Typography>
                                                             </Tooltip>
-                                                        
                                                         </Col>
-                                                     
-                                                      
-                                                    
-                                                   
-                                                      
-                                                   
-
-                                                       
-                                                    
                                                     </Row>
                                               
                                                 )
                                             })}
                                         </Card>
                                     </Space>
-                           
-                                    
-                                        
-                                    
-                                  
                                 </Col>
                             </Row> 
 
                             <Row gutter={16} style={{padding:16}}>
                          
-                                <Col className="gutter-row" span={12}>
+                                <Col className="gutter-row" xs={24} xl={12}>
                                     <Card title={CardTitle("Nokia Task")}>
-                                        <Row style={{paddingLeft:24}} gutter={96}>
-                                            <Col className="gutter-row" span={12}>
+                                        <Row style={{paddingLeft:34}} gutter={96}>
+                                            <Col className="gutter-row" xs={24} xl={12}>
                                                 <Doughnut
                                                     data = {dataNotCompletePmApproval}
                                                     width="146" height="216"
                                                     weight={8}
-                                   
-                                        
                                                     options={{
                                                         responsive: false,
                                                         aspectRatio:1.5,
+                                                        centertext:"112",
+                                                        cutoutPercentage: 75,
                                                         cutout: 45,
                                                         plugins: {
-                                             
                                                             legend: {
                                                                 display:false,
                                                                 position: 'bottom',
@@ -555,8 +537,7 @@ const Dashboard = () => {
                                                                     weight: "500",
                                                                     color:"#000"
                                                                 },
-                                                                // anchor: 'end',
-                                                                // align: 'end',
+                                                               
                                                                 offset: 8,
                                                                 display: function(context) {
                                                                     return context.dataset.data[context.dataIndex] !== 0; // or >= 1 or ...
@@ -606,18 +587,16 @@ const Dashboard = () => {
 
                                             </Col>
 
-                                            <Col className="gutter-row" span={12}>
+                                            <Col className="gutter-row" xs={24} xl={12}>
                                                 <Doughnut
                                                     data = {dataNotCompleteLogistic}    
                                                     width="146" height="216"
-                                     
-                                        
                                                     options={{
                                                         responsive: false,
                                                         aspectRatio:1.5,
+                                                        centertext:"112",
+                                                        cutoutPercentage: 75,
                                                         cutout: 45,
-                                             
-                                             
                                                         plugins: {
                                              
                                                             legend: {
@@ -693,17 +672,13 @@ const Dashboard = () => {
                                                 </Row>
                                              
                                             </Col>
-                                          
-              
-                   
-                         
                                         </Row>
                                     </Card>
                                 </Col>
-                                <Col className="gutter-row" span={12}>
+                                <Col className="gutter-row" xs={24} xl={12}>
                                     <Card title={CardTitle("LSP Task")}>
-                                        <Row style={{paddingLeft:24}} gutter={96}>
-                                            <Col className="gutter-row" span={12}>
+                                        <Row style={{paddingLeft:34}} gutter={96}>
+                                            <Col className="gutter-row" xs={24} xl={12}>
                                                 <Doughnut
                                                     data = {dataNotCompleteRfp}
                                                     width="146" height="216"
@@ -806,13 +781,11 @@ const Dashboard = () => {
                                                 </Row>
                              
                                             </Col>
-                                            <Col className="gutter-row" span={12}>
+                                            <Col className="gutter-row" xs={24} xl={12}>
                                                 <Doughnut
                                                     data = {dataNotComplete}
                                                     width="146" height="216"
                                                     weight={8}
-                                   
-                                        
                                                     options={{
                                                         responsive: false,
                                                         aspectRatio:1.5,
