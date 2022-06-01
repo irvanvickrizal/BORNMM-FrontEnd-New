@@ -84,7 +84,7 @@ const SdrForm = (props) => {
     const [selectedSubcon,setSelectedSubcon] = useState('');
     const [selectedDeliveryMode,setSelectedDeliveryMode] = useState('');
     const [selectedSiteCondition,setSelectedSiteCondition] = useState('');
-    const [deliveryDate,setDeliveryDate] = useState(moment(date2, "YYYY-MM-DD").add(3,'d'));
+    const [deliveryDate,setDeliveryDate] = useState(moment(date2, "YYYY-MM-DD").add(2,'d'));
     const [siteAddress,setSiteAddress] = useState('');
     const [selectedTeamCoordinator,setSelectedTeamCoordinator] = useState("")
     const [initialValue,setInitialValue]= useState("")

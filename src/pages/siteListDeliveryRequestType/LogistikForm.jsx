@@ -414,6 +414,16 @@ export default function LogisticForm() {
                                                     style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}
                                                 />
                                             </Form.Item>
+                                            <Form.Item label="Subcon In Field">
+                                                <Input
+                                                    disabled
+                                                    value={
+                                                        dataSite[0]
+                                                            .recipientOrDismantledBy
+                                                    }
+                                                    style={{backgroundColor:"white",color:"#000",fontWeight:"500"}}
+                                                />
+                                            </Form.Item>
                                             {dataSite[0]?.isPickupRequest ? (<> <Form.Item
                                                 label="Propose Delivery Mode"
                                                 rules={[

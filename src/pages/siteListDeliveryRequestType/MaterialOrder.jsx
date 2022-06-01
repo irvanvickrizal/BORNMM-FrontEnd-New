@@ -231,6 +231,12 @@ export default function MaterialOrder() {
 
     const columnsMaterialOrder =[
         {
+            title:"Sub Category Code",
+            dataIndex:"subCategoryCode",
+            key:"orderMaterialId",
+            ...Search('subCategoryCode'),
+        },
+        {
             title:"Item Code",
             dataIndex:"materialCode",
             key:"orderMaterialId",
