@@ -541,6 +541,15 @@ const getUomList = () => GET('mastermaterial/UomGetList');
 const postmMaterial = (body) => POST('mastermaterial',body);
 const postDOPRegion = (body) => POST('masterdop/dopRegionCoverageAdd',body);
 
+const getMasterDistrict = () => GET('masterdistrict/getMasterDistrict');
+const PostMasterDistrict = () => POST('masterdistrict/addMasterDistrict');
+const PutMasterDistrict = () => PUT('masterdistrict/updateMasterDistrict');
+
+const getMasterVevicle = () => GET('vehicle/getMasterList');
+const PostMasterVehicle = (body) => POST('vehicle/vehicleAddNew',body);
+const PutMasterVehicle = (body) => PUT('vehicle/vehicleUpdate',body);
+
+
 // Upload mMaterial bulk
 const getFlagUpload = (body) => POST('mastermaterial/masterMaterialBulkUploadHasClearedOrNot',body);
 const postProceedUpload = (body,uid) => POSTParam('mastermaterial/masterMaterialBulkUploadProceed',body,uid);
@@ -863,6 +872,7 @@ const getApkLink = () => GET("dashboard/bornMobileAppLatestVersion");
 const getRPTAPPTracking =(userid) => GETParam('rpt/OrderRequestDismantleGetApprovalTracking',userid);
 
 
+
 const API ={
     getPMRVSDismantle,
     getRPTAPPTracking,
@@ -965,6 +975,9 @@ const API ={
     getMultiDeliveryCompletion,
     getRequestBase2,
     postLogisticCancel,
+    PutMasterDistrict,
+    PostMasterDistrict,
+    getMasterDistrict,
     putLogisticRejection,
     assignMultiDelivery,
     deleteMultiDeliveryRequest,
@@ -1100,6 +1113,9 @@ const API ={
     ,postSubMaterialCategory
     ,putSubMaterialCategory
     ,putSubCategoryStatus
+    ,PutMasterVehicle
+    ,getMasterVevicle
+    ,PostMasterVehicle
     ,getUOM
     ,getItemLevel
     ,putMaterial
