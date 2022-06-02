@@ -543,8 +543,9 @@ const postDOPRegion = (body) => POST('masterdop/dopRegionCoverageAdd',body);
 
 const getMasterDistrict = () => GET('masterdistrict/getMasterDistrict');
 const getRegion = () => GET('masterdistrict/getregion');
-const PostMasterDistrict = () => POST('masterdistrict/addMasterDistrict');
-const PutMasterDistrict = () => PUT('masterdistrict/updateMasterDistrict');
+const PostMasterDistrict = (body) => POST('masterdistrict/addMasterDistrict',body);
+const PutMasterDistrict = (body) => PUT('masterdistrict/updateMasterDistrict',body);
+const PutMasterDistrictStatus = (body) => PUT('masterdistrict/deactivateMasterDistrict',body);
 
 const getMasterVevicle = () => GET('vehicle/getMasterList');
 const PostMasterVehicle = (body) => POST('vehicle/vehicleAddNew',body);
@@ -875,6 +876,7 @@ const getRPTAPPTracking =(userid) => GETParam('rpt/OrderRequestDismantleGetAppro
 
 
 const API ={
+    PutMasterDistrictStatus,
     getRegion,
     getPMRVSDismantle,
     getRPTAPPTracking,

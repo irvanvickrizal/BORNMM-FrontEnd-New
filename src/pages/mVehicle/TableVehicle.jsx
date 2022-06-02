@@ -99,7 +99,7 @@ export default function TableVehicle() {
                 {
                     toast.success(result.message);
                     refreshData()
-                    setIsModalAddVisible(false)
+                    setIsModalEditVisible(false)
                 
                     // window.location.reload();
                 }

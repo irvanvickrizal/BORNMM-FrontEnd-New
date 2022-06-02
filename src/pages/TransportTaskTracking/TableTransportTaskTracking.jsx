@@ -266,7 +266,7 @@ export default function TableTransportTaskTracking() {
                 return (
                     <div>
                         {record.assignedDate !== null ? (<> <Space>
-                            <p>{moment(record.assignedDate).format("YYYY-MM-DD hh:mm:ss")}</p>
+                            <p>{moment(record.assignDate).format("YYYY-MM-DD hh:mm:ss")}</p>
                         </Space></>):(<>
                         </>)}
                     </div>

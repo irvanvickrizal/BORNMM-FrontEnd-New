@@ -406,16 +406,16 @@ const Dashboard = () => {
                                                 <Typography style={{fontSize:14,fontWeight:"550",color:"#6f6b6b"}}>Order Request Progress Summary (Forward Logistic)</Typography>
                                             </Col>
                                         </Row>
-                                        <Col className="gutter-row"  xs={0} xl={24} >
+                                        <Col className="gutter-row"  xs={0} xl={24} align="middle">
                                          
                                         
                                            
                                             <Bar
                                                 data = {data}
-                                                height="100%"
-                                                width="100%"
+                                                height="360"
+                                                width="900"
                                                 options={{
-                                                    responsive:true,
+                                                    responsive:false,
                                                     aspectRatio:1.5,
                                                     x: {
                                                         ticks: {
@@ -469,35 +469,35 @@ const Dashboard = () => {
                                                    
                                                     
                                                             <Col className="gutter-row" xs={22} xl={9}>
-                                                                <Typography style={{fontWeight:'700',fontSize:14}}>{e.project_name} </Typography>
+                                                                <Typography style={{fontWeight:'700',fontSize:12}}>{e.project_name} </Typography>
                                                             </Col>
                                                             <Col className="gutter-row" xs={4} xl={3}>
                                                                 <Tooltip title="Total Sites">
-                                                                    <Typography style={{fontSize:14,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#1960db",fontSize:18}}/>        {e.totalSites}</Typography>
+                                                                    <Typography style={{fontSize:12,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#1960db",fontSize:18}}/>        {e.totalSites}</Typography>
                                                                 </Tooltip>
                                                      
                                                             </Col>
                                                             <Col className="gutter-row" xs={4} xl={3}>
                                                                 <Tooltip title="Order Req">
-                                                                    <Typography style={{fontSize:14,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#ea8a0b",fontSize:18}}/>        {e.RO_OrderReq}</Typography>
+                                                                    <Typography style={{fontSize:12,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#ea8a0b",fontSize:18}}/>        {e.RO_OrderReq}</Typography>
                                                                 </Tooltip>
                                                      
                                                             </Col>
                                                             <Col className="gutter-row" xs={4} xl={3}>
                                                                 <Tooltip title="Logistic Rev Done">
-                                                                    <Typography style={{fontSize:14,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#acf890",fontSize:18}}/>       {e.logistic_RevDone}</Typography>
+                                                                    <Typography style={{fontSize:12,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#acf890",fontSize:18}}/>       {e.logistic_RevDone}</Typography>
                                                                 </Tooltip>
                                                      
                                                             </Col>
                                                             <Col className="gutter-row" xs={4} xl={3}>
                                                                 <Tooltip title="RFP Done">
-                                                                    <Typography style={{fontSize:14,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#0ed7dd",fontSize:18}}/>       {e.LSP_RFPDone}</Typography>
+                                                                    <Typography style={{fontSize:12,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#0ed7dd",fontSize:18}}/>       {e.LSP_RFPDone}</Typography>
                                                                 </Tooltip>
                                                      
                                                             </Col>
                                                             <Col className="gutter-row" xs={4} xl={3}>
                                                                 <Tooltip title="HO Done">
-                                                                    <Typography style={{fontSize:14,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#41c358",fontSize:18}}/>     {e.LSP_HODone}</Typography>
+                                                                    <Typography style={{fontSize:12,fontWeight:"500"}}><SquareRoundedIcon style={{color:"#41c358",fontSize:18}}/>     {e.LSP_HODone}</Typography>
                                                                 </Tooltip>
                                                             </Col>
                                                         </Row>

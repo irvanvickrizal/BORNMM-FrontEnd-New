@@ -94,6 +94,7 @@ import DismantleAcknowledgePending from "@app/pages/DismantleAcknowledegePending
 // Dismantle Acknowledge Form
 import DismantleAcknowledgeForm from "@app/pages/DismantleAcknowledgeForm/DismantleAcknowledgeForm"
 import DismantleActDone from "@app/pages/DismantleActknowledgeDone/DismantleActDone"
+import pmrForm from "../../pages/PMRForm/pmrForm"
 
 //Item Transfer Limit
 import itemTransferLimitList from "@app/pages/itemTransferLimitList/index"
@@ -320,6 +321,11 @@ const Main = () => {
                                             exact
                                             path="/MM/PMRDL"
                                             component={DismantleForm}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/MM/PMR"
+                                            component={pmrForm}
                                         />
                                         <Route
                                             exact
