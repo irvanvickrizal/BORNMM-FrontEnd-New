@@ -165,12 +165,9 @@ export default function AprovalTaskPendingForm() {
             key: "index",
             render: (value, item, index) => page + index
         },
+    
         {
-            title: "Category",
-            dataIndex: "site"
-        },
-        {
-            title: "Sub Category",
+            title: "Sub Category Code",
             dataIndex: "subCategoryCode"
         },
         {
