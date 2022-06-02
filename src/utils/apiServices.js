@@ -542,6 +542,7 @@ const postmMaterial = (body) => POST('mastermaterial',body);
 const postDOPRegion = (body) => POST('masterdop/dopRegionCoverageAdd',body);
 
 const getMasterDistrict = () => GET('masterdistrict/getMasterDistrict');
+const getRegion = () => GET('masterdistrict/getregion');
 const PostMasterDistrict = () => POST('masterdistrict/addMasterDistrict');
 const PutMasterDistrict = () => PUT('masterdistrict/updateMasterDistrict');
 
@@ -874,6 +875,7 @@ const getRPTAPPTracking =(userid) => GETParam('rpt/OrderRequestDismantleGetAppro
 
 
 const API ={
+    getRegion,
     getPMRVSDismantle,
     getRPTAPPTracking,
     postDismantleAckNew,
