@@ -170,6 +170,10 @@ export default function AprovalTaskPendingForm() {
             dataIndex: "site"
         },
         {
+            title: "Sub Category",
+            dataIndex: "subCategoryCode"
+        },
+        {
             title: "Item Code",
             dataIndex: "materialCode"
         },
