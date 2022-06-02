@@ -618,87 +618,103 @@ export default function TableTaskSummary(props) {
             title: "Request No",
             dataIndex: "requestNo",
             width:150,
+            ...Search("requestNo")
         },
         {
             title: "Order Type",
             width:150,
-            dataIndex: "orderType"
+            dataIndex: "orderType",  
+            ...Search("orderType")
+            
         },
         {
             title: "Site No",
             width:150,
-            dataIndex: "siteNo"
+            dataIndex: "siteNo",
+            ...Search("siteNo")
         },
 
         {
             title: "Origin",
             width:150,
-            dataIndex: "originName"
+            dataIndex: "originName",
+            ...Search("originName")
         },
         {
             title: "Destination",
             width:150,
-            dataIndex: "destinationName"
+            dataIndex: "destinationName",
+            ...Search("destinationName")
         },
         {
             title: "Site Name",
             width:150,
-            dataIndex: "siteName"
+            dataIndex: "siteName",
+            ...Search("siteName")
         },
         {
             title: "Region",
             width:150,
-            dataIndex: "region"
+            dataIndex: "region",
+            ...Search("region")
         },
         {
             title: "Workpackage ID",
             width:150,
-            dataIndex: "workpackageid"
+            dataIndex: "workpackageid",
+            ...Search("workpackageid")
         },
         {
             title: "Scope Name",
             width:150,
-            dataIndex: "scopeName"
+            dataIndex: "scopeName",
+            ...Search("scopeName")
         },
         {
             title: "Pickup Date",
             width:150,
-            dataIndex: "pickupOrDeliveryDate",
+       
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(columnsAssigmentOnDone.pickupOrDeliveryDate).format("YYYY-MM-DD")}</p>
+                        <Typography>{moment(record.pickupOrDeliveryDate).format("YYYY-MM-DD")}</Typography>
                     </Space>
                 )
             },
+            ...Search("pickupOrDeliveryDate")
         },
         {
             title: "Assign To",
             width:150,
-            dataIndex: "assignedTo"
+            dataIndex: "assignedTo",
+            ...Search("assignedTo")
+
         },
         {
             title: "Assign Date",
             dataIndex: "assignedDate",
             width:150,
+            ...Search("assignedDate")
         },
         {
             title: "Task Status",
             width:150,
-            dataIndex: "taskStatus"
+            dataIndex: "taskStatus",
+            ...Search("taskStatus")
         },
         {
             title: "Task Complete Date",
             width:150,
-            dataIndex: "incomingDate",
+          
             render:(record)=>{
                 return (
                     
                     <Space>
-                        <p>{moment(columnsAssigmentOnDone.incomingDate).format("YYYY-MM-DD")}</p>
+                        <Typography>{moment(record.incomingDate).format("YYYY-MM-DD")}</Typography>
                     </Space>
                 )
             },
+            ...Search("incomingDate")
         },
     ]
     const CardTitle = (title) => <Title level={5}>{title}</Title>

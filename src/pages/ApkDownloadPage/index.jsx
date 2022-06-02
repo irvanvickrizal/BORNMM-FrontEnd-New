@@ -113,7 +113,7 @@ export default function ApkDownload() {
                                 <Typography style={{color:"black",fontSize:18}}>3.   Ram 3 GB or Higher</Typography>
                             </Grid>
                             <Grid item sm={12} display="flex" justifyContent="flex-start" alignItems="center">
-                                <Typography style={{color:"black",fontSize:18}}>4.   Camere 5 MP</Typography>
+                                <Typography style={{color:"black",fontSize:18}}>4.   Camera 5 MP</Typography>
                             </Grid>
                             <Grid item sm={12} display="flex" justifyContent="flex-start" alignItems="center">
                                 <Typography style={{color:"black",fontSize:18}}>5.   Storage 1 GB</Typography>

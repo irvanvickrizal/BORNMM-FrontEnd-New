@@ -4,6 +4,9 @@ import API from '@app/utils/apiServices'
 import Search from '@app/components/searchcolumn/SearchColumn'
 import {IconButton, TextField}  from '@mui/material/';
 import {PlusOutlined,CheckOutlined,CloseOutlined,EditOutlined}from '@ant-design/icons'
+import {toast} from 'react-toastify';
+
+import {useSelector} from 'react-redux';
 
 export default function TableMasterDistrict() {
     const [dataMasterDistrct,setDataMasterDistrict] = useState([])
@@ -11,9 +14,11 @@ export default function TableMasterDistrict() {
     const [isModalAddVisible,setIsModalAddVisible] = useState(false)
     const [isModalEditVisible,setIsModalEditVisible] = useState(false)
     const [districName,setDistrictName] = useState("")
+    const [districtID,setDistrictID] = useState("")
     const [ddlRegion,setDDLRegion] = useState([])
     const [region,setRegion] = useState("")
     const [isActive,setIsActive] = useState(false)
+    const user = useSelector((state) => state.auth.user);
 
 
 
@@ -40,6 +45,57 @@ export default function TableMasterDistrict() {
         )
     } 
 
+    const postData = (data) => {
+        const body = 
+            {
+                "districtName": data.districtName,
+                "regionID":data.region,
+                "lmby": user.uid  
+            }
+        console.log(body,"body");
+        console.log(data,"data");
+        API.PostMasterDistrict(body).then(
+            result=>{
+                console.log(result,"result")
+                if(result.status=="success")
+                {
+                    toast.success(result.message);
+                    getDistrict()
+                    setIsModalAddVisible(false)
+                    // window.location.reload();
+                }
+                else{
+                    toast.error(result.message);
+                }
+            }
+        )              
+    }
+    const putData = (data) => {
+        const body = 
+        {
+            "districtID": districtID,
+            "districtName": data.districtName,
+            "regionID":data.region,
+            "lmby": user.uid
+        }
+        console.log(body,"body");
+        console.log(data,"data");
+        API.PutMasterDistrict(body).then(
+            result=>{
+                console.log(result,"result")
+                if(result.status=="success")
+                {
+                    toast.success(result.message);
+                    getDistrict()
+                    setIsModalEditVisible(false)
+                    // window.location.reload();
+                }
+                else{
+                    toast.error(result.message);
+                }
+            }
+        )              
+    }
 
 
     const showModalAdd = ()=>{
@@ -51,16 +107,19 @@ export default function TableMasterDistrict() {
         setIsModalAddVisible(false)
     }
     
-    const handlePost = ()=>{
+    const handlePost = (data)=>{
         setIsModalAddVisible(false)
+        postData(data)
     }
 
     const showModalEdit = (data) => {
+        getRegion()
         setIsModalEditVisible(true)
         console.log(data,"data pass")
         setIsModalAddVisible(false)
-        setDistrictName(data.districName)
-        setRegion(data.region)
+        setDistrictName(data.districtName)
+        setDistrictID(data.districtID)
+        setRegion(data.regionID)
         setIsActive(data.isActive)
     }
     
@@ -71,10 +130,33 @@ export default function TableMasterDistrict() {
     
     const handleEdit = (data)=>{
         console.log(data,"data pass")
-        setIsModalAddVisible(false)
-        setDistrictName(data.districName)
-        setRegion(data.region)
-        setIsActive(data.isActive)
+        putData(data)
+    }
+
+    const handleIsActive = (status,data) =>{
+        console.log(status,data,"isActive")
+        if (window.confirm('Are you sure you want to process this action ?')) {
+            const body={
+                "districtID": data.districtID,
+                "lmby": user.uid,
+                "isActive" : status     
+            }
+            console.log("activa:",body);
+            API.PutMasterDistrictStatus(body).then(
+                result=>{
+                    console.log("put material: ", result);
+                    if(result.status=="success")
+                    {
+                        toast.success(result.message);
+                        //refreshData();
+                        //window.location.reload();
+                    }
+                    else{
+                        toast.error(result.message);
+                    }
+                }
+            )
+        }
     }
 
     const Data = [
@@ -125,7 +207,7 @@ export default function TableMasterDistrict() {
                         checkedChildren={<CheckOutlined />}
                         unCheckedChildren={<CloseOutlined />}
                         defaultChecked={record.isActive}
-                     
+                        onClick={(e)=>handleIsActive(e,record)}
                         // checked={record.isActive}
                     />
                 )
@@ -142,7 +224,7 @@ export default function TableMasterDistrict() {
             render:(record)=>{
                 return (
                     <Space>
-                        <Tooltip title="Edit Material">
+                        <Tooltip title="Edit District">
                             <IconButton
                                 size='small'
                                 color="primary"
@@ -158,12 +240,6 @@ export default function TableMasterDistrict() {
             }
             
         },
-        
-    
-    
-        
-        
-    
     ]
         
     useEffect(() => {
@@ -236,13 +312,6 @@ export default function TableMasterDistrict() {
                         >
                             <Input />
                         </Form.Item>
-                        <Form.Item
-                            label="Region"
-                            name="regionName"
-                            rules={[{ required: true, message: 'Please input your Region!' }]}
-                        >
-                            <Input />
-                        </Form.Item>
                         <Form.Item label="Region"
                             name="region"
                             rules={[{ required: true, message: 'Please Select Region!'}]}
@@ -257,18 +326,6 @@ export default function TableMasterDistrict() {
                                         {inv.RegionName}</Select.Option>)
                                 }
                             </Select>
-                        </Form.Item>
-                      
-                        <Form.Item label="Is Active"
-                            name="isActive"
-                        
-                        >
-                            <Switch
-                                checkedChildren={<CheckOutlined />}
-                                unCheckedChildren={<CloseOutlined />}
-                             
-                                // checked={record.isActive}
-                            />
                         </Form.Item>
                         <Form.Item wrapperCol={{ offset: 20, span: 4 }}>
                             <Space>
@@ -294,8 +351,7 @@ export default function TableMasterDistrict() {
                         wrapperCol={{ span: 17 }}
                         initialValues={{
                             "districtName":districName,
-                            "regionName":region,
-                            "isActive":isActive
+                            "region":region
                             // 'orderDetailId': selectedOrderDetailId,
                             // 'requestNo': selectedRequestNo,
                             // 'rfpDate': moment(selectedRFPDate).format("YYYY-MM-DD"),
@@ -316,13 +372,13 @@ export default function TableMasterDistrict() {
                         >
                             <Input />
                         </Form.Item>
-                        <Form.Item
+                        {/* <Form.Item
                             label="Region"
                             name="regionName"
                             rules={[{ required: true, message: 'Please input your Region!' }]}
                         >
                             <Input />
-                        </Form.Item>
+                        </Form.Item> */}
                         <Form.Item label="Region"
                             name="region"
                             rules={[{ required: true, message: 'Please Select Region!'}]}
@@ -338,13 +394,8 @@ export default function TableMasterDistrict() {
                                 }
                             </Select>
                         </Form.Item>
-                      
-                   
-                    
-                      
-                
-                   
-                  
+                        
+
                         <Form.Item wrapperCol={{ offset: 20, span: 4 }}>
                             <Space>
                                 <Button type="primary" htmlType="submit">
