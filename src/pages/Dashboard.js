@@ -406,7 +406,7 @@ const Dashboard = () => {
                                                 <Typography style={{fontSize:14,fontWeight:"550",color:"#6f6b6b"}}>Order Request Progress Summary (Forward Logistic)</Typography>
                                             </Col>
                                         </Row>
-                                        <Col className="gutter-row"  xs={0} xl={24} align="middle" justify="center">
+                                        <Col className="gutter-row"  xs={0} xl={24} align="middle">
                                          
                                         
                                            
