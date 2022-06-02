@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from 'react'
-import {Table,Col,Row,Tooltip,Spin,Switch,Modal,Form,Input,Space,Button} from "antd"
+import {Table,Col,Row,Tooltip,Spin,Switch,Modal,Form,Input,Space,Button,Select} from "antd"
 import API from '@app/utils/apiServices'
 import Search from '@app/components/searchcolumn/SearchColumn'
 import {IconButton, TextField}  from '@mui/material/';
@@ -11,6 +11,7 @@ export default function TableMasterDistrict() {
     const [isModalAddVisible,setIsModalAddVisible] = useState(false)
     const [isModalEditVisible,setIsModalEditVisible] = useState(false)
     const [districName,setDistrictName] = useState("")
+    const [ddlRegion,setDDLRegion] = useState([])
     const [region,setRegion] = useState("")
     const [isActive,setIsActive] = useState(false)
 
@@ -29,11 +30,21 @@ export default function TableMasterDistrict() {
             }
         )
     } 
+    const getRegion = () =>{
+        API.getRegion().then(
+            result=>{
+                setDDLRegion(result)
+                console.log('data region',result)
+                
+            }
+        )
+    } 
 
 
 
     const showModalAdd = ()=>{
         setIsModalAddVisible(true)
+        getRegion();
     }
 
     const hideModal = ()=>{
@@ -171,9 +182,6 @@ export default function TableMasterDistrict() {
                 </Row>  
                 :
                 <><div className='float-right'>
-                
-                
-
                     <Tooltip title="Add Material">
                         <IconButton size="small" color="primary" onClick={showModalAdd}>
                             <PlusOutlined />
@@ -235,12 +243,22 @@ export default function TableMasterDistrict() {
                         >
                             <Input />
                         </Form.Item>
+                        <Form.Item label="Region"
+                            name="region"
+                            rules={[{ required: true, message: 'Please Select Region!'}]}
+                        >
+                            <Select 
+                            // onChange={(e) => handleDDLSubconChange(e)}
+                                placeholder="Select an option"
+                            >
+                                {/* <Select.Option value={0}>-- SELECT --</Select.Option> */}
+                                {
+                                    ddlRegion.map(inv =>  <Select.Option value={inv.RegionID}> 
+                                        {inv.RegionName}</Select.Option>)
+                                }
+                            </Select>
+                        </Form.Item>
                       
-                   
-                    
-                      
-                
-                   
                         <Form.Item label="Is Active"
                             name="isActive"
                         
@@ -304,6 +322,21 @@ export default function TableMasterDistrict() {
                             rules={[{ required: true, message: 'Please input your Region!' }]}
                         >
                             <Input />
+                        </Form.Item>
+                        <Form.Item label="Region"
+                            name="region"
+                            rules={[{ required: true, message: 'Please Select Region!'}]}
+                        >
+                            <Select 
+                            // onChange={(e) => handleDDLSubconChange(e)}
+                                placeholder="Select an option"
+                            >
+                                {/* <Select.Option value={0}>-- SELECT --</Select.Option> */}
+                                {
+                                    ddlRegion.map(inv =>  <Select.Option value={inv.RegionID}> 
+                                        {inv.RegionName}</Select.Option>)
+                                }
+                            </Select>
                         </Form.Item>
                       
                    
