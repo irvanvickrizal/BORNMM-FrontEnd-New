@@ -109,7 +109,8 @@ import mMaterialBulkUpload from "@app/pages/mMaterial/mMaterialBulkUpload"
 import DismatleAckFormDownload from "@app/pages/DismantleAcknowledgeForm/DismatleAckFormDownload"
 import PmrInventory from "@app/pages/PmrInventory/index"
 import DismantleAckTracking from "@app/pages/DismantleAckTracking/DismantleAckTracking"
-
+import masterDistrict from "@app/pages/mDistrict/index"
+import masterVehicle from "@app/pages/mVehicle/index"
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -596,6 +597,16 @@ const Main = () => {
                                             exact
                                             path="/rpt/dismantleapptracking"
                                             component={DismantleAckTracking}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/masterdistrict"
+                                            component={masterDistrict}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/master/vehicle"
+                                            component={masterVehicle}
                                         />
                                     </Switch>
                                 </div>
