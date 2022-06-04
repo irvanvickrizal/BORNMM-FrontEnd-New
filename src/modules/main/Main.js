@@ -112,6 +112,7 @@ import PmrInventory from "@app/pages/PmrInventory/index"
 import DismantleAckTracking from "@app/pages/DismantleAckTracking/DismantleAckTracking"
 import masterDistrict from "@app/pages/mDistrict/index"
 import masterVehicle from "@app/pages/mVehicle/index"
+import masterDeliveryTypeMapping from "@app/pages/mDeliveryTypeMapping/index"
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -613,6 +614,11 @@ const Main = () => {
                                             exact
                                             path="/master/vehicle"
                                             component={masterVehicle}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/deliverytypedestination"
+                                            component={masterDeliveryTypeMapping}
                                         />
                                     </Switch>
                                 </div>

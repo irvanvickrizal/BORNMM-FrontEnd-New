@@ -747,6 +747,12 @@ const postLSPDirectToComplete = (body) => POST('lspassignment/lspAssignmentDirec
 
 const deleteOrderDetail = (body,odi) => PUTParam('materialmanagement/OrderDetailDeleteTemp',body,odi);
 
+// Master DeleiveryTypeMapping
+
+const getDeliveryTypeMapping = () => GET('deliverytypedestination/getDeliveryTypedestination',)
+const postDeliveryTypeMapping = (body) => POST('deliverytypedestination/addDeliveryTypedestination',body)
+const deleteteDeliveryTypeMapping = (id) => DELETE('deliverytypedestination/deleteDeliveryTypedestination',id)
+
 // Pickup Complletion
 
 const getPickUpCompletion = (uid) => GETParam('lspassignment/lspAssignmentTransportAssignmentPickupPending',uid);
@@ -945,6 +951,9 @@ const API ={
     postmMaterial,
     postUploadEvidence,
     postClearUpload,
+    deleteteDeliveryTypeMapping,
+    postDeliveryTypeMapping,
+    getDeliveryTypeMapping,
     getResultUpload,
     postProceedUpload,
     getDownloadUploaded,
