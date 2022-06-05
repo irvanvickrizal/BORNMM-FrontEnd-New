@@ -617,7 +617,7 @@ const Main = () => {
                                         />
                                         <Route
                                             exact
-                                            path="/deliverytypedestination"
+                                            path="/deliverytypemapping"
                                             component={masterDeliveryTypeMapping}
                                         />
                                     </Switch>
