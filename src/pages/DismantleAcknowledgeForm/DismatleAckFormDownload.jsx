@@ -328,7 +328,7 @@ export default function DismatleAckFormDownload() {
                     </Col>
                 </Row>
                 <TimeStampComponent odiParam={odi}/>
-
+                <Divider style={{ 'margin-bottom': '4px', marginTop: 10 }} />
             </div></>
     )
 }
