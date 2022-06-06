@@ -12,9 +12,11 @@ export default function TableDeliveryTypeMapping() {
     const [dataDeliveryType,setDataDeliveryType] = useState([])
     const [ddlDeliveryType,setDdlDeliveryType] = useState([])
     const [ddlDop,setDdlDop] = useState([])
+    const [ddlDistrict,setDdlDistrict] = useState([])
     const [selectedDeliveryType,setSlectedDeliveryType] = useState('')
     const [selectedId,setSlectedId] = useState('')
     const [selectedDop,setSlectedDop] = useState('')
+    const [selectedDistrict,setSlectedDistrict] = useState('')
     const [selectedGroup,setSlectedGroup] = useState('')
     const [isLoading,setIsLoading] = useState(false)
     const [isModalAddVisible,setIsModalAddVisible] = useState(false)
@@ -50,6 +52,18 @@ export default function TableDeliveryTypeMapping() {
             }
         )
     } 
+    const getDdlDistrict = () =>{
+
+        API.getMasterDistrict().then(
+            result=>{
+                setDdlDistrict(result)
+              
+
+                console.log('ddl District',result)
+                
+            }
+        )
+    } 
     const getDdlDop = () =>{
 
         API.getmDOPList().then(
@@ -72,6 +86,7 @@ export default function TableDeliveryTypeMapping() {
                 "deliveryTypeID":data.deliveryType, 
                 "dopID": data.dop,
                 "group":data.group,
+                "district":data.district,
                 "lmby":userId
              
             }
@@ -134,6 +149,11 @@ export default function TableDeliveryTypeMapping() {
     function handleGroupDDLChange(e){
         console.log("handleInvDDLChange",e); 
         setSlectedGroup(e);
+    
+    }
+    function handleDistrictChange(e){
+        console.log("handleInvDDLChange",e); 
+        setSlectedDistrict(e);
     
     }
 
@@ -227,6 +247,7 @@ export default function TableDeliveryTypeMapping() {
         getDeliveryType()
         getDdlDeliveryType()
         getDdlDop()
+        getDdlDistrict()
     },[])
 
 
@@ -291,36 +312,6 @@ export default function TableDeliveryTypeMapping() {
                     // onFinishFailed={handleFailedAddForm}
                     autoComplete="off"
                 >
-                    <Form.Item name="deliveryType" label="Delivery Type" placeholder="Select Ypur Delivery Type"
-                        wrapperCol={{  span: 14 }}
-                                   
-                        rules={[{ required: true, message: 'Please Select Destination Type!' }]}
-                    >
-                        <Select 
-                            placeholder="Select Your Delivery Type"
-                            onChange={(e) => handleDeliveryTypeDDLChange(e)}
-                        >
-                            {
-                                ddlDeliveryType.map(inv =>  <Select.Option  value={inv.deliveryTypeId}> 
-                                    {inv.deliveryTypeName}</Select.Option>)
-                            }
-                        </Select>
-                    </Form.Item>
-                    <Form.Item name="dop" label="DOP"
-                        wrapperCol={{  span: 14 }}
-                                   
-                        rules={[{ required: true, message: 'Please Select DOP!' }]}
-                    >
-                        <Select 
-                            placeholder="Select Your DOP"
-                            onChange={(e) => handleDopDDLChange(e)}
-                        >
-                            {
-                                ddlDop.map(inv =>  <Select.Option  value={inv.dopId}> 
-                                    {inv.dopName}</Select.Option>)
-                            }
-                        </Select>
-                    </Form.Item>
                     <Form.Item name="group" label="Group"
                         wrapperCol={{  span: 14 }}
                                    
@@ -336,6 +327,57 @@ export default function TableDeliveryTypeMapping() {
                             }
                         </Select>
                     </Form.Item>
+                    
+                    <Form.Item name="deliveryType" label="Delivery Type" placeholder="Select Ypur Delivery Type"
+                        wrapperCol={{  span: 14 }}
+                                   
+                        rules={[{ required: true, message: 'Please Select Destination Type!' }]}
+                    >
+                        <Select 
+                            placeholder="Select Your Delivery Type"
+                            onChange={(e) => handleDeliveryTypeDDLChange(e)}
+                        >
+                            {
+                                ddlDeliveryType.map(inv =>  <Select.Option  value={inv.deliveryTypeId}> 
+                                    {inv.deliveryTypeName}</Select.Option>)
+                            }
+                        </Select>
+                    </Form.Item>
+                
+                    <Form.Item name="dop" label="End Pont"
+                        wrapperCol={{  span: 14 }}
+                                   
+                        rules={[{ required: true, message: 'Please Select End Point!' }]}
+                    >
+                        <Select 
+                            placeholder="Select Your DOP"
+                            onChange={(e) => handleDopDDLChange(e)}
+                        >
+                            {
+                                ddlDop.map(inv =>  <Select.Option  value={inv.dopId}> 
+                                    {inv.dopName}</Select.Option>)
+                            }
+                        </Select>
+                    </Form.Item>
+                
+                    <Form.Item name="district" label="District"
+                        wrapperCol={{  span: 14 }}
+                                   
+                        rules={[{ required: true, message: 'Please Select End Point!' }]}
+                    >
+                        <Select 
+                            placeholder="Select Your District"
+                            onChange={(e) => handleDistrictChange(e)}
+                            showSearch
+                            filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                        >
+                            {
+                                ddlDistrict.map(inv =>  <Select.Option  value={inv.districtID}> 
+                                    {inv.districtName}</Select.Option>)
+                            }
+                        </Select>
+                    </Form.Item>
+                
             
                       
                    
