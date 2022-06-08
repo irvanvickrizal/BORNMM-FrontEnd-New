@@ -48,6 +48,7 @@ const MultiDeliveryArrangementPanel = () => {
     const [ddlTransportTeam, setDdlTransportTeam] = useState([]);
     const [transportTeamId, setTransportTeamId] = useState('');
     const [selectedAssignTo, setselectedeAssignTo] = useState('');
+    const [selectedVehicle, setselectedVehicle] = useState('');
 
     const navigateTo = (path) => {
         history.push(path)
@@ -133,9 +134,11 @@ const MultiDeliveryArrangementPanel = () => {
             {
                 "multiDeliveryId":mdid,
                 "transferTo":data.transportTeam,
+                "vehicleID": data.vehicle,
                 "transferBy": user.uid
             }
         )
+        console.log(body,"body assigned")
         API.assignMultiDelivery(body).then(
             result=>{
                 if(result.status=="success"){
@@ -565,7 +568,7 @@ const MultiDeliveryArrangementPanel = () => {
                                 rules={[{ required: true, message: 'Please Select Transport Team!'}]}
                             >
                                 <Select 
-                                    onChange={(e) => setselectedeAssignTo(e)}
+                                    onChange={(e) => setselectedVehicle(e)}
                                     placeholder="Select an option"
                                 >
                                     {/* <Select.Option value={0}>-- SELECT --</Select.Option> */}
