@@ -685,7 +685,7 @@ const getDDLTransportAssignTo2 = (subconid) => GETParam('subcon/getLSPTransportT
 const putReAssignTransportTeam = (body) => PUT('taskassignment/taskReAssignmentToEngineer',body);
 const putCancelRFP = (body) => PUT('lspassignment/lspAssignmentRFPDoneCanceled',body);
 const postAssitgnTransportTeam = (body) => POST('taskassignment/lspAssignmentToTransport',body);
-const postAssitgnTransportTeam2 = (body) => POST('lspassignment/lspAssignmentToTransport',body);
+const postAssitgnTransportTeam2 = (body) => POST('lspassignment/lspAssignmentToTransportNew',body);
 
 const getBoqSummaryAsPoBoq = (boqid) => GETParam('boqref/boqGetSummaryAsPOBOQCompletion',boqid)
 const getListBoqAsPo = (boqid) => GETParam('boqref/boqGetListAsPOBOQ',boqid)
@@ -773,7 +773,7 @@ const getMultiDeliveryDetail = (mdid) => GETParam('multidelivery/multiDeliveryGe
 const getMultiDeliveryRequestList = (mdid) => GETParam('multidelivery/multiDeliveryGetOrderRequestList',mdid);
 const postMultiDelivery = (body) => POST('multidelivery/multiDeliveryAddGroup',body)
 const postMultiDeliveryArrangement = (body) => POST('multidelivery/multiDeliveryAddOrderRequest',body)
-const assignMultiDelivery = (body) => POST('multidelivery/multiDeliveryAssignTaskToTransport',body)
+const assignMultiDelivery = (body) => POST('multidelivery/multiDeliveryAssignTaskToTransportNew',body)
 const deleteMultiDeliveryRequest = (mdid) => DELETE('multidelivery/multiDeliveryDeleteOrderRequest',mdid)
 const putDeleteMultiDeliveryRequest = (body) => PUT('multidelivery/multiDeliveryDeleteGroup',body)
 

@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/jsx-boolean-value */
 /* eslint-disable react/no-unstable-nested-components */
@@ -12,11 +13,15 @@ import Search from '@app/components/searchcolumn/SearchColumn';
 import { EyeFilled,DeleteOutlined ,UploadOutlined } from '@ant-design/icons'
 import { toast } from 'react-toastify';
 import {IconButton, TextField}  from '@mui/material/';
+import RoomIcon from '@mui/icons-material/Room';
+import L, { divIcon } from "leaflet";
+import { MapContainer, TileLayer, Marker, Popup,useMapEvent } from 'react-leaflet'
 
 export default function TableTransportTaskTracking() {
     const [dataTransportTask,setDataTransportTask] = useState([])
     const [isLoading, setIsLoading] = useState(true);
     const [isModalVisible,setIsModalVisible] = useState(false)
+    const [isModalMapVisible,setIsModalMapVisible] = useState(false)
     const [odiParam,setOdiParam] = useState(false)
     const userId = useSelector(state=>state.auth.user.uid)
     const[dataPhotoSender,setDataPhotoSender] = useState([])
@@ -24,6 +29,31 @@ export default function TableTransportTaskTracking() {
     const[selectedDN,setSelectedDN] = useState('')
     const[showDN,setShowDN] = useState(false)
     const[dataDeliveryNote,setDataDeliveryNote] = useState([])
+    const [mapLocation,setMapLocation] = useState([])
+    const [zoom, setZoom] = useState("");
+    
+
+    const getWindowDimensions = () => {
+        const { innerWidth: width, innerHeight: height } = window
+        return { width, height }
+    }
+
+    const useWindowDimensions = () => {
+        const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions())
+ 
+        useEffect(() => {
+            const handleResize = () => setWindowDimensions(getWindowDimensions())
+ 
+            window.addEventListener('resize', handleResize)
+ 
+            return () => window.removeEventListener('resize', handleResize)
+ 
+        }, [])
+ 
+        return windowDimensions
+    }
+
+    const { width } = useWindowDimensions();
 
 
     const { Title } = Typography;
@@ -32,6 +62,34 @@ export default function TableTransportTaskTracking() {
             {title}
         </Title>
     )
+
+    const iconPerson = new L.Icon({
+        iconUrl: require('../../assets/image/logoXL.png'),
+        iconRetinaUrl: require('../../assets/image/logoXL.png'),
+        iconAnchor: null,
+        popupAnchor: null,
+        shadowUrl: null,
+        shadowSize: null,
+        shadowAnchor: null,
+        iconSize: new L.Point(60, 75),
+        className: 'leaflet-div-icon'
+    });
+    
+    const handleClick = (record) => {
+        setZoom(10);
+    
+        console.log(zoom, "Sasd");
+    };
+
+    const dataDummy = [{
+        long:106.816666,
+        lat:-6.200000,
+        sdrNumber: "121",
+        siteNo:"XL-123",
+
+    }]
+
+
 
     function getTransportTask() {
         setIsLoading(true);
@@ -112,7 +170,15 @@ export default function TableTransportTaskTracking() {
         getPhotoSender(data.orderDetailId)
         getDeliveryNote(data.orderDetailId)
     }
+    const showModalMap= (data) => {
+        setIsModalMapVisible(true)
+        console.log(dataDummy,"ini")
+      
+    }
 
+    const hideModalMap = () => {
+        setIsModalMapVisible(false)
+    }
     const hideModal = () => {
         setIsModalVisible(false)
     }
@@ -164,6 +230,7 @@ export default function TableTransportTaskTracking() {
    
     ]
     
+
     const columns = [
         {
             title : "No",
@@ -371,6 +438,16 @@ export default function TableTransportTaskTracking() {
                                     onClick={()=>showModal(record)}
                                 />
                             </Tooltip>
+                            <Tooltip title="View Map">
+                                <IconButton
+                                    size='small'
+                                    color="primary"
+                                    aria-label="upload file"
+                                    component="span"
+                                    onClick={()=>{showModalMap(record)}}>
+                                    <RoomIcon style={{color:"red"}}  />
+                                </IconButton>
+                            </Tooltip>
                             
 
                         </Space>)}
@@ -383,6 +460,7 @@ export default function TableTransportTaskTracking() {
 
     useEffect(() => {
         getTransportTask();
+        setZoom(4);
       
     },[])
 
@@ -481,6 +559,49 @@ export default function TableTransportTaskTracking() {
             >
                 <embed src={selectedDN}  style={{ width: '100%' ,height: '100%' }}></embed>
                 {/* <img alt="example" style={{ width: '100%' }} src={previewDoc} /> */}
+            </Modal>
+
+            <Modal visible={isModalMapVisible} onCancel={hideModalMap}
+                style={{ width: (90 * width / 100), minWidth: (80 * width / 100) }}
+                footer={false}
+                zIndex={99999}
+            >
+                <MapContainer center={[-6.200000,106.816666]} zoom={zoom} style={{width:"75vw",height:"80vh"}}
+                    scrollWheelZoom={true}
+                    icon={iconPerson}
+                   
+                >
+                    <TileLayer
+                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                 
+                       
+                
+
+                    {dataDummy.map((e,idx)=> 
+                        <Marker position={[-6.200000,106.816666]}
+                            icon={ iconPerson }
+                            eventHandlers={{
+                                click: (record) => {
+                                    handleClick(record)
+                                },}}
+                                
+                            
+                        // key={idx}
+                        >
+                            <Popup>
+                                <Typography>
+                                    <ul>
+                                        <li>Site No : {e.siteNo}</li>
+                                        <li>Scope Name : {e.sdrNumber}</li>
+                                    </ul>
+                                </Typography>
+                            </Popup>
+                        </Marker>
+                    )}
+                </MapContainer>
+         
             </Modal>
         
         </div>

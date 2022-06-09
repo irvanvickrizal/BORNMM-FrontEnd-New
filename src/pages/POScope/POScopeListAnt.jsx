@@ -63,6 +63,7 @@ const POScopeListAnt = () => {
     const [show, setShow] = useState(false);
     const [poScopeData,setPoScopeData] = useState([]);
     const [selectedPOScopeId,setSelectedPOScopeId] = useState(0);
+    const [selectedCpoNo,setSelectedCpoNo] = useState(null);
     const [selectedFileRevise, setSelectedFileRevise] = useState(null);
     const [isUploadFile, setIsUploadFile] = useState(false);
     const [isUploadFileRevise, setIsUploadFileRevise] = useState(false);
@@ -114,8 +115,8 @@ const POScopeListAnt = () => {
         // setSelectedFile(file);
     }
 
-    function getErrorLog(id){
-
+    function getErrorLog(id,data){
+        console.log(id,"11231")
         API.getErrorList(id).then(
             result=>{
                 console.log('i am error log Scope',result)
@@ -124,7 +125,8 @@ const POScopeListAnt = () => {
                 
                 const data = result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
                 const exportType =  exportFromJSON.types.xls;
-                const fileName = `errorlog_${data.WPID}_${data.Phase}`;
+                console.log(data,"1123")
+                const fileName = `errorlog_${selectedCpoNo}_${moment().format("DD-MM-YYYY")}`;
                 exportFromJSON({ data, fileName, exportType });
             }
         )
@@ -222,6 +224,7 @@ const POScopeListAnt = () => {
         console.log("id",props.id);
         console.log("fileName",props.fileName)
         setSelectedFileName(props.fileName);
+     
         if(props.status=="success"){
             console.log(props.status);
             return (
@@ -229,7 +232,7 @@ const POScopeListAnt = () => {
             );
         }
         else if(props.status=="failed"){ 
-            console.log(props.status);
+            console.log(props,"asd");
             return (
                 <><label htmlFor="icon-button-file">
                     <IconButton 
@@ -257,7 +260,7 @@ const POScopeListAnt = () => {
                         aria-label="expand row"
                         size="small"
                         color="error"
-                        onClick={() => getErrorLog(props.id)}
+                        onClick={(data) => getErrorLog(props.id,data)}
                     >
                         <SimCardDownloadIcon />
                     </IconButton>
@@ -388,7 +391,7 @@ const POScopeListAnt = () => {
             title:"Option",
             render:(record)=>{
                 return (
-                    <IconFileOption status={record.uploadStatus} id={record.poSitelistId} fileName={record.filePath}/>
+                    <IconFileOption status={record.uploadStatus} id={record.poSitelistId} fileName={record.filePath} />
                 )
             }
         },
@@ -417,6 +420,7 @@ const POScopeListAnt = () => {
     const getFileList = (data) =>{
         console.log("rowwwwww",data);
         setSelectedPOScopeId(data.poScopeId);
+        setSelectedCpoNo(data.cpoNo)
         setSelectedProjectName(data.projectName);
         setSelectedCPONo(data.cpoNo);
         API.getPOScopeListFile(data.poScopeId).then(

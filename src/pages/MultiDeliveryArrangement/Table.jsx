@@ -39,7 +39,7 @@ const MultiDeliveryArrangementPanel = () => {
     const history = useHistory();
     const [isLoadingPage, setIsLoadingPage] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-
+    const [dataMasterVehicle,setDataMasterVehicle] = useState([])
     const [multiDeliveryDetail,setMultiDeliveryDetail] = useState([]);
     const [multiDeliveryRequestList,setMultiDeliveryRequestList] = useState([]);
     const [multiDeliveryRequestPendingList,setMultiDeliveryRequestPendingList] = useState([]);
@@ -48,6 +48,7 @@ const MultiDeliveryArrangementPanel = () => {
     const [ddlTransportTeam, setDdlTransportTeam] = useState([]);
     const [transportTeamId, setTransportTeamId] = useState('');
     const [selectedAssignTo, setselectedeAssignTo] = useState('');
+    const [selectedVehicle, setselectedVehicle] = useState('');
 
     const navigateTo = (path) => {
         history.push(path)
@@ -73,6 +74,19 @@ const MultiDeliveryArrangementPanel = () => {
             }
         )
     }
+    const getVehicle = () =>{
+        setIsLoading(true)
+        API.getMasterVevicle().then(
+            result=>{
+                setDataMasterVehicle(result)
+              
+
+                setIsLoading(false)
+                console.log('data master Vehicle',result)
+                
+            }
+        )
+    } 
 
     const getMultiDeliveryRequestList = (id) =>{
         setIsLoading(false)
@@ -111,6 +125,7 @@ const MultiDeliveryArrangementPanel = () => {
                 console.log("ddl assign", result)
             }
         )
+        getVehicle()
     }
     const handleOKSubmit = (data) =>{
         setIsSubmit(true)
@@ -119,9 +134,11 @@ const MultiDeliveryArrangementPanel = () => {
             {
                 "multiDeliveryId":mdid,
                 "transferTo":data.transportTeam,
+                "vehicleID": data.vehicle,
                 "transferBy": user.uid
             }
         )
+        console.log(body,"body assigned")
         API.assignMultiDelivery(body).then(
             result=>{
                 if(result.status=="success"){
@@ -545,6 +562,23 @@ const MultiDeliveryArrangementPanel = () => {
                             onFinishFailed={handleFailedSubmit}
                             autoComplete="off"
                         >
+
+                            <Form.Item label="Vehicle"
+                                name="vehicle"
+                                rules={[{ required: true, message: 'Please Select Transport Team!'}]}
+                            >
+                                <Select 
+                                    onChange={(e) => setselectedVehicle(e)}
+                                    placeholder="Select an option"
+                                >
+                                    {/* <Select.Option value={0}>-- SELECT --</Select.Option> */}
+                                    {
+                                        dataMasterVehicle.map(inv =>  <Select.Option value={inv.vehicleId}> 
+                                            {inv.vehicleName}</Select.Option>)
+                                    }
+                                </Select>
+                            </Form.Item>
+
                             <Form.Item label="Transport Team"
                                 name="transportTeam"
                                 rules={[{ required: true, message: 'Please Select Transport Team!'}]}
