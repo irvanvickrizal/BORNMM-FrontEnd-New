@@ -35,6 +35,8 @@ export default function TableTransport() {
     const [cancelLoading,setCancelLoading] = useState(false);
     const [selectedRFPID,setSelectedRFPID] = useState('');
     const [selectedCDMRType,setSelectedCDMRType] = useState('');
+    const [dataMasterVehicle,setDataMasterVehicle] = useState([])
+    const [selectedVehicle, setselectedVehicle] = useState('');
     
     const [fileUpload, setFileUpload] = useState(null);
     const [uploading, setUploading] = useState(false);
@@ -91,6 +93,20 @@ export default function TableTransport() {
         )
     }
 
+    const getVehicle = () =>{
+   
+        API.getMasterVevicle().then(
+            result=>{
+                setDataMasterVehicle(result)
+              
+
+              
+                console.log('data master Vehicle',result)
+                
+            }
+        )
+    } 
+
     const handleCancelCancelTask =() =>{
         setIsCancelTask(false)
     }   
@@ -142,6 +158,7 @@ export default function TableTransport() {
         setSelectedRequestNo(data.requestNo)
         getAssignTo(data.transportTeamId,data.workpackageid);
         setIsFormAssignment(true);
+        getVehicle()
     }
 
     const handleHOConfirmation = (data) =>
@@ -155,13 +172,15 @@ export default function TableTransport() {
         setIsHOConfirmation(true);
     }
 
-    const handleOKForm = () =>
+    const handleOKForm = (data) =>
     {
         const body = ({
             "orderdetailId":selectedOrderDetailId,
             "transferBy": user.uid,
-            "transferTo": selectedAssignTo  
+            "transferTo": selectedAssignTo  ,
+            "vehicleID":data.vehicle
         })
+        console.log("body",body)
         API.postAssitgnTransportTeam2(body).then(
             result=>{
                 getSconTaskPending();
@@ -211,6 +230,7 @@ export default function TableTransport() {
 
     useEffect(() => {
         getSconTaskPending()
+        
     }, [])
 
     const columns = [
@@ -591,6 +611,21 @@ export default function TableTransport() {
                             {
                                 ddlAssignTo.map(rbs =>  <Select.Option value={rbs.userId}> 
                                     {rbs.fullname}</Select.Option>)
+                            }
+                        </Select>
+                    </Form.Item>
+                    <Form.Item label="Vehicle"
+                        name="vehicle"
+                        rules={[{ required: true, message: 'Please Select Transport Team!'}]}
+                    >
+                        <Select 
+                            onChange={(e) => setselectedVehicle(e)}
+                            placeholder="Select an option"
+                        >
+                            {/* <Select.Option value={0}>-- SELECT --</Select.Option> */}
+                            {
+                                dataMasterVehicle.map(inv =>  <Select.Option value={inv.vehicleId}> 
+                                    {inv.vehicleName}</Select.Option>)
                             }
                         </Select>
                     </Form.Item>

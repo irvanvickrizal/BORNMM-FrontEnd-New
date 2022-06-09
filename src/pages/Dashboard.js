@@ -403,7 +403,7 @@ const Dashboard = () => {
                     
                        
                         
-                            <Row gutter={24} style={{paddingLeft:26,marginTop:48,paddingBottom:12,paddingRight:26}}>
+                            <Row gutter={24} style={{paddingLeft:14,marginTop:48,paddingBottom:12,paddingRight:14}}>
                               
                                 <Col className="gutter-row"  xs={24} xl={0} align="middle">
                                     <Accordion defaultExpanded>
@@ -569,7 +569,7 @@ const Dashboard = () => {
                        
                             </Row> 
 
-                            <Row gutter={24} style={{paddingLeft:26,paddingRight:26}}>
+                            <Row gutter={24} style={{paddingLeft:14,paddingRight:14}}>
                          
                                 <Col className="gutter-row" xs={24} xl={12} style={{marginBottom:18}}>
                                     <Accordion defaultExpanded>
@@ -756,7 +756,7 @@ const Dashboard = () => {
                                     </Accordion>
                                     
                                 </Col>
-                                <Col className="gutter-row" xs={24} xl={12}>
+                                <Col className="gutter-row" xs={24} xl={12} style={{marginBottom:72}}>
                                     <Accordion defaultExpanded>
                                         <AccordionSummary
                                             expandIcon={<ExpandMoreIcon />}
@@ -767,7 +767,7 @@ const Dashboard = () => {
                                         </AccordionSummary>
                                         <AccordionDetails>
                                             <Row style={{paddingLeft:34}} gutter={96}>
-                                                <Col className="gutter-row" xs={24} xl={12}>
+                                                <Col className="gutter-row" xs={24} xl={12} s>
                                                     <Doughnut
                                                         data = {dataNotCompleteRfp}
                                                         width="146" height="216"
