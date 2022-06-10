@@ -170,17 +170,21 @@ export default function TableItemTransferLimitWh() {
         try{
             API.uploadBoqAsset(dopId,uid,fileUpload).then(
                 result=>{
+                    console.log(result.value,"res")
                     try{
-                        if(result.status=="success"){
+                        if(result.value.status=="success"){
                             setFileUpload(null);
                             setUploading(false);
+                            getStateTrueOrFalse()   
+                            console.log(result,"res")
                             props.onRemove();
                             toast.success('upload successfully.');
-                            window.location.reload()
+                            // window.location.reload()
                         }
                         else{
                             setFileUpload(null);
                             setUploading(false);
+                            getStateTrueOrFalse()
                             props.onRemove();
                             toast.error(result.message);
                         }

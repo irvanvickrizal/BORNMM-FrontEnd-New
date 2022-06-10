@@ -14,8 +14,10 @@ import { EyeFilled,DeleteOutlined ,UploadOutlined } from '@ant-design/icons'
 import { toast } from 'react-toastify';
 import {IconButton, TextField}  from '@mui/material/';
 import RoomIcon from '@mui/icons-material/Room';
-import L, { divIcon } from "leaflet";
+import L, { divIcon, Routing } from "leaflet";
 import { MapContainer, TileLayer, Marker, Popup,useMapEvent } from 'react-leaflet'
+import { createControlComponent } from "@react-leaflet/core";
+import RoutingMachine from '@app/pages/TransportTaskTracking/RoutingMap';
 
 export default function TableTransportTaskTracking() {
     const [dataTransportTask,setDataTransportTask] = useState([])
@@ -32,6 +34,14 @@ export default function TableTransportTaskTracking() {
     const [mapLocation,setMapLocation] = useState([])
     const [zoom, setZoom] = useState("");
     
+
+
+
+
+
+
+
+
 
     const getWindowDimensions = () => {
         const { innerWidth: width, innerHeight: height } = window
@@ -458,6 +468,11 @@ export default function TableTransportTaskTracking() {
         }
     ]
 
+
+
+
+
+
     useEffect(() => {
         getTransportTask();
         setZoom(4);
@@ -576,10 +591,9 @@ export default function TableTransportTaskTracking() {
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
                  
-                       
-                
+               
 
-                    {dataDummy.map((e,idx)=> 
+                    {/* {dataDummy.map((e,idx)=> 
                         <Marker position={[-6.200000,106.816666]}
                             icon={ iconPerson }
                             eventHandlers={{
@@ -599,7 +613,8 @@ export default function TableTransportTaskTracking() {
                                 </Typography>
                             </Popup>
                         </Marker>
-                    )}
+                    )} */}
+                    <RoutingMachine/>
                 </MapContainer>
          
             </Modal>
