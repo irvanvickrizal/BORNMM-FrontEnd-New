@@ -402,15 +402,15 @@ export default function TableItemTransferLimitWh() {
 
         {
             title : "Total QTY Transfer Limit",
-            dataIndex:'totalLimitQty',
-            ...Search('totalLimitQty'),
+            dataIndex:'addQty',
+            ...Search('addQty'),
         },
        
 
         {
             title : "Upload Status",
-            dataIndex:'totalLimitQty',
-            ...Search('totalLimitQty'),
+            dataIndex:'status',
+            ...Search('status'),
         },
        
       
