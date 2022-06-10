@@ -36,6 +36,7 @@ export default function AprovalTaskPendingForm() {
     const [remarks, setRemarks] = useState("")
     const {Title} = Typography
     const {TabPane} = Tabs
+    const {TabPane2} = Tabs
 
     useEffect(() => {
         dispatch(getOrderDetail())
@@ -314,15 +315,9 @@ export default function AprovalTaskPendingForm() {
                 <div className="card card-primary">
                    
                     <div className="card-body">
-                        <Table columns={columns} pagination={false} dataSource={dataOrderDetail} />
-                    </div>
-                </div>
-            </Col>
-            <Col span={24}>
-                <Card hoverable >
-                    <Tabs defaultActiveKey="1" centered={false}>
-                        <TabPane tab="Order Request Detail" key="1">
-                            <Card title={CardTitle("Order Request")}>
+                        <Tabs defaultActiveKey="1" centered={false}>
+                            <TabPane tab="Order Request Detail" key="1">
+                               
                                 <div className="card-body">
                                     <Table
                                         columns={columnsOrderDetail}
@@ -330,32 +325,48 @@ export default function AprovalTaskPendingForm() {
                                         dataSource={dataOrderDetail}
                                     />
                                 </div>
-                            </Card>
-                        </TabPane>
-                        <TabPane tab="Material Order" key="2">
+                         
+                            </TabPane>
+                            <TabPane tab="Site Info" key="2">
+                           
+                                <div className="card-body">
+                                    <Table columns={columns} pagination={false} dataSource={dataOrderDetail} />
+                                </div>
+                          
+                            </TabPane>
+                        </Tabs>
+                        
+                    </div>
+                </div>
+            </Col>
+            <Col span={24}>
+                <Card hoverable >
+                    <Tabs defaultActiveKey="1" centered={false}>
+                     
+                        <TabPane tab="Material Order" key="1">
                             
-                            <Card title={CardTitle("Material Order")}>
-                                {/* { parentOrderDetailId > 0 ? 
+                          
+                            {/* { parentOrderDetailId > 0 ? 
                                     <b>Parent Request No : {perentReqNo}</b>
                                     : null
                                 } */}
-                                <Table
-                                    columns={columnsMaterial}
-                                    pagination={false}
-                                    dataSource={dataMaterialOrder}
-                                />
-                            </Card>
+                            <Table
+                                columns={columnsMaterial}
+                                pagination={false}
+                                dataSource={dataMaterialOrder}
+                            />
+                         
                         </TabPane>
-                        <TabPane tab="Log" key="3">
-                            <Card title={CardTitle("Log")}>
-                                <div className="card-body">
-                                    <Table
-                                        columns={columnsLog}
-                                        pagination={false}
-                                        dataSource={dataLogOrder}
-                                    />
-                                </div>
-                            </Card>
+                        <TabPane tab="Log" key="2">
+                          
+                            <div className="card-body">
+                                <Table
+                                    columns={columnsLog}
+                                    pagination={false}
+                                    dataSource={dataLogOrder}
+                                />
+                            </div>
+                      
                         </TabPane>
                     </Tabs>
                     <div className="float-right mt-4">
