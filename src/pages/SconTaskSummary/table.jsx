@@ -144,7 +144,8 @@ export default function TableTaskSummary(props) {
             {
                 "transDelegateId": selectedTransDelegateId,
                 "transferTo": selectedReAssignedEngineer,
-                "transferBy": user.uid  
+                "transferBy": user.uid,
+                "currentAssignTo" :  currentAssignTo
             }
         )
         console.log(body,"body")
@@ -256,7 +257,7 @@ export default function TableTaskSummary(props) {
         getSconEngineer(data.subconId,data.workpackageid)
         setSelectedtransDelegateId(data.transDelegateId)
         setSelectedOdi(data.orderDetailId)
-      
+        setCurrentAssignTo(data.currentAssignTo)
         
     }
    
