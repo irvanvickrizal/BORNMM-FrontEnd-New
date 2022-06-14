@@ -231,7 +231,6 @@ export default function TableTransport() {
 
     useEffect(() => {
         getSconTaskPending()
-        
     }, [])
 
     const columns = [

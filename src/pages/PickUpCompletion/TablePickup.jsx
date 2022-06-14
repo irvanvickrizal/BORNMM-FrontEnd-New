@@ -454,10 +454,12 @@ export default function TablePickup() {
         setDefaultVehicleMulti(record.vehicleID)
 
     }
+
     const handleCloseManage = () =>{
         setIsManageMulti(false);
         getMultideliveryCompletion(userId)
     }
+
     const handleConfirmMultiVehicle = () =>{
         const body = {
             "multiDeliveryID":selectedMultiDeliveryId,
@@ -479,6 +481,7 @@ export default function TablePickup() {
             }
         )
     }
+    
     const handleCancelAssignmentOK = (record) =>{
         // setIsManageMulti(true);
         console.log(record,"sinidong")
