@@ -605,6 +605,7 @@ export default function TableTransportTaskTracking() {
                 style={{ width: (90 * width / 100), minWidth: (80 * width / 100) }}
                 footer={false}
                 zIndex={99999}
+                destroyOnClose={true}
             >
                 {Loading ? (    <Row justify="center">
                     <Col span={1}>    
