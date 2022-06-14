@@ -1,3 +1,4 @@
+/* eslint-disable no-const-assign */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/jsx-boolean-value */
@@ -23,6 +24,9 @@ export default function TablePickup() {
     const [isModalVisibleReaasignment,setIsModalVisibleReaasignment] = useState(false)
     const [transDelegateId,setTransDelegateId] = useState(false)
     const [selectedRequestNo,setRequestNo] = useState('');
+    const [selectedVehicle,setSelectedVehicle] = useState('');
+    const [defaultVehicle,setDefaultVehicle] = useState('');
+    const [defaultVehicleMulti,setDefaultVehicleMulti] = useState('');
     const [selectedRFPDate,setSelectedRFPDate] = useState('');
     const [selectedTransportTeam,setSelectedTransportTeam] = useState('');
     const [selectedWpid,setSelectedWpid] = useState('');
@@ -35,6 +39,7 @@ export default function TablePickup() {
     const [dataOrderList,setDataOrderList] = useState([])
     const [dataOrderDetail,setDataOrderDetail] = useState([])
     const [dataMaterial,setDataMaterial] = useState([])
+    const [dataMasterVehicle,setDataMasterVehicle] = useState([])
     const [dataLog,setDataLog] = useState([])
     const [isModalTabVisible,setIsModalTabVisible] = useState(false)
     const [odi,setOdi] = useState("")
@@ -84,6 +89,18 @@ export default function TablePickup() {
             }
         )
     }
+
+    const getVehicle = (tmid) =>{
+        console.log(tmid,"transportmodeid")
+        API.getMasterVevicle().then(
+            result=>{
+                
+                const filtered = result.filter( (auto) => auto.transportModeID==tmid)
+                console.log('data master Vehicle',filtered)
+                setDataMasterVehicle(filtered)
+            }
+        )
+    } 
 
     const getMultideliveryCompletion =(uid)=>{
         setIsLoading(true)
@@ -220,7 +237,9 @@ export default function TablePickup() {
         setSelectedWpid(record.workpackageid)
         setIsModalVisibleReaasignment(true)
         ddlTransporTeam(record.transportTeamId,record.workpackageid)
-        console.log(record.transportTeamId)
+        getVehicle(record.transportModeID)
+        setDefaultVehicle(record.vehicleId)
+        console.log(record,"record ")
     }
 
     const hideModal = () => {
@@ -238,13 +257,18 @@ export default function TablePickup() {
         setIsModalTabVisible(false)
         setDataOrderDetail([])
     }
+    const handleFailedForm = () => {
+      
+    }
     const handlePost = () => {
         const body = {
             "transDelegateId":transDelegateId,
             "transferTo":selectedAssignTo,
             "transferBy":userId,
-            "currentAssignTo":currentAssignTo
+            "currentAssignTo":currentAssignTo,
+            "vehicleID":selectedVehicle==0?defaultVehicle:selectedVehicle
         }
+        console.log(body,"body")
         API.postPickUpCompletion(body).then(
             result=>{
                 if(result.status=="success")
@@ -295,6 +319,12 @@ export default function TablePickup() {
             title : "Destination",
             dataIndex:'destinationName',
             ...Search('destinationName'),
+        },
+        {
+            width:150,
+            title : "Vehicle",
+            dataIndex:'vehicleName',
+            ...Search('vehicleName'),
         },
         {
             width:150,
@@ -416,14 +446,38 @@ export default function TablePickup() {
     ]
 
     const handleManageMultiDelivery = (record) =>{
+        console.log(record,"recordss")
         setIsManageMulti(true);
+        getVehicle(record.transportModeID)
         setSelectedMultiDeliveryId(record.multiDeliveryId)
         getMultiDeliveryAssigned(record.multiDeliveryId)
+        setDefaultVehicleMulti(record.vehicleID)
 
     }
     const handleCloseManage = () =>{
         setIsManageMulti(false);
         getMultideliveryCompletion(userId)
+    }
+    const handleConfirmMultiVehicle = () =>{
+        const body = {
+            "multiDeliveryID":selectedMultiDeliveryId,
+            "vehicleID":selectedVehicle==0?defaultVehicle:selectedVehicle,
+            "LMBY":userId
+        }
+        console.log(body,"body change vehicle")
+        API.putChangeVehicleMultiDelivery(body).then(
+            result=>{
+                if(result.status=="success")
+                {
+                    toast.success(result.message);
+                    setIsManageMulti(false);
+                    getMultideliveryCompletion(userId);
+                }
+                else{
+                    toast.error(result.message)
+                }
+            }
+        )
     }
     const handleCancelAssignmentOK = (record) =>{
         // setIsManageMulti(true);
@@ -493,6 +547,12 @@ export default function TablePickup() {
             title : "WH Team",
             dataIndex:'lspName',
             ...Search('lspName'),
+        },
+        {
+            width:150,
+            title : "Vehicle",
+            dataIndex:'vehicleName',
+            ...Search('vehicleName'),
         },
         {
             width:150,
@@ -1024,10 +1084,10 @@ export default function TablePickup() {
                             'transDelegateId' : transDelegateId,
                             'requestNo': selectedRequestNo,
                             'rfpDate' : moment(selectedRFPDate).format("YYYY-MM-DD"),
-                         
+                            'vehicle' : defaultVehicle == 0 ? null : defaultVehicle 
                         }}
-                        // onFinish={handleOKForm}
-                        // onFinishFailed={handleFailedForm}
+                        onFinish={handlePost}
+                        onFinishFailed={handleFailedForm}
                         autoComplete="off"
                     >
                         <Form.Item
@@ -1052,6 +1112,21 @@ export default function TablePickup() {
                         >
                             <Input disabled/>
                         </Form.Item>
+                        <Form.Item label="Vehicle"
+                            name="vehicle"
+                            rules={[{ required: true, message: 'Please Select Transport Team!'}]}
+                        >
+                            <Select 
+                                onChange={(e) => setSelectedVehicle(e)}
+                                placeholder="Select an option"
+                            >
+                                {/* <Select.Option value={0}>-- SELECT --</Select.Option> */}
+                                {
+                                    dataMasterVehicle.map(inv =>  <Select.Option value={inv.vehicleId}> 
+                                        {inv.vehicleName}</Select.Option>)
+                                }
+                            </Select>
+                        </Form.Item>
                         <Form.Item name="assignTo" label="Assign To"
                             rules={[{ required: true, message: 'Please input Assign To!' }]}
                         >
@@ -1067,7 +1142,7 @@ export default function TablePickup() {
                         <Form.Item wrapperCol={{ offset: 10, span: 14 }}>
                       
                             <div className='float-right'>
-                                <Button type="primary" htmlType="submit" onClick={handlePost}>
+                                <Button type="primary" htmlType="submit">
                             Confirm
                                 </Button>
                             </div>
@@ -1312,9 +1387,12 @@ export default function TablePickup() {
                 visible={isManageMulti}
                 destroyOnClose={true}
                 footer={
-                    <Button key="back" onClick={handleCloseManage}>
+                    <><Button key="back" onClick={handleCloseManage}>
                         close
-                    </Button>}
+                    </Button><Button type="primary" key="back" onClick={handleConfirmMultiVehicle}>
+                            Confirm
+                    </Button></>    
+                }
                 onCancel={handleCloseManage}
                 centered
                 maskClosable={false}
@@ -1332,6 +1410,25 @@ export default function TablePickup() {
                         position: ["none"],
                     }}
                     bordered />
+                
+                <Form.Item label="Vehicle"
+                    name="vehicle"
+                    style={{marginTop:20}}
+                    rules={[{ required: true, message: 'Please Select Transport Team!'}]}
+                >
+                    <Select 
+                        onChange={(e) => setSelectedVehicle(e)}
+                        placeholder="Select an option"
+                        defaultValue={defaultVehicleMulti==0?null:defaultVehicleMulti}
+                    >
+                        {/* <Select.Option value={0}>-- SELECT --</Select.Option> */}
+                        {
+                            dataMasterVehicle.map(inv =>  <Select.Option value={inv.vehicleId}> 
+                                {inv.vehicleName}</Select.Option>)
+                        }
+                    </Select>
+                </Form.Item>
+
             </Modal>
 
             <Modal title="Material Arrive at WH"

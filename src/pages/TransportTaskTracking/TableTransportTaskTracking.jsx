@@ -1,10 +1,11 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable global-require */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/jsx-boolean-value */
 /* eslint-disable react/no-unstable-nested-components */
 import React,{useEffect,useState} from 'react'
 import API from '@app/utils/apiServices'
-import { useSelector } from 'react-redux';
+import { useSelector ,useDispatch} from 'react-redux';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import {Image,Table,InputNumber ,Space,Row,Col,Spin,Tooltip,Modal,Upload,Button,Form,Input,Typography,Card,DatePicker} from "antd"
@@ -18,9 +19,13 @@ import L, { divIcon, Routing } from "leaflet";
 import { MapContainer, TileLayer, Marker, Popup,useMapEvent } from 'react-leaflet'
 import { createControlComponent } from "@react-leaflet/core";
 import RoutingMachine from '@app/pages/TransportTaskTracking/RoutingMap';
+import { getDataLongLat } from '@app/store/action/transportTaskTrackingAction';
+
+
 
 export default function TableTransportTaskTracking() {
     const [dataTransportTask,setDataTransportTask] = useState([])
+    const [dataTransportTaskLongLat,setDataTransportTaskLongLat] = useState([])
     const [isLoading, setIsLoading] = useState(true);
     const [isModalVisible,setIsModalVisible] = useState(false)
     const [isModalMapVisible,setIsModalMapVisible] = useState(false)
@@ -33,7 +38,11 @@ export default function TableTransportTaskTracking() {
     const[dataDeliveryNote,setDataDeliveryNote] = useState([])
     const [mapLocation,setMapLocation] = useState([])
     const [zoom, setZoom] = useState("");
-    
+    const dispatch = useDispatch()
+    const Loading = useSelector(state=>state.transportTaskTrackingReducer?.isLoading)
+    const dataLocation = useSelector(state=>state.transportTaskTrackingReducer?.dataLonglat)
+    const currentLat = useSelector(state=>state.transportTaskTrackingReducer?.dataLonglat[0]?.currLatitude)
+    const currentLong = useSelector(state=>state.transportTaskTrackingReducer?.dataLonglat[0]?.currLongitude)
 
 
 
@@ -73,18 +82,8 @@ export default function TableTransportTaskTracking() {
         </Title>
     )
 
-    const iconPerson = new L.Icon({
-        iconUrl: require('../../assets/image/logoXL.png'),
-        iconRetinaUrl: require('../../assets/image/logoXL.png'),
-        iconAnchor: null,
-        popupAnchor: null,
-        shadowUrl: null,
-        shadowSize: null,
-        shadowAnchor: null,
-        iconSize: new L.Point(60, 75),
-        className: 'leaflet-div-icon'
-    });
-    
+
+   
     const handleClick = (record) => {
         setZoom(10);
     
@@ -111,6 +110,8 @@ export default function TableTransportTaskTracking() {
             }
         )
     }
+
+  
 
     
     const BuildPhotoSender = ({data}) =>{
@@ -175,14 +176,31 @@ export default function TableTransportTaskTracking() {
 
     const showModal= (data) => {
         setIsModalVisible(true)
+        console.log(currentLong,"long")
         setOdiParam(data.orderDetailId)
         getPhotoRecipient(data.orderDetailId)
         getPhotoSender(data.orderDetailId)
         getDeliveryNote(data.orderDetailId)
     }
+
+    function getTransportTaskLongLat(odi) {
+        setIsLoading(true);
+        API.getTransportTaskTrackingLongLat(odi).then(
+            result=>{
+                setDataTransportTaskLongLat(result);
+                setIsLoading(false);
+                console.log("data longLata =>",result);
+            }
+        )
+        dispatch(getDataLongLat(odi))
+    }
+    console.log(dataDummy,"ini")
+
     const showModalMap= (data) => {
+        console.log(data,"data nih")
         setIsModalMapVisible(true)
-        console.log(dataDummy,"ini")
+        getTransportTaskLongLat(data)
+       
       
     }
 
@@ -253,6 +271,12 @@ export default function TableTransportTaskTracking() {
             dataIndex:'lspTransport',
             ...Search('lspTransport'),
         },
+        // {
+        //     width:150,
+        //     title : " ODI",
+        //     dataIndex:'orderDetailId',
+        //     ...Search('orderDetailId'),
+        // },
         {
             width:150,
             title : "Request No",
@@ -442,25 +466,25 @@ export default function TableTransportTaskTracking() {
             render:(record)=>{
                 return (
                     <div style={{display:"flex",alignItems:'center',justifyContent:'center'}}>
-                        {record.taskCompleteDate == null ? (<></>):(<Space size={20}>
-                            <Tooltip title="View HO Document">
-                                <EyeFilled style={{fontSize:20,color:"#0332c3"}}
-                                    onClick={()=>showModal(record)}
-                                />
-                            </Tooltip>
-                            <Tooltip title="View Map">
-                                <IconButton
-                                    size='small'
-                                    color="primary"
-                                    aria-label="upload file"
-                                    component="span"
-                                    onClick={()=>{showModalMap(record)}}>
-                                    <RoomIcon style={{color:"red"}}  />
-                                </IconButton>
-                            </Tooltip>
-                            
-
-                        </Space>)}
+                        <Space size={20}>
+                            {record.taskCompleteDate == null ? (<></>):(
+                                <Tooltip title="View HO Document">
+                                    <EyeFilled style={{fontSize:20,color:"#0332c3"}}
+                                        onClick={()=>showModal(record)}
+                                    />
+                                </Tooltip>)}
+                            {record.confirmStatus === "Confirmed" ? ( 
+                                <Tooltip title="View Map">
+                                    <IconButton
+                                        size='small'
+                                        color="primary"
+                                        aria-label="upload file"
+                                        component="span"
+                                        onClick={()=>{showModalMap(record.orderDetailId)}}>
+                                        <RoomIcon style={{color:"red"}}  />
+                                    </IconButton>
+                                </Tooltip>):(<></>)}
+                        </Space>
                        
                     </div>
                 )
@@ -475,10 +499,11 @@ export default function TableTransportTaskTracking() {
 
     useEffect(() => {
         getTransportTask();
-        setZoom(4);
+        setZoom(6);
       
     },[])
 
+    
 
     return (
         <div>
@@ -576,48 +601,61 @@ export default function TableTransportTaskTracking() {
                 {/* <img alt="example" style={{ width: '100%' }} src={previewDoc} /> */}
             </Modal>
 
-            <Modal visible={isModalMapVisible} onCancel={hideModalMap}
+            <Modal title={dataLocation[0]?.orderRequestNo !== undefined ? (`Order Request No : ${dataLocation[0]?.orderRequestNo}`):(`Order Request No : -`) } visible={isModalMapVisible} onCancel={hideModalMap}
                 style={{ width: (90 * width / 100), minWidth: (80 * width / 100) }}
                 footer={false}
                 zIndex={99999}
             >
-                <MapContainer center={[-6.200000,106.816666]} zoom={zoom} style={{width:"75vw",height:"80vh"}}
-                    scrollWheelZoom={true}
-                    icon={iconPerson}
-                   
-                >
-                    <TileLayer
-                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    />
-                 
+                {Loading ? (    <Row justify="center">
+                    <Col span={1}>    
+                        <Spin />
+                    </Col>
+                </Row>  ):(  
+                    dataLocation.length !== 0 ? 
+                        (<MapContainer center={[currentLat,currentLong]} zoom={8} style={{width:"75vw",height:"80vh"}}
+                            scrollWheelZoom={true}
+                          
                
-
-                    {/* {dataDummy.map((e,idx)=> 
-                        <Marker position={[-6.200000,106.816666]}
-                            icon={ iconPerson }
-                            eventHandlers={{
-                                click: (record) => {
-                                    handleClick(record)
-                                },}}
-                                
-                            
-                        // key={idx}
                         >
-                            <Popup>
-                                <Typography>
-                                    <ul>
-                                        <li>Site No : {e.siteNo}</li>
-                                        <li>Scope Name : {e.sdrNumber}</li>
-                                    </ul>
-                                </Typography>
-                            </Popup>
-                        </Marker>
-                    )} */}
-                    <RoutingMachine/>
-                </MapContainer>
+                            <TileLayer
+                                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            />
+             
+           
+
+                            {/* {dataDummy.map((e,idx)=> 
+                    <Marker position={[-6.200000,106.816666]}
+                        icon={ iconPerson }
+                        eventHandlers={{
+                            click: (record) => {
+                                handleClick(record)
+                            },}}
+                            
+                        
+                    // key={idx}
+                    >
+                        <Popup>
+                            <Typography>
+                                <ul>
+                                    <li>Site No : {e.siteNo}</li>
+                                    <li>Scope Name : {e.sdrNumber}</li>
+                                </ul>
+                            </Typography>
+                        </Popup>
+                    </Marker>
+                )} */}
+                            <RoutingMachine
+                
+                            />
+                        </MapContainer>):(<></>)
+                )}
+                
+               
          
             </Modal>
+
+            
         
         </div>
     )

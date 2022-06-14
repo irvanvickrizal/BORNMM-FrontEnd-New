@@ -27,6 +27,7 @@ const TableMultiDeliveryConfirmation = () => {
     const [isAddMultiDelivery,setIsAddMultiDelivery] = useState(false);
     const [isCancelRFPDone,setIsCancelRFPDone] = useState(false);
     const [ddlSubcon,setDDLSubcon] = useState([]);
+    const [ddlTransportMode,setDdlTransportMode] = useState([]);
     const user = useSelector((state) => state.auth.user);
     const history = useHistory();
     const navigateTo = (path) => {
@@ -60,6 +61,19 @@ const TableMultiDeliveryConfirmation = () => {
             }
         )
     }
+
+
+    const getTransportMode = () =>{
+        API.getTransportMode().then(
+            result=>{
+                setDdlTransportMode(result)
+                console.log('data master Vehicle',result)
+                
+            }
+        )
+    } 
+
+
     const handleOKCancelRFPDone =(data) =>{
         setCancelLoading(true)
         const body = ({
@@ -82,7 +96,8 @@ const TableMultiDeliveryConfirmation = () => {
 
     const showAddMultiDelivery = () =>
     {
-        getDDLSubcon()
+        getDDLSubcon();
+        getTransportMode();
         setIsAddMultiDelivery(true);
     }
     const showCancelRFPDone = (record) =>
@@ -137,7 +152,8 @@ const TableMultiDeliveryConfirmation = () => {
             {
                 "cby":user.uid,
                 "notes": record.notes,
-                "transportTeamId": record.transportTeam
+                "transportTeamId": record.transportTeam,
+                "transportModeID": record.transportMode
             }
         )
         console.log(body,"body")
@@ -180,6 +196,12 @@ const TableMultiDeliveryConfirmation = () => {
             title : "Transport Team",
             dataIndex:'transportTeam',
             ...Search('transportTeam'),
+        },
+        {
+            width:150,
+            title : "Transport Mode",
+            dataIndex:'transportMode',
+            ...Search('transportMode'),
         },
         {
             width:150,
@@ -445,6 +467,21 @@ const TableMultiDeliveryConfirmation = () => {
                         {
                             ddlSubcon.map(inv =>  <Select.Option value={inv.subconId}> 
                                 {inv.subconName}</Select.Option>)
+                        }
+                    </Select>
+                </Form.Item>
+                <Form.Item label="Transport Mode"
+                    name="transportMode"
+                    rules={[{ required: true, message: 'Please Select Transport Mode!'}]}
+                >
+                    <Select 
+                        // onChange={(e) => handleDDLSubconChange(e)}
+                        placeholder="Select an option"
+                    >
+                        {/* <Select.Option value={0}>-- SELECT --</Select.Option> */}
+                        {
+                            ddlTransportMode?.map(inv =>  <Select.Option value={inv.transportmode_id}> 
+                                {inv.transport_mode}</Select.Option>)
                         }
                     </Select>
                 </Form.Item>

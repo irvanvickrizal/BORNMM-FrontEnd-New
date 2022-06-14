@@ -29,6 +29,7 @@ export default function TableTransport() {
     const [selectedRequestNo, setSelectedRequestNo]  = useState('')
     const [selectedRFPDate, setSelectedRFPDate]  = useState('')
     const [selectedAssignTo, setSelectedAssignTo]  = useState('')
+    const [selectedTransportModeID, setSelectedTransportModeID]  = useState('')
     const user = useSelector((state) => state.auth.user);
     const [isCancelTask,setIsCancelTask] = useState(false);
     const [isHOConfirmation,setIsHOConfirmation] = useState(false);
@@ -93,16 +94,14 @@ export default function TableTransport() {
         )
     }
 
-    const getVehicle = () =>{
-   
+    const getVehicle = (tmid) =>{
+        console.log(tmid,"transportmodeid")
         API.getMasterVevicle().then(
             result=>{
-                setDataMasterVehicle(result)
-              
-
-              
-                console.log('data master Vehicle',result)
                 
+                const filtered = result.filter( (auto) => auto.transportModeID==tmid)
+                console.log('data master Vehicle',filtered)
+                setDataMasterVehicle(filtered)
             }
         )
     } 
@@ -153,12 +152,14 @@ export default function TableTransport() {
     const handleAssign = (data) =>
     {
         console.log(data,"assign transport")
+        console.log(data.transportModeId,"assign transport modeid")
         setSelectedOrderDetailId(data.orderDetailId)
         setSelectedRFPDate(data.rfpDate)
         setSelectedRequestNo(data.requestNo)
+        setSelectedTransportModeID(data.transportModeId)
         getAssignTo(data.transportTeamId,data.workpackageid);
         setIsFormAssignment(true);
-        getVehicle()
+        getVehicle(data.transportModeId)
     }
 
     const handleHOConfirmation = (data) =>

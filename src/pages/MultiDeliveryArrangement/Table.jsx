@@ -43,6 +43,7 @@ const MultiDeliveryArrangementPanel = () => {
     const [multiDeliveryDetail,setMultiDeliveryDetail] = useState([]);
     const [multiDeliveryRequestList,setMultiDeliveryRequestList] = useState([]);
     const [multiDeliveryRequestPendingList,setMultiDeliveryRequestPendingList] = useState([]);
+    const [multiDeliveryTransportMode,setMultiDeliveryTransportMode] = useState('');
     const [isAddOrderRequest, setIsAddOrderRequest] = useState(false);
     const [isSubmit, setIsSubmit] = useState(false);
     const [ddlTransportTeam, setDdlTransportTeam] = useState([]);
@@ -61,6 +62,7 @@ const MultiDeliveryArrangementPanel = () => {
                 console.log("multidetail", result)
                 setIsLoadingPage(false);
                 setTransportTeamId(result[0].transportTeamId)
+                setMultiDeliveryTransportMode(result[0].transportModeID)
                 setMultiDeliveryDetail(result)
             }
         )
@@ -69,19 +71,21 @@ const MultiDeliveryArrangementPanel = () => {
     const getMultiDeliveryRequestPending = () => {
         API.getMultiDeliveryRequest(user.uid).then(
             result=>{
-                setMultiDeliveryRequestPendingList(result);
+                const filtered = result.filter( (auto) => auto.transportModeID==multiDeliveryTransportMode)
+                console.log('data master Vehicle filter',filtered)
+                setMultiDeliveryRequestPendingList(filtered);
                 console.log("request",result);
             }
         )
     }
     const getVehicle = () =>{
-        setIsLoading(true)
+        // setIsLoading(true)
         API.getMasterVevicle().then(
             result=>{
-                setDataMasterVehicle(result)
-              
 
-                setIsLoading(false)
+                const filtered = result.filter( (auto) => auto.transportModeID==multiDeliveryTransportMode)
+                console.log('data master Vehicle filter',filtered)
+                setDataMasterVehicle(filtered)
                 console.log('data master Vehicle',result)
                 
             }
@@ -238,6 +242,10 @@ const MultiDeliveryArrangementPanel = () => {
             dataIndex:'transportTeam',
         },
         {
+            title : "Transport Mode",
+            dataIndex:'transportMode',
+        },
+        {
             title : "Status",
             width: 100,
             dataIndex:'multiDeliveryStatus',
@@ -370,6 +378,10 @@ const MultiDeliveryArrangementPanel = () => {
             title : "Site Name",
             dataIndex:'siteName',
             ...Search('siteName'),
+        },
+        {
+            title : "Transport Mode",
+            dataIndex:'transportMode',
         },
         {
             title : "Region",
