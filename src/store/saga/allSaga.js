@@ -9,9 +9,10 @@ import { SagaSiteListDeliveryWorker } from "@app/store/saga/siteListDeliveryRequ
 import { SagaLogistikFormWorker } from "@app/store/saga/logistikFormSaga";
 import { SagaAprovalTaskPendingWorker } from "@app/store/saga/aprovalTaskPendingSaga";
 import { SagaTaskAssignmentSummaryWorker } from "@app/store/saga/taskAssignmentSummarySaga";
+import { SagaTransportTaskTrackingWorker } from "@app/store/saga/transportTaskTrackingSaga";
 
 export function* allSaga() {
     yield all([SagaAuthWorker(),SagaDopWorker(),SagaScopeWorker(),SagaSiteConditionWorker(),SagaScopeOrderWorker(),SagaWorFlowWorker(),SagaSiteListDeliveryWorker(),SagaLogistikFormWorker()
         ,SagaAprovalTaskPendingWorker(),
-        SagaTaskAssignmentSummaryWorker()]);
+        SagaTaskAssignmentSummaryWorker(),SagaTransportTaskTrackingWorker()]);
 }

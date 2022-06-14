@@ -831,6 +831,7 @@ const postUploadEvidence = (taskscheduleid,orderdetailid,workpackageid,usersigne
 
 // Transport Task Tracking
 const getTransportTaskTracking = (uId) => GETParam("rpt/transportTaskTracking",uId);
+const getTransportTaskTrackingLongLat = (odi) => GETParam("lspassignment/getCurrentVehicleLocation",odi);
 
 // Dismantle Act Pending
 const getDismantleActPending = (uId) => GETParam("taskassignment/dismantleACKPendingGetList",uId);
@@ -896,6 +897,7 @@ const API ={
     postDOPRegion,
     getDOPRegion,
     getGraphComplete,
+    getTransportTaskTrackingLongLat,
     deleteDOPRegion,
     getDOPNotCoverage,
     getStockDetail,
