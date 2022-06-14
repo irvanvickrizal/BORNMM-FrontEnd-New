@@ -548,6 +548,7 @@ const PutMasterDistrict = (body) => PUT('masterdistrict/updateMasterDistrict',bo
 const PutMasterDistrictStatus = (body) => PUT('masterdistrict/deactivateMasterDistrict',body);
 
 const getMasterVevicle = () => GET('vehicle/getMasterList');
+const getTransportMode = () => GET('vehicle/getTransportMode');
 const PostMasterVehicle = (body) => POST('vehicle/vehicleAddNew',body);
 const PutMasterVehicle = (body) => PUT('vehicle/vehicleUpdate',body);
 
@@ -759,6 +760,7 @@ const getPickUpCompletion = (uid) => GETParam('lspassignment/lspAssignmentTransp
 const getPickUpCompletion2 = (uid) => GETParam('lspassignment/lspAssignmentTransportAssignmentPickupPending',uid);
 const getDdlTransportTeam = (tid,wpid) => GETParam2('subcon/getLSPTransportTeam',tid,wpid);
 const postPickUpCompletion = (body) => POST('lspassignment/lspAssignmentToChangePIC',body);
+const putChangeVehicleMultiDelivery = (body) => POST('multidelivery/multiDeliveryChangeVehicle',body);
 
 const getMultiDeliveryCompletion = (uid) => GETParam('multidelivery/multiDeliveryGetAssignedList',uid);
 const getMultiDeliveryAssigned = (mdid) => GETParam('multidelivery/multiDeliveryGetDetailAssignedList',mdid);
@@ -882,6 +884,8 @@ const getRPTAPPTracking =(userid) => GETParam('rpt/OrderRequestDismantleGetAppro
 
 
 const API ={
+    putChangeVehicleMultiDelivery,
+    getTransportMode,
     PutMasterDistrictStatus,
     getRegion,
     getPMRVSDismantle,
