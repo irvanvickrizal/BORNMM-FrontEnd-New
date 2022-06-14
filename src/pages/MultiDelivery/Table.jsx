@@ -472,7 +472,7 @@ const TableMultiDeliveryConfirmation = () => {
                 </Form.Item>
                 <Form.Item label="Transport Mode"
                     name="transportMode"
-                    // rules={[{ required: true, message: 'Please Select Transport Mode!'}]}
+                    rules={[{ required: true, message: 'Please Select Transport Mode!'}]}
                 >
                     <Select 
                         // onChange={(e) => handleDDLSubconChange(e)}

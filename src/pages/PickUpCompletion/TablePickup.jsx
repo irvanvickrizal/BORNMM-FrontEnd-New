@@ -257,6 +257,9 @@ export default function TablePickup() {
         setIsModalTabVisible(false)
         setDataOrderDetail([])
     }
+    const handleFailedForm = () => {
+      
+    }
     const handlePost = () => {
         const body = {
             "transDelegateId":transDelegateId,
@@ -316,6 +319,12 @@ export default function TablePickup() {
             title : "Destination",
             dataIndex:'destinationName',
             ...Search('destinationName'),
+        },
+        {
+            width:150,
+            title : "Vehicle",
+            dataIndex:'vehicleName',
+            ...Search('vehicleName'),
         },
         {
             width:150,
@@ -470,8 +479,6 @@ export default function TablePickup() {
             }
         )
     }
-
-
     const handleCancelAssignmentOK = (record) =>{
         // setIsManageMulti(true);
         console.log(record,"sinidong")
@@ -540,6 +547,12 @@ export default function TablePickup() {
             title : "WH Team",
             dataIndex:'lspName',
             ...Search('lspName'),
+        },
+        {
+            width:150,
+            title : "Vehicle",
+            dataIndex:'vehicleName',
+            ...Search('vehicleName'),
         },
         {
             width:150,
@@ -1073,8 +1086,8 @@ export default function TablePickup() {
                             'rfpDate' : moment(selectedRFPDate).format("YYYY-MM-DD"),
                             'vehicle' : defaultVehicle == 0 ? null : defaultVehicle 
                         }}
-                        // onFinish={handleOKForm}
-                        // onFinishFailed={handleFailedForm}
+                        onFinish={handlePost}
+                        onFinishFailed={handleFailedForm}
                         autoComplete="off"
                     >
                         <Form.Item
@@ -1129,7 +1142,7 @@ export default function TablePickup() {
                         <Form.Item wrapperCol={{ offset: 10, span: 14 }}>
                       
                             <div className='float-right'>
-                                <Button type="primary" htmlType="submit" onClick={handlePost}>
+                                <Button type="primary" htmlType="submit">
                             Confirm
                                 </Button>
                             </div>

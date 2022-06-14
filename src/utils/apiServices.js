@@ -760,7 +760,7 @@ const getPickUpCompletion = (uid) => GETParam('lspassignment/lspAssignmentTransp
 const getPickUpCompletion2 = (uid) => GETParam('lspassignment/lspAssignmentTransportAssignmentPickupPending',uid);
 const getDdlTransportTeam = (tid,wpid) => GETParam2('subcon/getLSPTransportTeam',tid,wpid);
 const postPickUpCompletion = (body) => POST('lspassignment/lspAssignmentToChangePIC',body);
-const putChangeVehicleMultiDelivery = (body) => POST('multidelivery/multiDeliveryChangeVehicle',body);
+const putChangeVehicleMultiDelivery = (body) => PUT('multidelivery/multiDeliveryChangeVehicle',body);
 
 const getMultiDeliveryCompletion = (uid) => GETParam('multidelivery/multiDeliveryGetAssignedList',uid);
 const getMultiDeliveryAssigned = (mdid) => GETParam('multidelivery/multiDeliveryGetDetailAssignedList',mdid);
