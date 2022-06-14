@@ -19,7 +19,6 @@ import L, { divIcon, Routing } from "leaflet";
 import { MapContainer, TileLayer, Marker, Popup,useMapEvent } from 'react-leaflet'
 import { createControlComponent } from "@react-leaflet/core";
 import RoutingMachine from '@app/pages/TransportTaskTracking/RoutingMap';
-import markerIcon from "./logoXL.png"
 import { getDataLongLat } from '@app/store/action/transportTaskTrackingAction';
 
 
@@ -83,18 +82,7 @@ export default function TableTransportTaskTracking() {
         </Title>
     )
 
-    const iconPerson = new L.Icon({
-        iconUrl: markerIcon,
-        iconRetinaUrl: markerIcon,
-        iconSize: [60, 55],
-        shadowSize: [50, 64],
-        iconAnchor: [22, 94],
-        shadowAnchor: [4, 62],
-        popupAnchor: [-3, -76],
-    
 
-    });
-    
    
     const handleClick = (record) => {
         setZoom(10);
@@ -626,7 +614,7 @@ export default function TableTransportTaskTracking() {
                     dataLocation.length !== 0 ? 
                         (<MapContainer center={[currentLat,currentLong]} zoom={8} style={{width:"75vw",height:"80vh"}}
                             scrollWheelZoom={true}
-                            icon={iconPerson}
+                          
                
                         >
                             <TileLayer

@@ -9,7 +9,7 @@ import { createControlComponent } from "@react-leaflet/core";
 import "leaflet-routing-machine";
 // import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import "./map.css"
-import markerIcon from "./logoXL.png"
+
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import ReactDOM from 'react-dom';
 import { renderToStaticMarkup } from 'react-dom/server';
