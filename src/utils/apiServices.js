@@ -882,11 +882,15 @@ const getApkLink = () => GET("dashboard/bornMobileAppLatestVersion");
 
 const getRPTAPPTracking =(userid) => GETParam('rpt/OrderRequestDismantleGetApprovalTracking',userid);
 
+// Change Subcon Assigment
+const getDataTaskChangeSubcon = (uid) => GETParam("taskassignment/getTaskChangePartnerDismantle",uid);
+
 
 
 const API ={
     putChangeVehicleMultiDelivery,
     getTransportMode,
+    getDataTaskChangeSubcon,
     PutMasterDistrictStatus,
     getRegion,
     getPMRVSDismantle,
