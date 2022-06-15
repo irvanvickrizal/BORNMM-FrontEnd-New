@@ -199,7 +199,7 @@ export default function TableTransportTaskTracking() {
     const showModalMap= (data) => {
         console.log(data,"data nih")
         setIsModalMapVisible(true)
-        getTransportTaskLongLat(data)
+        dispatch(getDataLongLat(data))
        
       
     }
