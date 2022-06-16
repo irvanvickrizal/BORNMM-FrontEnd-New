@@ -1,3 +1,4 @@
+/* eslint-disable no-unneeded-ternary */
 import React,{useEffect,useState} from 'react'
 import {Table,Col,Row,Tooltip,Spin,Switch,Modal,Form,Input,Space,Button,Select,Typography} from "antd"
 import API from '@app/utils/apiServices'
@@ -369,6 +370,7 @@ export default function TableDeliveryTypeMapping() {
                             placeholder="Select Your District"
                             onChange={(e) => handleDistrictChange(e)}
                             showSearch
+                            disabled={selectedDop === 2 ? (false):(true)}
                             filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                         >
                             {
