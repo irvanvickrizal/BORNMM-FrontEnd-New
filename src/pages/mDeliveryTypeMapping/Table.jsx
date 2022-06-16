@@ -87,7 +87,7 @@ export default function TableDeliveryTypeMapping() {
                 "deliveryTypeID":data.deliveryType, 
                 "dopID": data.dop,
                 "group":data.group,
-                "district":data.district,
+                "districtID":data.district,
                 "lmby":userId
              
             }
@@ -364,7 +364,8 @@ export default function TableDeliveryTypeMapping() {
                     <Form.Item name="district" label="District"
                         wrapperCol={{  span: 14 }}
                                    
-                        rules={[{ required: true, message: 'Please Select End Point!' }]}
+                        // rules={[{ required: true, message: 'Please Select End Point!' }]}
+                        rules={selectedDop === 2 ? ([{ required: true, message: 'Please Select End Point!' }]):([{ required: false, message: 'Please Select End Point!' }])}
                     >
                         <Select 
                             placeholder="Select Your District"
