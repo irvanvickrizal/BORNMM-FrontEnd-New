@@ -757,6 +757,7 @@ const deleteteDeliveryTypeMapping = (id) => DELETE('deliverytypedestination/dele
 // Pickup Complletion
 
 const getPickUpCompletion = (uid) => GETParam('lspassignment/lspAssignmentTransportAssignmentPickupPending',uid);
+const getSconId = (uid) => GETParam('multidelivery/getSconID',uid);
 const getPickUpCompletion2 = (uid) => GETParam('lspassignment/lspAssignmentTransportAssignmentPickupPending',uid);
 const getDdlTransportTeam = (tid,wpid) => GETParam2('subcon/getLSPTransportTeam',tid,wpid);
 const postPickUpCompletion = (body) => POST('lspassignment/lspAssignmentToChangePIC',body);
@@ -916,6 +917,7 @@ const API ={
     getSDRLTRDDL,
     getWHTeam,
     checkIsSite,
+    getSconId,
     getBoqAccuracySiteBase,
     getWHSupervisor,
     getMaterialOrderTARItem,

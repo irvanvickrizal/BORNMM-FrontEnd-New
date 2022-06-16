@@ -23,6 +23,7 @@ const TableMultiDeliveryConfirmation = () => {
     const [multiDeliveryConfirmationList,setMultiDeliveryConfirmationList] = useState([]);
     const [multiDeliveryRequestList,setMultiDeliveryRequestList] = useState([]);
     const [selectedOrderDetailId,setSelectedOrderDetailId] = useState('');
+    const [dataSubconId,setDataSuconId] = useState([]);
     const [selectedRFPId,setSelectedRFPId] = useState('');
     const [isAddMultiDelivery,setIsAddMultiDelivery] = useState(false);
     const [isCancelRFPDone,setIsCancelRFPDone] = useState(false);
@@ -58,6 +59,15 @@ const TableMultiDeliveryConfirmation = () => {
             result=>{
                 setDDLSubcon(result);
                 console.log("inventory",result);
+            }
+        )
+    }
+
+    const getSubconId = () => {
+        API.getSconId(user.uid).then(
+            result=>{
+                setDataSuconId(result);
+                console.log("subconId",result);
             }
         )
     }
@@ -377,10 +387,16 @@ const TableMultiDeliveryConfirmation = () => {
         console.log("keytabs",key);
     }
 
+    const btn = () =>{console(dataSubconId.subconId,"console")}
 
     useEffect(() => {
         getMultiDeliveryConfirmation();
+
     },[selectedOrderDetailId,selectedRFPId])
+    useEffect(() => {
+      
+        getSubconId()
+    },[])
 
     return(
         <><Tabs onChange={callback} type="card">
@@ -439,13 +455,14 @@ const TableMultiDeliveryConfirmation = () => {
         >
             <Form
                 name="basic"
-                labelCol={{ span: 10 }}
+                labelCol={{ span: 8 }}
                 wrapperCol={{ span: 14 }}
                 initialValues={{
                     // 'orderDetailId': selectedOrderDetailId,
                     // 'requestNo': selectedRequestNo,
                     // 'rfpDate': moment(selectedRFPDate).format("YYYY-MM-DD"),
                     // 'deliveryType': selectedCDMRType,
+                    'transportTeam': dataSubconId[0]?.SubconID
                     // // 'taskScheduleId': props.taskScheduleId,
                     // // 'subconId': props.subconId,
                     // //'pickupDate': moment(props.pickupDate).format("YYYY-MM-DD"),
@@ -457,9 +474,11 @@ const TableMultiDeliveryConfirmation = () => {
             >
                 <Form.Item label="Transport Team"
                     name="transportTeam"
+                 
                     rules={[{ required: true, message: 'Please Select Transport Team!'}]}
                 >
                     <Select 
+                        disabled={true}
                         onChange={(e) => handleDDLSubconChange(e)}
                         placeholder="Select an option"
                     >
