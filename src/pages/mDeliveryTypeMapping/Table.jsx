@@ -208,6 +208,13 @@ export default function TableDeliveryTypeMapping() {
             ...Search('dop_name'),
         },
         {
+            title : "District Name",
+            width : 250,
+            dataIndex:'districtName',
+         
+            ...Search('districtName'),
+        },
+        {
             title : "Group",
             width : 250,
             dataIndex:'group',
