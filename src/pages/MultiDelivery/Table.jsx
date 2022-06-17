@@ -77,7 +77,7 @@ const TableMultiDeliveryConfirmation = () => {
         API.getTransportMode().then(
             result=>{
                 setDdlTransportMode(result)
-                console.log('data master Vehicle',result)
+                console.log('data transport mode',result)
                 
             }
         )

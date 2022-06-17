@@ -93,12 +93,7 @@ export default function TableSubcon() {
             dataIndex:'zone',
             ...Search('zone'),
         },
-        {
-            width:30,
-            title : "Subcon Name",
-            dataIndex:'subconName',
-            ...Search('subconName'),
-        },
+ 
         {
             title : "Coordinator Name",
             dataIndex:'coordinatorName',
@@ -118,7 +113,13 @@ export default function TableSubcon() {
             width:40,
             ...Search('ackStatus'),
         },
-    
+        {
+            width:30,
+            title : "Subcon Name",
+            fixed:'right',
+            dataIndex:'subconName',
+            ...Search('subconName'),
+        },
        
         {
             title:"Action",

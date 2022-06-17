@@ -5,7 +5,7 @@ import TableSubcon from '@app/pages/ChanheSubconAssigment/TableSubcon'
 export default function changeSubcon() {
     return (
         <div>
-            <HeaderChanger title="Change Subcon Assigment"/>
+            <HeaderChanger title="Change Subcon Assignment"/>
             <TableSubcon/>
         </div>
     )
