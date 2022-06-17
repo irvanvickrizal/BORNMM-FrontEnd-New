@@ -1,3 +1,4 @@
+/* eslint-disable no-unneeded-ternary */
 import React,{useEffect,useState} from 'react'
 import {Table,Col,Row,Tooltip,Spin,Switch,Modal,Form,Input,Space,Button,Select,Typography} from "antd"
 import API from '@app/utils/apiServices'
@@ -86,7 +87,7 @@ export default function TableDeliveryTypeMapping() {
                 "deliveryTypeID":data.deliveryType, 
                 "dopID": data.dop,
                 "group":data.group,
-                "district":data.district,
+                "districtID":data.district,
                 "lmby":userId
              
             }
@@ -195,16 +196,21 @@ export default function TableDeliveryTypeMapping() {
         {
             title : "Delivery Type",
             width : 250,
-            dataIndex:'delivery_type',
+            dataIndex:'deliveryType',
          
-            ...Search('delivery_type'),
+            ...Search('deliveryType'),
         },        
         {
             title : "DOP Name",
             width : 250,
-            dataIndex:'dop_name',
-         
-            ...Search('dop_name'),
+            dataIndex:'dopName',
+            ...Search('dopName'),
+        },
+        {
+            title : "District Name",
+            width : 250,
+            dataIndex:'districtName',
+            ...Search('districtName'),
         },
         {
             title : "Group",
@@ -363,12 +369,14 @@ export default function TableDeliveryTypeMapping() {
                     <Form.Item name="district" label="District"
                         wrapperCol={{  span: 14 }}
                                    
-                        rules={[{ required: true, message: 'Please Select End Point!' }]}
+                        // rules={[{ required: true, message: 'Please Select End Point!' }]}
+                        rules={selectedDop === 2 ? ([{ required: true, message: 'Please Select End Point!' }]):([{ required: false, message: 'Please Select End Point!' }])}
                     >
                         <Select 
                             placeholder="Select Your District"
                             onChange={(e) => handleDistrictChange(e)}
                             showSearch
+                            disabled={selectedDop === 2 ? (false):(true)}
                             filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                         >
                             {
