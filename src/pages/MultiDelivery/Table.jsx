@@ -23,10 +23,12 @@ const TableMultiDeliveryConfirmation = () => {
     const [multiDeliveryConfirmationList,setMultiDeliveryConfirmationList] = useState([]);
     const [multiDeliveryRequestList,setMultiDeliveryRequestList] = useState([]);
     const [selectedOrderDetailId,setSelectedOrderDetailId] = useState('');
+    const [dataSubconId,setDataSuconId] = useState([]);
     const [selectedRFPId,setSelectedRFPId] = useState('');
     const [isAddMultiDelivery,setIsAddMultiDelivery] = useState(false);
     const [isCancelRFPDone,setIsCancelRFPDone] = useState(false);
     const [ddlSubcon,setDDLSubcon] = useState([]);
+    const [ddlTransportMode,setDdlTransportMode] = useState([]);
     const user = useSelector((state) => state.auth.user);
     const history = useHistory();
     const navigateTo = (path) => {
@@ -60,6 +62,28 @@ const TableMultiDeliveryConfirmation = () => {
             }
         )
     }
+
+    const getSubconId = () => {
+        API.getSconId(user.uid).then(
+            result=>{
+                setDataSuconId(result);
+                console.log("subconId",result);
+            }
+        )
+    }
+
+
+    const getTransportMode = () =>{
+        API.getTransportMode().then(
+            result=>{
+                setDdlTransportMode(result)
+                console.log('data transport mode',result)
+                
+            }
+        )
+    } 
+
+
     const handleOKCancelRFPDone =(data) =>{
         setCancelLoading(true)
         const body = ({
@@ -82,7 +106,8 @@ const TableMultiDeliveryConfirmation = () => {
 
     const showAddMultiDelivery = () =>
     {
-        getDDLSubcon()
+        getDDLSubcon();
+        getTransportMode();
         setIsAddMultiDelivery(true);
     }
     const showCancelRFPDone = (record) =>
@@ -137,7 +162,8 @@ const TableMultiDeliveryConfirmation = () => {
             {
                 "cby":user.uid,
                 "notes": record.notes,
-                "transportTeamId": record.transportTeam
+                "transportTeamId": record.transportTeam,
+                "transportModeID": record.transportMode
             }
         )
         console.log(body,"body")
@@ -180,6 +206,12 @@ const TableMultiDeliveryConfirmation = () => {
             title : "Transport Team",
             dataIndex:'transportTeam',
             ...Search('transportTeam'),
+        },
+        {
+            width:150,
+            title : "Transport Mode",
+            dataIndex:'transportMode',
+            ...Search('transportMode'),
         },
         {
             width:150,
@@ -355,10 +387,16 @@ const TableMultiDeliveryConfirmation = () => {
         console.log("keytabs",key);
     }
 
+    const btn = () =>{console(dataSubconId.subconId,"console")}
 
     useEffect(() => {
         getMultiDeliveryConfirmation();
+
     },[selectedOrderDetailId,selectedRFPId])
+    useEffect(() => {
+      
+        getSubconId()
+    },[])
 
     return(
         <><Tabs onChange={callback} type="card">
@@ -417,13 +455,14 @@ const TableMultiDeliveryConfirmation = () => {
         >
             <Form
                 name="basic"
-                labelCol={{ span: 10 }}
+                labelCol={{ span: 8 }}
                 wrapperCol={{ span: 14 }}
                 initialValues={{
                     // 'orderDetailId': selectedOrderDetailId,
                     // 'requestNo': selectedRequestNo,
                     // 'rfpDate': moment(selectedRFPDate).format("YYYY-MM-DD"),
                     // 'deliveryType': selectedCDMRType,
+                    'transportTeam': dataSubconId[0]?.SubconID
                     // // 'taskScheduleId': props.taskScheduleId,
                     // // 'subconId': props.subconId,
                     // //'pickupDate': moment(props.pickupDate).format("YYYY-MM-DD"),
@@ -435,9 +474,11 @@ const TableMultiDeliveryConfirmation = () => {
             >
                 <Form.Item label="Transport Team"
                     name="transportTeam"
+                 
                     rules={[{ required: true, message: 'Please Select Transport Team!'}]}
                 >
                     <Select 
+                        disabled={true}
                         onChange={(e) => handleDDLSubconChange(e)}
                         placeholder="Select an option"
                     >
@@ -445,6 +486,21 @@ const TableMultiDeliveryConfirmation = () => {
                         {
                             ddlSubcon.map(inv =>  <Select.Option value={inv.subconId}> 
                                 {inv.subconName}</Select.Option>)
+                        }
+                    </Select>
+                </Form.Item>
+                <Form.Item label="Transport Mode"
+                    name="transportMode"
+                    rules={[{ required: true, message: 'Please Select Transport Mode!'}]}
+                >
+                    <Select 
+                        // onChange={(e) => handleDDLSubconChange(e)}
+                        placeholder="Select an option"
+                    >
+                        {/* <Select.Option value={0}>-- SELECT --</Select.Option> */}
+                        {
+                            ddlTransportMode?.map(inv =>  <Select.Option value={inv.transportmode_id}> 
+                                {inv.transport_mode}</Select.Option>)
                         }
                     </Select>
                 </Form.Item>

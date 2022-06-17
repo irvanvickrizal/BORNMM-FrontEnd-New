@@ -113,6 +113,7 @@ import DismantleAckTracking from "@app/pages/DismantleAckTracking/DismantleAckTr
 import masterDistrict from "@app/pages/mDistrict/index"
 import masterVehicle from "@app/pages/mVehicle/index"
 import masterDeliveryTypeMapping from "@app/pages/mDeliveryTypeMapping/index"
+import changeSubcon from "@app/pages/ChanheSubconAssigment/index"
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -619,6 +620,11 @@ const Main = () => {
                                             exact
                                             path="/deliverytypemapping"
                                             component={masterDeliveryTypeMapping}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/task/changeSubcon"
+                                            component={changeSubcon}
                                         />
                                     </Switch>
                                 </div>

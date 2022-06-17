@@ -15,6 +15,8 @@ import { logistikFormReducer } from "@app/store/reducers/logistikFormReducer";
 import { aprovalTaskPendingReducer } from "@app/store/reducers/aprovalTaskPendingReducer";
 import { taskAssignmentSummaryReducer } from "@app/store/reducers/taskAssignmentSummaryReducer";
 import { menuSlice } from "@app/store/reducers/menu";
+import {transportTaskTrackingReducer} from "./transportTaskTrackingReducer"
+
 
 export const allReducer = combineReducers({
     auth: authSlice.reducer,ui: uiSlice.reducer,
@@ -23,6 +25,7 @@ export const allReducer = combineReducers({
     dop: dopSlice.reducer,
     scope: scopeSlice.reducer,
     dopReducer,
+    transportTaskTrackingReducer,
     scopeReducer,
     poScopeReducer,
     siteConditionReducer,

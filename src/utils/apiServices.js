@@ -548,6 +548,7 @@ const PutMasterDistrict = (body) => PUT('masterdistrict/updateMasterDistrict',bo
 const PutMasterDistrictStatus = (body) => PUT('masterdistrict/deactivateMasterDistrict',body);
 
 const getMasterVevicle = () => GET('vehicle/getMasterList');
+const getTransportMode = () => GET('vehicle/getTransportMode');
 const PostMasterVehicle = (body) => POST('vehicle/vehicleAddNew',body);
 const PutMasterVehicle = (body) => PUT('vehicle/vehicleUpdate',body);
 
@@ -756,9 +757,11 @@ const deleteteDeliveryTypeMapping = (id) => DELETE('deliverytypedestination/dele
 // Pickup Complletion
 
 const getPickUpCompletion = (uid) => GETParam('lspassignment/lspAssignmentTransportAssignmentPickupPending',uid);
+const getSconId = (uid) => GETParam('multidelivery/getSconID',uid);
 const getPickUpCompletion2 = (uid) => GETParam('lspassignment/lspAssignmentTransportAssignmentPickupPending',uid);
 const getDdlTransportTeam = (tid,wpid) => GETParam2('subcon/getLSPTransportTeam',tid,wpid);
 const postPickUpCompletion = (body) => POST('lspassignment/lspAssignmentToChangePIC',body);
+const putChangeVehicleMultiDelivery = (body) => PUT('multidelivery/multiDeliveryChangeVehicle',body);
 
 const getMultiDeliveryCompletion = (uid) => GETParam('multidelivery/multiDeliveryGetAssignedList',uid);
 const getMultiDeliveryAssigned = (mdid) => GETParam('multidelivery/multiDeliveryGetDetailAssignedList',mdid);
@@ -831,6 +834,7 @@ const postUploadEvidence = (taskscheduleid,orderdetailid,workpackageid,usersigne
 
 // Transport Task Tracking
 const getTransportTaskTracking = (uId) => GETParam("rpt/transportTaskTracking",uId);
+const getTransportTaskTrackingLongLat = (odi) => GETParam("lspassignment/getCurrentVehicleLocation",odi);
 
 // Dismantle Act Pending
 const getDismantleActPending = (uId) => GETParam("taskassignment/dismantleACKPendingGetList",uId);
@@ -879,9 +883,15 @@ const getApkLink = () => GET("dashboard/bornMobileAppLatestVersion");
 
 const getRPTAPPTracking =(userid) => GETParam('rpt/OrderRequestDismantleGetApprovalTracking',userid);
 
+// Change Subcon Assigment
+const getDataTaskChangeSubcon = (uid) => GETParam("taskassignment/getTaskChangePartnerDismantle",uid);
+
 
 
 const API ={
+    putChangeVehicleMultiDelivery,
+    getTransportMode,
+    getDataTaskChangeSubcon,
     PutMasterDistrictStatus,
     getRegion,
     getPMRVSDismantle,
@@ -896,6 +906,7 @@ const API ={
     postDOPRegion,
     getDOPRegion,
     getGraphComplete,
+    getTransportTaskTrackingLongLat,
     deleteDOPRegion,
     getDOPNotCoverage,
     getStockDetail,
@@ -906,6 +917,7 @@ const API ={
     getSDRLTRDDL,
     getWHTeam,
     checkIsSite,
+    getSconId,
     getBoqAccuracySiteBase,
     getWHSupervisor,
     getMaterialOrderTARItem,

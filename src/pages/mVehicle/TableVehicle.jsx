@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from 'react'
-import {Table,Col,Row,Tooltip,Spin,Switch,Modal,Form,Input,Space,Button} from "antd"
+import {Table,Col,Row,Tooltip,Spin,Switch,Modal,Form,Input,Space,Button,Select} from "antd"
 import API from '@app/utils/apiServices'
 import Search from '@app/components/searchcolumn/SearchColumn'
 import {IconButton, TextField}  from '@mui/material/';
@@ -8,6 +8,7 @@ import {toast} from 'react-toastify';
 
 export default function TableVehicle() {
     const [dataMasterVehicle,setDataMasterVehicle] = useState([])
+    const [dataTransportMode,setDataTransportMode] = useState([])
     const [isLoading,setIsLoading] = useState(false)
     const [isModalAddVisible,setIsModalAddVisible] = useState(false)
     const [isModalEditVisible,setIsModalEditVisible] = useState(false)
@@ -29,9 +30,20 @@ export default function TableVehicle() {
         )
     } 
 
+    const getTransportMode = () =>{
+        API.getTransportMode().then(
+            result=>{
+                setDataTransportMode(result)
+                console.log('data master Vehicle',result)
+                
+            }
+        )
+    } 
+
 
     const showModalAdd = () =>{
         setIsModalAddVisible(true)
+        getTransportMode();
     }
 
     const hideModalAdd = () =>{
@@ -47,9 +59,8 @@ export default function TableVehicle() {
             {
                 "vehicleId":0, 
                 "vehicleName": data.vehicleName,
-             
+                "transportModeID": data.transportMode
             }
-        
         console.log(body,"body");
         console.log(data,"data");
         API.PostMasterVehicle(body).then(
@@ -128,6 +139,23 @@ export default function TableVehicle() {
       
     
         {
+            title : "Transport Mode",
+            width : 250,
+            dataIndex:'transportMode',
+         
+            ...Search('transportMode'),
+        },
+      
+    
+        {
+            title : "Transport Mode Alias",
+            width : 250,
+            dataIndex:'transportModeAlias',
+            ...Search('transportModeAlias'),
+        },
+      
+    
+        {
             title : "Is Active",
             width : 80,
             align:'center',
@@ -170,10 +198,6 @@ export default function TableVehicle() {
             }
             
         },
-        
-    
-    
-        
         
     
     ]
@@ -251,15 +275,24 @@ export default function TableVehicle() {
                         rules={[{ required: true, message: 'Please input your Vehicle Name!' }]}
                     >
                         <Input />
+                    </Form.Item>               
+
+                    <Form.Item label="Transport Mode"
+                        name="transportMode"
+                        rules={[{ required: true, message: 'Please Select Transport Mode!'}]}
+                    >
+                        <Select 
+                            // onChange={(e) => handleDDLSubconChange(e)}
+                            placeholder="Select an option"
+                        >
+                            {/* <Select.Option value={0}>-- SELECT --</Select.Option> */}
+                            {
+                                dataTransportMode.map(inv =>  <Select.Option value={inv.transportmode_id}> 
+                                    {inv.transport_mode}</Select.Option>)
+                            }
+                        </Select>
                     </Form.Item>
-            
-                      
-                   
-                    
-                      
-                
-                   
-             
+
                     <Form.Item wrapperCol={{ offset: 20, span: 4 }}>
                         <Space>
                             <Button type="primary" htmlType="submit">
@@ -305,12 +338,6 @@ export default function TableVehicle() {
                     </Form.Item>
             
                       
-                   
-                    
-                      
-                
-                   
-             
                     <Form.Item wrapperCol={{ offset: 20, span: 4 }}>
                         <Space>
                             <Button type="primary" htmlType="submit">
