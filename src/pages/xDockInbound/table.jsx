@@ -120,7 +120,7 @@ export default function TableXDock() {
         API.getLog(odi).then(
             result=>{
                 setDataLog(result);
-                setIsLoading(false);
+           
                 console.log("data order Material =>",result);
             }
         )
@@ -233,7 +233,7 @@ export default function TableXDock() {
             ...Search('itemBookedCount'),
         },
         {
-            width:100,
+            width:120,
             title : "#Item Outbound",
             dataIndex:'itemOutBoundCount',
             ...Search('itemOutBoundCount'),

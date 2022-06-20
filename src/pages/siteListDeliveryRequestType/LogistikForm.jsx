@@ -66,6 +66,7 @@ export default function LogisticForm() {
     const customURL = window.location.href;
     const params = new URLSearchParams(customURL.split('?')[1])
     const odi = params.get('odi');
+    const [form] = Form.useForm();
 
 
   
@@ -117,6 +118,12 @@ export default function LogisticForm() {
         setDeliveryRequest(e)
         dispatch(getIdDelivery(e))
         dispatch(getDeliveryTransport())
+       
+
+        form.setFieldsValue({
+            deliveryRequestTransport: ""
+        })
+
     };
 
     const handlePost = (data) => {
@@ -576,6 +583,8 @@ export default function LogisticForm() {
                         {dataSite?.length === 0 ? (<></>):
                             (<>
                                 <Form
+                                    form={form}
+
                                     labelCol={{span: 12}}
                                     wrapperCol={{span: 12}}
                                     layout="horizontal"
