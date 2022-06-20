@@ -196,22 +196,20 @@ export default function TableDeliveryTypeMapping() {
         {
             title : "Delivery Type",
             width : 250,
-            dataIndex:'delivery_type',
+            dataIndex:'deliveryType',
          
-            ...Search('delivery_type'),
+            ...Search('deliveryType'),
         },        
         {
             title : "DOP Name",
             width : 250,
-            dataIndex:'dop_name',
-         
-            ...Search('dop_name'),
+            dataIndex:'dopName',
+            ...Search('dopName'),
         },
         {
             title : "District Name",
             width : 250,
             dataIndex:'districtName',
-         
             ...Search('districtName'),
         },
         {
