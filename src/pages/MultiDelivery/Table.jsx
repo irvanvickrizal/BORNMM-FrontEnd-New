@@ -294,6 +294,12 @@ const TableMultiDeliveryConfirmation = () => {
         },
         {
             width:150,
+            title : "Transport Mode",
+            dataIndex:'transportMode',
+            ...Search('transportMode'),
+        },
+        {
+            width:150,
             title : "Site No",
             dataIndex:'siteNo',
             ...Search('siteNo'),
@@ -481,6 +487,7 @@ const TableMultiDeliveryConfirmation = () => {
                         disabled={true}
                         onChange={(e) => handleDDLSubconChange(e)}
                         placeholder="Select an option"
+                        style={{fontWeight:'bold'}}
                     >
                         {/* <Select.Option value={0}>-- SELECT --</Select.Option> */}
                         {
