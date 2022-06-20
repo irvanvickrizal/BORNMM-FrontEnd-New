@@ -340,15 +340,16 @@ export default function TableTransport() {
                 return (
                     <Space>
                         {
-                            record.hoInWH ? <Tooltip title="HO Complete">
-                                <IconButton
-                                    size="small"
-                                    onClick={() => handleHOConfirmation(record)}
-                                    color="primary"
-                                >
-                                    <HandshakeIcon  />
-                                </IconButton>
-                            </Tooltip> :
+                            record.hoInWH ? 
+                                <Tooltip title="HO Complete">
+                                    <IconButton
+                                        size="small"
+                                        onClick={() => handleHOConfirmation(record)}
+                                        color="primary"
+                                    >
+                                        <HandshakeIcon  />
+                                    </IconButton>
+                                </Tooltip> :
                                 <></>
                         }
                         {
