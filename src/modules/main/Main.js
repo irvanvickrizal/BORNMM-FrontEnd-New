@@ -114,6 +114,7 @@ import masterDistrict from "@app/pages/mDistrict/index"
 import masterVehicle from "@app/pages/mVehicle/index"
 import masterDeliveryTypeMapping from "@app/pages/mDeliveryTypeMapping/index"
 import changeSubcon from "@app/pages/ChanheSubconAssigment/index"
+import XDockInbound from "@app/pages/xDockInbound/index"
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -625,6 +626,11 @@ const Main = () => {
                                             exact
                                             path="/task/changeSubcon"
                                             component={changeSubcon}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/stock/inboundxdock"
+                                            component={XDockInbound}
                                         />
                                     </Switch>
                                 </div>

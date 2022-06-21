@@ -887,14 +887,21 @@ const getRPTAPPTracking =(userid) => GETParam('rpt/OrderRequestDismantleGetAppro
 const getDataTaskChangeSubcon = (uid) => GETParam("taskassignment/getTaskChangePartnerDismantle",uid);
 
 
+//xDock Inbound
+const getXDockInbound = (uid) => GETParam("inventory/xDockWaitingInboundList",uid);
+const postXDockConfirmation = (body,odi,uid) => POSTParam2('inventory/xDockInboundCompleted',body,odi,uid)
+
+
 
 const API ={
     putChangeVehicleMultiDelivery,
     getTransportMode,
+    postXDockConfirmation,
     getDataTaskChangeSubcon,
     PutMasterDistrictStatus,
     getRegion,
     getPMRVSDismantle,
+    getXDockInbound,
     getRPTAPPTracking,
     postDismantleAckNew,
     postRejectDismantleAckNew,
