@@ -899,6 +899,7 @@ const postMasterMrs = (body) => POST('mastermrs/AddMasterMRS', body);
 const getDdlOridgin = (uid) => GETParam("mastermrs/GetDDLOrigin",uid);
 const getDdlDestination = (uid) => GETParam("mastermrs/GetDDLDestination",uid);
 const deleteMrs = (mrsID) => DELETE('mastermrs/deletemastermrs',mrsID)
+const PutPriceMRS = (body) => PUT('mastermrs/updateMasterMRS',body);
 
 
 const API ={
@@ -906,8 +907,10 @@ const API ={
     getTransportMode,
     postXDockConfirmation,
     getDdlDestination,
+    PutPriceMRS,
     getDataTaskChangeSubcon,
     getDdlOridgin,
+    deleteMrs,
     postMasterMrs,
     getMasterMrs,
     PutMasterDistrictStatus,

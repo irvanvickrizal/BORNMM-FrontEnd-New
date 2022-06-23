@@ -1,12 +1,16 @@
+/* eslint-disable react/jsx-no-undef */
+/* eslint-disable no-unneeded-ternary */
 /* eslint-disable react/jsx-no-comment-textnodes */
 import React,{useEffect,useState} from 'react'
 import {Table,Col,Row,Tooltip,Spin,Switch,Modal,Form,Input,Space,Button,Select,Typography} from "antd"
 import API from '@app/utils/apiServices'
 import Search from '@app/components/searchcolumn/SearchColumn'
 import {IconButton, TextField}  from '@mui/material/';
-import {PlusOutlined,CheckOutlined,CloseOutlined,EditOutlined,CloseSquareOutlined}from '@ant-design/icons'
+import {PlusOutlined,CheckOutlined,CloseOutlined,EditOutlined,CloseSquareOutlined,FormOutlined }from '@ant-design/icons'
 import {toast} from 'react-toastify';
 import { useSelector } from 'react-redux';
+
+const { TextArea } = Input;
 
 
 export default function TableMasterMrs() {
@@ -19,11 +23,14 @@ export default function TableMasterMrs() {
     const [ddlDeliveryOrigin,setDdlDeliveryOrigin] = useState([])
     const [isModalAddVisible,setIsModalAddVisible] = useState(false)
     const [isModalDelete,setIsModalDeleteVisible] = useState(false)
+    const [isModalEditVisible,setIsModalEditVisible] = useState(false)
     const [selectedSubcon,setSelectedSubcon] = useState("")
     const [selectedDeliveryType,setSelectedDeliveryType] = useState("")
     const [selectedOrigin,setSelectedOrigin] = useState("")
     const [selectedDestination,setSelectedDestination] = useState("")
     const [selectedVehicle,setSelectedVehicle] = useState("")
+    const [price,setPrice] = useState("")
+    const [form] = Form.useForm();
 
 
     const userId = useSelector(state=>state.auth.user.uid)
@@ -114,6 +121,7 @@ export default function TableMasterMrs() {
     }
     const hideModalAdd = () => {
         setIsModalAddVisible(false)
+        setSelectedDeliveryType("")
     }
 
     const showModalDelete = (data) => {
@@ -123,6 +131,30 @@ export default function TableMasterMrs() {
     const hideModalDelete = () => {
         setIsModalDeleteVisible(false)
     }
+    const showModalEdit = (data) => {
+        setIsModalEditVisible(true)
+        setPrice(data.price) 
+        setSelectedVehicle(data.vehicleName)
+        setSelectedSubcon(data.subconName)
+        setSelectedDestination(data.districtDestination)
+        setSelectedOrigin(data.dopOrigin)
+        setMrsId(data.MRSID)
+
+    }
+    const hideModalEdit = () => {
+        setIsModalEditVisible(false)
+    }
+
+    const onChnageDdlDeliveryType = (data) => {
+        setSelectedDeliveryType(data)
+        form.setFieldsValue({
+            destination: "",
+            origin:""
+        })
+        // getDdlDestination()
+        // getDdlOrigin()
+    }
+   
 
 
   
@@ -130,11 +162,11 @@ export default function TableMasterMrs() {
     const handlePostAdd = (data) => {
         const body = 
             {
-                "deliveryTypeMappingOrigin":"",
-                "deliveryTypeMappingDestination":"dtmDestination",
+                "deliveryTypeMappingOrigin":selectedOrigin,
+                "deliveryTypeMappingDestination":selectedDestination,
                 "subconID":selectedSubcon,
                 "vehicleID":selectedVehicle,
-                "price":selectedVehicle,
+                "price":price,
                 "lmby":userId
                 
              
@@ -159,6 +191,35 @@ export default function TableMasterMrs() {
             }
         )              
     }
+    const handlePutPriceMRS = (data) => {
+        const body = 
+            {
+                "mrsID":mrsId,
+                "price":price,
+                "lmby":userId
+                
+             
+            }
+        
+        console.log(body,"body");
+        console.log(data,"data");
+        API.PutPriceMRS(body).then(
+            result=>{
+                console.log(result,"result")
+                if(result.status=="success")
+                {
+                    toast.success(result.message);
+                    refreshData()
+                    setIsModalAddVisible(false)
+                
+                    // window.location.reload();
+                }
+                else{
+                    toast.error(result.message);
+                }
+            }
+        )              
+    }
 
 
     const handleDelete = () => {
@@ -167,7 +228,7 @@ export default function TableMasterMrs() {
         
         console.log(mrsId)
 
-        API.deleteteDeliveryTypeMapping(mrsId).then(
+        API.deleteMrs(mrsId).then(
             result=>{
                 console.log(result,"result")
                 if(result.status=="success")
@@ -253,7 +314,18 @@ export default function TableMasterMrs() {
             render:(record)=>{
                 return (
                     <Space>
-                        <Tooltip title="Delete Delivery Type Mapping">
+                        <Tooltip title="Edit MRS">
+                            <IconButton
+                                size='small'
+                                color="primary"
+                                aria-label="upload file"
+                                component="span" 
+                                // onClick={() => showModalEdit(record)}
+                            >
+                                <FormOutlined style={{color:"black"}} onClick={()=>showModalEdit(record)}/>
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Delete MRS">
                             <IconButton
                                 size='small'
                                 color="primary"
@@ -264,6 +336,7 @@ export default function TableMasterMrs() {
                                 <CloseSquareOutlined style={{color:"red"}} onClick={()=>showModalDelete(record.MRSID)}/>
                             </IconButton>
                         </Tooltip>
+                        
                     </Space>
                 )
             }
@@ -278,7 +351,7 @@ export default function TableMasterMrs() {
         getDdlVehicle()
         getDataMRS()
         
-    },[])
+    },[selectedDeliveryType])
 
 
 
@@ -315,7 +388,7 @@ export default function TableMasterMrs() {
                     }}
                     bordered /></>
             }
-            <Modal title="Add Destination Type Mapping"
+            <Modal title="Add Master MRS"
                 visible={isModalAddVisible}
                 destroyOnClose
                 onCancel={hideModalAdd}
@@ -326,6 +399,7 @@ export default function TableMasterMrs() {
             >
                 <Form
                     name="basic"
+                    form={form}
                     labelCol={{ span: 7 }}
                     wrapperCol={{ span: 17 }}
                     initialValues={{
@@ -363,7 +437,7 @@ export default function TableMasterMrs() {
                     >
                         <Select 
                             placeholder="Select Your Group"
-                            onChange={(e) => setSelectedDeliveryType(e)}
+                            onChange={(e) => onChnageDdlDeliveryType(e)}
                         >
                             {
                                 ddlDeliveryType.map(inv =>  <Select.Option  value={inv.deliveryTypeId}> 
@@ -376,27 +450,31 @@ export default function TableMasterMrs() {
                         rules={[{ required: true, message: 'Please Select Origin!' }]}
                     >
                         <Select 
+                            disabled={selectedDeliveryType === "" ? (true):(false)}
                             placeholder="Select Your Group"
                             onChange={(e) => setSelectedOrigin(e)}
                         >
                             {
-                                ddlDeliveryOrigin.map(inv =>  <Select.Option  value={inv.deliveryTypeId}> 
-                                    {inv.deliveryTypeName}</Select.Option>)
+                                ddlDeliveryOrigin.map(inv =>  <Select.Option  value={inv.DeliveryTypeMappingID}> 
+                                    {inv.dopName}</Select.Option>)
                             }
                         </Select>
+                        
                     </Form.Item>
               
                     <Form.Item name="destination" label="Destination"
                         wrapperCol={{  span: 14 }}
                         rules={[{ required: true, message: 'Please Select Destination!' }]}
                     >
+                        
                         <Select 
                             placeholder="Select Your Group"
                             onChange={(e) => setSelectedDestination(e)}
+                            disabled={selectedDeliveryType === "" ? (true):(false)}
                         >
                             {
-                                ddlDestination.map(inv =>  <Select.Option  value={inv.deliveryTypeId}> 
-                                    {inv.deliveryTypeName}</Select.Option>)
+                                ddlDestination.map(inv =>  <Select.Option  value={inv.DeliveryTypeMappingID}> 
+                                    {inv.districtName}</Select.Option>)
                             }
                         </Select>
                     </Form.Item>
@@ -413,6 +491,132 @@ export default function TableMasterMrs() {
                                     {inv.vehicleName}</Select.Option>)
                             }
                         </Select>
+                    </Form.Item>
+                    <Form.Item label="Price" name="price" 
+                        wrapperCol={{  span: 14 }}
+                        rules={[{ required: true, message: 'Please Fill Price Field!' }]}
+                    >
+                        <Input rows={2} onChange={(e) => setPrice(e.target.value)}/>
+                    </Form.Item>
+              
+                
+            
+                      
+                   
+                    
+                      
+                
+                   
+             
+                    <Form.Item wrapperCol={{ offset: 20, span: 4 }}>
+                        <Space>
+                            <Button type="primary" htmlType="submit">
+                                Confirm
+                            </Button>
+                        </Space>
+                    </Form.Item>
+                </Form>
+            </Modal>
+
+            <Modal title="Edit Master MRS"
+                visible={isModalEditVisible}
+                destroyOnClose
+                onCancel={hideModalEdit}
+                centered
+                maskClosable={false}
+                closable
+                footer={null}
+            >
+                <Form
+                    name="basic"
+           
+                    labelCol={{ span: 7 }}
+                    wrapperCol={{ span: 17 }}
+                    initialValues={{
+                        // 'orderDetailId': selectedOrderDetailId,
+                        // 'requestNo': selectedRequestNo,
+                        // 'rfpDate': moment(selectedRFPDate).format("YYYY-MM-DD"),
+                        // 'deliveryType': selectedCDMRType,
+                        "subcon" :selectedSubcon,
+                        "origin":selectedOrigin,
+                        "destination":selectedDestination,
+                        "vehicle":selectedVehicle,
+                        "price":price
+                    }}
+                    onFinish={handlePutPriceMRS}
+                    // onFinishFailed={handleFailedAddForm}
+                    autoComplete="off"
+                >
+                    <Form.Item name="subcon" label="Subcon Name"
+                        wrapperCol={{  span: 14 }}
+                         
+                        rules={[{ required: true, message: 'Please Select Subcon Name!' }]}
+                    >
+                        <Select 
+                            placeholder="Select Your Group"
+                            disabled   
+                            onChange={(e) => setSelectedSubcon(e)}
+                        >
+                            {
+                                ddlSubcon.map(inv =>  <Select.Option  value={inv.subconId}> 
+                                    {inv.subconName}</Select.Option>)
+                            }
+                        </Select>
+                    </Form.Item>
+                  
+                    <Form.Item name="origin" label="Origin"
+                        wrapperCol={{  span: 14 }}
+                        rules={[{ required: true, message: 'Please Select Origin!' }]}
+                    >
+                        <Select 
+                            disabled
+                            placeholder="Select Your Group"
+                            onChange={(e) => setSelectedOrigin(e)}
+                        >
+                            {
+                                ddlDeliveryOrigin.map(inv =>  <Select.Option  value={inv.DeliveryTypeMappingID}> 
+                                    {inv.dopName}</Select.Option>)
+                            }
+                        </Select>
+                        
+                    </Form.Item>
+              
+                    <Form.Item name="destination" label="Destination"
+                        wrapperCol={{  span: 14 }}
+                        rules={[{ required: true, message: 'Please Select Destination!' }]}
+                    >
+                        
+                        <Select 
+                            placeholder="Select Your Group"
+                            onChange={(e) => setSelectedDestination(e)}
+                            disabled
+                        >
+                            {
+                                ddlDestination.map(inv =>  <Select.Option  value={inv.DeliveryTypeMappingID}> 
+                                    {inv.districtName}</Select.Option>)
+                            }
+                        </Select>
+                    </Form.Item>
+                    <Form.Item name="vehicle" label="Vehicle"
+                        wrapperCol={{  span: 14 }}
+                        rules={[{ required: true, message: 'Please Select Vehicle!' }]}
+                    >
+                        <Select 
+                            disabled
+                            placeholder="Select Your Group"
+                            onChange={(e) => setSelectedVehicle(e)}
+                        >
+                            {
+                                ddlVehicle.map(inv =>  <Select.Option  value={inv.vehicleId}> 
+                                    {inv.vehicleName}</Select.Option>)
+                            }
+                        </Select>
+                    </Form.Item>
+                    <Form.Item label="Price" name="price" 
+                        wrapperCol={{  span: 14 }}
+                        rules={[{ required: true, message: 'Please Fill Price Field!' }]}
+                    >
+                        <Input rows={2} onChange={(e) => setPrice(e.target.value)}/>
                     </Form.Item>
               
                 
