@@ -638,6 +638,7 @@ const getSconTaskPending = (uid) => GETParam('taskassignment/taskAssignmentSubco
 const getSconEngineer = (sconid,wpid) => GETParam2('subcon/getFieldSubcontractorEngineer',sconid,wpid)
 const postAssignEngineer = (body) => POST("taskassignment/taskAssignmentToEngineer",body);
 const postCancelTask = (body) => POST("taskassignment/taskAssignmentCanceled",body);
+const postTaskAssigmentReset = (body) => POST("taskassignment/ackDismantleTaskReset",body);
 const putRequestReschedule = (body) => PUT("scheduleassignment/taskScheduleProposeNewDate",body);
 
 const getInventoryReport = () => GET('inventory/getInventoryReport');
@@ -1079,6 +1080,7 @@ const API ={
     getDownloadPoBoqCompletion,
     getListBoqAsPo,
     getBoqSummaryAsPoBoq,
+    postTaskAssigmentReset,
     getDownloadOutbond,
     getDownloadInbond,
     postAssitgnTransportTeam,

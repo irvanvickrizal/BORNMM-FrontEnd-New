@@ -18,6 +18,7 @@ import {
     Button,
     Switch,
     Modal,
+    Spin,
     Tooltip,
     DatePicker
 } from "antd"
@@ -26,7 +27,7 @@ import { getDataDone, getDataOnProgress, getDataPending,getLsp,getOdi,getPud } f
 import moment from "moment"
 import Search from '@app/components/searchcolumn/SearchColumn'
 import API from "../../utils/apiServices"
-import { CloseSquareTwoTone,CalendarFilled ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined, EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined ,UserSwitchOutlined } from '@ant-design/icons'
+import { CloseSquareTwoTone,CalendarFilled ,CloseSquareOutlined,CalendarTwoTone,UserAddOutlined,RedoOutlined, EditOutlined,DeleteOutlined,SearchOutlined,CheckCircleFilled,MoreOutlined ,UserSwitchOutlined } from '@ant-design/icons'
 import { toast } from 'react-toastify';
 import {IconButton, TextField}  from '@mui/material/';
 
@@ -61,6 +62,7 @@ export default function TableTaskSummary(props) {
     const [selectedTaskSchedule,setSelectedTaskSchedule] = useState("")
     const [selectedTransDelegateId,setSelectedtransDelegateId] = useState("")
     const [isPickupRequest,setIsPickupRequest] = useState("")
+    const [isModalReset,setIsModalResetVisible] = useState(false)
 
     const dataUid = useSelector(state=>state.auth.user.uid)
    
@@ -73,8 +75,10 @@ export default function TableTaskSummary(props) {
     // task assigment done = uid
     
     const getSconTaskPending = () => {
+        setIsLoading(true)
         API.getSconTaskPending(dataUid).then(
             result=>{
+                setIsLoading(false)
                 setSconTaskPending(result);
                 console.log("scontaskpendnig",result);
             }
@@ -91,10 +95,11 @@ export default function TableTaskSummary(props) {
         )
     }
     const getSconOnProgress = () => {
+        setIsLoading(true)
      
         API.getSconTaskOnProgress(dataUid).then(
             result=>{
-              
+                setIsLoading(false)
                 setTaskOnProgress(result);
                 console.log("getTaskOnProgress",result);
             }
@@ -102,10 +107,10 @@ export default function TableTaskSummary(props) {
     }
     
     const getSconTaskOnDone = () => {
-     
+        setIsLoading(true)
         API.getSconTaskOnDone(dataUid).then(
             result=>{
-              
+                setIsLoading(false)
                 setTaskDone(result);
                 console.log("getTaskDone :",result);
             }
@@ -293,6 +298,55 @@ export default function TableTaskSummary(props) {
     const scheduleStatuss = sconTaskPending.map(e=>e.scheduleStatus)
     const cobaConsole = ()=>{
         console.log(scheduleStatuss,'coba fata')
+    }
+
+    const showModalReset =(data) => {
+        setIsModalResetVisible(true)
+        setSelectedOdi(data.orderDetailId)
+        setCurrentAssignTo(data.currentAssignTo)
+        setTransferBy(data.assignedBy)
+        setSelectedtransDelegateId(data.transDelegateId)
+    }
+    const hideModalReset =() => {
+        setIsModalResetVisible(false)
+       
+    }
+
+    const handleResetTask = () => {
+        const body = (
+            {
+                "orderDetailId":selectedOdi,
+                "transDelegateId":selectedOdi,
+                "transferBy":user.uid,
+                "currentAssignTo":currentAssignTo,
+               
+
+            }
+        )
+        API.postTaskAssigmentReset(body).then(
+          
+            result=>{
+                setIsLoading(true)
+           
+                if(result.status=="success")
+                {
+                    toast.success(result.message);
+                    setIsModalResetVisible(false)
+                    getSconOnProgress()
+                    setIsLoading(false)
+           
+        
+                   
+                }
+                else{
+                    toast.error(result.message)
+                    setIsModalResetVisible(false)
+               
+                }
+            }
+        )
+        console.log(body,"body cancel")
+
     }
 
     useEffect(() => {
@@ -578,16 +632,38 @@ export default function TableTaskSummary(props) {
         
         {
             title: "Action",
-            width:150,
+            width:180,
             fixed: 'right',
             render:(record)=>{
                 return (
                     <div style={{display:"flex",alignItems:'center',justifyContent:'center'}}>
                         {
                             record.ackOnProgress == "yes" ?
-                                <p style={{'color':'red'}}>
+                                <Row gutter={24} style={{marginLeft:4}}>
+                                    <Col className="gutter-row" xs={24} xl={18} style={{border: '2px solid red',borderRadius:8}}>
+                                        <Typography style={{'color':'red'}}>
                                 Dismantle ACK on Progress
-                                </p>
+                                        </Typography>
+                                    </Col>
+                                    <Col className="gutter-row" xs={24} xl={6} style={{marginTop:4}}>
+                                        <Tooltip title="Reset Task">
+                                            <IconButton
+                                                size='small'
+                                                color="primary"
+                                                aria-label="upload file"
+                                                component="span" 
+                                                onClick={() => showModalReset(record)}
+                                            >
+                                                <RedoOutlined style={{fontSize:20}} />
+                                            </IconButton>
+                                        </Tooltip>
+                                 
+                                    </Col>
+                                  
+                              
+
+                                </Row>
+                             
                                 :
                                 <Space size={16} >
                                     <Tooltip title="Re-Assign Task">
@@ -738,55 +814,79 @@ export default function TableTaskSummary(props) {
             <Tabs defaultActiveKey="1" centered={false} onChange={callback}>
                 <TabPane tab="Assignment Pending" key="1" onChange={getSconTaskPending}>
                     <Card >
-                        <div >
-                            <Table
-                                columns={columnsAssigmentPending}
+                        {isLoading ? 
+                            <Row justify="center">
+                                <Col span={1}>    
+                                    <Spin />
+                                </Col>
+                            </Row>  
+                            :
+                            <div >
+                                <Table
+                                    columns={columnsAssigmentPending}
                            
-                                dataSource={sconTaskPending}
-                                scroll={{x: "150%"}}
-                                size="small"
-                                pagination={{
-                                    pageSizeOptions: ['5', '10', '20', '30', '40'],
-                                    showSizeChanger: true,
-                                    position: ["bottomLeft"],
-                                }}
-                            />
-                        </div>
+                                    dataSource={sconTaskPending}
+                                    scroll={{x: "150%"}}
+                                    size="small"
+                                    pagination={{
+                                        pageSizeOptions: ['5', '10', '20', '30', '40'],
+                                        showSizeChanger: true,
+                                        position: ["bottomLeft"],
+                                    }}
+                                />
+                            </div>
+                        }
                     </Card>
                 </TabPane>
                 <TabPane tab="Assignment On Progress" key="2">
                     <Card>
-                        <div >
-                            <Table
-                                columns={columnsAssigmentOnProgress}
-                                size="small"
-                                pagination={{
-                                    pageSizeOptions: ['5', '10', '20', '30', '40'],
-                                    showSizeChanger: true,
-                                    position: ["bottomLeft"],
-                                }}
-                                dataSource={taskOnProgress}
-                                scroll={{x: "150%"}}
-                            />
-                        </div>
+                        {isLoading ? 
+                            <Row justify="center">
+                                <Col span={1}>    
+                                    <Spin />
+                                </Col>
+                            </Row>  
+                            :
+                            <div >
+                                <Table
+                                    columns={columnsAssigmentOnProgress}
+                                    size="small"
+                                    pagination={{
+                                        pageSizeOptions: ['5', '10', '20', '30', '40'],
+                                        showSizeChanger: true,
+                                        position: ["bottomLeft"],
+                                    }}
+                                    dataSource={taskOnProgress}
+                                    scroll={{x: "150%"}}
+                                />
+                            </div>
+                        }
                     </Card>
                 </TabPane>
                 <TabPane tab="Task Complete" key="3">
                     <Card>
-                        <div >
-                            <Table
-                                columns={columnsAssigmentOnDone}
-                                scroll={{x: "150%"}}
-                                size="small"
-                                pagination={{
-                                    pageSizeOptions: ['5', '10', '20', '30', '40'],
-                                    showSizeChanger: true,
-                                    position: ["bottomLeft"],
-                                }}
-                                dataSource={taskDone}
+                        {isLoading ? 
+                            <Row justify="center">
+                                <Col span={1}>    
+                                    <Spin />
+                                </Col>
+                            </Row>  
+                            :
+                            <div >
+                                <Table
+                                    columns={columnsAssigmentOnDone}
+                                    scroll={{x: "150%"}}
+                                    size="small"
+                                    pagination={{
+                                        pageSizeOptions: ['5', '10', '20', '30', '40'],
+                                        showSizeChanger: true,
+                                        position: ["bottomLeft"],
+                                    }}
+                                    dataSource={taskDone}
                                 
-                            />
-                        </div>
+                                />
+                            </div>
+                        }
                     </Card>
                 </TabPane>
             </Tabs>
@@ -965,6 +1065,48 @@ export default function TableTaskSummary(props) {
                 </Typography>
                 <TextArea rows={4} onChange={(e) => setRemarks(e.target.value)}/>
             </Modal>
+            <Modal 
+                visible={isModalReset}
+                destroyOnClose
+                onCancel={hideModalReset}
+                centered
+                maskClosable={false}
+                closable
+                footer={null}
+                title="Reset Task"
+            >
+                <div style={{height: 70,}}>
+                    <Typography>Are You Sure to Reset this Task ?</Typography>
+                </div>
+               
+         
+            
+                      
+                   
+                    
+                      
+                
+                   
+             
+                 
+                <Row align="middle" justify="end">
+                    <Space>
+                        <Button  htmlType="submit" onClick={hideModalReset}>
+                                Cancel
+                        </Button>
+                        <Button style={{backgroundColor:"#105dc1",color:"white"}} htmlType="submit" onClick={handleResetTask}>
+                                Reset
+                        </Button>
+                    </Space>
+             
+                 
+                </Row>
+           
+             
+                 
+         
+            
+            </Modal> 
     
         </div>
     )
