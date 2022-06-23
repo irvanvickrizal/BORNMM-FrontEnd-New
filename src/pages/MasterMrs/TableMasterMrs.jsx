@@ -434,7 +434,6 @@ export default function TableMasterMrs() {
                 </Form>
             </Modal>
 
-            // Modal Delete
 
             <Modal 
                 visible={isModalDelete}
