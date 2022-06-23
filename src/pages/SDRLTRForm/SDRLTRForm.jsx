@@ -437,19 +437,19 @@ const SDRLTRForm = (props) => {
             }
         )
         console.log("TAR body",intialValueDestination);
-        // API.putSDRLTRForm(body).then(
-        //     result=>{
-        //         if(result.status=="success")
-        //         {
-        //             console.log(result,'result tarmo')
-        //             toast.success(result.message);
-        //             navigateTo(`/mm/materialordersdrltr?odi=${result.returnVal}`)
-        //         }
-        //         else{
-        //             toast.error(result.message)
-        //         }
-        //     }
-        // )
+        API.putSDRLTRForm(body).then(
+            result=>{
+                if(result.status=="success")
+                {
+                    console.log(result,'result tarmo')
+                    toast.success(result.message);
+                    navigateTo(`/mm/materialordersdrltr?odi=${result.returnVal}`)
+                }
+                else{
+                    toast.error(result.message)
+                }
+            }
+        )
     }
 
     function btnConfirm(data){
