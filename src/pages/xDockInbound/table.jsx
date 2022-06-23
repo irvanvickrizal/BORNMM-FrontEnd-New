@@ -148,10 +148,15 @@ export default function TableXDock() {
 
     }
     const postxDock =(data)=>{
+        // console.log(odi,"odi")
+        const body = {
+            "orderDetailId" : odi,
+            "LMBY":userId
+        }
      
-        API.postXDockConfirmation("",userId,odi).then(
+        API.postXDockConfirmation(body).then(
             result=>{
-                console.log(result,"result")
+                console.log(body,"body request")
                 if(result.status=="success")
                 {
                     toast.success(result.message);

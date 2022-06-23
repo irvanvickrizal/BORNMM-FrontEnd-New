@@ -115,6 +115,7 @@ import masterVehicle from "@app/pages/mVehicle/index"
 import masterDeliveryTypeMapping from "@app/pages/mDeliveryTypeMapping/index"
 import changeSubcon from "@app/pages/ChanheSubconAssigment/index"
 import XDockInbound from "@app/pages/xDockInbound/index"
+import masterMrs from "@app/pages/MasterMrs/index"
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -631,6 +632,11 @@ const Main = () => {
                                             exact
                                             path="/stock/inboundxdock"
                                             component={XDockInbound}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/master/mrs"
+                                            component={masterMrs}
                                         />
                                     </Switch>
                                 </div>

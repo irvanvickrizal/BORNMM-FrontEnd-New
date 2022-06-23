@@ -889,15 +889,26 @@ const getDataTaskChangeSubcon = (uid) => GETParam("taskassignment/getTaskChangeP
 
 //xDock Inbound
 const getXDockInbound = (uid) => GETParam("inventory/xDockWaitingInboundList",uid);
-const postXDockConfirmation = (body,odi,uid) => POSTParam2('inventory/xDockInboundCompleted',body,odi,uid)
+const postXDockConfirmation = (body) => POST('inventory/xDockInboundCompleted',body)
 
+// Master MRS
+
+const getMasterMrs = () => GET("mastermrs/GetMasterMRS");
+const postMasterMrs = (body) => POST('mastermrs/AddMasterMRS', body);
+const getDdlOridgin = (uid) => GETParam("mastermrs/GetDDLOrigin",uid);
+const getDdlDestination = (uid) => GETParam("mastermrs/GetDDLDestination",uid);
+const deleteMrs = (mrsID) => DELETE('mastermrs/deletemastermrs',mrsID)
 
 
 const API ={
     putChangeVehicleMultiDelivery,
     getTransportMode,
     postXDockConfirmation,
+    getDdlDestination,
     getDataTaskChangeSubcon,
+    getDdlOridgin,
+    postMasterMrs,
+    getMasterMrs,
     PutMasterDistrictStatus,
     getRegion,
     getPMRVSDismantle,
