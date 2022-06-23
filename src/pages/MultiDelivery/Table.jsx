@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable import/no-cycle */
@@ -158,23 +159,31 @@ const TableMultiDeliveryConfirmation = () => {
     }
     const handleOKForm = (record) =>{
         console.log(record,"ok form")
-        const body = (
-            {
-                "cby":user.uid,
-                "notes": record.notes,
-                "transportTeamId": record.transportTeam,
-                "transportModeID": record.transportMode
+        if(record.transportMode==0){
+            if (window.confirm('Data need to be refreshed, please click yes to reload page')){
+                window.location.reload();
             }
-        )
-        console.log(body,"body")
-        API.postMultiDelivery(body).then(
-            result=>{
-                console.log(result);
-                toast.success(result.message)
-                getMultiDeliveryConfirmation()
-                setIsAddMultiDelivery(false);
-            }
-        )
+        }
+        else{
+            const body = (
+                {
+                    "cby":user.uid,
+                    "notes": record.notes,
+                    "transportTeamId": record.transportTeam,
+                    "transportModeID": record.transportMode
+                }
+            )
+            console.log(body,"body")
+            API.postMultiDelivery(body).then(
+                result=>{
+                    console.log(result);
+                    toast.success(result.message)
+                    getMultiDeliveryConfirmation()
+                    setIsAddMultiDelivery(false);
+                }
+            )
+        }
+        
     }
 
     const columns = [
