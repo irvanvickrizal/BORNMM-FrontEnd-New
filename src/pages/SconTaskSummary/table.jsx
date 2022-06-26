@@ -309,18 +309,15 @@ export default function TableTaskSummary(props) {
     }
     const hideModalReset =() => {
         setIsModalResetVisible(false)
-       
     }
 
     const handleResetTask = () => {
         const body = (
             {
                 "orderDetailId":selectedOdi,
-                "transDelegateId":selectedOdi,
+                "transDelegateId":selectedTransDelegateId,
                 "transferBy":user.uid,
                 "currentAssignTo":currentAssignTo,
-               
-
             }
         )
         API.postTaskAssigmentReset(body).then(
