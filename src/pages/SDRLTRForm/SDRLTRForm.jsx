@@ -94,6 +94,9 @@ const SDRLTRForm = (props) => {
     const [isSite,setIsSite]= useState(true)
     const [express,setExpress] = useState(false);
     const [siteNo,setSiteNo] = useState('')
+    const [intialValueDestination,setInitialValueDestination] = useState("")
+
+
     const navigateTo = (path) => {
         history.push(path)
     }
@@ -293,6 +296,7 @@ const SDRLTRForm = (props) => {
         API.getDestination(wpid,orderTypeId).then(
             result=>{
                 setDDLDestination(result);
+                setInitialValueDestination(result[0].dopId)
                 console.log("Destination",result);
             }
         )
@@ -432,7 +436,7 @@ const SDRLTRForm = (props) => {
                 "requestBy": user.uid
             }
         )
-        console.log("TAR body",values);
+        console.log("TAR body",intialValueDestination);
         API.putSDRLTRForm(body).then(
             result=>{
                 if(result.status=="success")
@@ -541,7 +545,8 @@ const SDRLTRForm = (props) => {
                                 initialValues={{
                                     'isExpressDelivery':false,
                                     'deliveryDate': moment(date2, "YYYY-MM-DD").add(2,'d'),
-                                    'orderType' : selectedOrderType
+                                    'orderType' : selectedOrderType,
+                                    'destination': parseInt(intialValueDestination)
                                 }}
                                 fields={[
                                     {
@@ -575,6 +580,10 @@ const SDRLTRForm = (props) => {
                                     {
                                         name: ["packetType"],
                                         value: parseInt(siteInfoDetail.packetTypeId),
+                                    },
+                                    {
+                                        name: ["destination"],
+                                        value: parseInt(intialValueDestination),
                                     },
                                 ]}
                                 onFinish={handleConfirm}

@@ -48,12 +48,24 @@ const MultiDeliveryArrangementPanel = () => {
     const [isSubmit, setIsSubmit] = useState(false);
     const [ddlTransportTeam, setDdlTransportTeam] = useState([]);
     const [transportTeamId, setTransportTeamId] = useState('');
+    const [tranportModeIsZero, setTranportModeIsZero] = useState(false);
+    
+    const [ddlTransportMode,setDdlTransportMode] = useState([]);
     const [selectedAssignTo, setselectedeAssignTo] = useState('');
     const [selectedVehicle, setselectedVehicle] = useState('');
 
     const navigateTo = (path) => {
         history.push(path)
     }
+    const getTransportMode = () =>{
+        API.getTransportMode().then(
+            result=>{
+                setDdlTransportMode(result)
+                console.log('data transport mode',result)
+                
+            }
+        )
+    } 
 
     const getMultiDeliveryDetail = (id) =>{
         setIsLoadingPage(true)
@@ -61,13 +73,22 @@ const MultiDeliveryArrangementPanel = () => {
             result=>{
                 console.log("multidetail", result)
                 setIsLoadingPage(false);
-                setTransportTeamId(result[0].transportTeamId)
-                setMultiDeliveryTransportMode(result[0].transportModeID)
+                setTransportTeamId(result[0]?.transportTeamId)
+                if(result[0]?.transportModeID>0){
+                    setMultiDeliveryTransportMode(result[0]?.transportModeID)
+                }
+                else{
+                    setTranportModeIsZero(true)
+                    getTransportMode()
+                    console.log("transportmodezero")
+                }
+                
                 setMultiDeliveryDetail(result)
             }
         )
     }
 
+    
     const getMultiDeliveryRequestPending = () => {
         API.getMultiDeliveryRequest(user.uid).then(
             result=>{
@@ -157,6 +178,32 @@ const MultiDeliveryArrangementPanel = () => {
 
 
     }
+
+    const handleOKTransportMode = (data) =>{
+        console.log("submited",data)
+        const body = (
+            {
+                "multiDeliveryID":mdid,
+                "transportModeID": data.transportMode,
+                "userID":user.uid
+            }
+        )
+
+        console.log(body,"body assigned")
+        API.putTransportModeZero(body).then(
+            result=>{
+                if(result.status=="success"){
+                    toast.success(result.message)
+                    window.location.reload()
+                }
+                else{
+                    toast.error(result.message)
+                }
+            }
+        )
+    }
+    
+
     const handleFailedSubmit = () =>{
         setIsSubmit(true)
         console.log("submited")
@@ -170,6 +217,9 @@ const MultiDeliveryArrangementPanel = () => {
     const handleCancelAdd = () =>{
         setIsAddOrderRequest(false)
         setIsSubmit(false)
+    }
+    const handleCancelSelectTransportMode = () =>{
+        setTranportModeIsZero(false)
     }
     const handleCloseAdd = () =>{
         getMultiDeliveryRequestList(mdid)
@@ -617,6 +667,57 @@ const MultiDeliveryArrangementPanel = () => {
                         </Form>
                     </Modal>
 
+                    <Modal title="Select Transport Mode"
+                        visible={tranportModeIsZero}
+                        destroyOnClose={true}
+                        footer={null}
+                        maskClosable={false}
+                        closable={false}
+                        onCancel={handleCancelSelectTransportMode}
+                    >
+                        <Form
+                            name="basic"
+                            labelCol={{ span: 10 }}
+                            wrapperCol={{ span: 14 }}
+                            initialValues={{
+                                // 'orderDetailId': selectedOrderDetailId,
+                                // 'requestNo': selectedRequestNo,
+                                // 'rfpDate': moment(selectedRFPDate).format("YYYY-MM-DD"),
+                                // 'deliveryType': selectedCDMRType,
+                                // // 'taskScheduleId': props.taskScheduleId,
+                                // // 'subconId': props.subconId,
+                                // //'pickupDate': moment(props.pickupDate).format("YYYY-MM-DD"),
+                                // // remember: true
+                            }}
+                            onFinish={handleOKTransportMode}
+                            onFinishFailed={handleFailedSubmit}
+                            autoComplete="off"
+                        >
+                            <Form.Item label="Transport Mode"
+                                name="transportMode"
+                                rules={[{ required: true, message: 'Please Select Transport Mode!'}]}
+                            >
+                                <Select 
+                                    // onChange={(e) => handleDDLSubconChange(e)}
+                                    placeholder="Select an option"
+                                >
+                                    {/* <Select.Option value={0}>-- SELECT --</Select.Option> */}
+                                    {
+                                        ddlTransportMode?.map(inv =>  <Select.Option value={inv.transportmode_id}> 
+                                            {inv.transport_mode}</Select.Option>)
+                                    }
+                                </Select>
+                            </Form.Item>
+
+                            <Form.Item wrapperCol={{ offset: 10, span: 14 }}>
+                                <Space>
+                                    <Button type="primary" htmlType="submit">
+                                OK
+                                    </Button>
+                                </Space>
+                            </Form.Item>
+                        </Form>
+                    </Modal>
                 </Space>
             }
         </div> 
