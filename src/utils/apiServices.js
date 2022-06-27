@@ -638,6 +638,7 @@ const getSconTaskPending = (uid) => GETParam('taskassignment/taskAssignmentSubco
 const getSconEngineer = (sconid,wpid) => GETParam2('subcon/getFieldSubcontractorEngineer',sconid,wpid)
 const postAssignEngineer = (body) => POST("taskassignment/taskAssignmentToEngineer",body);
 const postCancelTask = (body) => POST("taskassignment/taskAssignmentCanceled",body);
+const postTaskAssigmentReset = (body) => POST("taskassignment/ackDismantleTaskReset",body);
 const putRequestReschedule = (body) => PUT("scheduleassignment/taskScheduleProposeNewDate",body);
 
 const getInventoryReport = () => GET('inventory/getInventoryReport');
@@ -779,6 +780,7 @@ const postMultiDeliveryArrangement = (body) => POST('multidelivery/multiDelivery
 const assignMultiDelivery = (body) => POST('multidelivery/multiDeliveryAssignTaskToTransportNew',body)
 const deleteMultiDeliveryRequest = (mdid) => DELETE('multidelivery/multiDeliveryDeleteOrderRequest',mdid)
 const putDeleteMultiDeliveryRequest = (body) => PUT('multidelivery/multiDeliveryDeleteGroup',body)
+const putTransportModeZero = (body) => PUT('multidelivery/multiDeliveryUpdateTransportMode',body)
 
 const postMaterialArriveWH = (body) => POST('lspassignment/orderRequestPickupCompletedAtWH',body)
 
@@ -889,15 +891,30 @@ const getDataTaskChangeSubcon = (uid) => GETParam("taskassignment/getTaskChangeP
 
 //xDock Inbound
 const getXDockInbound = (uid) => GETParam("inventory/xDockWaitingInboundList",uid);
-const postXDockConfirmation = (body,odi,uid) => POSTParam2('inventory/xDockInboundCompleted',body,odi,uid)
+const postXDockConfirmation = (body) => POST('inventory/xDockInboundCompleted',body)
 
+// Master MRS
+
+const getMasterMrs = () => GET("mastermrs/GetMasterMRS");
+const postMasterMrs = (body) => POST('mastermrs/AddMasterMRS', body);
+const getDdlOridgin = (uid) => GETParam("mastermrs/GetDDLOrigin",uid);
+const getDdlDestination = (uid) => GETParam("mastermrs/GetDDLDestination",uid);
+const deleteMrs = (mrsID) => DELETE('mastermrs/deletemastermrs',mrsID)
+const PutPriceMRS = (body) => PUT('mastermrs/updateMasterMRS',body);
 
 
 const API ={
+    putTransportModeZero,
     putChangeVehicleMultiDelivery,
     getTransportMode,
     postXDockConfirmation,
+    getDdlDestination,
+    PutPriceMRS,
     getDataTaskChangeSubcon,
+    getDdlOridgin,
+    deleteMrs,
+    postMasterMrs,
+    getMasterMrs,
     PutMasterDistrictStatus,
     getRegion,
     getPMRVSDismantle,
@@ -1068,6 +1085,7 @@ const API ={
     getDownloadPoBoqCompletion,
     getListBoqAsPo,
     getBoqSummaryAsPoBoq,
+    postTaskAssigmentReset,
     getDownloadOutbond,
     getDownloadInbond,
     postAssitgnTransportTeam,

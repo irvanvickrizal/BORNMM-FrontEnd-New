@@ -285,12 +285,12 @@ const TableOutboundUpload = () => {
         },
         {
             title : "Upload Date",
-            dataIndex:'uploadedDate',
+          
             width: 120,
             render:(record)=>{
                 return (
                     <Space>
-                        <p>{moment(record.uploadedDate).format("YYYY-MM-DD HH:mm:ss")}</p>
+                        <Typography>{moment(record.uploadedDate).format("YYYY-MM-DD HH:mm:ss")}</Typography>
                     </Space>
                 )
             },
