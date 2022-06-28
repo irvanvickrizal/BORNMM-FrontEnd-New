@@ -107,47 +107,56 @@ const TableInventoryReport = () => {
     const columns = [
         {
             title : "No",
+            fixed:'left',
+            width:20,
             render: (value, item, index) => 1 + index
         },
         {
             title : "Project",
             dataIndex:'project',
+            fixed:'left',
+            width:30,
             ...Search('project'),
         },
         {
             title : "WHCode",
             dataIndex:'whCode',
+            fixed:'left',
+            width:30,
             ...Search('whCode'),
         },
         {
             title : "Warehouse/DOP",
             dataIndex:'warehouseName',
+            fixed:'left',
+            width:35,
             ...Search('warehouseName'),
         },
         {
             title : "Material Code",
             dataIndex:'materialCode',
+            fixed:'left',
+            width:35,
             ...Search('materialCode'),
         },
         {
             title : "Material Desc",
             dataIndex:'materialDesc',
+            fixed:'left',
+            width:40,
             ...Search('materialDesc'),
         },
         {
             title : "UOM",
             dataIndex:'uom',
+            fixed:'left',
+            width:20,
             responsive: ['md'],
             ...Search('uom'),
         },
         {
-            title : "Region",
-            dataIndex:'region',
-            ...Search('region'),
-        },
-        {
             title : "Inbound QTY",
-           
+            width:20,
             render:(record)=>{
                 return (
                     <Tooltip title="Download Inbound List">
@@ -164,15 +173,16 @@ const TableInventoryReport = () => {
                     
                 )
             },
-            ...Search('inboundQty'),
         },
         {
             title : "Stock (OnHand)",
             dataIndex:'onHandQty',
+            width:20,
             ...Search('onHandQty'),
         },
         {
             title : "Requested BORN",
+            width:20,
             render:(record)=>{
                 return (
                     <Tooltip title="Download Requested Born List">
@@ -193,6 +203,7 @@ const TableInventoryReport = () => {
         },
         {
             title : "Outbond QTY",
+            width:20,
             // dataIndex:'outboundQty',
             render:(record)=>{
                 return (
@@ -214,12 +225,19 @@ const TableInventoryReport = () => {
         },
         {
             title:"Balance (FREE QTY)",
+            width:20,
             dataIndex:'balanceQty',
             ...Search('balanceQty'),
             key:"balanceQty",
             
         },
         
+        {
+            title : "Region",
+            width:40,
+            dataIndex:'region',
+            ...Search('region'),
+        },
     
     ]
     const columnsDetail = [
@@ -381,7 +399,7 @@ const TableInventoryReport = () => {
                                 {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
                             </Tooltip>
                         </div><Table
-                            scroll={{ x: '150%' }}
+                            scroll={{ x: '110%' }}
                             size="small"
                             // expandable={{ expandedRowRender }}
                             columns={columns}
