@@ -893,7 +893,6 @@ const getXDockInbound = (uid) => GETParam("inventory/xDockWaitingInboundList",ui
 const postXDockConfirmation = (body) => POST('inventory/xDockInboundCompleted',body)
 
 // Master MRS
-
 const getMasterMrs = () => GET("mastermrs/GetMasterMRS");
 const postMasterMrs = (body) => POST('mastermrs/AddMasterMRS', body);
 const getDdlOridgin = (uid) => GETParam("mastermrs/GetDDLOrigin",uid);
@@ -901,13 +900,20 @@ const getDdlDestination = (uid) => GETParam("mastermrs/GetDDLDestination",uid);
 const deleteMrs = (mrsID) => DELETE('mastermrs/deletemastermrs',mrsID)
 const PutPriceMRS = (body) => PUT('mastermrs/updateMasterMRS',body);
 
+// Master Dop Order Type
+
+const getDataDopOrderType = () => GET("dopordertype/new");
+const deleteDataDopOrderType = (id) => DELETE("dopordertype/delete",id)
+
 
 const API ={
     putChangeVehicleMultiDelivery,
     getTransportMode,
+    deleteDataDopOrderType,
     postXDockConfirmation,
     getDdlDestination,
     PutPriceMRS,
+    getDataDopOrderType,
     getDataTaskChangeSubcon,
     getDdlOridgin,
     deleteMrs,

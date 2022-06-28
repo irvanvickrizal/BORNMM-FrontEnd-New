@@ -118,6 +118,9 @@ import XDockInbound from "@app/pages/xDockInbound/index"
 import masterMrs from "@app/pages/MasterMrs/index"
 import MDopNew from "@app/pages/mDopNew/index"
 
+// MDOp Based on Order Type
+import mDopOrderType from "@app/pages/mDopOrderType/index"
+
 const Main = () => {
     const dispatch = useDispatch()
     const isSidebarMenuCollapsed = useSelector(
@@ -638,6 +641,16 @@ const Main = () => {
                                             exact
                                             path="/master/mrs"
                                             component={masterMrs}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/master/mrs"
+                                            component={masterMrs}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/master/dopordertype"
+                                            component={mDopOrderType}
                                         />
                                     </Switch>
                                 </div>
