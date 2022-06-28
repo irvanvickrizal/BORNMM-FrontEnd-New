@@ -780,6 +780,7 @@ const postMultiDeliveryArrangement = (body) => POST('multidelivery/multiDelivery
 const assignMultiDelivery = (body) => POST('multidelivery/multiDeliveryAssignTaskToTransportNew',body)
 const deleteMultiDeliveryRequest = (mdid) => DELETE('multidelivery/multiDeliveryDeleteOrderRequest',mdid)
 const putDeleteMultiDeliveryRequest = (body) => PUT('multidelivery/multiDeliveryDeleteGroup',body)
+const putTransportModeZero = (body) => PUT('multidelivery/multiDeliveryUpdateTransportMode',body)
 
 const postMaterialArriveWH = (body) => POST('lspassignment/orderRequestPickupCompletedAtWH',body)
 
@@ -907,6 +908,7 @@ const deleteDataDopOrderType = (id) => DELETE("dopordertype/delete",id)
 
 
 const API ={
+    putTransportModeZero,
     putChangeVehicleMultiDelivery,
     getTransportMode,
     deleteDataDopOrderType,
