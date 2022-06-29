@@ -44,6 +44,10 @@ export default function TableDopOrderType() {
             }
         )
     }
+
+    const refreshData = () => {
+        getDataDopOrderType()
+    }
     
     const getDdlDop = () =>{
 
@@ -93,28 +97,28 @@ export default function TableDopOrderType() {
     
     const handleIsActive = (data) =>{
         console.log(data,"isActive")
-        if (window.confirm('Are you sure you want to process this action ?')) {
-            const body={
-                "Id":data.dopId,
-                "ActStatus":!data.isActive,
-                "LMBY":  uId
-            }
-            console.log("activa:",body);
-            API.putActiveStatus(body).then(
-                result=>{
-                    console.log("put material: ", result);
-                    if(result.status=="success")
-                    {
-                        toast.success(result.message);
-                        //refreshData();
-                        //window.location.reload();
-                    }
-                    else{
-                        toast.error(result.message);
-                    }
-                }
-            )
-        }
+        // if (window.confirm('Are you sure you want to process this action ?')) {
+        //     const body={
+        //         "Id":data.dopId,
+        //         "ActStatus":!data.isActive,
+        //         "LMBY":  uId
+        //     }
+        //     console.log("activa:",body);
+        //     API.putActiveStatus(body).then(
+        //         result=>{
+        //             console.log("put material: ", result);
+        //             if(result.status=="success")
+        //             {
+        //                 toast.success(result.message);
+        //                 refreshData()
+        //                 //window.location.reload();
+        //             }
+        //             else{
+        //                 toast.error(result.message);
+        //             }
+        //         }
+        //     )
+        // }
       
     }
 
@@ -131,13 +135,13 @@ export default function TableDopOrderType() {
         
         console.log(body,"body");
         console.log(data,"data");
-        API.postDeliveryTypeMapping(body).then(
+        API.addDataDopOrderType(body).then(
             result=>{
                 console.log(result,"result")
                 if(result.status=="success")
                 {
                     toast.success(result.message);
-                    // refreshData()
+                    refreshData()
                     setIsModaAddVisible(false)
                 
                     // window.location.reload();
@@ -161,7 +165,7 @@ export default function TableDopOrderType() {
                 if(result.status=="success")
                 {
                     toast.success(result.message);
-                    // refreshData()
+                    refreshData()
                     setIsModalDeleteVisible(false)
                 
                     // window.location.reload();

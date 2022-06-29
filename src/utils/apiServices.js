@@ -905,6 +905,7 @@ const PutPriceMRS = (body) => PUT('mastermrs/updateMasterMRS',body);
 
 const getDataDopOrderType = () => GET("dopordertype/new");
 const deleteDataDopOrderType = (id) => DELETE("dopordertype/delete",id)
+const addDataDopOrderType = (body) => POST("dopordertype/add",body)
 
 
 const API ={
@@ -912,6 +913,7 @@ const API ={
     putChangeVehicleMultiDelivery,
     getTransportMode,
     deleteDataDopOrderType,
+    addDataDopOrderType,
     postXDockConfirmation,
     getDdlDestination,
     PutPriceMRS,
