@@ -473,7 +473,7 @@ export default function TableTransportTaskTracking() {
                                         onClick={()=>showModal(record)}
                                     />
                                 </Tooltip>)}
-                            {record.confirmStatus === "Confirmed" ? ( 
+                            {record.confirmStatus === "Confirmed" && record.pickupDate != null ? ( 
                                 <Tooltip title="View Map">
                                     <IconButton
                                         size='small'
