@@ -643,6 +643,7 @@ const putRequestReschedule = (body) => PUT("scheduleassignment/taskSchedulePropo
 
 const getInventoryReport = () => GET('inventory/getInventoryReport');
 const getInboundSuccessLog = () => GET('inventory/inboundSuccessLogList');
+const getInboundIntegrationLog = (uid) => GETParam('inventory/inboundIntegrationDataGetList',uid);
 const getInboundUploadFile = () => GET('inventory/inboundFileUploadGetList');
 const getInboundErrorList = (id) => GETParam('inventory/inboundFileUploadGetErrLogList',id);
 const postReviseInboundFile = (id,file) => POSTFile('inventory/inboundFileRevisionUpload',id,file);
@@ -654,6 +655,7 @@ const deleteInboundFile2 = (body,id,userid) => PUTParam2('inventory/inboundFileD
 
 const getOutboundUploadFile = () => GET('inventory/outboundFileUploadGetList');
 const getOutboundSuccessLog = () => GET('inventory/outboundSuccessLogList');
+const getOutboundIntegrationLog = (uid) => GETParam('inventory/outboundIntegrationDataGetList',uid);
 const getItemBookedList = () => GET('materialmanagement/OrderRequestMaterialGetItemListBooked');
 const getItemBookedList2 = (odi) => GETParam('materialmanagement/orderRequestMaterialGetItemListBookedBasedId',odi);
 const getOutboundErrorList = (id) => GETParam('inventory/outboundFileUploadGetErrLogList',id);
@@ -929,6 +931,7 @@ const API ={
     getXDockInbound,
     getRPTAPPTracking,
     postDismantleAckNew,
+    getOutboundIntegrationLog,
     postRejectDismantleAckNew,
     getDismantleLog,
     getApkLink,
@@ -1037,6 +1040,7 @@ const API ={
     getMasterDistrict,
     putLogisticRejection,
     assignMultiDelivery,
+    getInboundIntegrationLog,
     deleteMultiDeliveryRequest,
     getDDLTransportAssignTo2,
     postMultiDeliveryArrangement,

@@ -30,11 +30,12 @@ const TableInboundUpload = () => {
     const [inbFileId, setInbFileId] = useState(0);
     const [fileNameExisting, setFileNameExisting] = useState('');
     const [inboundSuccessLog, setInboundSuccessLog] = useState([]);
+    const [inboundIntegrationLog, setInboundIntegrationLog] = useState([]);
     const { Title } = Typography;
     const { TabPane } = Tabs;
     const newDate = new Date()
     const date = newDate.getDate();
-    const user = useSelector((state) => state.auth.user);
+    const user = useSelector((state) => state.auth.user.uid);
     const props = {
         onRemove: () => {
             setFileUpload(null);
@@ -75,6 +76,32 @@ const TableInboundUpload = () => {
                 setInboundSuccessLog(result);
                 setIsLoading(false);
                 console.log("inbound success log",result);
+            }
+        )
+    }
+    const getInboundIntegrationLog = () => {
+        setIsLoading(true);
+        API.getInboundIntegrationLog(user).then(
+            result=>{
+                setInboundIntegrationLog(result);
+                setIsLoading(false);
+                console.log("inbound Integration log",result);
+            }
+        )
+    }
+
+    const getDownloadIntegrationlog = () => {
+        API.getInboundIntegrationLog(user).then(
+            result=>{
+                // setDownloadData(result);
+                console.log("data  Download :",result);
+               
+                const data = result;
+                //const data = result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
+                const exportType =  exportFromJSON.types.xls;
+                const fileName = `Inbound_Integration_log_${moment().format('YYYY-MM-DD')}`;
+                exportFromJSON({ data, fileName, exportType });
+               
             }
         )
     }
@@ -368,6 +395,92 @@ const TableInboundUpload = () => {
         
     
     ]
+    const columnIntegrationLog = [
+        {
+            title : "No",
+            width : 50,
+            render: (value, item, index) => 1 + index
+        },
+        {
+            title : "File Name",
+            width: 250,
+            dataIndex:'fileName',
+            ...Search('fileName'),
+        },
+        {
+            title : "Upload Date",
+            width: 120,
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.uploadedDate).format("YYYY-MM-DD HH:mm:ss")}</p>
+                    </Space>
+                )
+            },
+            ...Search('uploadedDate'),
+        },
+        {
+            title : "Upload By",
+            dataIndex:'uploadedBy',
+            width: 150,
+            ...Search('uploadedBy'),
+        },
+        {
+            title : "Status",
+            render:(record)=>{
+                return (
+                    <Space>
+                        <Tag color={colorTag(record.executeStatus)}>{record.executeStatus}</Tag>
+                    </Space>
+                )
+            },
+            width: 100,
+            ...Search('executeStatus'),
+        },
+        {
+            title:"Err Message",
+            key:"orderMaterialId",
+            align:'center',
+            width: 100,
+            ellipsis: true,
+            render:(record)=>{
+                return (
+                    <Space>
+                        {!record.rowlogCount > 0 ?
+                            <p style={{ color:'red' }}>{record.errMessage}</p>
+                            :
+                            <Tooltip title="Download Log">
+                                <IconButton
+                                    aria-label="expand row"
+                                    size="small"
+                                    color="error"
+                                    onClick={() => getErrorLog(record.inbFileId,record.fileName)}
+                                >
+                                    <SimCardDownloadIcon />
+                                </IconButton>
+                            </Tooltip>
+                        }
+                    </Space>
+                )
+            }
+            
+        },
+        {
+            title : "System Execute Date",
+            width: 200,
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{record.systemExecuteDate==null ? (<div>-</div>) : moment(record.systemExecuteDate).format("YYYY-MM-DD HH:mm:ss")}</p>
+                    </Space>
+                )
+            },
+            ...Search('uploadedDate'),
+        },
+     
+        
+    
+    ]
 
 
     const handleUpload = () => {
@@ -381,7 +494,7 @@ const TableInboundUpload = () => {
                     getInboundUploadFileList()
                     setIsReviseFile(false);
                     // window.location.reload()
-                    message.success('upload successfully.');
+                    message.success('upload successfully.'  );
                 }
                 else{
                     setFileUpload(null);
@@ -431,8 +544,11 @@ const TableInboundUpload = () => {
         if(key==1){
             getInboundUploadFileList();
         }
-        else if(key==2){
+        else if(key==3){
             getInboundSuccessLog();
+        }
+        else if(key==2){
+            getInboundIntegrationLog();
         }
         console.log("keytabs",key);
     }
@@ -484,7 +600,44 @@ const TableInboundUpload = () => {
                             bordered /></>
                     }
                 </TabPane>
-                <TabPane tab="Inbound Success Log" key="2">
+                <TabPane tab="Inbound Integration Log" key="2">
+                    {isLoading ?   
+                        <Row justify="center">
+                            <Col span={1}>    
+                                <Spin />
+                            </Col>
+                        </Row>  
+                        :
+                        <><Row>
+                            <Col md={24} sm={24}>
+                                <div className='float-right'>
+                                 
+                                    <Tooltip title="Download Inbound Integration Log">
+                                        <IconButton size="small" color="secondary" onClick={getDownloadIntegrationlog}>
+                                          
+                                            <FileExcelOutlined style={{color:"#055b0f",fontSize:20}}/>
+                                      
+                                        </IconButton>
+                                        {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
+                                    </Tooltip>
+                                </div>
+                            </Col>
+                        </Row><Table
+                            scroll={{ x: '150%' }}
+                            size="small"
+                            // expandable={{ expandedRowRender }}
+                            columns={columnIntegrationLog}
+                            dataSource={inboundIntegrationLog}
+                            pagination={{
+                                pageSizeOptions: ['5', '10', '20', '30', '40'],
+                                showSizeChanger: true,
+                                position: ["bottomLeft"],
+                            }}
+                            bordered /></>
+                    }
+                </TabPane>
+              
+                <TabPane tab="Inbound Success Log" key="3">
                     {isLoading ?   
                         <Row justify="center">
                             <Col span={1}>    
