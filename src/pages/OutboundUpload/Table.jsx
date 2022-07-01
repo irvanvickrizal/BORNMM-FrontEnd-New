@@ -234,6 +234,21 @@ const TableOutboundUpload = () => {
             }
         )
     }
+    function getErrorLogIntegration(id,fileNames){
+
+        API.getOutboundErrorList(id).then(
+            result=>{
+                console.log('i am error log Scope',result)
+                
+                setErrorLog(result);
+                const data = result;
+                //const data = result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
+                const exportType =  exportFromJSON.types.xls;
+                const fileNameDownload = `errorlog_${fileNames}_${moment().format("DD-MM-YYYY hh:mm:ss")}`;
+                exportFromJSON({ data, fileNameDownload, exportType });
+            }
+        )
+    }
 
     const handleUploadFile = (id,filenameparam) =>
     {
@@ -486,7 +501,7 @@ const TableOutboundUpload = () => {
                                     aria-label="expand row"
                                     size="small"
                                     color="error"
-                                    onClick={() => getErrorLog(record.inbFileId,record.fileName)}
+                                    onClick={() => getErrorLogIntegration(record.inbFileId,record.fileName)}
                                 >
                                     <SimCardDownloadIcon />
                                 </IconButton>
@@ -607,7 +622,7 @@ const TableOutboundUpload = () => {
                                 </Col>
                             </Row>
                             <Table
-                                scroll={{ x: '100%' }}
+                                scroll={{ x: '150%' }}
                                 size="small"
                                 // expandable={{ expandedRowRender }}
                                 columns={columns}
