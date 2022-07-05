@@ -380,17 +380,22 @@ const Login = () => {
                     >
                         <Col flex='450px' className={classes.leftLayout}>
                             <div className={classes.leftInner} >
+                                <Col className="gutter-row" xl={24} xs={24} sm={24}  style={{display:"flex",justifyContent:"flex-start",marginBottom:10}} >
+                                    <img src={logoNokia} style={{height:30,width:110}}/>
+                                </Col>
+                                
                                 <Typography
                                     style={{
-                                        fontSize: '23px',
-                                        lineHeight: '32px',
-                                        marginBottom: 52,
+                                        fontWeight: 500,
+                                        fontSize: '15px',
+                                        lineHeight: '16px',
+                                        color: '#1c4598',
+                                        marginBottom: 10
                                     }}
                                 >
-                    Welcome to BORN
-                                    <br />
-                                    {/* <b>Nokia BORN Material Management</b> */}
+                                    Please Login to Your Account
                                 </Typography>
+                                
                                 <form
                                     onSubmit={(e) => {
                                         e.preventDefault();
@@ -446,11 +451,11 @@ const Login = () => {
                                                             color: '#1c4598',
                                                         }}
                                                     >
-                          Forgot Password
+                                                        Forgot Password
                                                     </Typography>
                                                 </div>
                                             </Col>
-                                            <Col className="gutter-row" xl={12} sm={12} xs={12} style={{display:"flex",justifyContent:"flex-end"}} >
+                                            <Col className="gutter-row" xl={12} sm={12} xs={12} style={{display:"flex",justifyContent:"flex-end",marginBottom:10}} >
                                                 <div>
                                                     {isAuthLoading ? (     <Spin 
                                                     />):( <Button
@@ -460,22 +465,22 @@ const Login = () => {
                                                             disabled: classes.btnDisabled,
                                                         }}
                                                         type='submit'
-                                      
+                                                        
                                                         // disabled={isBtnDisabled}
                                                     >
                                                         {/* {isAuthLoading ? (<Spinner/>):("Login")} */}
-                                              Login
+                                                    Login
                                                     </Button>)}
                                                 
                                        
                                            
                                                 </div>
                                             </Col>
-                                         
+                                            {/*                                          
                                             <Col className="gutter-row" xl={24} xs={24} sm={24}  style={{display:"flex",justifyContent:"flex-end",marginLeft:10,marginTop:20}} >
                                                 <img src={logoNokia} style={{height:50,width:130}}/>
                                             </Col>
-                                          
+                                           */}
                                            
                                         </Row>
                                       
