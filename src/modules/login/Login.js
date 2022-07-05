@@ -473,7 +473,7 @@ const Login = () => {
                                             </Col>
                                          
                                             <Col className="gutter-row" xl={24} xs={24} sm={24}  style={{display:"flex",justifyContent:"flex-end",marginLeft:10,marginTop:20}} >
-                                                <img src={logoNokia} style={{height:60,width:130}}/>
+                                                <img src={logoNokia} style={{height:50,width:130}}/>
                                             </Col>
                                           
                                            
