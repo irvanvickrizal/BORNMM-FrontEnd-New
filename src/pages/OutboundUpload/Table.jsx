@@ -30,6 +30,7 @@ const TableOutboundUpload = () => {
     const [inbFileId, setInbFileId] = useState(0);
     const [fileNameExisting, setFileNameExisting] = useState('');
     const [outboundSuccessLog, setOutboundSuccessLog] = useState('');
+    const [dataOutboundIntegration, setDataOubondIntegration] = useState('');
     const [itemBookedList, setItemBookedList] = useState([]);
     const { Title } = Typography;
     const { TabPane } = Tabs;
@@ -166,6 +167,34 @@ const TableOutboundUpload = () => {
             }
         )
     }
+    
+    const getOutboundIntegrationLog = () => {
+        setIsLoading(true);
+        API.getOutboundIntegrationLog(user.uid).then(
+            result=>{
+                
+                console.log("scontaskpendnig",result);
+                setDataOubondIntegration(result)
+                setIsLoading(false);
+            }
+        )
+    }
+
+    const getDownloadIntegrationlog = () => {
+        API.getOutboundIntegrationLog(user.uid).then(
+            result=>{
+                // setDownloadData(result);
+                console.log("data  Download :",result);
+               
+                const data = result;
+                //const data = result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
+                const exportType =  exportFromJSON.types.xls;
+                const fileName = `Outbound_Integration_log_${moment().format('YYYY-MM-DD')}`;
+                exportFromJSON({ data, fileName, exportType });
+               
+            }
+        )
+    }
 
     const getDownloadDataDetail = () => {
         API.getOutboundSuccessLog().then(
@@ -191,6 +220,21 @@ const TableOutboundUpload = () => {
     
 
     function getErrorLog(id,fileNames){
+
+        API.getOutboundErrorList(id).then(
+            result=>{
+                console.log('i am error log Scope',result)
+                
+                setErrorLog(result);
+                const data = result;
+                //const data = result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
+                const exportType =  exportFromJSON.types.xls;
+                const fileNameDownload = `errorlog_${fileNames}_${moment().format("DD-MM-YYYY hh:mm:ss")}`;
+                exportFromJSON({ data, fileNameDownload, exportType });
+            }
+        )
+    }
+    function getErrorLogIntegration(id,fileNames){
 
         API.getOutboundErrorList(id).then(
             result=>{
@@ -385,6 +429,93 @@ const TableOutboundUpload = () => {
         
     
     ]
+    const columnIntegrationLog = [
+        {
+            title : "No",
+            width : 50,
+            render: (value, item, index) => 1 + index
+        },
+        {
+            title : "File Name",
+            dataIndex:'fileName',
+            width : 250,
+            ...Search('fileName'),
+        },
+        {
+            title : "Upload Date",
+          
+            width: 120,
+            render:(record)=>{
+                return (
+                    <Space>
+                        <Typography>{moment(record.uploadedDate).format("YYYY-MM-DD HH:mm:ss")}</Typography>
+                    </Space>
+                )
+            },
+            ...Search('uploadedDate'),
+        },
+        {
+            title : "Upload By",
+            dataIndex:'uploadedBy',
+            width: 150,
+            ...Search('uploadedBy'),
+        },
+        {
+            title : "Status",
+            width : 150,
+            render:(record)=>{
+                return (
+                    <Space>
+                        <Tag color={colorTag(record.executeStatus)}>{record.executeStatus}</Tag>
+                    </Space>
+                )
+            },
+            ...Search('executeStatus'),
+        },
+        {
+            title : "System Execute Date",
+            width : 150,
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{record.systemExecuteDate==null ? (<div>-</div>) : moment(record.systemExecuteDate).format("YYYY-MM-DD HH:mm:ss")}</p>
+                    </Space>
+                )
+            },
+            ...Search('systemExecuteDate'),
+        },
+        {
+            title:"Err Message",
+            key:"orderMaterialId",
+            align:'center',
+            width : 150,
+            ellipsis: true,
+            render:(record)=>{
+                return (
+                    <Space>
+                        {!record.rowLogCount > 0 ?
+                            <p style={{ color:"red" }}>{record.errMessage}</p>
+                            :
+                            <Tooltip title="Download Log">
+                                <IconButton
+                                    aria-label="expand row"
+                                    size="small"
+                                    color="error"
+                                    onClick={() => getErrorLogIntegration(record.inbFileId,record.fileName)}
+                                >
+                                    <SimCardDownloadIcon />
+                                </IconButton>
+                            </Tooltip>
+                        }
+                    </Space>
+                )
+            }
+            
+        },
+     
+        
+    
+    ]
 
     const handleUpload = () => {
         setUploading(true)
@@ -443,6 +574,9 @@ const TableOutboundUpload = () => {
             getOutboundUploadFileList();
         }
         else if(key==2){
+            getOutboundIntegrationLog();
+        }
+        else if(key==3){
             getOutboundSuccessLog();
         }
         console.log("keytabs",key);
@@ -488,7 +622,7 @@ const TableOutboundUpload = () => {
                                 </Col>
                             </Row>
                             <Table
-                                scroll={{ x: '100%' }}
+                                scroll={{ x: '150%' }}
                                 size="small"
                                 // expandable={{ expandedRowRender }}
                                 columns={columns}
@@ -502,7 +636,46 @@ const TableOutboundUpload = () => {
                         </>
                     }
                 </TabPane>
-                <TabPane tab="Outbound Success Log" key="2">
+                <TabPane tab="Outbound Integration Log" key="2">
+                    {isLoading ?   
+                        <Row justify="center">
+                            <Col span={1}>    
+                                <Spin />
+                            </Col>
+                        </Row>  
+                        :
+                        <>
+                            <Row>
+                                <Col md={24} sm={24} >
+                                    <div className='float-right'>
+                                       
+                                        <Tooltip title="Download Outbound Integration Log">
+                                            <IconButton size="small" color="secondary" onClick={getDownloadIntegrationlog}>
+                                                
+                                                <FileExcelOutlined style={{color:"#055b0f",fontSize:20}}/>
+                                         
+                                            </IconButton>
+                                            {/* <Button type="primary" icon={<FileExcelOutlined />} onClick={handleDownloadBtn} /> */}
+                                        </Tooltip>
+                                    </div>
+                                </Col>
+                            </Row>
+                            <Table
+                                scroll={{ x: '100%' }}
+                                size="small"
+                                // expandable={{ expandedRowRender }}
+                                columns={columnIntegrationLog}
+                                dataSource={dataOutboundIntegration}
+                                pagination={{
+                                    pageSizeOptions: ['5', '10', '20', '30', '40'],
+                                    showSizeChanger: true,
+                                    position: ["bottomLeft"],
+                                }}
+                                bordered />
+                        </>
+                    }
+                </TabPane>
+                <TabPane tab="Outbound Success Log" key="3">
                     {isLoading ?   
                         <Row justify="center">
                             <Col span={1}>    

@@ -409,11 +409,6 @@ const Dashboard = () => {
                                 <div className='card-header align-middle'>
                                     <h3 className="card-title">Forward Logistic Summary</h3>
                                 </div>
-                       
-                       
-                    
-                       
-                        
                                 <Row gutter={24} style={{paddingLeft:14,marginTop:48,paddingBottom:12,paddingRight:14}}>
                               
                                     <Col className="gutter-row"  xs={24} xl={0} align="middle">
@@ -447,12 +442,6 @@ const Dashboard = () => {
                                             </AccordionDetails>
                                         </Accordion>
                                     </Col>
-                                  
-
-
-                           
-                                   
-
                                     <Col className="gutter-row"  xs={0} xl={24} >
                                         <Accordion defaultExpanded>
                                             <AccordionSummary
