@@ -128,9 +128,8 @@ export default function TableDopOrderType() {
                 DOPID:selectedDopName, 
                 OrderTypeID:selectedOrderType,
                 GroupType:selectedGroup,
-          
                 LMBY:uId
-             
+
             }
         
         console.log(body,"body");
