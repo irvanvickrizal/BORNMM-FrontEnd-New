@@ -360,7 +360,7 @@ const Login = () => {
         <>
             <div className={classes.container}>
                 <div>
-                    <img src={logoNokia} style={{height:50,width:240}}/>
+                    <img src={logoNokia2} style={{position:"absolute",height:120,width:200}}/>
                 </div>
                 <div
                     style={{ flex: '0 1 580px', display: 'flex', alignItems: 'center' }}
@@ -387,9 +387,9 @@ const Login = () => {
                                         marginBottom: 52,
                                     }}
                                 >
-                    Welcome to
+                    Welcome to BORN
                                     <br />
-                                    <b>Nokia BORN Material Management</b>
+                                    {/* <b>Nokia BORN Material Management</b> */}
                                 </Typography>
                                 <form
                                     onSubmit={(e) => {
@@ -472,8 +472,8 @@ const Login = () => {
                                                 </div>
                                             </Col>
                                          
-                                            <Col className="gutter-row" xl={24} xs={24} sm={24}  style={{display:"flex",justifyContent:"flex-end",marginLeft:10,marginTop:12}} >
-                                                <img src={logoNokia2} style={{height:60,width:90}}/>
+                                            <Col className="gutter-row" xl={24} xs={24} sm={24}  style={{display:"flex",justifyContent:"flex-end",marginLeft:10,marginTop:20}} >
+                                                <img src={logoNokia} style={{height:60,width:130}}/>
                                             </Col>
                                           
                                            
