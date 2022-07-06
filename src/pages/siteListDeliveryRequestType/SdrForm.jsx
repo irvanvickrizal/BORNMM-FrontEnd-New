@@ -238,6 +238,7 @@ const SdrForm = (props) => {
             }
         )
     }
+
     const getHasExpressDelivery = () => {
         API.getHasExpressDelivery(orderTypeId).then(
             result=>{
@@ -246,6 +247,7 @@ const SdrForm = (props) => {
             }
         )
     }
+
     function onChange(value) {
         console.log(`selected ${value}`);
     }
@@ -259,8 +261,9 @@ const SdrForm = (props) => {
         console.log("v",value)
     }
 
-    const getDDLWHSPV=(destinationid)=>{
-        API.getWHSupervisor(destinationid,wpid,selectedDestination).then(
+    const getDDLWHSPV=(sconid)=>{
+        console.log(sconid,"destinationid")
+        API.getWHSupervisor(sconid,wpid,selectedDestination).then(
             result=>{
                 setDdlWHSPV(result);
                 console.log("wh spv",result);
@@ -270,7 +273,7 @@ const SdrForm = (props) => {
 
     const handleDestinationChange = (value) =>{
         setSelectedDestination(value);
-        
+        console.log(value,"selecteddestination")
         API.getAddress(siteNo,value).then(
             result=>{
                 setSiteAddress(result[0].endPointAddress)  

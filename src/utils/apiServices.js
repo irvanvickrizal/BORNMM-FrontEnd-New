@@ -532,6 +532,7 @@ const putActiveStatus= (body) => PUT('masterdop/SetActivationStatusU',body);
 const putDOPData = (body)=> PUT('masterdop',body)
 
 const getmDeliveryType = () => GET('masterdeliverytype');
+const getmDeliveryTypeNew = () => GET('masterdeliverytype/new');
 
 const getmMaterialList = () => GET('mastermaterial');
 const downloadMMaterial = () => GET('mastermaterial/getMaterialListActiveforDownload');
@@ -918,6 +919,7 @@ const addDataDopOrderType = (body) => POST("dopordertype/add",body)
 
 
 const API ={
+    getmDeliveryTypeNew,
     deleteteDeliveryTypeGroup,
     postDeliveryTypeGroup,
     getDeliveryTypeGroup,
