@@ -13,7 +13,7 @@ import mMaterialCategory from "@pages/mMaterialCategory/mMaterialCategory"
 import mSubMaterialCategory from "@pages/mSubMaterialCategory/mSubMaterialCategory"
 import mMaterial from "@pages/mMaterial/mMaterial"
 import mMaterial2 from "@pages/mMaterialbckup/mMaterial"
-import mDeliveryType from "@pages/mDeliveryType/MDeliveryType"
+import mDeliveryType from "@pages/mDeliveryType/index"
 import mOrderType from "@pages/mOrderType/MOrderType"
 import mDOP from "@pages/mDOP/mDOP"
 import mScope from "@pages/mScope/mScope"
@@ -117,6 +117,7 @@ import changeSubcon from "@app/pages/ChanheSubconAssigment/index"
 import XDockInbound from "@app/pages/xDockInbound/index"
 import masterMrs from "@app/pages/MasterMrs/index"
 import MDopNew from "@app/pages/mDopNew/index"
+import mDeliveryTypeGroup from "@app/pages/mDeliveryTypeGroup/index"
 
 // MDOp Based on Order Type
 import mDopOrderType from "@app/pages/mDopOrderType/index"
@@ -651,6 +652,11 @@ const Main = () => {
                                             exact
                                             path="/master/dopordertype"
                                             component={mDopOrderType}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/master/deliverytypegroup"
+                                            component={mDeliveryTypeGroup}
                                         />
                                     </Switch>
                                 </div>

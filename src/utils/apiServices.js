@@ -757,6 +757,13 @@ const getDeliveryTypeMapping = () => GET('deliverytypedestination/getDeliveryTyp
 const postDeliveryTypeMapping = (body) => POST('deliverytypedestination/addDeliveryTypedestination',body)
 const deleteteDeliveryTypeMapping = (id) => DELETE('deliverytypedestination/deleteDeliveryTypedestination',id)
 
+// Master DeliveryTypeGroup
+
+const getDeliveryTypeGroup = () => GET('masterdeliverytypegroup',)
+const postDeliveryTypeGroup = (body) => POST('masterdeliverytypegroup/insert',body)
+const deleteteDeliveryTypeGroup = (id) => DELETE('masterdeliverytypegroup/delete',id)
+
+
 // Pickup Complletion
 
 const getPickUpCompletion = (uid) => GETParam('lspassignment/lspAssignmentTransportAssignmentPickupPending',uid);
@@ -911,6 +918,9 @@ const addDataDopOrderType = (body) => POST("dopordertype/add",body)
 
 
 const API ={
+    deleteteDeliveryTypeGroup,
+    postDeliveryTypeGroup,
+    getDeliveryTypeGroup,
     putTransportModeZero,
     putChangeVehicleMultiDelivery,
     getTransportMode,
