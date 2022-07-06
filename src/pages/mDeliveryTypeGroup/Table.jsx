@@ -16,7 +16,8 @@ export default function TableDeliveryTypeGroup() {
     const [ddlDistrict,setDdlDistrict] = useState([])
     const [selectedDeliveryType,setSlectedDeliveryType] = useState('')
     const [selectedId,setSlectedId] = useState('')
-    const [selectedDop,setSlectedDop] = useState('')
+    const [selectedDopOrigin,setSlectedDopOrigin] = useState('')
+    const [selectedDopDestination,setSlectedDopDestination] = useState('')
     const [selectedDistrict,setSlectedDistrict] = useState('')
     const [selectedGroup,setSlectedGroup] = useState('')
     const [isLoading,setIsLoading] = useState(false)
@@ -123,14 +124,19 @@ export default function TableDeliveryTypeGroup() {
     }
 
 
-    function handleDeliveryTypeDDLChange(e){
+    const handleDeliveryTypeDDLChange =(e)=>{
         console.log("handleInvDDLChange",e); 
         setSlectedDeliveryType(e);
     
     }
-    function handleDopDDLChange(e){
+    function handleDopOriginDDLChange(e){
         console.log("handleInvDDLChange",e); 
-        setSlectedDop(e);
+        setSlectedDopOrigin(e);
+    
+    }
+    function handleDopDestinationDDLChange(e){
+        console.log("handleInvDDLChange",e); 
+        setSlectedDopDestination(e);
     
     }
     function handleGroupDDLChange(e){
@@ -152,6 +158,9 @@ export default function TableDeliveryTypeGroup() {
 
     const showModalAdd = () => {
         setIsModalAddVisible(true)
+        getDdlDeliveryType()
+        getDdlDop()
+        getDdlDistrict()
     }
 
     const hideModalAdd = () => {
@@ -228,9 +237,6 @@ export default function TableDeliveryTypeGroup() {
 
     useEffect(() => {
         getDeliveryType()
-        getDdlDeliveryType()
-        getDdlDop()
-        getDdlDistrict()
     },[])
 
 
@@ -268,7 +274,7 @@ export default function TableDeliveryTypeGroup() {
                     }}
                     bordered /></>
             }
-            <Modal title="Add Destination Type Mapping"
+            <Modal title="Add Delivery Type Group"
                 visible={isModalAddVisible}
                 destroyOnClose
                 onCancel={hideModalAdd}
@@ -295,30 +301,31 @@ export default function TableDeliveryTypeGroup() {
                     // onFinishFailed={handleFailedAddForm}
                     autoComplete="off"
                 >
-                    <Form.Item name="deliveryType" label="Delivery Type" placeholder="Select Ypur Delivery Type"
+                                        
+                    <Form.Item name="delivery type" label="deliveryType"
                         wrapperCol={{  span: 14 }}
                                    
-                        rules={[{ required: true, message: 'Please Select Destination Type!' }]}
+                        rules={[{ required: true, message: 'Please Select delivery type!' }]}
                     >
                         <Select 
                             placeholder="Select Your Delivery Type"
-                            onChange={(e) => handleDeliveryTypeDDLChange(e)}
+                            // onChange={(e) => handleDeliveryTypeDDLChange(e)}
                         >
                             {
-                                ddlDeliveryType.map(inv =>  <Select.Option  value={inv.deliveryTypeId}> 
+                                ddlDeliveryType.map(inv =>  <Select.Option  value={inv.deliveryTypeID}> 
                                     {inv.deliveryTypeName}</Select.Option>)
                             }
                         </Select>
                     </Form.Item>
-                
-                    <Form.Item name="origin" label="Origin"
+
+                    <Form.Item name="origin" label="origin"
                         wrapperCol={{  span: 14 }}
                                    
                         rules={[{ required: true, message: 'Please Select End Point!' }]}
                     >
                         <Select 
                             placeholder="Select Your DOP"
-                            onChange={(e) => handleDopDDLChange(e)}
+                            // onChange={(e) => handleDopDDLChange(e)}
                         >
                             {
                                 ddlDop.map(inv =>  <Select.Option  value={inv.dopId}> 
@@ -326,14 +333,14 @@ export default function TableDeliveryTypeGroup() {
                             }
                         </Select>
                     </Form.Item>
-                    <Form.Item name="destination" label="Destination"
+                    <Form.Item name="destination" label="destination"
                         wrapperCol={{  span: 14 }}
                                    
                         rules={[{ required: true, message: 'Please Select End Point!' }]}
                     >
                         <Select 
                             placeholder="Select Your DOP"
-                            onChange={(e) => handleDopDDLChange(e)}
+                            // onChange={(e) => handleDopDDLChange(e)}
                         >
                             {
                                 ddlDop.map(inv =>  <Select.Option  value={inv.dopId}> 
