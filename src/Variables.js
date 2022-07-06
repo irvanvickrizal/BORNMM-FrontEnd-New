@@ -1,4 +1,3 @@
-
 export const variables = {
     
     API_URL: 'https://bornxl-api.nsnebast.com/',
