@@ -38,10 +38,8 @@ const Login = (path) => (data) => {
             }
         })
             .then((result)=> {
-                //console.log('i am api :',result);
                 resolve(result);
             },(err)=>{
-                //console.log('i am api error:',err,'data :', data);
                 reject(err);
             })
     })
