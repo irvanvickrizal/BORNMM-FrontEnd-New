@@ -41,13 +41,10 @@ export default function TableDeliveryTypeGroup() {
 
     const getDdlDeliveryType = () =>{
 
-        API.getmDeliveryType().then(
+        API.getmDeliveryTypeNew().then(
             result=>{
                 setDdlDeliveryType(result)
-              
-
                 console.log('ddl DeliveryType',result)
-                
             }
         )
     } 
@@ -185,9 +182,9 @@ export default function TableDeliveryTypeGroup() {
         {
             title : "Delivery Type",
             width : 250,
-            dataIndex:'deliveryType',
+            dataIndex:'DeliveryType',
          
-            ...Search('deliveryType'),
+            ...Search('DeliveryType'),
         },        
         {
             title : "Origin Name",
@@ -367,17 +364,7 @@ export default function TableDeliveryTypeGroup() {
                 <div style={{height: 70,}}>
                     <Typography>Are You Sure to Delete This Delivery Type Destination Mapping ?</Typography>
                 </div>
-               
-         
-            
-                      
-                   
-                    
-                      
-                
-                   
-             
-                 
+                               
                 <Row align="middle" justify="end">
                     <Space>
                         <Button  htmlType="submit" onClick={hideModalDelete}>
