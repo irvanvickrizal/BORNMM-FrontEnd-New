@@ -302,7 +302,7 @@ export default function TableDeliveryTypeGroup() {
                     autoComplete="off"
                 >
                                         
-                    <Form.Item name="delivery type" label="deliveryType"
+                    <Form.Item name="deliveryType" label="Delivery Type"
                         wrapperCol={{  span: 14 }}
                                    
                         rules={[{ required: true, message: 'Please Select delivery type!' }]}

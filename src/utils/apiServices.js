@@ -915,8 +915,10 @@ const getDataDopOrderType = () => GET("dopordertype/new");
 const deleteDataDopOrderType = (id) => DELETE("dopordertype/delete",id)
 const addDataDopOrderType = (body) => POST("dopordertype/add",body)
 
+const getOrderRequestSummary =(userid) => GETParam('rpt/OrderRequestSummaryFwdLogistic',userid);
 
 const API ={
+    getOrderRequestSummary,
     getmDeliveryTypeNew,
     deleteteDeliveryTypeGroup,
     postDeliveryTypeGroup,
