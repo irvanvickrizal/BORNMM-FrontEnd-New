@@ -121,6 +121,7 @@ import mDeliveryTypeGroup from "@app/pages/mDeliveryTypeGroup/index"
 
 // MDOp Based on Order Type
 import mDopOrderType from "@app/pages/mDopOrderType/index"
+import orderRequestSummary from "@app/pages/OrderRequestSummary/Index"
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -657,6 +658,11 @@ const Main = () => {
                                             exact
                                             path="/master/deliverytypegroup"
                                             component={mDeliveryTypeGroup}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/report/orderrequestsummary"
+                                            component={orderRequestSummary}
                                         />
                                     </Switch>
                                 </div>

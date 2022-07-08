@@ -39,10 +39,8 @@ const Login = (path) => (data) => {
             }
         })
             .then((result)=> {
-                //console.log('i am api :',result);
                 resolve(result);
             },(err)=>{
-                //console.log('i am api error:',err,'data :', data);
                 reject(err);
             })
     })
@@ -918,8 +916,10 @@ const getDataDopOrderType = () => GET("dopordertype/new");
 const deleteDataDopOrderType = (id) => DELETE("dopordertype/delete",id)
 const addDataDopOrderType = (body) => POST("dopordertype/add",body)
 
+const getOrderRequestSummary =(userid) => GETParam('rpt/OrderRequestSummaryFwdLogistic',userid);
 
 const API ={
+    getOrderRequestSummary,
     getmDeliveryTypeNew,
     deleteteDeliveryTypeGroup,
     postDeliveryTypeGroup,
