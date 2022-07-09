@@ -161,27 +161,27 @@ export default function LogisticTaskRejectionForm() {
             "notes":note
         }
         console.log(body,"ini body")
-        // API.putLogisticRejection(body).then(
-        //     result=>{
-        //         try{
-        //             if(result.status=="success"){
-        //                 setIsLoading(false)
-        //                 history.push('/mm/tasklogisticreject')
-        //                 toast.success(result.message)
+        API.putLogisticRejection(body).then(
+            result=>{
+                try{
+                    if(result.status=="success"){
+                        setIsLoading(false)
+                        history.push('/mm/tasklogisticreject')
+                        toast.success(result.message)
                         
-        //             }
-        //             else{
-        //                 toast.error(result.message)
-        //             }
+                    }
+                    else{
+                        toast.error(result.message)
+                    }
               
-        //         }
-        //         catch(e){
-        //             toast.error(result.message)
-        //             setIsLoading(false)
-        //             console.log(e,"error catch")
-        //         }
-        //     }
-        // )
+                }
+                catch(e){
+                    toast.error(result.message)
+                    setIsLoading(false)
+                    console.log(e,"error catch")
+                }
+            }
+        )
         
     };
 
