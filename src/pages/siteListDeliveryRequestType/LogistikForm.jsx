@@ -119,7 +119,6 @@ export default function LogisticForm() {
         dispatch(getIdDelivery(e))
         dispatch(getDeliveryTransport())
        
-
         form.setFieldsValue({
             deliveryRequestTransport: ""
         })
@@ -138,7 +137,15 @@ export default function LogisticForm() {
         // }
         // console.log("test Bod=?>",{"orderDetailId":dataOdi,"whTeamId":wh,"cdmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"note":note})
     
-        const body =  {"orderDetailId":dataOdi,"whTeamId":wh,"cdmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"notes":note}
+        const body =  {
+            "orderDetailId":dataOdi
+            ,"whTeamId":wh
+            ,"cdmrId":deliveryRequest
+            ,"transportModeId":modeTransport
+            ,"transportTeamId":deliveryTransport
+            ,"deliveryModeId":delivMode
+            ,"notes":note
+        }
 
         API.postLogisticForm(body).then(
             result=>{
@@ -700,7 +707,7 @@ export default function LogisticForm() {
                                                                 htmlType="submit"
                                        
                                                             >
-                                        Confirm
+                                                            Confirm
                                                             </Button>
                                                         </Col>
                                                         <Col sm={24} xs={24}>
@@ -712,7 +719,7 @@ export default function LogisticForm() {
                                                                     cancelNavigate()
                                                                 }
                                                             >
-                                       Back
+                                                            Back
                                                             </Button>
                                                         </Col>
                                     
@@ -730,7 +737,7 @@ export default function LogisticForm() {
                                                                 showModalCancel()
                                                             }
                                                         >
-                                        Order Request Cancel
+                                                        Order Request Cancel
                                                         </Button>
                                                     </Col>
                                                 </Row>
