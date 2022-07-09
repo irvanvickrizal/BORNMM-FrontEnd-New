@@ -72,7 +72,8 @@ export default function LogisticTaskRejectionForm() {
     const params = new URLSearchParams(customURL.split('?')[1])
     const odi = params.get('odi');
     // const ordlid = params.get('ordlid');
-
+    
+    const [form] = Form.useForm();
     
 
     const lsp = useSelector((state) => state.logistikFormReducer.dataLsp)
@@ -129,6 +130,10 @@ export default function LogisticTaskRejectionForm() {
         setDeliveryRequest(e)
         dispatch(getIdDelivery(e))
         dispatch(getDeliveryTransport())
+
+        form.setFieldsValue({
+            deliveryRequestTransport: ""
+        })
     };
 
 
@@ -144,7 +149,17 @@ export default function LogisticTaskRejectionForm() {
         // }
         // console.log("test Bod=?>",{"orderDetailId":dataOdi,"whTeamId":wh,"cdmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"note":note})
     
-        const body =  {"logisticOrderDetailId":dataOdiLog,"orderDetailId":dataOdi,"whTeamId":wh,"cdmrId":deliveryRequest,"transportModeId":modeTransport,"transportTeamId":deliveryTransport,"deliveryModeId":delivMode,"LMBY":dataUser,"notes":note}
+        const body =  {
+            "logisticOrderDetailId":dataOdiLog,
+            "orderDetailId":dataOdi,
+            "whTeamId":wh,
+            "cdmrId":deliveryRequest,
+            "transportModeId":modeTransport,
+            "transportTeamId":deliveryTransport,
+            "deliveryModeId":delivMode,
+            "LMBY":dataUser,
+            "notes":note
+        }
         console.log(body,"ini body")
         API.putLogisticRejection(body).then(
             result=>{
@@ -230,6 +245,14 @@ export default function LogisticTaskRejectionForm() {
         console.log(isModalVisible);
     };
 
+    const handleChangeWHTeam = (data) => {
+        setDeliveryTransport(data)
+        setWh(data)
+        form.setFieldsValue({
+            transportTeam: data
+        })
+        console.log(data,"whChange",wh,"wh")
+    };
     
 
     const columns = [
@@ -579,9 +602,10 @@ export default function LogisticTaskRejectionForm() {
                     </Card>
                 </Col>
                 <Col sm={12} xs={24}>
-                    <Card hoverable title={CardTitle("Logistic Rejection Form TES")}>
+                    <Card hoverable title={CardTitle("Logistic Rejection Form")}>
                         {dataOrderLogistik.length === 0 ? (<></>):
                             (<Form
+                                form={form}
                                 labelCol={{span: 9}}
                                 wrapperCol={{span: 13}}
                                 layout="horizontal"
@@ -599,14 +623,15 @@ export default function LogisticTaskRejectionForm() {
                                     {
                                         name: ["note"],
                                         value: note
-                                    },
+                                    }, 
                                 ]}
+                                
                             >
                                 <Form.Item label="WH Team" name="whTeam" 
                                     rules={[{ required: true, message: 'Please Select WH Team!' }]}
                                 >
                                     <Select
-                                        onChange={(e) => setWh(e)}
+                                        onChange={(e) => handleChangeWHTeam(e)}
                                         placeholder="Select an option"
                                         value={dataOrderLogistik[0].whTeamId}
                                     >
