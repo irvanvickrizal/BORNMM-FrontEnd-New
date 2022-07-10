@@ -9,7 +9,7 @@ import {PlusOutlined, FileExcelOutlined,CloseSquareTwoTone ,CloseSquareOutlined,
 import {IconButton, TextField}  from '@mui/material/';
 import { useSelector } from 'react-redux'
 import exportFromJSON from 'export-from-json'
-import "./style.css"
+import "./OrderReqSummary.css"
 
 export default function TableOrderRequestSummary() {
     const[dataOutboundStatus,setDataOutboundStatus] = useState([])
