@@ -233,6 +233,7 @@ export default function TableItemTransferLimitWh() {
     }
     const deleteBoqProceed = () => {
         setUploading(true)
+        console.log(dopId,"deleteboqproceeddopid")
         try{
             API.deleteBoqProceed(dopId).then(
                 result=>{
