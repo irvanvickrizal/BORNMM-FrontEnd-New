@@ -870,7 +870,7 @@ const getItemTransferMarketWhList = (dopId) => GETParam("transferasset/getListIt
 
 const getCekTrueOrFalse = (dopId,body) => POSTParam("transferasset/boqUploadDataCheckHasCleared",dopId,body);
 const postBoqProceed = (dopId,body) => POSTParam("transferasset/boqAssetUploadProceed",dopId,body);
-const deleteBoqProceed = (dopId) => DELETEParam("transferasset/boqAssetCleanupData",dopId);
+const deleteBoqProceed = (dopId) => DELETE("transferasset/boqAssetCleanupData",dopId);
 const uploadBoqAsset = (dopId,uid,File) => POSTFileParam2("transferasset/boqAssetUpload",dopId,uid,File);
 const getSummaryAsPO = (dopId) => GETParam("transferasset/boqAssetUploadResult",dopId);
 // Transfer Asset Request
