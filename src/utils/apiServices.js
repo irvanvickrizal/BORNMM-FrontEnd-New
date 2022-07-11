@@ -492,6 +492,7 @@ const DELETE = (path,param)  => {
 }
 
 const DELETEParam = (path,body,param)  => {
+    console.log(param,"paramdelete")
     const promise = new Promise((resolve, reject) => {
         axios.delete(`${baseURL}${path}/${param}`
             ,body
