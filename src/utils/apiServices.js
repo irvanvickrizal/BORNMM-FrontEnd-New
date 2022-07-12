@@ -888,6 +888,7 @@ const getInventoryRepor = () => GET("inventory/pmrInventoryGetSummary");
 const getGraphNotCompleteYet = (uid) => GETParam("dashboard/dashboardGraphOrderRequestNYCompleteSummary/0",uid)
 const getGraphComplete = (uid) => GETParam("dashboard/dashboardGraphOrderRequestCompletionSummary/0",uid)
 const getSummary = (uid) => GETParam("dashboard/dashboardPanelOrderRequestSummary",uid)
+const getApprovelPending = (uid) => GETParam("dashboard/dashboardyourapprovalpending",uid)
 
 //Download APK
 const getApkLink = () => GET("dashboard/bornMobileAppLatestVersion");
@@ -919,6 +920,7 @@ const addDataDopOrderType = (body) => POST("dopordertype/add",body)
 const getOrderRequestSummary =(userid) => GETParam('rpt/OrderRequestSummaryFwdLogistic',userid);
 
 const API ={
+    getApprovelPending,
     getOrderRequestSummary,
     getmDeliveryTypeNew,
     deleteteDeliveryTypeGroup,

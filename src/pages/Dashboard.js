@@ -52,6 +52,7 @@ const Dashboard = () => {
     const [dataGraphNotCompleteOrderReq,setDataGraphNotCompleteOrderReq] = useState([])
     const [dataGraphComplete,setDataGraphComplete] = useState([])
     const [dataSummary,setDataSummary] = useState([])
+    const [dataApprovalPending,setDataApprovalPending] = useState([])
     const [labelPieHo,setLabelPieHo] = useState([])
     const [dataValuePieHo,setValueDataPieHo] = useState([])
     const [labelPieRfp,setLabelPieRfp] = useState([])
@@ -204,9 +205,16 @@ const Dashboard = () => {
     ]
 
     const getSummary=(userid)=>{
-        API.getSummary(uid).then(
+        API.getSummary(userid).then(
             result=>{
                 setDataSummary(result)
+            }
+        )
+
+        API.getApprovelPending(userid).then(
+            result=>{
+                setDataApprovalPending(result[0].ApprovalPending)
+                console.log(result[0].ApprovalPending,"approvalpending")
             }
         )
     }
@@ -367,7 +375,7 @@ const Dashboard = () => {
                     <div className="row">
                         <div className="col-lg-3 col-6">
                             <SmallBox
-                                count={dataSummary[0]?.totalOrderRejection}
+                                count={dataApprovalPending}
                                 title="Your Approval Pending"
                                 type="warning"
                                 icon="ion-ios-list"
