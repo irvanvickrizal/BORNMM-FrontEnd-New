@@ -24,6 +24,7 @@ export default function TableItemTransferLimitWh() {
     const customURL = window.location.href;
     const params = new URLSearchParams(customURL.split('?')[1])
     const dopId = params.get('id');
+    const whCode = params.get('whcode');
     const [isLoading, setIsLoading] = useState(false);
     const [itemtransferLimitWh,setItemtransferLimitWh] = useState([])
     const [itemtransferLimitWhList,setItemtransferLimitWhList] = useState([])
@@ -74,7 +75,6 @@ export default function TableItemTransferLimitWh() {
     };
 
 
-
     function getDataItemTransferLimitWh() {
         setIsLoading(true);
         API.getItemTransferMarketWh(dopId).then(
@@ -109,11 +109,9 @@ export default function TableItemTransferLimitWh() {
     }
 
     function getStateTrueOrFalse() {
-
         API.getCekTrueOrFalse("",dopId).then(
             result=>{
                 setStateCek(result);
-
                 console.log("true or flase=>",result);
             }
         )
@@ -130,18 +128,16 @@ export default function TableItemTransferLimitWh() {
         }
         console.log("keytabs",key);
     }
-
    
     const getDownloadSummary = () => {
         API.getItemTransferMarketWh(dopId).then(
             result=>{
                 setDataDownloadSummary(result);
                 console.log("data BOQ Download :",result);
-               
                 const data = result;
                 //const data = result.map((rs)=>CreateDataPOScope.errorLog(rs.workpackageID , rs.phase, rs.packageName, rs.region, rs.dataStatus))
                 const exportType =  exportFromJSON.types.xls;
-                const fileName = `Item_Transfer_Limit_Summary_dopId=${dopId}`;
+                const fileName = `Item_Transfer_Limit_Summary_dopId=${dopId}_${whCode}`;
                 exportFromJSON({ data, fileName, exportType });
                 console.log("SSDA")
                 
@@ -209,18 +205,19 @@ export default function TableItemTransferLimitWh() {
                 result=>{
                     try{
                         if(result.status=="success"){
-                        
                             toast.success('upload successfully.');
-                            getDataSummaryAsPo()
+                            setIsModalProceedVisible(false);
+                            getDataSummaryAsPo();
                         }
                         else{
-                       
+                            setIsModalProceedVisible(false);
                             toast.error(result.message);
                         }
                     }
                     catch(e){
-                        toast.error("Upload file error")
+                        toast.error("Upload file error");
                         setUploading(false);
+                        setIsModalProceedVisible(false);
                         getDataSummaryAsPo()
                         console.log(e,"error catch")
                     }
@@ -441,7 +438,6 @@ export default function TableItemTransferLimitWh() {
                                     <Tooltip title="Download Summary">
                                         <FileExcelOutlined style={{fontSize:24,color:"#1e6715",marginBottom:12}} onClick={(record)=>getDownloadSummary(record)}/>
                                     </Tooltip>
-                                   
                                 </div>
                                 { isLoading ?   
                                     <Row justify="center">

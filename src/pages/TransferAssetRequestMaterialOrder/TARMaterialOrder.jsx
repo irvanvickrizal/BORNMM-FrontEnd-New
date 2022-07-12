@@ -255,7 +255,7 @@ export default function TARMaterialOrder() {
             key:"orderMaterialId",
         },
         {
-            title:"QTY Ref",
+            title:"QTY Limit",
             dataIndex:'refQTY',
             key:"orderMaterialId",
         },
@@ -275,7 +275,7 @@ export default function TARMaterialOrder() {
             key:"orderMaterialId",
         },
         {
-            title:"Delta BOQ Ref QTY",
+            title:"Remaining avail qty",
             key:"deltaBOQRefQTY",
             render:(record)=>{
                 return (
