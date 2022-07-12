@@ -30,7 +30,7 @@ export default function TableTransferLimitList() {
     }
 
     const handleNavigate = (data) => {
-        history.push(`/ta/boqdetailwh?id=${data.dopId}`)
+        history.push(`/ta/boqdetailwh?id=${data.dopId}&whcode=${data.whCode}`)
     }
 
     const columns = [

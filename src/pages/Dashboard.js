@@ -364,34 +364,41 @@ const Dashboard = () => {
             
             <div style={isLoading ?{filter:"blur(6px)",backgroundColor:"white"}:{}}>
                 <div className="container-fluid" >
-                
-      
                     <div className="row">
                         <div className="col-lg-3 col-6">
                             <SmallBox
-                                count={dataSummary[0]?.totalSDRDone}
-                                title="SDR Done"
-                                type="info"
-                                icon="ion-ios-list"
-                                navigateTo="/" />
-                        </div>
-                        <div className="col-lg-3 col-6">
-                            <SmallBox
-                                count={dataSummary[0]?.totalLTRDone}
-                                title="LTR Done"
-                                type="success"
-                                icon="ion-ios-list"
-                                navigateTo="/" />
-                        </div>
-                        <div className="col-lg-3 col-6">
-                            <SmallBox
-                                count={dataSummary[0]?.totalPMRDone}
-                                title="PMR Done"
+                                count={dataSummary[0]?.totalOrderRejection}
+                                title="Your Approval Pending"
                                 type="warning"
                                 icon="ion-ios-list"
                                 navigateTo="/" />
                         </div>
                         <div className="col-lg-3 col-6">
+                            <SmallBox
+                                count={dataSummary[0]?.totalSDRDone}
+                                title="SDR Done"
+                                type="success"
+                                icon="ion-ios-checkmark-outline"
+                                navigateTo="/" />
+                        </div>
+                        <div className="col-lg-2 col-6">
+                            <SmallBox
+                                count={dataSummary[0]?.totalLTRDone}
+                                title="LTR Done"
+                                type="success"
+                                icon="ion-ios-checkmark-outline"
+                                navigateTo="/" />
+                        </div>
+                        <div className="col-lg-2 col-6">
+                            <SmallBox
+                                count={dataSummary[0]?.totalPMRDone}
+                                title="PMR Done"
+                                type="info"
+                                icon="ion-ios-checkmark-outline"
+                                navigateTo="/" />
+                        </div>
+                        
+                        <div className="col-lg-2 col-6">
                             <SmallBox
                                 count={dataSummary[0]?.totalOrderRejection}
                                 title="Order Rejection"
@@ -399,6 +406,7 @@ const Dashboard = () => {
                                 icon="ion-ios-list"
                                 navigateTo="/" />
                         </div>
+                        
                     </div>
 
                 </div>
