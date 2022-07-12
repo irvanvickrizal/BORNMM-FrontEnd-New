@@ -379,7 +379,7 @@ const Dashboard = () => {
                                 title="Your Approval Pending"
                                 type="warning"
                                 icon="ion-ios-list"
-                                navigateTo="/" />
+                                navigateTo="/sitelist/aprovaltaskpending" />
                         </div>
                         <div className="col-lg-3 col-6">
                             <SmallBox
