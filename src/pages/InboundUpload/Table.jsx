@@ -529,7 +529,7 @@ const TableInboundUpload = () => {
     const handleUploadFileNew = () => {
         setUploading(true)
         
-        API.postInboundFile2(user.uid,fileUpload).then(
+        API.postInboundFile2(user,fileUpload).then(
             result=>{
                 if(result.value.status=="success"){
                     setFileUpload(null);
