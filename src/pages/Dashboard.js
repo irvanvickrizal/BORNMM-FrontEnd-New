@@ -52,7 +52,8 @@ const Dashboard = () => {
     const [dataGraphNotCompleteOrderReq,setDataGraphNotCompleteOrderReq] = useState([])
     const [dataGraphComplete,setDataGraphComplete] = useState([])
     const [dataSummary,setDataSummary] = useState([])
-    const [dataApprovalPending,setDataApprovalPending] = useState([])
+    const [dataApprovalPending,setDataApprovalPending] = useState('')
+    const [dataRejection,setDataRejection] = useState('')
     const [labelPieHo,setLabelPieHo] = useState([])
     const [dataValuePieHo,setValueDataPieHo] = useState([])
     const [labelPieRfp,setLabelPieRfp] = useState([])
@@ -210,11 +211,12 @@ const Dashboard = () => {
                 setDataSummary(result)
             }
         )
-
+        console.log(userid,"userid")
         API.getApprovelPending(userid).then(
             result=>{
-                setDataApprovalPending(result[0].ApprovalPending)
-                console.log(result[0].ApprovalPending,"approvalpending")
+                setDataApprovalPending(result[0].totalPending)
+                setDataRejection(result[1].totalPending)
+                console.log(result[0].totalPending,"approvalpending")
             }
         )
     }
@@ -387,7 +389,7 @@ const Dashboard = () => {
                                 title="SDR Done"
                                 type="success"
                                 icon="ion-ios-checkmark-outline"
-                                navigateTo="/" />
+                                navigateTo="/rpt/orderrequestdone?ot=1" />
                         </div>
                         <div className="col-lg-2 col-6">
                             <SmallBox
@@ -395,7 +397,7 @@ const Dashboard = () => {
                                 title="LTR Done"
                                 type="success"
                                 icon="ion-ios-checkmark-outline"
-                                navigateTo="/" />
+                                navigateTo="/rpt/orderrequestdone?ot=2" />
                         </div>
                         <div className="col-lg-2 col-6">
                             <SmallBox
@@ -403,16 +405,16 @@ const Dashboard = () => {
                                 title="PMR Done"
                                 type="info"
                                 icon="ion-ios-checkmark-outline"
-                                navigateTo="/" />
+                                navigateTo="/rpt/orderrequestdone?ot=4" />
                         </div>
                         
                         <div className="col-lg-2 col-6">
                             <SmallBox
-                                count={dataSummary[0]?.totalOrderRejection}
+                                count={dataRejection}
                                 title="Order Rejection"
                                 type="danger"
                                 icon="ion-ios-list"
-                                navigateTo="/" />
+                                navigateTo="/mm/orderrequestreject" />
                         </div>
                         
                     </div>

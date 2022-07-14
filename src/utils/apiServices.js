@@ -919,8 +919,10 @@ const deleteDataDopOrderType = (id) => DELETE("dopordertype/delete",id)
 const addDataDopOrderType = (body) => POST("dopordertype/add",body)
 
 const getOrderRequestSummary =(userid) => GETParam('rpt/OrderRequestSummaryFwdLogistic',userid);
+const getOrderRequestDone =(userid,ordertypeid) => GETParam2('rpt/orderRequestProgressDoneTracking',userid,ordertypeid);
 
 const API ={
+    getOrderRequestDone,
     getApprovelPending,
     getOrderRequestSummary,
     getmDeliveryTypeNew,
