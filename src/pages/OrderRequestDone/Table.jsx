@@ -48,7 +48,282 @@ export default function TableOrderRequestDone() {
         )
     }
     
+
     const columns = [
+        {
+            title : "No",
+            width : 50,
+            render: (value, item, index) => 1 + index
+        },
+        {
+            width:150,
+            title : "Request No",
+            dataIndex:'requestNo',
+            ...Search('requestNo'),
+        },
+        {
+            width:150,
+            title : "Site No",
+            dataIndex:'siteNo',
+            responsive: ['md'],
+            ...Search('siteNo'),
+        },
+        {
+            width:150,
+            title : "Site Name",
+            dataIndex:'siteName',
+            responsive: ['md'],
+            ...Search('siteName'),
+        },
+        {
+            width:150,
+            title : "Workpackage Id",
+            dataIndex:'workpackageId',
+            ...Search('workpackageId'),
+        },
+        {
+            width:150,
+            title : "Order Type",
+            dataIndex:'orderType',
+            ...Search('orderType'),
+        },
+        {
+            width:150,
+            title : "Request Type Name",
+            dataIndex:'requestTypeName',
+            ...Search('requestTypeName'),
+        },
+        {
+            width:150,
+            title : "CT Name",
+            dataIndex:'ctName',
+            ...Search('ctName'),
+        },
+        {
+            width:150,
+            title : "Site Condition",
+            dataIndex:'siteCondition',
+            ...Search('siteCondition'),
+        },
+        {
+            width:150,
+            title : "Origin",
+            dataIndex:'originName',
+            ...Search('originName'),
+        },
+        {
+            width:150,
+            title : "Destination",
+            dataIndex:'destinationName',
+            ...Search('destinationName'),
+        },
+        {
+            width:150,
+            title : "Delivery Type",
+            dataIndex:'deliveryType',
+            ...Search('deliveryType'),
+        },
+        {
+            width:150,
+            title :  "Packet Type",
+            dataIndex:'packetType',
+            ...Search('packetType'),
+        },
+        {
+            width:150,
+            title :  "Location Address",
+            dataIndex:'locationAddress',
+            ...Search('locationAddress'),
+        },
+        {
+            width:150,
+            title :  "PIC on Site",
+            dataIndex:'picOnSite',
+            ...Search('picOnSite'),
+        },
+        {
+            width:150,
+            title :  "Subcon Name",
+            dataIndex:'subconName',
+            ...Search('subconName'),
+        },
+        {
+            width:150,
+            title : "Requester",
+            dataIndex:'requesterName',
+            ...Search('requesterName'),
+        },
+        {
+            width:150,
+            title : "Request Date",
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.requestDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            },
+            ...Search('requestDate'),
+        },
+        {
+            width:150,
+            title : "Logistic Completed Date",
+            render:(record)=>{
+                return (
+                    <div>
+                        {record.logisticCompletedDate !== null ? (<> <Space>
+                            <p>{moment(record.logisticCompletedDate).format("YYYY-MM-DD")}</p>
+                        </Space></>):(<>
+                        </>)}
+                    </div>
+                   
+                   
+                )
+            },
+            ...Search('logisticCompletedDate'),
+        },
+
+      
+        {
+            width:150,
+            title : "Approve Date",
+         
+            responsive: ['md'],
+            render:(record)=>{
+                return (
+                    <div>
+                        {record.approveDate !== null ? (<> <Space>
+                            <p>{moment(record.approveDate).format("YYYY-MM-DD hh:mm:ss")}</p>
+                        </Space></>):(<>
+                        </>)}
+                    </div>
+                   
+                   
+                )
+            },
+            ...Search('approveDate'),
+        },
+        {
+            width:150,
+            title : "Approve By",
+            dataIndex:'approvedBy',
+            responsive: ['md'],
+            ...Search('approvedBy'),
+        },
+        
+        {
+            width:150,
+            title : "Region",
+            dataIndex:'region',
+            ...Search('region'),
+        },
+        {
+            width:150,
+            title : "Zone",
+            dataIndex:'zone',
+            ...Search('zone'),
+        },
+        
+        {
+            width:150,
+            title : "Package Name",
+            dataIndex:'packageName',
+            ...Search('packageName'),
+        },
+     
+    
+        {
+            width:150,
+            title : "Logistic Completed By ",
+            dataIndex:'logisticCompletedBy',
+            ...Search('logisticCompletedBy'),
+        },
+    
+
+        {
+            width:150,
+            title : "LSP Name",
+            dataIndex:'lspName',
+            ...Search('lspName'),
+        },
+        {
+            width:150,
+            title : "RFP Date",
+            render:(record)=>{
+                return (
+                    <div>
+                        {record.rfpDate !== null ? (<Space>
+                            <p>{moment(record.rfpDate).format("YYYY-MM-DD")}</p>
+                        </Space>):(<></>)}
+                        
+                    </div>
+                   
+                )
+            },
+            ...Search('rfpDate'),
+        },
+        
+
+        {
+            width:150,
+            title : "Total Volume",
+            dataIndex:'totalCollies',
+            ...Search('totalCollies'),
+        },
+        
+        {
+            width:150,
+            title : "Total ",
+            dataIndex:'total',
+            ...Search('total'),
+        },
+        
+        {
+            width:150,
+            title : "RFP Confirmed By",
+            dataIndex:'rfpConfirmedBy',
+            ...Search('rfpConfirmedBy'),
+        },
+        {
+            width:150,
+            title : "Pick Up Date",
+            render:(record)=>{
+                return (
+                    <div>
+                        {record.pickupDate !== null ? (  <Space>
+                            <p>{moment(record.pickupDate).format("YYYY-MM-DD")}</p>
+                        </Space>):(<></>)}
+                      
+                    </div>
+                  
+                )
+            },
+            ...Search('rfpDpickupDateate'),
+        },
+        
+        {width:150,
+            title : "Delivery Complete Date",
+            render:(record)=>{
+                return (
+                    <div>
+                        {record.deliveredCompletedDate !== null ? (  <Space>
+                            <p>{moment(record.deliveredCompletedDate).format("YYYY-MM-DD")}</p>
+                        </Space>):(<></>)}
+                    </div>
+                )
+            },
+            ...Search('deliveredCompletedDate'),
+        },
+        {width:150,
+            title : " Order Status",
+            dataIndex:'orderStatus',
+            ...Search('orderStatus'),
+        }
+  
+   
+    ]
+
+    const columns2 = [
         {
             title : "No",
             width : 50,
