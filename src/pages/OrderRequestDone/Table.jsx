@@ -55,22 +55,22 @@ export default function TableOrderRequestDone() {
             render: (value, item, index) => 1 + index
         },
         {
+            title : "Request No",
+            width:150,
+            dataIndex:'requestNo',
+            ...Search('requestNo'),
+        },
+        {
             title : "Site No",
             width:150,
             dataIndex:'siteNo',
             ...Search('siteNo'),
         },
         {
-            title : "Region",
+            title : "CT Name",
             width:150,
-            dataIndex:'region',
-            ...Search('region'),
-        },
-        {
-            title : "Zone",
-            width:150,
-            dataIndex:'zone',
-            ...Search('zone'),
+            dataIndex:'ctName',
+            ...Search('ctName'),
         },
         {
             title : "WorkpackageId",
@@ -79,10 +79,10 @@ export default function TableOrderRequestDone() {
             ...Search('workpackageId'),
         },
         {
-            title : "CDMR Type",
+            title : "CPO No",
             width:150,
-            dataIndex:'cdmrType',
-            ...Search('cdmrType'),
+            dataIndex:'cpoNo',
+            ...Search('cpoNo'),
         },
         {
             title : "Delivery Type",
@@ -91,15 +91,9 @@ export default function TableOrderRequestDone() {
             ...Search('deliveryType'),
         },
         {
-            title : "Delivery Mode",
-            width:150,
-            dataIndex:'deliveryMode',
-            ...Search('deliveryMode'),
-        },
-        {
             title :  "RFP Date",
             width:150,
-            ...Search('rdpDate'),
+            ...Search('rfpDate'),
             render:(record)=>{
                 return (
                     <Space>
@@ -109,36 +103,29 @@ export default function TableOrderRequestDone() {
             },
         },
         {
-            title :  "Order Request No",
+            title :  "Request Date",
             width:150,
-            dataIndex:'orderReqNo',
-            ...Search('orderReqNo'),
+            ...Search('requestDate'),
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.requestDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            },
         },
         {
-            title : "Total Request QTY",
+            title :  "Approve Date",
             width:150,
-            dataIndex:'totalReqQTY',
-            ...Search('totalReqQTY'),
+            ...Search('approveDate'),
+            render:(record)=>{
+                return (
+                    <Space>
+                        <p>{moment(record.approveDate).format("YYYY-MM-DD")}</p>
+                    </Space>
+                )
+            },
         },
-        {
-            title : "Total Booked QTY",
-            width:150,
-            dataIndex:'bookedQTY',
-            ...Search('bookedQTY'),
-        },
-        {
-            title : "Total Outbound QTY",
-            width:150,
-            dataIndex:'outQTY',
-            ...Search('outQTY'),
-        },
-        {
-            title : "Outbound Status",
-            width:150,
-            dataIndex:'outboundStatus',
-            ...Search('outboundStatus'),
-        }
-   
     ]
 
     useEffect(() => {
