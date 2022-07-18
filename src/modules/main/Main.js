@@ -122,11 +122,8 @@ import mDeliveryTypeGroup from "@app/pages/mDeliveryTypeGroup/index"
 // MDOp Based on Order Type
 import mDopOrderType from "@app/pages/mDopOrderType/index"
 import orderRequestSummary from "@app/pages/OrderRequestSummary/Index"
-<<<<<<< HEAD
 import DashboardMSCluster from "@pages/DashboardMSCluster"
-=======
 import orderRequestDone from "@app/pages/OrderRequestDone/OrderRequestDone"
->>>>>>> c0336fd9f5c302bb18ba269fc742e63f8631f6a5
 
 const Main = () => {
     const dispatch = useDispatch()
