@@ -52,8 +52,6 @@ const DashboardMSCluster = () => {
     const [dataGraphNotCompleteOrderReq,setDataGraphNotCompleteOrderReq] = useState([])
     const [dataGraphComplete,setDataGraphComplete] = useState([])
     const [dataSummary,setDataSummary] = useState([])
-    const [dataApprovalPending,setDataApprovalPending] = useState('')
-    const [dataRejection,setDataRejection] = useState('')
     const [labelPieHo,setLabelPieHo] = useState([])
     const [dataValuePieHo,setValueDataPieHo] = useState([])
     const [labelPieRfp,setLabelPieRfp] = useState([])
@@ -206,17 +204,9 @@ const DashboardMSCluster = () => {
     ]
 
     const getSummary=(userid)=>{
-        API.getSummary(userid).then(
+        API.getSummary(uid).then(
             result=>{
                 setDataSummary(result)
-            }
-        )
-        console.log(userid,"userid")
-        API.getApprovelPending(userid).then(
-            result=>{
-                setDataApprovalPending(result[0].totalPending)
-                setDataRejection(result[1].totalPending)
-                console.log(result[0].totalPending,"approvalpending")
             }
         )
     }
@@ -374,51 +364,43 @@ const DashboardMSCluster = () => {
             
             <div style={isLoading ?{filter:"blur(6px)",backgroundColor:"white"}:{}}>
                 <div className="container-fluid" >
+                
+      
                     <div className="row">
-                        <div className="col-lg-3 col-6">
-                            <SmallBox
-                                count={dataApprovalPending}
-                                title="Your Approval Pending"
-                                type="warning"
-                                icon="ion-ios-list"
-                                navigateTo="/sitelist/aprovaltaskpending" />
-                        </div>
                         <div className="col-lg-3 col-6">
                             <SmallBox
                                 count={dataSummary[0]?.totalSDRDone}
                                 title="SDR Done"
-                                type="success"
-                                icon="ion-ios-checkmark-outline"
-                                navigateTo="/rpt/orderrequestdone?ot=1" />
+                                type="info"
+                                icon="ion-ios-list"
+                                navigateTo="/" />
                         </div>
-                        <div className="col-lg-2 col-6">
+                        <div className="col-lg-3 col-6">
                             <SmallBox
                                 count={dataSummary[0]?.totalLTRDone}
                                 title="LTR Done"
                                 type="success"
-                                icon="ion-ios-checkmark-outline"
-                                navigateTo="/rpt/orderrequestdone?ot=2" />
+                                icon="ion-ios-list"
+                                navigateTo="/" />
                         </div>
-                        <div className="col-lg-2 col-6">
+                        <div className="col-lg-3 col-6">
                             <SmallBox
                                 count={dataSummary[0]?.totalPMRDone}
                                 title="PMR Done"
-                                type="info"
-                                icon="ion-ios-checkmark-outline"
-                                navigateTo="/rpt/orderrequestdone?ot=4" />
+                                type="warning"
+                                icon="ion-ios-list"
+                                navigateTo="/" />
                         </div>
-                        
-                        <div className="col-lg-2 col-6">
+                        <div className="col-lg-3 col-6">
                             <SmallBox
-                                count={dataRejection}
+                                count={dataSummary[0]?.totalOrderRejection}
                                 title="Order Rejection"
                                 type="danger"
                                 icon="ion-ios-list"
-                                navigateTo="/mm/orderrequestreject" />
+                                navigateTo="/" />
                         </div>
-                        
                     </div>
-
+ 
                 </div>
                 {/* <div className="container-fluid">
                     <div className='row' >

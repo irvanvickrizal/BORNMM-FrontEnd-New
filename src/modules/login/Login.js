@@ -168,9 +168,11 @@ const Login = () => {
                     if(result.length>0){
                         dispatch(setDashboard(result[0].dashboardURL));
                         setDashboardURL(result[0].dashboardURL)
+                        history.push(result[0].dashboardURL);
                     }
                     else{
                         dispatch(setDashboard("/"));
+                        history.push("/");
                     }
                 }
             );
@@ -218,7 +220,7 @@ const Login = () => {
             //     history.push('/');
             //     setAuthLoading(false);
             // }
-            history.push(dashboardUrl);
+            
             setAuthLoading(false);
         } catch (error) {
             if ( Password.length < 1 && username.length < 1) {
