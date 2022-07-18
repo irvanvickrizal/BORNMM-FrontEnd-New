@@ -491,6 +491,7 @@ const DELETE = (path,param)  => {
 }
 
 const DELETEParam = (path,body,param)  => {
+    console.log(param,"paramdelete")
     const promise = new Promise((resolve, reject) => {
         axios.delete(`${baseURL}${path}/${param}`
             ,body
@@ -874,7 +875,7 @@ const getItemTransferMarketWhList = (dopId) => GETParam("transferasset/getListIt
 
 const getCekTrueOrFalse = (dopId,body) => POSTParam("transferasset/boqUploadDataCheckHasCleared",dopId,body);
 const postBoqProceed = (dopId,body) => POSTParam("transferasset/boqAssetUploadProceed",dopId,body);
-const deleteBoqProceed = (dopId) => DELETEParam("transferasset/boqAssetCleanupData",dopId);
+const deleteBoqProceed = (dopId) => DELETE("transferasset/boqAssetCleanupData",dopId);
 const uploadBoqAsset = (dopId,uid,File) => POSTFileParam2("transferasset/boqAssetUpload",dopId,uid,File);
 const getSummaryAsPO = (dopId) => GETParam("transferasset/boqAssetUploadResult",dopId);
 // Transfer Asset Request
@@ -892,6 +893,7 @@ const getInventoryRepor = () => GET("inventory/pmrInventoryGetSummary");
 const getGraphNotCompleteYet = (uid) => GETParam("dashboard/dashboardGraphOrderRequestNYCompleteSummary/0",uid)
 const getGraphComplete = (uid) => GETParam("dashboard/dashboardGraphOrderRequestCompletionSummary/0",uid)
 const getSummary = (uid) => GETParam("dashboard/dashboardPanelOrderRequestSummary",uid)
+const getApprovelPending = (uid) => GETParam("dashboard/dashboardyourapprovalpending",uid)
 
 //Download APK
 const getApkLink = () => GET("dashboard/bornMobileAppLatestVersion");
@@ -921,12 +923,15 @@ const deleteDataDopOrderType = (id) => DELETE("dopordertype/delete",id)
 const addDataDopOrderType = (body) => POST("dopordertype/add",body)
 
 const getOrderRequestSummary =(userid) => GETParam('rpt/OrderRequestSummaryFwdLogistic',userid);
+const getOrderRequestDone =(userid,ordertypeid) => GETParam2('rpt/orderRequestProgressDoneTracking',userid,ordertypeid);
 
 const API ={
     getDashboardRole,
     getmOrderTypeNew,
     postOrderType,
     getmFormReqType,
+    getOrderRequestDone,
+    getApprovelPending,
     getOrderRequestSummary,
     getmDeliveryTypeNew,
     deleteteDeliveryTypeGroup,

@@ -1,4 +1,4 @@
-.card {
+.cardORS {
     background-color: #fff;
     border-radius: 10px;
     border: none;
@@ -31,7 +31,7 @@
     font-size: 110px;
 }
 
-.card .card-statistic-3 .card-icon {
+.cardORS .card-statistic-3 .card-icon {
     text-align: center;
     line-height: 50px;
     margin-left: 15px;
