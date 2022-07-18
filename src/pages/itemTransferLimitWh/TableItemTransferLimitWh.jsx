@@ -179,7 +179,7 @@ export default function TableItemTransferLimitWh() {
                             console.log(result,"res")
                             props.onRemove();
                             toast.success('upload successfully.');
-                            // window.location.reload()
+                            window.location.reload()
                         }
                         else{
                             setFileUpload(null);

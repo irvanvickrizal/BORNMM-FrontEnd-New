@@ -122,6 +122,7 @@ import mDeliveryTypeGroup from "@app/pages/mDeliveryTypeGroup/index"
 // MDOp Based on Order Type
 import mDopOrderType from "@app/pages/mDopOrderType/index"
 import orderRequestSummary from "@app/pages/OrderRequestSummary/Index"
+import DashboardMSCluster from "@pages/DashboardMSCluster"
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -663,6 +664,11 @@ const Main = () => {
                                             exact
                                             path="/report/orderrequestsummary"
                                             component={orderRequestSummary}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/cpdashboard"
+                                            component={DashboardMSCluster}
                                         />
                                     </Switch>
                                 </div>

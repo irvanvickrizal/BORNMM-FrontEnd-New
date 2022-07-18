@@ -510,6 +510,7 @@ const DELETEParam = (path,body,param)  => {
 const getIdentity = () => GET('me');
 
 const getMenu = (id,tokens) => GetMenu('menu',id,tokens);
+const getDashboardRole = (userid) => GETParam('dashboard/dashboardbyroleid',userid);
 const changePassword = (body) => PUT('user/userChangePassword',body);
 
 const getMaterialCategory = () => GET('mastermaterialcategory');
@@ -571,6 +572,10 @@ const putmScopeActivation = (body) => PUT('poscope/SetActivationStatus', body);
 
 
 const getmOrderType = () => GET('masterordertype');
+const getmOrderTypeNew = () => GET('masterordertype/new');
+const postOrderType = (body) => POST('masterordertype/AddMasterOrderType',body)
+
+const getmFormReqType = () => GET('MasterFormReqType/GetFormReqType');
 const getDOPNotCoverage = (dopid) => GETParam('masterdop/getDOPRegionNotCoverageYet',dopid);
 const getDOPRegion = () => GET('masterdop/getDOPRegionCoverageList');
 const deleteDOPRegion = (doprgnid) => DELETE('masterdop/dopRegionCoverageDelete',doprgnid);
@@ -918,6 +923,10 @@ const addDataDopOrderType = (body) => POST("dopordertype/add",body)
 const getOrderRequestSummary =(userid) => GETParam('rpt/OrderRequestSummaryFwdLogistic',userid);
 
 const API ={
+    getDashboardRole,
+    getmOrderTypeNew,
+    postOrderType,
+    getmFormReqType,
     getOrderRequestSummary,
     getmDeliveryTypeNew,
     deleteteDeliveryTypeGroup,
