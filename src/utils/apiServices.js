@@ -928,6 +928,15 @@ const getOrderRequestDone =(userid,ordertypeid) => GETParam2('rpt/orderRequestPr
 const getMasterPhoto = () => GET("masterphoto");
 const deleteMasterPhoto = (catid) => DELETE('masterphoto/DeleteMasterPhoto',catid);
 const insertupdateMasterPhoto = (body) => POST("masterphoto/InsertUpdateMasterPhoto",body)
+// Dismantle Adjusment
+ 
+const getDismantleAdjusment =(userid) => GETParam('rpt/OrderRequestDismantleGetApprovalTracking',userid);
+
+// Master Photo Group
+
+const getMasterPhotoGroup = () => GET("masterphotogroup");
+const addMasterPhotoGroup = (body) => POST("masterphotogroup/InsertUpdateMasterPhotoGroup",body)
+const editMasterPhotoGroup = (body) => PUT("masterphotogroup/ChangeStatMasterPhotoGroup",body)
 
 const API ={
     insertupdateMasterPhoto,
@@ -937,8 +946,11 @@ const API ={
     getmOrderTypeNew,
     postOrderType,
     getmFormReqType,
+    editMasterPhotoGroup,
     getOrderRequestDone,
     getApprovelPending,
+    addMasterPhotoGroup,
+    getMasterPhotoGroup,
     getOrderRequestSummary,
     getmDeliveryTypeNew,
     deleteteDeliveryTypeGroup,
@@ -954,6 +966,7 @@ const API ={
     PutPriceMRS,
     getDataDopOrderType,
     getDataTaskChangeSubcon,
+    getDismantleAdjusment,
     getDdlOridgin,
     deleteMrs,
     postMasterMrs,
