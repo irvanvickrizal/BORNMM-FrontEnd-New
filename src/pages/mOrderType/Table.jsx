@@ -74,7 +74,8 @@ export default function TableMOrderType() {
             orderTypeName: data.order_type,
             formCode: data.form_code,
             boqRefCode: data.boqref_code,
-            orderTypeQString: data.ordertype_qstring
+            orderTypeQString: data.ordertype_qstring,
+            formDeliveryReqID: data.form_deliveryReqID
         })
     }
 
@@ -393,7 +394,7 @@ export default function TableMOrderType() {
                 closable
                 footer={null}
                 width={800}
-                zIndex={99999}
+                zIndex={1000}
             >
                 <Form
                     form={form}
@@ -462,8 +463,8 @@ export default function TableMOrderType() {
                                 >
                                     {/* <Select.Option value={0}>-- SELECT --</Select.Option> */}
                                     {
-                                        ddlFormDeliveryReq.map(inv =>  <Select.Option value={inv.formReqID}> 
-                                            {inv.formReqName}</Select.Option>)
+                                        ddlFormDeliveryReq.map(inv =>  <Select.Option value={inv.formDeliveryReqID}> 
+                                            {inv.formName}</Select.Option>)
                                     }
                                 </Select>
                             </Form.Item>
@@ -584,7 +585,7 @@ export default function TableMOrderType() {
                 closable
                 footer={null}
                 width={800}
-                zIndex={99999}
+                zIndex={1000}
             >
                 <Form
                     name="basic"

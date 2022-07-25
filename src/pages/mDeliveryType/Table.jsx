@@ -185,9 +185,8 @@ export default function TableDeliveryType() {
         {
             title : "Delivery Type",
             width : 250,
-            dataIndex:'deliveryType',
-         
-            ...Search('deliveryType'),
+            dataIndex:'deliveryTypeName',
+            ...Search('deliveryTypeName'),
         },        
         {
             title : "Origin Name",
