@@ -79,13 +79,14 @@ export default function TableMasterPhotoGroup() {
 
     const bodyEdit = {
         CategoryGroupID:selectedCategoryGroupId,
-        ParentId:selectedParent,
-        Status: status,
+        ParentID:selectedParent,
+        GroupName:selectedGroup,
+      
         LMBY:uId
     }
     
     const putMasterPhotoGroup = () => {
-        API.editMasterPhotoGroup(bodyEdit).then(
+        API.addMasterPhotoGroup(bodyEdit).then(
             result=>{
                 if(result.status=="success")
                 {
@@ -115,6 +116,8 @@ export default function TableMasterPhotoGroup() {
         setIsModalEditVisible(true)
         setStatus(data.IsActive)
         setSelectedParent(data.ParentID)
+        setSelectedCategoryGroupId(data.CategoryGroupID)
+        setSelectedGroup(data.Group)
       
         console.log(data,"ini")
     }
@@ -129,6 +132,36 @@ export default function TableMasterPhotoGroup() {
     const hideModalAdd = () => {
         setIsModalAddVisible(false)
     }
+
+    //? change stattus
+
+    const handleIsActive =(data) => {
+        console.log(data,"isActive")
+        if (window.confirm('Are you sure you want to process this action ?')) {
+            const bodyIsActive={
+                CategoryGroupID:data.CategoryGroupID,
+                Status:!data.IsActive,
+                LMBY:uId
+            }
+            console.log("activa:",body);
+            API.editMasterPhotoGroup(bodyIsActive).then(
+                result=>{
+                    // console.log(": ", result);
+                    if(result.status=="success")
+                    {
+                        toast.success(result.message);
+                        //refreshData();
+                        //window.location.reload();
+                    }
+                    else{
+                        toast.error(result.message);
+                    }
+                }
+            )
+        }
+    }
+
+
 
 
     const columns = [
@@ -163,7 +196,7 @@ export default function TableMasterPhotoGroup() {
                         checkedChildren={<CheckOutlined />}
                         unCheckedChildren={<CloseOutlined />}
                         defaultChecked={record.IsActive}
-                        // onClick={()=>handleIsActive(record)}
+                        onClick={()=>handleIsActive(record)}
                         // checked={record.isActive}
                     />
                 )
@@ -261,7 +294,7 @@ export default function TableMasterPhotoGroup() {
                     initialValues={{
                         // 'orderDetailId': selectedOrderDetailId,
                         // 'requestNo': selectedRequestNo,
-                        group:selectedCategoryGroupId,
+                        group:selectedGroup,
                         parent:selectedParent
                         // 'rfpDate': moment(selectedRFPDate).format("YYYY-MM-DD"),
                         // 'deliveryType': selectedCDMRType,
@@ -277,20 +310,11 @@ export default function TableMasterPhotoGroup() {
                 >
                     
                          
-                    <Form.Item name="group" label="Group"
+                    <Form.Item name="group" label="Group Name"
                         wrapperCol={{  span: 12 }}
                         rules={[{ required: true, message: 'Please Select Group!' }]}
                     >
-                        <Select 
-                            placeholder="Select Your Group"
-                          
-                            onChange={(e) => setSelectedCategoryGroupId(e)}
-                        >
-                            {
-                                dataFromFetch.map(inv =>  <Select.Option  value={inv.CategoryGroupID}> 
-                                    {inv.Group}</Select.Option>)
-                            }
-                        </Select>
+                        <Input onChange={(e)=>setSelectedGroup(e.target.value)}/>
                     </Form.Item>             
                     <Form.Item name="parent" label="Parent"
                         wrapperCol={{  span: 12 }}
@@ -299,11 +323,11 @@ export default function TableMasterPhotoGroup() {
                         <Select 
                             placeholder="Select Your Parent"
                           
-                            onChange={(e) => setSelectedCategoryGroupId(e)}
+                            onChange={(e) => setSelectedParent(e)}
                         >
                             {
-                                dataFromFetch.map(inv =>  <Select.Option  value={inv.ParentID}> 
-                                    {inv.Parent}</Select.Option>)
+                                dataFromFetch.map(inv =>  <Select.Option  value={inv.CategoryGroupID}> 
+                                    {inv.Group}</Select.Option>)
                             }
                         </Select>
                     </Form.Item>             
@@ -346,7 +370,7 @@ export default function TableMasterPhotoGroup() {
                     autoComplete="off"
                 >
                     
-                    <Form.Item name="group" label="Group"
+                    <Form.Item name="group" label="Group Name"
                         wrapperCol={{  span: 12 }}         
                         rules={[{ required: true, message: 'Please Select Group!' }]}
                     >
