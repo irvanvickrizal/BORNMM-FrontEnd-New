@@ -915,7 +915,6 @@ const getDdlOridgin = (uid) => GETParam("mastermrs/GetDDLOrigin",uid);
 const getDdlDestination = (uid) => GETParam("mastermrs/GetDDLDestination",uid);
 const deleteMrs = (mrsID) => DELETE('mastermrs/deletemastermrs',mrsID)
 const PutPriceMRS = (body) => PUT('mastermrs/updateMasterMRS',body);
-
 // Master Dop Order Type
 
 const getDataDopOrderType = () => GET("dopordertype/new");
@@ -925,7 +924,15 @@ const addDataDopOrderType = (body) => POST("dopordertype/add",body)
 const getOrderRequestSummary =(userid) => GETParam('rpt/OrderRequestSummaryFwdLogistic',userid);
 const getOrderRequestDone =(userid,ordertypeid) => GETParam2('rpt/orderRequestProgressDoneTracking',userid,ordertypeid);
 
+//Master Photo
+const getMasterPhoto = () => GET("masterphoto");
+const deleteMasterPhoto = (catid) => DELETE('masterphoto/DeleteMasterPhoto',catid);
+const insertupdateMasterPhoto = (body) => POST("masterphoto/InsertUpdateMasterPhoto",body)
+
 const API ={
+    insertupdateMasterPhoto,
+    deleteMasterPhoto,
+    getMasterPhoto,
     getDashboardRole,
     getmOrderTypeNew,
     postOrderType,

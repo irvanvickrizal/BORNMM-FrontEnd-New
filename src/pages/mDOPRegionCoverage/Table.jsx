@@ -172,7 +172,7 @@ const TableDOPRegionCoverage = () => {
             render:(record)=>{
                 return (
                     <Space>
-                        <Tooltip title="Edit Material">
+                        <Tooltip title="Delete Data">
                             <IconButton
                                 size='small'
                                 color='error'

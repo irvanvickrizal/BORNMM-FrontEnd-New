@@ -112,6 +112,7 @@ import PmrInventory from "@app/pages/PmrInventory/index"
 import DismantleAckTracking from "@app/pages/DismantleAckTracking/DismantleAckTracking"
 import masterDistrict from "@app/pages/mDistrict/index"
 import masterVehicle from "@app/pages/mVehicle/index"
+import masterPhoto from "@app/pages/mPhoto/index"
 import masterDeliveryTypeMapping from "@app/pages/mDeliveryTypeMapping/index"
 import changeSubcon from "@app/pages/ChanheSubconAssigment/index"
 import XDockInbound from "@app/pages/xDockInbound/index"
@@ -650,6 +651,11 @@ const Main = () => {
                                             exact
                                             path="/master/mrs"
                                             component={masterMrs}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/masterphoto"
+                                            component={masterPhoto}
                                         />
                                         <Route
                                             exact

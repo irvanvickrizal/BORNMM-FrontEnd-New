@@ -11,7 +11,7 @@ const Header = ({toggleMenuSidebar}) => {
     return (
         <nav className="main-header navbar navbar-expand navbar-white navbar-light">
             {/* Left navbar links */}
-            <ul className="navbar-nav">
+            <ul className="navbar-nav" >
                 <li className="nav-item">
                     <button
                         onClick={() => toggleMenuSidebar()}
