@@ -688,7 +688,7 @@ const Main = () => {
                                         />
                                         <Route
                                             exact
-                                            path="/master/photogroup"
+                                            path="/masterphotocategorygroup"
                                             component={mPhotoGroup}
                                             
                                         />

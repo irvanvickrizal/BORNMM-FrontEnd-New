@@ -114,7 +114,7 @@ export default function TableMasterPhotoGroup() {
     const showModalEdit = (data) => {
         setIsModalEditVisible(true)
         setStatus(data.IsActive)
-        setSelectedParent(data.Parent)
+        setSelectedParent(data.ParentID)
       
         console.log(data,"ini")
     }
@@ -261,6 +261,8 @@ export default function TableMasterPhotoGroup() {
                     initialValues={{
                         // 'orderDetailId': selectedOrderDetailId,
                         // 'requestNo': selectedRequestNo,
+                        group:selectedCategoryGroupId,
+                        parent:selectedParent
                         // 'rfpDate': moment(selectedRFPDate).format("YYYY-MM-DD"),
                         // 'deliveryType': selectedCDMRType,
                  
@@ -287,6 +289,21 @@ export default function TableMasterPhotoGroup() {
                             {
                                 dataFromFetch.map(inv =>  <Select.Option  value={inv.CategoryGroupID}> 
                                     {inv.Group}</Select.Option>)
+                            }
+                        </Select>
+                    </Form.Item>             
+                    <Form.Item name="parent" label="Parent"
+                        wrapperCol={{  span: 12 }}
+                        rules={[{ required: true, message: 'Please Select Group!' }]}
+                    >
+                        <Select 
+                            placeholder="Select Your Parent"
+                          
+                            onChange={(e) => setSelectedCategoryGroupId(e)}
+                        >
+                            {
+                                dataFromFetch.map(inv =>  <Select.Option  value={inv.ParentID}> 
+                                    {inv.Parent}</Select.Option>)
                             }
                         </Select>
                     </Form.Item>             
