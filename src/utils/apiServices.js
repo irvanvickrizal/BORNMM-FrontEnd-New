@@ -925,13 +925,26 @@ const addDataDopOrderType = (body) => POST("dopordertype/add",body)
 const getOrderRequestSummary =(userid) => GETParam('rpt/OrderRequestSummaryFwdLogistic',userid);
 const getOrderRequestDone =(userid,ordertypeid) => GETParam2('rpt/orderRequestProgressDoneTracking',userid,ordertypeid);
 
+// Dismantle Adjusment
+ 
+const getDismantleAdjusment =(userid) => GETParam('rpt/OrderRequestDismantleGetApprovalTracking',userid);
+
+// Master Photo Group
+
+const getMasterPhotoGroup = () => GET("masterphotogroup");
+const addMasterPhotoGroup = (body) => POST("masterphotogroup/InsertUpdateMasterPhotoGroup",body)
+const editMasterPhotoGroup = (body) => PUT("masterphotogroup/ChangeStatMasterPhotoGroup",body)
+
 const API ={
     getDashboardRole,
     getmOrderTypeNew,
     postOrderType,
     getmFormReqType,
+    editMasterPhotoGroup,
     getOrderRequestDone,
     getApprovelPending,
+    addMasterPhotoGroup,
+    getMasterPhotoGroup,
     getOrderRequestSummary,
     getmDeliveryTypeNew,
     deleteteDeliveryTypeGroup,
@@ -947,6 +960,7 @@ const API ={
     PutPriceMRS,
     getDataDopOrderType,
     getDataTaskChangeSubcon,
+    getDismantleAdjusment,
     getDdlOridgin,
     deleteMrs,
     postMasterMrs,

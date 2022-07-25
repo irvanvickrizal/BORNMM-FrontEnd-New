@@ -124,6 +124,8 @@ import mDopOrderType from "@app/pages/mDopOrderType/index"
 import orderRequestSummary from "@app/pages/OrderRequestSummary/Index"
 import DashboardMSCluster from "@pages/DashboardMSCluster"
 import orderRequestDone from "@app/pages/OrderRequestDone/OrderRequestDone"
+import DismantleAdjusment from "@app/pages/DismantleAdjusment/index"
+import mPhotoGroup from "@app/pages/mMasterPhotoGroup/index"
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -676,6 +678,18 @@ const Main = () => {
                                             exact
                                             path="/rpt/orderrequestdone"
                                             component={orderRequestDone}
+                                            
+                                        />
+                                        <Route
+                                            exact
+                                            path="/task/ackdismantleadjust"
+                                            component={DismantleAdjusment}
+                                            
+                                        />
+                                        <Route
+                                            exact
+                                            path="/master/photogroup"
+                                            component={mPhotoGroup}
                                             
                                         />
                                     </Switch>
