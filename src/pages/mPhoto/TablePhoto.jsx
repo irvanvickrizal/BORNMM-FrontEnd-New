@@ -15,6 +15,7 @@ export default function TablePhoto() {
     const [isModalEditVisible,setIsModalEditVisible] = useState(false)
     const [selectedVehicleName,setSelectedVehicleName] = useState("")
     const [selectedCategoryID,setSelectedCategoryID] = useState("")
+    const [dataGroup,setDataGroup] = useState([])
     const user = useSelector((state) => state.auth.user);
     const [form] = Form.useForm();
     const getMasterPhoto = () =>{
@@ -29,8 +30,20 @@ export default function TablePhoto() {
         )
     } 
 
+    const getMasterPhotoGroup = () => {
+        API.getMasterPhotoGroup().then(
+            result=>{
+                setDataGroup(result)
+                console.log('data photogroup',result)
+                    
+            }
+        )
+
+    }
+
     const showModalAdd = () =>{
         setIsModalAddVisible(true)
+        getMasterPhotoGroup()
     }
 
     const hideModalAdd = () =>{
@@ -48,6 +61,7 @@ export default function TablePhoto() {
             ,"CategoryName":data.categoryName
             ,"CategoryDesc":data.categoryDesc
             ,"CategoryNo":data.categoryNo
+            ,"GroupID":data.categoryGroup
             ,"CategoryChecklist":data.categoryChecklist
             ,"LMBY":user.uid
         }
@@ -76,12 +90,14 @@ export default function TablePhoto() {
     const showModalEdit = (data) => {
         console.log("selecteddata",data)
         setIsModalEditVisible(true)
+        getMasterPhotoGroup()
         setSelectedCategoryID(data.atp_category_id)
         form.setFieldsValue({
             categoryName: data.category_name,
             categoryDesc: data.category_desc,
             categoryNo: data.category_number,
             categoryChecklist: data.cat_checklist,
+            categoryGroup:data.category_group_id
         })
     }
 
@@ -97,6 +113,7 @@ export default function TablePhoto() {
             ,"CategoryName":data.categoryName
             ,"CategoryDesc":data.categoryDesc
             ,"CategoryNo":data.categoryNo
+            ,"GroupID":data.categoryGroup
             ,"CategoryChecklist":data.categoryChecklist
             ,"LMBY":user.uid
         }
@@ -156,6 +173,14 @@ export default function TablePhoto() {
             dataIndex:'category_name',
          
             ...Search('category_name'),
+        },
+      
+    
+        {
+            title : "Group",
+            width : 250,
+            dataIndex:'CategoryGroupName',
+            ...Search('CategoryGroupName'),
         },
       
     
@@ -330,7 +355,21 @@ export default function TablePhoto() {
                             
                         </Select>
                     </Form.Item>
-
+                    <Form.Item label="Category Group"
+                        name="categoryGroup"
+                        rules={[{ required: true, message: 'Please Select Category Group!'}]}
+                    >
+                        <Select 
+                                
+                            placeholder="Select an option"
+                        >
+                            {/* <Select.Option value={0}>-- SELECT --</Select.Option> */}
+                            {
+                                dataGroup.map(inv =>  <Select.Option value={inv.CategoryGroupID}> 
+                                    {inv.Group}</Select.Option>)
+                            }
+                        </Select>
+                    </Form.Item>
                     <Form.Item wrapperCol={{ offset: 20, span: 4 }}>
                         <Space>
                             <Button type="primary" htmlType="submit">
@@ -402,6 +441,21 @@ export default function TablePhoto() {
                             <Select.Option value="RAN">RAN/MW</Select.Option>
                             <Select.Option value="PS">POWER</Select.Option>
                             
+                        </Select>
+                    </Form.Item>
+                    <Form.Item label="Category Group"
+                        name="categoryGroup"
+                        rules={[{ required: true, message: 'Please Select Category Group!'}]}
+                    >
+                        <Select 
+                                
+                            placeholder="Select an option"
+                        >
+                            {/* <Select.Option value={0}>-- SELECT --</Select.Option> */}
+                            {
+                                dataGroup.map(inv =>  <Select.Option value={inv.CategoryGroupID}> 
+                                    {inv.Group}</Select.Option>)
+                            }
                         </Select>
                     </Form.Item>
                     <Form.Item wrapperCol={{ offset: 20, span: 4 }}>
