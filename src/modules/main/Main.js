@@ -703,7 +703,7 @@ const Main = () => {
                                         />
                                         <Route
                                             exact
-                                            path="/masterformcheklist"
+                                            path="/masterformchecklist"
                                             component={mFormChecklist}
                                             
                                         />

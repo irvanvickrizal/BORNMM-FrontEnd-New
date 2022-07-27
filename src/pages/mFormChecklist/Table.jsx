@@ -434,17 +434,6 @@ export default function TableFormChecklist() {
                 return (
                     <Space>
                        
-                        <Tooltip title="Edit">
-                            <IconButton
-                                size='small'
-                                color="primary"
-                                aria-label="upload file"
-                                component="span" 
-                                onClick={() => showModalEdit(record)}
-                            >
-                                <EditFilled  style={{color:"#1b72d5"}} />
-                            </IconButton>
-                        </Tooltip>
                         {record.checklist_type === "ddl" || record.checklist_type === "chklist"? (
                             <Tooltip title="Add Collection">
                                 <IconButton
@@ -458,6 +447,19 @@ export default function TableFormChecklist() {
                                 </IconButton>
                             </Tooltip>
                         ):(null)}
+
+                        <Tooltip title="Edit">
+                            <IconButton
+                                size='small'
+                                color="primary"
+                                aria-label="upload file"
+                                component="span" 
+                                onClick={() => showModalEdit(record)}
+                            >
+                                <EditFilled  style={{color:"#1b72d5"}} />
+                            </IconButton>
+                        </Tooltip>
+                        
                       
                         
                         
