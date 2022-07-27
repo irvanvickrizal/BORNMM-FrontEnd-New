@@ -129,6 +129,8 @@ import DismantleAdjusment from "@app/pages/DismantleAdjusment/index"
 import mPhotoGroup from "@app/pages/mMasterPhotoGroup/index"
 import mFormChecklist from "@app/pages/mFormChecklist/index"
 
+import MasterAttachmentDoc from "@app/pages/mAttachmentDoc/index"
+
 const Main = () => {
     const dispatch = useDispatch()
     const isSidebarMenuCollapsed = useSelector(
@@ -703,6 +705,12 @@ const Main = () => {
                                             exact
                                             path="/masterformcheklist"
                                             component={mFormChecklist}
+                                            
+                                        />
+                                        <Route
+                                            exact
+                                            path="/masterattachmentdoc"
+                                            component={MasterAttachmentDoc}
                                             
                                         />
                                     </Switch>
