@@ -53,6 +53,7 @@ export default function TableFormChecklist() {
     const [selectedCheklist,setSelectedCheklist] = useState(false)
     const [inherit,setInherit] = useState("0")
     const [formCheklistID,setFormCheklistID] = useState(0)
+    const [checklistCollectionID,setChecklistCollectionID] = useState("")
 
     const [text,setText] = useState("")
     const [values,setValues] = useState("")
@@ -120,6 +121,7 @@ export default function TableFormChecklist() {
         getMFormCheklistCollection(data)
         setIsModalCollectionVisible(true)
         setFormCheklistID(data.form_checklist_id)
+        setCheklistName(data.checklist_name)
       
         console.log(data,"ini")
     }
@@ -178,14 +180,15 @@ export default function TableFormChecklist() {
     }
 
     const postMasterFormCheklistCollection = () => {
-        API.postMasterFormCheklist(bodyCollection).then(
+        API.postMasterFormCheklistCollection(bodyCollection).then(
             result=>{
                 if(result.status=="success")
                 {
                     toast.success(result.message);
-                    getMFormCheklistCollection()
+                    // getMFormCheklistCollection(bodyCollection.FormChecklistID)
+                    setIsModalEditCollectionVisible(false)
                     setIsModalCollectionVisible(false)
-                    setIsModalCollectionVisible(false)
+                    getMFormCheklist()
                     
                 }
                 else{
@@ -240,8 +243,10 @@ export default function TableFormChecklist() {
 
     //! handle Delete
     const handleDeleteCollection =(data) => {
+        setFormCheklistID(data.ChecklistCollectionID)
+        setChecklistCollectionID(data.ChecklistCollectionID)
         if(window.confirm('Are you sure you want to Delete this Collection ?')){
-            console.log(data.ChecklistCollectionID)
+            console.log(data)
             API.deleteCollection(data.ChecklistCollectionID).then(
                 result=>{
                     // console.log(": ", result);
@@ -249,6 +254,9 @@ export default function TableFormChecklist() {
                     {
                         toast.success(result.message);
                         //refreshData();
+                        // getMFormCheklistCollection(data.ChecklistID)
+                        setIsModalCollectionVisible(false)
+                        getMFormCheklist()
                         //window.location.reload();
                     }
                     else{
@@ -757,6 +765,7 @@ export default function TableFormChecklist() {
                         // 'requestNo': selectedRequestNo,
                         // 'rfpDate': moment(selectedRFPDate).format("YYYY-MM-DD"),
                         // 'deliveryType': selectedCDMRType,
+                        "cheklistName": cheklistName
                  
                         // // 'taskScheduleId': props.taskScheduleId,
                         // // 'subconId': props.subconId,
@@ -768,6 +777,12 @@ export default function TableFormChecklist() {
                     autoComplete="off"
                 >
                     
+                    <Form.Item name="cheklistName" label="Cheklist Name"
+                        wrapperCol={{  span: 16 }}         
+                        rules={[{ required: false, message: 'Please Select Group!' }]}
+                    >
+                        <Input disabled  onChange={(e) => setText(e.target.value)} placeholder="Please Input Your Text"/>           
+                    </Form.Item>             
                     <Form.Item name="text" label="Text"
                         wrapperCol={{  span: 16 }}         
                         rules={[{ required: true, message: 'Please Select Group!' }]}
@@ -787,7 +802,7 @@ export default function TableFormChecklist() {
                             // expandable={{ expandedRowRender }}
 
                             columns={columnTableCollection}
-                            dataSource={TableCollection}
+                            dataSource={dataCollection}
                             rowKey={record => record.vehicleId}
                             pagination={{
                                 pageSizeOptions: ['5', '10', '20', '30', '40'],
