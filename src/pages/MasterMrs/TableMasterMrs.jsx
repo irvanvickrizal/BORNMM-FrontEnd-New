@@ -618,16 +618,6 @@ export default function TableMasterMrs() {
                     >
                         <Input rows={2} onChange={(e) => setPrice(e.target.value)}/>
                     </Form.Item>
-              
-                
-            
-                      
-                   
-                    
-                      
-                
-                   
-             
                     <Form.Item wrapperCol={{ offset: 20, span: 4 }}>
                         <Space>
                             <Button type="primary" htmlType="submit">
@@ -651,17 +641,6 @@ export default function TableMasterMrs() {
                 <div style={{height: 70,}}>
                     <Typography>Are You Sure to Delete This Delivery Type Destination Mapping ?</Typography>
                 </div>
-               
-         
-            
-                      
-                   
-                    
-                      
-                
-                   
-             
-                 
                 <Row align="middle" justify="end">
                     <Space>
                         <Button  htmlType="submit" onClick={hideModalDelete}>
