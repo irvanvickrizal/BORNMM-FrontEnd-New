@@ -104,6 +104,7 @@ export default function TableDeliveryTypeGroup() {
         )              
     }
     const handleDelete = () => {
+        console.log(selectedId)
         API.deleteteDeliveryTypeGroup(selectedId).then(
             result=>{
                 console.log(result,"result")
@@ -153,7 +154,7 @@ export default function TableDeliveryTypeGroup() {
     const showModalDelete = (data) => {
         console.log(data,"data pass")
         setIsModalDeleteVisible(true)
-        setSlectedId(data.DeliveryTypeMappingID)
+        setSlectedId(data.DeliveryTypeGroupID)
     }
 
     const showModalAdd = () => {

@@ -11,6 +11,7 @@ import {useFormik} from 'formik';
 import {useTranslation} from 'react-i18next';
 import {loadUser, loginUser} from '@store/reducers/auth';
 import {setMenu} from '@store/reducers/menu';
+import {setDashboard} from '@store/reducers/dashboard';
 import {Checkbox, Input} from '@components';
 import {faEnvelope, faLock, faUser} from '@fortawesome/free-solid-svg-icons';
 import { makeStyles } from '@material-ui/core/styles';
@@ -132,7 +133,7 @@ const Login = () => {
     const [username, setUsername] = useState('');
     const [passHelperText, setPassHelperText] = useState('');
     const [emailHelperText, setEmailHelperText] = useState('');
-
+    const [dashboardUrl,setDashboardURL] = useState('');
     const history = useHistory();
     const [t] = useTranslation();
 
@@ -157,6 +158,30 @@ const Login = () => {
        
     } 
 
+    const dashboardByRole=(userid)=> {
+        console.log(userid,"userid login")
+        try{
+            API.getDashboardRole(userid).then(
+                result=>{
+                    console.log('dashboard',result)
+                    console.log('dashboardLength',result.length)
+                    if(result.length>0){
+                        dispatch(setDashboard(result[0].dashboardURL));
+                        setDashboardURL(result[0].dashboardURL)
+                        history.push(result[0].dashboardURL);
+                    }
+                    else{
+                        dispatch(setDashboard("/"));
+                        history.push("/");
+                    }
+                }
+            );
+        }catch(e){
+            console.log(e,"menu error")
+        }
+    } 
+
+
     const loginori = async (email, password) => {
         try {
             setAuthLoading(true);
@@ -170,6 +195,7 @@ const Login = () => {
             toast.error(error.message || 'Failed');
         }
     };
+
     const login = async (email, password) => {
         try {
             setAuthLoading(true);
@@ -183,16 +209,19 @@ const Login = () => {
             const user =  jwt(token);
 
             menuapi(user.roleId,token)
+            dashboardByRole(user.uid)
 
             dispatch(loadUser(user));
-            if(user.roleId==175){
-                history.push('/task/ackdismantlepending');
-                setAuthLoading(false);
-            }
-            else{
-                history.push('/');
-                setAuthLoading(false);
-            }
+            // if(user.roleId==175){
+            //     history.push('/task/ackdismantlepending');
+            //     setAuthLoading(false);
+            // }
+            // else{
+            //     history.push('/');
+            //     setAuthLoading(false);
+            // }
+            
+            setAuthLoading(false);
         } catch (error) {
             if ( Password.length < 1 && username.length < 1) {
                 setIsErrorUserName(true)

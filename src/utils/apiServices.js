@@ -492,6 +492,7 @@ const DELETE = (path,param)  => {
 }
 
 const DELETEParam = (path,body,param)  => {
+    console.log(param,"paramdelete")
     const promise = new Promise((resolve, reject) => {
         axios.delete(`${baseURL}${path}/${param}`
             ,body
@@ -511,6 +512,7 @@ const DELETEParam = (path,body,param)  => {
 const getIdentity = () => GET('me');
 
 const getMenu = (id,tokens) => GetMenu('menu',id,tokens);
+const getDashboardRole = (userid) => GETParam('dashboard/dashboardbyroleid',userid);
 const changePassword = (body) => PUT('user/userChangePassword',body);
 
 const getMaterialCategory = () => GET('mastermaterialcategory');
@@ -572,6 +574,10 @@ const putmScopeActivation = (body) => PUT('poscope/SetActivationStatus', body);
 
 
 const getmOrderType = () => GET('masterordertype');
+const getmOrderTypeNew = () => GET('masterordertype/new');
+const postOrderType = (body) => POST('masterordertype/AddMasterOrderType',body)
+
+const getmFormReqType = () => GET('MasterFormReqType/GetFormReqType');
 const getDOPNotCoverage = (dopid) => GETParam('masterdop/getDOPRegionNotCoverageYet',dopid);
 const getDOPRegion = () => GET('masterdop/getDOPRegionCoverageList');
 const deleteDOPRegion = (doprgnid) => DELETE('masterdop/dopRegionCoverageDelete',doprgnid);
@@ -870,7 +876,7 @@ const getItemTransferMarketWhList = (dopId) => GETParam("transferasset/getListIt
 
 const getCekTrueOrFalse = (dopId,body) => POSTParam("transferasset/boqUploadDataCheckHasCleared",dopId,body);
 const postBoqProceed = (dopId,body) => POSTParam("transferasset/boqAssetUploadProceed",dopId,body);
-const deleteBoqProceed = (dopId) => DELETEParam("transferasset/boqAssetCleanupData",dopId);
+const deleteBoqProceed = (dopId) => DELETE("transferasset/boqAssetCleanupData",dopId);
 const uploadBoqAsset = (dopId,uid,File) => POSTFileParam2("transferasset/boqAssetUpload",dopId,uid,File);
 const getSummaryAsPO = (dopId) => GETParam("transferasset/boqAssetUploadResult",dopId);
 // Transfer Asset Request
@@ -888,6 +894,7 @@ const getInventoryRepor = () => GET("inventory/pmrInventoryGetSummary");
 const getGraphNotCompleteYet = (uid) => GETParam("dashboard/dashboardGraphOrderRequestNYCompleteSummary/0",uid)
 const getGraphComplete = (uid) => GETParam("dashboard/dashboardGraphOrderRequestCompletionSummary/0",uid)
 const getSummary = (uid) => GETParam("dashboard/dashboardPanelOrderRequestSummary",uid)
+const getApprovelPending = (uid) => GETParam("dashboard/dashboardyourapprovalpending",uid)
 
 //Download APK
 const getApkLink = () => GET("dashboard/bornMobileAppLatestVersion");
@@ -909,7 +916,6 @@ const getDdlOridgin = (uid) => GETParam("mastermrs/GetDDLOrigin",uid);
 const getDdlDestination = (uid) => GETParam("mastermrs/GetDDLDestination",uid);
 const deleteMrs = (mrsID) => DELETE('mastermrs/deletemastermrs',mrsID)
 const PutPriceMRS = (body) => PUT('mastermrs/updateMasterMRS',body);
-
 // Master Dop Order Type
 
 const getDataDopOrderType = () => GET("dopordertype/new");
@@ -917,8 +923,50 @@ const deleteDataDopOrderType = (id) => DELETE("dopordertype/delete",id)
 const addDataDopOrderType = (body) => POST("dopordertype/add",body)
 
 const getOrderRequestSummary =(userid) => GETParam('rpt/OrderRequestSummaryFwdLogistic',userid);
+const getOrderRequestDone =(userid,ordertypeid) => GETParam2('rpt/orderRequestProgressDoneTracking',userid,ordertypeid);
+
+//Master Photo
+const getMasterPhoto = () => GET("masterphoto");
+const deleteMasterPhoto = (catid) => DELETE('masterphoto/DeleteMasterPhoto',catid);
+const insertupdateMasterPhoto = (body) => POST("masterphoto/InsertUpdateMasterPhoto",body)
+// Dismantle Adjusment
+ 
+const getDismantleAdjusment =(userid) => GETParam('rpt/OrderRequestDismantleGetApprovalTracking',userid);
+
+// Master Photo Group
+
+const getMasterPhotoGroup = () => GET("masterphotogroup");
+const addMasterPhotoGroup = (body) => POST("masterphotogroup/InsertUpdateMasterPhotoGroup",body)
+const editMasterPhotoGroup = (body) => PUT("masterphotogroup/ChangeStatMasterPhotoGroup",body)
+
+// Master Form Cheklist 
+
+const getMasterFormCheklist = () => GET("masterformchecklist");
+const getMasterFormCheklistCollection = (id) => GETParam("masterformchecklist/collectionlist",id);
+const postMasterFormCheklistCollection = (body) => POST("masterformchecklist/InsertMasterFormChecklistCollection",body);
+const postMasterFormCheklist = (body) => POST("masterformchecklist/InsertMasterFormChecklist",body);
+const editMasterFormCheklist = (body) => PUT("masterformchecklist/ChangeStatMasterFormChecklist",body)
+const deleteCollection = (param) => DELETE('masterformchecklist/DeleteMasterFormChecklistCollection',param);
 
 const API ={
+    insertupdateMasterPhoto,
+    deleteMasterPhoto,
+    deleteCollection,
+    postMasterFormCheklistCollection,
+    getMasterFormCheklistCollection,
+    getMasterPhoto,
+    editMasterFormCheklist,
+    postMasterFormCheklist,
+    getDashboardRole,
+    getMasterFormCheklist,
+    getmOrderTypeNew,
+    postOrderType,
+    getmFormReqType,
+    editMasterPhotoGroup,
+    getOrderRequestDone,
+    getApprovelPending,
+    addMasterPhotoGroup,
+    getMasterPhotoGroup,
     getOrderRequestSummary,
     getmDeliveryTypeNew,
     deleteteDeliveryTypeGroup,
@@ -934,6 +982,7 @@ const API ={
     PutPriceMRS,
     getDataDopOrderType,
     getDataTaskChangeSubcon,
+    getDismantleAdjusment,
     getDdlOridgin,
     deleteMrs,
     postMasterMrs,

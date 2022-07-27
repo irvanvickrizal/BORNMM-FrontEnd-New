@@ -3,6 +3,7 @@ import React,{useState, useEffect} from 'react';
 import {useSelector} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {MenuItem} from '@components';
+
 import API  from '../../../utils/apiServices';
 
 export const MENU = [
@@ -89,7 +90,7 @@ export const MENU = [
 const MenuSidebar = () => {
     const user = useSelector((state) => state.auth.user);
     const menu = useSelector((state) => state.menu.menu);
-
+    const urlDashboard = useSelector((state) => state.dashboard.dashboard);
     //const [menu, setMenu] = useState([]);
     const token = localStorage.getItem('token'); 
     // const menuapi=(id)=> {
@@ -112,7 +113,18 @@ const MenuSidebar = () => {
 
     return (
         <aside className="main-sidebar sidebar-nokia-primary elevation-4">
-            {user.roleId == 175 ? 
+            <Link to={urlDashboard} className="brand-link">
+                <img
+                    src="/img/bicon.png"
+                    alt="BORN Logo"
+                    className="brand-image img-circle elevation-3"
+                    style={{opacity: '1'}}
+                />
+                <span className="brand-text font-weight-light">
+                    <h2 className='pr-4' align="center" style={{ color:'white' }}>BORN</h2>
+                </span>
+            </Link>
+            {/* {user.roleId == 175 ? 
                 <Link to="#" className="brand-link">
                     <img
                         src="/img/bicon.png"
@@ -136,7 +148,7 @@ const MenuSidebar = () => {
                         <h2 className='pr-4' align="center" style={{ color:'white' }}>BORN</h2>
                     </span>
                 </Link>
-            }
+            } */}
             
             <div className="sidebar">
                 <div className="user-panel mt-3 pb-3 mb-3 d-flex">

@@ -112,6 +112,7 @@ import PmrInventory from "@app/pages/PmrInventory/index"
 import DismantleAckTracking from "@app/pages/DismantleAckTracking/DismantleAckTracking"
 import masterDistrict from "@app/pages/mDistrict/index"
 import masterVehicle from "@app/pages/mVehicle/index"
+import masterPhoto from "@app/pages/mPhoto/index"
 import masterDeliveryTypeMapping from "@app/pages/mDeliveryTypeMapping/index"
 import changeSubcon from "@app/pages/ChanheSubconAssigment/index"
 import XDockInbound from "@app/pages/xDockInbound/index"
@@ -122,6 +123,11 @@ import mDeliveryTypeGroup from "@app/pages/mDeliveryTypeGroup/index"
 // MDOp Based on Order Type
 import mDopOrderType from "@app/pages/mDopOrderType/index"
 import orderRequestSummary from "@app/pages/OrderRequestSummary/Index"
+import DashboardMSCluster from "@pages/DashboardMSCluster"
+import orderRequestDone from "@app/pages/OrderRequestDone/OrderRequestDone"
+import DismantleAdjusment from "@app/pages/DismantleAdjusment/index"
+import mPhotoGroup from "@app/pages/mMasterPhotoGroup/index"
+import mFormChecklist from "@app/pages/mFormChecklist/index"
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -651,6 +657,11 @@ const Main = () => {
                                         />
                                         <Route
                                             exact
+                                            path="/masterphoto"
+                                            component={masterPhoto}
+                                        />
+                                        <Route
+                                            exact
                                             path="/master/dopordertype"
                                             component={mDopOrderType}
                                         />
@@ -663,6 +674,36 @@ const Main = () => {
                                             exact
                                             path="/report/orderrequestsummary"
                                             component={orderRequestSummary}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/cpdashboard"
+                                            component={DashboardMSCluster}
+                                            
+                                        />
+                                        <Route
+                                            exact
+                                            path="/rpt/orderrequestdone"
+                                            component={orderRequestDone}
+                                            
+                                        />
+                                        <Route
+                                            exact
+                                            path="/task/ackdismantleadjust"
+                                            component={DismantleAdjusment}
+                                            
+                                        />
+                                        <Route
+                                            exact
+                                            path="/masterphotocategorygroup"
+                                            component={mPhotoGroup}
+                                            
+                                        />
+                                        <Route
+                                            exact
+                                            path="/masterformchecklist"
+                                            component={mFormChecklist}
+                                            
                                         />
                                     </Switch>
                                 </div>

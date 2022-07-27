@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 
 
 export default function TableDeliveryType() {
-    const [dataDeliveryTypeGroup,setDataDeliveryTypeGroup] = useState([])
+    const [dataDeliveryType,setDataDeliveryType] = useState([])
     const [ddlDeliveryType,setDdlDeliveryType] = useState([])
     const [ddlDop,setDdlDop] = useState([])
     const [ddlDistrict,setDdlDistrict] = useState([])
@@ -29,9 +29,9 @@ export default function TableDeliveryType() {
 
     const getDeliveryType = () =>{
         setIsLoading(true)
-        API.getDeliveryTypeGroup().then(
+        API.getmDeliveryTypeNew().then(
             result=>{
-                setDataDeliveryTypeGroup(result)
+                setDataDeliveryType(result)
                 setIsLoading(false)
                 console.log('data master DeliveryType',result)
                 
@@ -165,6 +165,34 @@ export default function TableDeliveryType() {
         setIsModalDeleteVisible(false)
     }
 
+
+    const handleIsActive =(data) => {
+        console.log(data,"isActive")
+        if (window.confirm('Are you sure you want to process this action ?')) {
+            const bodyIsActive={
+                CategoryGroupID:data.CategoryGroupID,
+                Status:!data.IsActive,
+                LMBY:userId
+            }
+            console.log("activa:",bodyIsActive);
+            API.editMasterPhotoGroup(bodyIsActive).then(
+                result=>{
+                    // console.log(": ", result);
+                    if(result.status=="success")
+                    {
+                        toast.success(result.message);
+                        //refreshData();
+                        //window.location.reload();
+                    }
+                    else{
+                        toast.error(result.message);
+                    }
+                }
+            )
+        }
+    }
+
+
     const dataGroup = [
         {
             name:"Origin"
@@ -185,21 +213,26 @@ export default function TableDeliveryType() {
         {
             title : "Delivery Type",
             width : 250,
-            dataIndex:'deliveryType',
-         
-            ...Search('deliveryType'),
+            dataIndex:'deliveryTypeName',
+            ...Search('deliveryTypeName'),
         },        
         {
-            title : "Origin Name",
-            width : 250,
-            dataIndex:'originName',
-            ...Search('originName'),
-        },
-        {
-            title : "Destination Name",
-            width : 250,
-            dataIndex:'destinationName',
-            ...Search('destinationName'),
+            title : "isActive",
+            width: 50,
+            align:'center',
+            fixed: 'right',
+            render:(record)=>{
+                return (
+                    <Switch
+                        checkedChildren={<CheckOutlined />}
+                        unCheckedChildren={<CloseOutlined />}
+                        defaultChecked={record.isActive}
+                        onClick={()=>handleIsActive(record)}
+                        // checked={record.isActive}
+                    />
+                )
+            },
+  
         },
         {
             title:"Action",
@@ -262,7 +295,7 @@ export default function TableDeliveryType() {
                     size="small"
                     // expandable={{ expandedRowRender }}
                     columns={columns}
-                    dataSource={dataDeliveryTypeGroup}
+                    dataSource={dataDeliveryType}
                     rowKey={record => record.vehicleId}
                     pagination={{
                         pageSizeOptions: ['5', '10', '20', '30', '40'],
@@ -271,7 +304,7 @@ export default function TableDeliveryType() {
                     }}
                     bordered /></>
             }
-            <Modal title="Add Destination Type Mapping"
+            <Modal title="Add Delivery Type"
                 visible={isModalAddVisible}
                 destroyOnClose
                 onCancel={hideModalAdd}
@@ -298,60 +331,12 @@ export default function TableDeliveryType() {
                     // onFinishFailed={handleFailedAddForm}
                     autoComplete="off"
                 >
-                    <Form.Item name="deliveryType" label="Delivery Type" placeholder="Select Ypur Delivery Type"
+                    <Form.Item name="deliveryTypeName" label="Delivery Type Name" placeholder="Select Ypur Delivery Type"
                         wrapperCol={{  span: 14 }}
                                    
                         rules={[{ required: true, message: 'Please Select Destination Type!' }]}
                     >
-                        <Select 
-                            placeholder="Select Your Delivery Type"
-                            onChange={(e) => handleDeliveryTypeDDLChange(e)}
-                        >
-                            {
-                                ddlDeliveryType.map(inv =>  <Select.Option  value={inv.deliveryTypeId}> 
-                                    {inv.deliveryTypeName}</Select.Option>)
-                            }
-                        </Select>
-                    </Form.Item>
-                
-                    <Form.Item name="origin" label="Origin"
-                        wrapperCol={{  span: 14 }}
-                                   
-                        rules={[{ required: true, message: 'Please Select End Point!' }]}
-                    >
-                        <Select 
-                            placeholder="Select Your DOP"
-                            onChange={(e) => handleDopDDLChange(e)}
-                        >
-                            {
-                                ddlDop.map(inv =>  <Select.Option  value={inv.dopId}> 
-                                    {inv.dopName}</Select.Option>)
-                            }
-                        </Select>
-                    </Form.Item>
-                    <Form.Item name="destination" label="Destination"
-                        wrapperCol={{  span: 14 }}
-                                   
-                        rules={[{ required: true, message: 'Please Select End Point!' }]}
-                    >
-                        <Select 
-                            placeholder="Select Your DOP"
-                            onChange={(e) => handleDopDDLChange(e)}
-                        >
-                            {
-                                ddlDop.map(inv =>  <Select.Option  value={inv.dopId}> 
-                                    {inv.dopName}</Select.Option>)
-                            }
-                        </Select>
-                    </Form.Item>
-                
-                    
-                    <Form.Item wrapperCol={{ offset: 20, span: 4 }}>
-                        <Space>
-                            <Button type="primary" htmlType="submit">
-                                Confirm
-                            </Button>
-                        </Space>
+                        <Input></Input>
                     </Form.Item>
                 </Form>
             </Modal>  
