@@ -83,7 +83,7 @@ const SDRLTRForm = (props) => {
     const [selectedPacketType,setSelectedPacketType] = useState('');
     const [selectedSubcon,setSelectedSubcon] = useState('');
     const [selectedSiteCondition,setSelectedSiteCondition] = useState('');
-    const [deliveryDate,setDeliveryDate] = useState(moment(date2, "YYYY-MM-DD").add(3,'d'));
+    const [deliveryDate,setDeliveryDate] = useState(moment(date2, "YYYY-MM-DD").add(2,'d'));
     const [siteAddress,setSiteAddress] = useState('');
     const [selectedTeamCoordinator,setSelectedTeamCoordinator] = useState('');
     const [ddlTeamCoordinator,setDDLTeamCoordinator] = useState([]);
@@ -419,24 +419,25 @@ const SDRLTRForm = (props) => {
                 "orderDetailId":odi,
                 "workpackageid":wpid,            
                 "InvCodeId":values.inventoryCode,
-                "orderTypeId":orderTypeId,
+                "orderTypeId":values.orderType,
                 "requestTypeId":values.requestBase,
-                "subconId":selectedSubcon,
-                "picOnSiteId":selectedTeamCoordinator,
+                "subconId":values.subCon,
+                "picOnSiteId":values.teamCoordinator,
                 "originId":values.origin,        
-                "destinationId":selectedDestination,        
+                "destinationId":values.destination,        
                 "siteConditionId":values.siteLocation,
                 "CTId":values.ctName,
                 "packetTypeId":values.packetType,
                 "neTypeId" : values.siteLocation,
-                "siteAddress": siteAddress,
-                "isExpressDelivery":express,
+                "siteAddress": values.siteAddress,
+                "isExpressDelivery":values.isExpressDelivery,
                 "expectedDeliveryDate":moment(deliveryDate).format("YYYY-MM-DD"),
                 "proposeDeliveryModeId":values.proposeDelivery,
                 "requestBy": user.uid
             }
         )
-        console.log("TAR body",values);
+        console.log("TAR values",values);
+        console.log("TAR body",body);
         API.putSDRLTRForm(body).then(
             result=>{
                 if(result.status=="success")
