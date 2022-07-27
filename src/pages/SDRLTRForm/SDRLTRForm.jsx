@@ -436,7 +436,7 @@ const SDRLTRForm = (props) => {
                 "requestBy": user.uid
             }
         )
-        console.log("TAR body",intialValueDestination);
+        console.log("TAR body",values);
         API.putSDRLTRForm(body).then(
             result=>{
                 if(result.status=="success")
