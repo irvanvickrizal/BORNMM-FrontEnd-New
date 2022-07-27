@@ -127,6 +127,7 @@ import DashboardMSCluster from "@pages/DashboardMSCluster"
 import orderRequestDone from "@app/pages/OrderRequestDone/OrderRequestDone"
 import DismantleAdjusment from "@app/pages/DismantleAdjusment/index"
 import mPhotoGroup from "@app/pages/mMasterPhotoGroup/index"
+import mFormChecklist from "@app/pages/mFormChecklist/index"
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -696,6 +697,12 @@ const Main = () => {
                                             exact
                                             path="/masterphotocategorygroup"
                                             component={mPhotoGroup}
+                                            
+                                        />
+                                        <Route
+                                            exact
+                                            path="/masterformcheklist"
+                                            component={mFormChecklist}
                                             
                                         />
                                     </Switch>

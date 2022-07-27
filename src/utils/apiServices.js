@@ -938,11 +938,26 @@ const getMasterPhotoGroup = () => GET("masterphotogroup");
 const addMasterPhotoGroup = (body) => POST("masterphotogroup/InsertUpdateMasterPhotoGroup",body)
 const editMasterPhotoGroup = (body) => PUT("masterphotogroup/ChangeStatMasterPhotoGroup",body)
 
+// Master Form Cheklist 
+
+const getMasterFormCheklist = () => GET("masterformchecklist");
+const getMasterFormCheklistCollection = (id) => GETParam("masterformchecklist/collectionlist",id);
+const postMasterFormCheklistCollection = (body) => POST("masterformchecklist/InsertMasterFormChecklistCollection",body);
+const postMasterFormCheklist = (body) => POST("masterformchecklist/InsertMasterFormChecklist",body);
+const editMasterFormCheklist = (body) => PUT("masterformchecklist/ChangeStatMasterFormChecklist",body)
+const deleteCollection = (param) => DELETE('masterformchecklist/DeleteMasterFormChecklistCollection',param);
+
 const API ={
     insertupdateMasterPhoto,
     deleteMasterPhoto,
+    deleteCollection,
+    postMasterFormCheklistCollection,
+    getMasterFormCheklistCollection,
     getMasterPhoto,
+    editMasterFormCheklist,
+    postMasterFormCheklist,
     getDashboardRole,
+    getMasterFormCheklist,
     getmOrderTypeNew,
     postOrderType,
     getmFormReqType,
