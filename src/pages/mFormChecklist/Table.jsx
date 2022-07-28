@@ -105,6 +105,19 @@ export default function TableFormChecklist() {
             }
         )
     }
+    const reFreshGetMFormCheklistCollection = (data) =>{
+        console.log('data form Cheklist collection',data)
+        API.getMasterFormCheklistCollection(data).then(
+            result=>{
+                setDataCollection(result)
+              
+
+                setIsLoading(false)
+                console.log('data form Cheklist collection',result)
+                
+            }
+        )
+    }
 
     // ddl radio button cheklist
 
@@ -122,6 +135,7 @@ export default function TableFormChecklist() {
         setIsModalCollectionVisible(true)
         setFormCheklistID(data.form_checklist_id)
         setCheklistName(data.checklist_name)
+        getMFormCheklist()
       
         console.log(data,"ini")
     }
@@ -144,10 +158,11 @@ export default function TableFormChecklist() {
         console.log(data,"ini")
     }
     const showModalEditCollection = (data) => {
-      
+        setFormCheklistID(data.form_checklist_id)
         setIsModalEditCollectionVisible(true)
         setText(data.Text)
         setValues(data.Value)
+        setFormCheklistID(data.ChecklistID)
         console.log(data,"ini")
     }
     const hideModalEdit = () => {
@@ -185,10 +200,10 @@ export default function TableFormChecklist() {
                 if(result.status=="success")
                 {
                     toast.success(result.message);
-                    // getMFormCheklistCollection(bodyCollection.FormChecklistID)
+                    reFreshGetMFormCheklistCollection(formCheklistID)
                     setIsModalEditCollectionVisible(false)
-                    setIsModalCollectionVisible(false)
-                    getMFormCheklist()
+                    // setIsModalCollectionVisible(false)
+                    // getMFormCheklist()
                     
                 }
                 else{
@@ -255,8 +270,8 @@ export default function TableFormChecklist() {
                         toast.success(result.message);
                         //refreshData();
                         // getMFormCheklistCollection(data.ChecklistID)
-                        setIsModalCollectionVisible(false)
-                        getMFormCheklist()
+                        // setIsModalCollectionVisible(false)
+                        reFreshGetMFormCheklistCollection(formCheklistID)
                         //window.location.reload();
                     }
                     else{
@@ -310,6 +325,17 @@ export default function TableFormChecklist() {
                 )
             },
             ...Search('checklist_type'),
+        },
+        {
+            title : "CNT",
+            width : 150,
+          
+            render:(record)=>{
+                return (
+                    record.cnt !== null ? (<Typography>{record.cnt}</Typography>):(<Typography>-</Typography>)
+                )
+            },
+            ...Search('cnt'),
         },
         {
             title : "Table Ref",
@@ -755,6 +781,7 @@ export default function TableFormChecklist() {
                 centered
                 maskClosable={false}
                 closable
+                zIndex={9999}
                 footer={null}
                
             >
@@ -796,34 +823,32 @@ export default function TableFormChecklist() {
                         rules={[{ required: true, message: 'Please Select Ch!' }]}
                     >
                         <Input  onChange={(e) => setValues(e.target.value)} placeholder="Please Input Your Value"/>           
-                    </Form.Item>
-                    <div style={{marginTop:46}}>
-                        <Table
-
-                            size="small"
-                            // expandable={{ expandedRowRender }}
-
-                            columns={columnTableCollection}
-                            dataSource={dataCollection}
-                            rowKey={record => record.vehicleId}
-                            pagination={{
-                                pageSizeOptions: ['5', '10', '20', '30', '40'],
-                                showSizeChanger: true,
-                                position: ["bottomLeft"],
-                            }}
-
-                            bordered />
-                    </div>
-                                
-                                 
+                    </Form.Item>                              
                     <Form.Item wrapperCol={{ offset: 20, span: 4 }}>
                         <Space>
                             <Button type="primary" htmlType="submit">
-                                Confirm
+                                Add
                             </Button>
                         </Space>
                     </Form.Item>
                 </Form>
+                <div style={{marginTop:46}}>
+                    <Table
+
+                        size="small"
+                        // expandable={{ expandedRowRender }}
+
+                        columns={columnTableCollection}
+                        dataSource={dataCollection}
+                        rowKey={record => record.vehicleId}
+                        pagination={{
+                            pageSizeOptions: ['5', '10', '20', '30', '40'],
+                            showSizeChanger: true,
+                            position: ["bottomLeft"],
+                        }}
+
+                        bordered />
+                </div>
             </Modal> 
             <Modal title="Edit Collection"
                 visible={isModalEditCollectionVisible}
@@ -833,7 +858,7 @@ export default function TableFormChecklist() {
                 maskClosable={false}
                 closable
                 footer={null}
-               
+                zIndex={9999}
             >
                 <Form
                     name="basic"
@@ -866,7 +891,7 @@ export default function TableFormChecklist() {
                     <Form.Item wrapperCol={{ offset: 20, span: 4 }}>
                         <Space>
                             <Button type="primary" htmlType="submit">
-                                Confirm
+                                Edit
                             </Button>
                         </Space>
                     </Form.Item>

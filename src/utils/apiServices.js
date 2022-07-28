@@ -948,13 +948,22 @@ const postMasterFormCheklist = (body) => POST("masterformchecklist/InsertMasterF
 const editMasterFormCheklist = (body) => PUT("masterformchecklist/ChangeStatMasterFormChecklist",body)
 const deleteCollection = (param) => DELETE('masterformchecklist/DeleteMasterFormChecklistCollection',param);
 
+// MASTER ATTCHMENT DOC
+
+const getMasterAttachmentDoc = () => GET("masterattachmentdoc");
+const editMasterAttachmentDoc = (body) => PUT("masterattachmentdoc/ChangeStatMasterAttachmentDoc",body)
+const postUpdateMasterAttachmentDoc = (body) => POST("masterattachmentdoc/InsertUpdateMasterAttachmentDoc",body);
+
 const API ={
     insertupdateMasterPhoto,
     deleteMasterPhoto,
     deleteCollection,
+    editMasterAttachmentDoc,
+    postUpdateMasterAttachmentDoc,
     postMasterFormCheklistCollection,
     getMasterFormCheklistCollection,
     getMasterPhoto,
+    getMasterAttachmentDoc,
     editMasterFormCheklist,
     postMasterFormCheklist,
     getDashboardRole,
