@@ -138,9 +138,7 @@ export default function TableTest() {
         setValueAttachmentType(data.AttachmentType)
         setValueCatChecklist(data.CatChecklist)
         setValueOnlineForm(data.OnlineForm)
-        setValueSeqNo(data.SeqNo)
-    
-      
+        setValueSeqNo(data.SeqNo)  
         console.log(data,"ini")
     }
     const hideModalEdit = () => {
@@ -272,7 +270,6 @@ export default function TableTest() {
 
     useEffect(()=>{
         getMasterAttachmentDoc()
-        
     }
     ,[])
     return (

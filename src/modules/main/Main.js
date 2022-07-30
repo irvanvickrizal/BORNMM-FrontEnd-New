@@ -130,6 +130,8 @@ import mPhotoGroup from "@app/pages/mMasterPhotoGroup/index"
 import mFormChecklist from "@app/pages/mFormChecklist/index"
 
 import MasterAttachmentDoc from "@app/pages/mAttachmentDoc/index"
+import atpTemplate from "@app/pages/mAtpTemplate/index"
+import ManageAtpPhoto from "@app/pages/mAtpTemplate/ManageAtpPhoto"
 
 const Main = () => {
     const dispatch = useDispatch()
@@ -711,6 +713,18 @@ const Main = () => {
                                             exact
                                             path="/masterattachmentdoc"
                                             component={MasterAttachmentDoc}
+                                            
+                                        />
+                                        <Route
+                                            exact
+                                            path="/masteratptemplatelist"
+                                            component={atpTemplate}
+                                            
+                                        />
+                                        <Route
+                                            exact
+                                            path="/masteratptemplatelist/manageatpphoto"
+                                            component={ManageAtpPhoto}
                                             
                                         />
                                     </Switch>

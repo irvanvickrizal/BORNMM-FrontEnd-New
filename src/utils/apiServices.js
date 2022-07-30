@@ -953,11 +953,22 @@ const getMasterAttachmentDoc = () => GET("masterattachmentdoc");
 const editMasterAttachmentDoc = (body) => PUT("masterattachmentdoc/ChangeStatMasterAttachmentDoc",body)
 const postUpdateMasterAttachmentDoc = (body) => POST("masterattachmentdoc/InsertUpdateMasterAttachmentDoc",body);
 
+// Master ATP Template List
+
+const getMasterAtpTemplate = () => GET("masterATPtemplate");
+const getDdlWorkflow = () => GET("masterATPtemplate/getworkflow");
+const getDdlFormType = () => GET("masterATPtemplate/getformtype");
+const postMasterAtpTemplate = (body) => POST("masterATPtemplate/InsertUpdateMasterATPTemplate",body);
+
 const API ={
     insertupdateMasterPhoto,
     deleteMasterPhoto,
     deleteCollection,
     editMasterAttachmentDoc,
+    getDdlWorkflow,
+    getDdlFormType,
+    getMasterAtpTemplate,
+    postMasterAtpTemplate,
     postUpdateMasterAttachmentDoc,
     postMasterFormCheklistCollection,
     getMasterFormCheklistCollection,
